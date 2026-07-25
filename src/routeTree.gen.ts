@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResultadoRouteImport } from './routes/resultado'
+import { Route as InventarioRouteImport } from './routes/inventario'
 import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const ResultadoRoute = ResultadoRouteImport.update({
   id: '/resultado',
   path: '/resultado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventarioRoute = InventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FluxoCaixaRoute = FluxoCaixaRouteImport.update({
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
   '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
   '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
   '/resultado': typeof ResultadoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
+  fullPaths: '/' | '/faturas' | '/fluxo-caixa' | '/inventario' | '/resultado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
-  id: '__root__' | '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
+  to: '/' | '/faturas' | '/fluxo-caixa' | '/inventario' | '/resultado'
+  id:
+    | '__root__'
+    | '/'
+    | '/faturas'
+    | '/fluxo-caixa'
+    | '/inventario'
+    | '/resultado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FaturasRoute: typeof FaturasRoute
   FluxoCaixaRoute: typeof FluxoCaixaRoute
+  InventarioRoute: typeof InventarioRoute
   ResultadoRoute: typeof ResultadoRoute
 }
 
@@ -76,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/resultado'
       fullPath: '/resultado'
       preLoaderRoute: typeof ResultadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventario': {
+      id: '/inventario'
+      path: '/inventario'
+      fullPath: '/inventario'
+      preLoaderRoute: typeof InventarioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fluxo-caixa': {
@@ -106,6 +129,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FaturasRoute: FaturasRoute,
   FluxoCaixaRoute: FluxoCaixaRoute,
+  InventarioRoute: InventarioRoute,
   ResultadoRoute: ResultadoRoute,
 }
 export const routeTree = rootRouteImport
