@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as IndexRouteImport } from './routes/index'
 
+const FluxoCaixaRoute = FluxoCaixaRouteImport.update({
+  id: '/fluxo-caixa',
+  path: '/fluxo-caixa',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaturasRoute = FaturasRouteImport.update({
   id: '/faturas',
   path: '/faturas',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faturas'
+  fullPaths: '/' | '/faturas' | '/fluxo-caixa'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faturas'
-  id: '__root__' | '/' | '/faturas'
+  to: '/' | '/faturas' | '/fluxo-caixa'
+  id: '__root__' | '/' | '/faturas' | '/fluxo-caixa'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FaturasRoute: typeof FaturasRoute
+  FluxoCaixaRoute: typeof FluxoCaixaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/fluxo-caixa': {
+      id: '/fluxo-caixa'
+      path: '/fluxo-caixa'
+      fullPath: '/fluxo-caixa'
+      preLoaderRoute: typeof FluxoCaixaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faturas': {
       id: '/faturas'
       path: '/faturas'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FaturasRoute: FaturasRoute,
+  FluxoCaixaRoute: FluxoCaixaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
