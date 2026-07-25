@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_allocations: {
+        Row: {
+          allocation_pct: number
+          avg_consumption: number
+          client_id: string
+          updated_at: string
+        }
+        Insert: {
+          allocation_pct?: number
+          avg_consumption?: number
+          client_id: string
+          updated_at?: string
+        }
+        Update: {
+          allocation_pct?: number
+          avg_consumption?: number
+          client_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_allocations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
           active: boolean
@@ -86,6 +115,75 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_assets: {
+        Row: {
+          brand: string | null
+          category: string
+          created_at: string
+          id: string
+          item: string
+          location: string | null
+          model: string | null
+          quantity: number
+          unit_value: number
+          updated_at: string
+        }
+        Insert: {
+          brand?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          item: string
+          location?: string | null
+          model?: string | null
+          quantity?: number
+          unit_value?: number
+          updated_at?: string
+        }
+        Update: {
+          brand?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          item?: string
+          location?: string | null
+          model?: string | null
+          quantity?: number
+          unit_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      investment_expenses: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string
+          id: string
+          notes: string | null
+          spent_on: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          description: string
+          id?: string
+          notes?: string | null
+          spent_on: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string
+          id?: string
+          notes?: string | null
+          spent_on?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           client_id: string
@@ -141,6 +239,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      plant_config: {
+        Row: {
+          id: number
+          kw_per_panel: number
+          panels_count: number
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          kw_per_panel?: number
+          panels_count?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          kw_per_panel?: number
+          panels_count?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
