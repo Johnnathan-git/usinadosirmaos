@@ -13,6 +13,11 @@ export const monthLabelLong = (d: Date) => {
   return d.toLocaleString("en-US", { month: "long", year: "numeric" });
 };
 
+export const formatDateBR = (iso: string) => {
+  const [y, m, d] = iso.slice(0, 10).split("-");
+  return `${d}/${m}/${y}`;
+};
+
 // yyyy-mm-01 for a given Date
 export const monthKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
