@@ -1,7 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutGrid },
@@ -14,6 +17,36 @@ const nav = [
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      if (!data.session) {
+        navigate({ to: "/auth", replace: true });
+      } else {
+        setReady(true);
+      }
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (!session) navigate({ to: "/auth", replace: true });
+    });
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, [navigate]);
+
+  async function signOut() {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
+  if (!ready) {
+    return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Carregando...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,7 +61,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <div className="text-lg font-bold text-foreground">JJ</div>
             </div>
           </div>
-          <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <button onClick={signOut} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" /> Sair
           </button>
         </div>
