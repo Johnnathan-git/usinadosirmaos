@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResultadoRouteImport } from './routes/resultado'
+import { Route as InventarioRouteImport } from './routes/inventario'
+import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
+import { Route as FaturasRouteImport } from './routes/faturas'
+import { Route as ControleRouteImport } from './routes/controle'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ResultadoRoute = ResultadoRouteImport.update({
+  id: '/resultado',
+  path: '/resultado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventarioRoute = InventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FluxoCaixaRoute = FluxoCaixaRouteImport.update({
+  id: '/fluxo-caixa',
+  path: '/fluxo-caixa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaturasRoute = FaturasRouteImport.update({
+  id: '/faturas',
+  path: '/faturas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ControleRoute = ControleRouteImport.update({
+  id: '/controle',
+  path: '/controle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/controle': typeof ControleRoute
+  '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/controle': typeof ControleRoute
+  '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/controle': typeof ControleRoute
+  '/faturas': typeof FaturasRoute
+  '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/inventario': typeof InventarioRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/controle'
+    | '/faturas'
+    | '/fluxo-caixa'
+    | '/inventario'
+    | '/resultado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/controle'
+    | '/faturas'
+    | '/fluxo-caixa'
+    | '/inventario'
+    | '/resultado'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/controle'
+    | '/faturas'
+    | '/fluxo-caixa'
+    | '/inventario'
+    | '/resultado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  ControleRoute: typeof ControleRoute
+  FaturasRoute: typeof FaturasRoute
+  FluxoCaixaRoute: typeof FluxoCaixaRoute
+  InventarioRoute: typeof InventarioRoute
+  ResultadoRoute: typeof ResultadoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/resultado': {
+      id: '/resultado'
+      path: '/resultado'
+      fullPath: '/resultado'
+      preLoaderRoute: typeof ResultadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventario': {
+      id: '/inventario'
+      path: '/inventario'
+      fullPath: '/inventario'
+      preLoaderRoute: typeof InventarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fluxo-caixa': {
+      id: '/fluxo-caixa'
+      path: '/fluxo-caixa'
+      fullPath: '/fluxo-caixa'
+      preLoaderRoute: typeof FluxoCaixaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faturas': {
+      id: '/faturas'
+      path: '/faturas'
+      fullPath: '/faturas'
+      preLoaderRoute: typeof FaturasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/controle': {
+      id: '/controle'
+      path: '/controle'
+      fullPath: '/controle'
+      preLoaderRoute: typeof ControleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +177,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  ControleRoute: ControleRoute,
+  FaturasRoute: FaturasRoute,
+  FluxoCaixaRoute: FluxoCaixaRoute,
+  InventarioRoute: InventarioRoute,
+  ResultadoRoute: ResultadoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
