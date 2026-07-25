@@ -14,7 +14,134 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clients: {
+        Row: {
+          active: boolean
+          color: string
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          uc_number: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          color?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          uc_number: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          color?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          uc_number?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      expenses: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          description: string
+          id: string
+          notes: string | null
+          reference_date: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          notes?: string | null
+          reference_date: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          notes?: string | null
+          reference_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      invoices: {
+        Row: {
+          client_id: string
+          client_pays: number
+          consumption_kw: number
+          created_at: string
+          distributor_invoice: number
+          id: string
+          interest_fine: number
+          price_kw: number
+          public_lighting: number
+          reference_date: string
+          uc_number: string
+          updated_at: string
+          value_without_plant: number
+        }
+        Insert: {
+          client_id: string
+          client_pays?: number
+          consumption_kw?: number
+          created_at?: string
+          distributor_invoice?: number
+          id?: string
+          interest_fine?: number
+          price_kw?: number
+          public_lighting?: number
+          reference_date: string
+          uc_number: string
+          updated_at?: string
+          value_without_plant?: number
+        }
+        Update: {
+          client_id?: string
+          client_pays?: number
+          consumption_kw?: number
+          created_at?: string
+          distributor_invoice?: number
+          id?: string
+          interest_fine?: number
+          price_kw?: number
+          public_lighting?: number
+          reference_date?: string
+          uc_number?: string
+          updated_at?: string
+          value_without_plant?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
