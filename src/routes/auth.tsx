@@ -25,6 +25,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -35,6 +36,7 @@ function AuthPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setInfo(null);
     if (!email.trim() || !password) { setError("Preencha usuário e senha."); return; }
     if (password.length < 6) { setError("A senha deve ter pelo menos 6 caracteres."); return; }
     setLoading(true);
@@ -43,14 +45,37 @@ function AuthPage() {
       : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: window.location.origin } });
     setLoading(false);
     if (res.error) {
-      const msg = res.error.message.toLowerCase().includes("invalid")
-        ? "Usuário ou senha inválidos."
-        : res.error.message;
-      setError(msg);
+      const raw = res.error.message.toLowerCase();
+      if (raw.includes("already registered") || raw.includes("user already")) {
+        setMode("login");
+        setError("Este e-mail já tem conta. Entre com sua senha ou redefina abaixo.");
+      } else if (raw.includes("invalid")) {
+        setError("Usuário ou senha inválidos. Se esqueceu a senha, redefina abaixo.");
+      } else {
+        setError(res.error.message);
+      }
+      return;
+    }
+    if (mode === "signup" && !res.data.session) {
+      setInfo("Conta criada. Verifique seu e-mail para confirmar antes de entrar.");
+      setMode("login");
       return;
     }
     toast.success(mode === "login" ? "Bem-vindo!" : "Conta criada!");
     navigate({ to: "/", replace: true });
+  }
+
+  async function resetPassword() {
+    setError(null);
+    setInfo(null);
+    if (!email.trim()) { setError("Informe seu e-mail para redefinir a senha."); return; }
+    setLoading(true);
+    const { error: err } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (err) { setError(err.message); return; }
+    setInfo("Enviamos um link de redefinição para o seu e-mail.");
   }
 
   return (
@@ -87,10 +112,22 @@ function AuthPage() {
               {error}
             </div>
           )}
+          {info && (
+            <div role="status" className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+              {info}
+            </div>
+          )}
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Aguarde..." : (mode === "login" ? "Entrar" : "Criar conta")}
           </Button>
         </form>
+        {mode === "login" && (
+          <div className="mt-3 text-center text-sm">
+            <button type="button" onClick={resetPassword} className="text-muted-foreground hover:text-primary hover:underline">
+              Esqueci minha senha
+            </button>
+          </div>
+        )}
         <div className="mt-4 text-center text-sm text-muted-foreground">
           {mode === "login" ? (
             <>Não tem conta? <button type="button" onClick={() => { setMode("signup"); setError(null); }} className="font-medium text-primary hover:underline">Criar agora</button></>
