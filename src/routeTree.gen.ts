@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResultadoRouteImport } from './routes/resultado'
 import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
 import { Route as FaturasRouteImport } from './routes/faturas'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ResultadoRoute = ResultadoRouteImport.update({
+  id: '/resultado',
+  path: '/resultado',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FluxoCaixaRoute = FluxoCaixaRouteImport.update({
   id: '/fluxo-caixa',
   path: '/fluxo-caixa',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
+  '/resultado': typeof ResultadoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faturas' | '/fluxo-caixa'
+  fullPaths: '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faturas' | '/fluxo-caixa'
-  id: '__root__' | '/' | '/faturas' | '/fluxo-caixa'
+  to: '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
+  id: '__root__' | '/' | '/faturas' | '/fluxo-caixa' | '/resultado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FaturasRoute: typeof FaturasRoute
   FluxoCaixaRoute: typeof FluxoCaixaRoute
+  ResultadoRoute: typeof ResultadoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/resultado': {
+      id: '/resultado'
+      path: '/resultado'
+      fullPath: '/resultado'
+      preLoaderRoute: typeof ResultadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fluxo-caixa': {
       id: '/fluxo-caixa'
       path: '/fluxo-caixa'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FaturasRoute: FaturasRoute,
   FluxoCaixaRoute: FluxoCaixaRoute,
+  ResultadoRoute: ResultadoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
