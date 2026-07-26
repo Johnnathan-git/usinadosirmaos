@@ -20,7 +20,6 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,30 +37,14 @@ function AuthPage() {
     setError(null);
     setInfo(null);
     if (!email.trim() || !password) { setError("Preencha usuário e senha."); return; }
-    if (password.length < 6) { setError("A senha deve ter pelo menos 6 caracteres."); return; }
     setLoading(true);
-    const res = mode === "login"
-      ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
-      : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: window.location.origin } });
+    const res = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (res.error) {
-      const raw = res.error.message.toLowerCase();
-      if (raw.includes("already registered") || raw.includes("user already")) {
-        setMode("login");
-        setError("Este e-mail já tem conta. Entre com sua senha ou redefina abaixo.");
-      } else if (raw.includes("invalid")) {
-        setError("Usuário ou senha inválidos. Se esqueceu a senha, redefina abaixo.");
-      } else {
-        setError(res.error.message);
-      }
+      setError("Usuário ou senha inválidos. Se esqueceu a senha, redefina abaixo.");
       return;
     }
-    if (mode === "signup" && !res.data.session) {
-      setInfo("Conta criada. Verifique seu e-mail para confirmar antes de entrar.");
-      setMode("login");
-      return;
-    }
-    toast.success(mode === "login" ? "Bem-vindo!" : "Conta criada!");
+    toast.success("Bem-vindo!");
     navigate({ to: "/", replace: true });
   }
 
@@ -90,12 +73,8 @@ function AuthPage() {
             <div className="text-2xl font-bold">JJ</div>
           </div>
         </div>
-        <h1 className="mb-1 text-center text-xl font-semibold">
-          {mode === "login" ? "Entrar no sistema" : "Criar conta"}
-        </h1>
-        <p className="mb-6 text-center text-sm text-muted-foreground">
-          {mode === "login" ? "Acesse com seu usuário e senha" : "Cadastre suas credenciais de acesso"}
-        </p>
+        <h1 className="mb-1 text-center text-xl font-semibold">Entrar no sistema</h1>
+        <p className="mb-6 text-center text-sm text-muted-foreground">Acesso restrito a usuários cadastrados</p>
         <form onSubmit={submit} className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>
@@ -104,7 +83,7 @@ function AuthPage() {
           </div>
           <div>
             <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"}
+            <Input id="password" type="password" autoComplete="current-password"
               value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
           </div>
           {error && (
@@ -118,23 +97,17 @@ function AuthPage() {
             </div>
           )}
           <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Aguarde..." : (mode === "login" ? "Entrar" : "Criar conta")}
+            {loading ? "Aguarde..." : "Entrar"}
           </Button>
         </form>
-        {mode === "login" && (
-          <div className="mt-3 text-center text-sm">
-            <button type="button" onClick={resetPassword} className="text-muted-foreground hover:text-primary hover:underline">
-              Esqueci minha senha
-            </button>
-          </div>
-        )}
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          {mode === "login" ? (
-            <>Não tem conta? <button type="button" onClick={() => { setMode("signup"); setError(null); }} className="font-medium text-primary hover:underline">Criar agora</button></>
-          ) : (
-            <>Já tem conta? <button type="button" onClick={() => { setMode("login"); setError(null); }} className="font-medium text-primary hover:underline">Entrar</button></>
-          )}
+        <div className="mt-3 text-center text-sm">
+          <button type="button" onClick={resetPassword} className="text-muted-foreground hover:text-primary hover:underline">
+            Esqueci minha senha
+          </button>
         </div>
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          Novos usuários são cadastrados pelo administrador no módulo Acessos.
+        </p>
       </Card>
     </div>
   );
