@@ -9,7 +9,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { getMyAccess } from "@/lib/acessos.functions";
 import { pathToModule } from "@/lib/permissions";
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
+const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutGrid, module: "dashboard" },
   { to: "/faturas", label: "Lançamento de Faturas", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
@@ -17,7 +18,7 @@ const nav = [
   { to: "/controle", label: "Controle", icon: Gauge, module: "controle" },
   { to: "/inventario", label: "Inventário", icon: Package, module: "inventario" },
   { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
-] as const;
+];
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
