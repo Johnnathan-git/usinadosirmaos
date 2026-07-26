@@ -53,7 +53,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     await qc.cancelQueries();
     qc.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/auth", search: { manual: "1" } as never, replace: true });
   }
 
   if (!ready || access.isLoading) {
