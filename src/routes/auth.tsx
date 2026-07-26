@@ -25,11 +25,37 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const [rememberOwner, setRememberOwner] = useState(false);
+  const [autoTrying, setAutoTrying] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/", replace: true });
-    });
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) { navigate({ to: "/", replace: true }); return; }
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("manual") === "1") return;
+      const raw = localStorage.getItem("usina-jj-owner");
+      if (!raw) return;
+      try {
+        const { email: e, password: p } = JSON.parse(raw) as { email: string; password: string };
+        if (!e || !p) return;
+        setAutoTrying(true);
+        const res = await supabase.auth.signInWithPassword({ email: e, password: p });
+        if (cancelled) return;
+        if (res.error) {
+          localStorage.removeItem("usina-jj-owner");
+          setAutoTrying(false);
+          setError("O acesso rápido salvo não funcionou mais. Faça login normalmente.");
+          return;
+        }
+        navigate({ to: "/", replace: true });
+      } catch {
+        localStorage.removeItem("usina-jj-owner");
+        setAutoTrying(false);
+      }
+    })();
+    return () => { cancelled = true; };
   }, [navigate]);
 
   async function submit(e: React.FormEvent) {
@@ -43,6 +69,9 @@ function AuthPage() {
     if (res.error) {
       setError("Usuário ou senha inválidos. Se esqueceu a senha, redefina abaixo.");
       return;
+    }
+    if (rememberOwner) {
+      localStorage.setItem("usina-jj-owner", JSON.stringify({ email: email.trim(), password }));
     }
     toast.success("Bem-vindo!");
     navigate({ to: "/", replace: true });
@@ -59,6 +88,14 @@ function AuthPage() {
     setLoading(false);
     if (err) { setError(err.message); return; }
     setInfo("Enviamos um link de redefinição para o seu e-mail.");
+  }
+
+  if (autoTrying) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-white p-4">
+        <div className="text-sm text-muted-foreground">Entrando...</div>
+      </div>
+    );
   }
 
   return (
@@ -96,6 +133,15 @@ function AuthPage() {
               {info}
             </div>
           )}
+          <label className="flex items-center gap-2 text-sm text-muted-foreground select-none">
+            <input
+              type="checkbox"
+              checked={rememberOwner}
+              onChange={(e) => setRememberOwner(e.target.checked)}
+              className="h-4 w-4 rounded border-input accent-primary"
+            />
+            Este é meu acesso — pular login neste dispositivo
+          </label>
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Aguarde..." : "Entrar"}
           </Button>
