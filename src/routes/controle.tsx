@@ -272,16 +272,24 @@ function Controle() {
 }
 
 function NewClientDialog({ onClose }: { onClose: () => void }) {
-  const [f, setF] = useState({ name: "", uc_number: "", color: CLIENT_COLORS[0] });
+  const [f, setF] = useState({ name: "", uc_number: "", avg: "", pct: "", color: CLIENT_COLORS[0] });
   const [saving, setSaving] = useState(false);
   async function submit() {
-    if (!f.name.trim() || !f.uc_number.trim()) return toast.error("Nome e UC são obrigatórios");
+    if (!f.name.trim()) return toast.error("Nome é obrigatório");
+    const avgNum = Number(f.avg);
+    const pctNum = Number(f.pct);
+    if (!Number.isFinite(avgNum) || avgNum <= 0) return toast.error("Consumo médio é obrigatório");
+    if (!Number.isFinite(pctNum) || pctNum < 0) return toast.error("Rateio % é obrigatório");
     setSaving(true);
-    const { error } = await supabase.from("clients").insert({
+    const { data: created, error } = await supabase.from("clients").insert({
       name: f.name.trim(), uc_number: f.uc_number.trim(), color: f.color, active: true,
+    }).select("id").single();
+    if (error || !created) { setSaving(false); return toast.error(error?.message ?? "Erro ao criar cliente"); }
+    const { error: aerr } = await supabase.from("client_allocations").insert({
+      client_id: created.id, allocation_pct: pctNum, avg_consumption: avgNum,
     });
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (aerr) return toast.error(aerr.message);
     toast.success("Cliente cadastrado");
     location.reload();
   }
@@ -290,8 +298,10 @@ function NewClientDialog({ onClose }: { onClose: () => void }) {
       <DialogContent className="max-w-md">
         <DialogHeader><DialogTitle>Novo Cliente</DialogTitle></DialogHeader>
         <div className="space-y-3">
-          <div><Label>Nome *</Label><Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} /></div>
-          <div><Label>Número da UC *</Label><Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" /></div>
+          <div><Label>Nome do cliente *</Label><Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: JOÃO SILVA" /></div>
+          <div><Label>Unidade Consumidora (UC)</Label><Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" /></div>
+          <div><Label>Consumo médio mensal (kW) *</Label><Input type="number" value={f.avg} onChange={e => setF({ ...f, avg: e.target.value })} placeholder="Ex: 500" /></div>
+          <div><Label>Rateio % *</Label><Input type="number" step="0.01" value={f.pct} onChange={e => setF({ ...f, pct: e.target.value })} placeholder="Ex: 8.20" /></div>
           <div>
             <Label>Cor</Label>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -305,7 +315,7 @@ function NewClientDialog({ onClose }: { onClose: () => void }) {
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-emerald-500 hover:bg-emerald-600">Criar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-emerald-500 hover:bg-emerald-600">Adicionar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
