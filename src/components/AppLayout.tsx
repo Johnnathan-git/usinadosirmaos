@@ -1,13 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, LogOut, ShieldCheck } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "@tanstack/react-router";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getMyAccess } from "@/lib/acessos.functions";
-import { pathToModule } from "@/lib/permissions";
+import { ReactNode } from "react";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
