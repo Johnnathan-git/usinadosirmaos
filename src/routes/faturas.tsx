@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
+import { useSuspenseQuery, useQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
@@ -366,7 +366,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
 function HistoryDialog({ client, onClose }: { client: Client; onClose: () => void }) {
   const qc = useQueryClient();
-  const historyQ = queryOptions({
+  const { data: invoices = [], isLoading } = useQuery({
     queryKey: ["invoice-history", client.id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -378,7 +378,6 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
       return (data ?? []) as Invoice[];
     },
   });
-  const { data: invoices, isLoading } = useSuspenseQuery(historyQ);
   const [launching, setLaunching] = useState(false);
   const [editing, setEditing] = useState<Invoice | null>(null);
 
