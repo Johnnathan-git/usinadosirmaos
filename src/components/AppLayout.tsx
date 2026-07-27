@@ -1,13 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, LogOut, ShieldCheck } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "@tanstack/react-router";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getMyAccess } from "@/lib/acessos.functions";
-import { pathToModule } from "@/lib/permissions";
+import { ReactNode } from "react";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
@@ -22,50 +16,9 @@ const nav: NavItem[] = [
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const navigate = useNavigate();
-  const qc = useQueryClient();
-  const [ready, setReady] = useState(false);
-  const fetchAccess = useServerFn(getMyAccess);
-  const access = useQuery({
-    queryKey: ["my-access"],
-    queryFn: () => fetchAccess(),
-    enabled: ready,
-    staleTime: 30_000,
-  });
-
-  useEffect(() => {
-    let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      if (!data.session) {
-        navigate({ to: "/auth", replace: true });
-      } else {
-        setReady(true);
-      }
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (!session) navigate({ to: "/auth", replace: true });
-    });
-    return () => { mounted = false; sub.subscription.unsubscribe(); };
-  }, [navigate]);
-
-  async function signOut() {
-    await qc.cancelQueries();
-    qc.clear();
-    await supabase.auth.signOut();
-    window.location.replace("/auth?manual=1");
-  }
-
-  if (!ready || access.isLoading) {
-    return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Carregando...</div>;
-  }
-
-  const isAdmin = access.data?.effective_admin ?? false;
-  const perms = new Set(access.data?.permissions ?? []);
-  const can = (mod: string) => isAdmin || perms.has(mod);
-  const visibleNav = nav.filter((n) => (n.adminOnly ? isAdmin : can(n.module)));
-  const currentModule = pathToModule(pathname);
-  const blocked = currentModule && !can(currentModule);
+  // Login temporariamente desativado: acesso aberto, todos os módulos visíveis.
+  const visibleNav = nav;
+  const blocked = false;
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,9 +33,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <div className="text-lg font-bold text-foreground">JJ</div>
             </div>
           </div>
-          <button onClick={signOut} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <LogOut className="h-4 w-4" /> Sair
-          </button>
+          <span className="text-xs text-muted-foreground">Acesso livre</span>
         </div>
       </header>
       <div className="flex">
