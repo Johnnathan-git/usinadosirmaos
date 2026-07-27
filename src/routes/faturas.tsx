@@ -267,18 +267,18 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
   );
 }
 
-function InvoiceDialog({ client, onClose }: { client: Client; onClose: () => void }) {
+function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?: Invoice; onClose: () => void }) {
   const qc = useQueryClient();
   const today = new Date().toISOString().slice(0, 10);
   const [f, setF] = useState({
-    reference_date: today,
-    consumption_kw: "",
-    price_kw: "",
-    public_lighting: "0",
-    interest_fine: "0",
-    value_without_plant: "0",
-    client_pays: "",
-    distributor_invoice: "0",
+    reference_date: invoice?.reference_date?.slice(0, 10) ?? today,
+    consumption_kw: invoice ? String(invoice.consumption_kw) : "",
+    price_kw: invoice ? String(invoice.price_kw) : "",
+    public_lighting: invoice ? String(invoice.public_lighting) : "0",
+    interest_fine: invoice ? String(invoice.interest_fine) : "0",
+    value_without_plant: invoice ? String(invoice.value_without_plant) : "0",
+    client_pays: invoice ? String(invoice.client_pays) : "",
+    distributor_invoice: invoice ? String(invoice.distributor_invoice) : "0",
   });
   const [saving, setSaving] = useState(false);
 
@@ -288,7 +288,7 @@ function InvoiceDialog({ client, onClose }: { client: Client; onClose: () => voi
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from("invoices").insert({
+    const payload = {
       client_id: client.id,
       uc_number: client.uc_number,
       reference_date: f.reference_date,
@@ -299,10 +299,13 @@ function InvoiceDialog({ client, onClose }: { client: Client; onClose: () => voi
       value_without_plant: Number(f.value_without_plant || 0),
       client_pays: Number(f.client_pays),
       distributor_invoice: Number(f.distributor_invoice || 0),
-    });
+    };
+    const { error } = invoice
+      ? await supabase.from("invoices").update(payload).eq("id", invoice.id)
+      : await supabase.from("invoices").insert(payload);
     setSaving(false);
     if (error) return toast.error(error.message);
-    toast.success("Fatura lançada");
+    toast.success(invoice ? "Fatura atualizada" : "Fatura lançada");
     qc.invalidateQueries();
     onClose();
   }
@@ -311,7 +314,7 @@ function InvoiceDialog({ client, onClose }: { client: Client; onClose: () => voi
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Lançar Fatura — {client.name}</DialogTitle>
+          <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -354,8 +357,112 @@ function InvoiceDialog({ client, onClose }: { client: Client; onClose: () => voi
         </Card>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} style={{ backgroundColor: client.color }}>Lançar</Button>
+          <Button onClick={submit} disabled={saving} style={{ backgroundColor: client.color }}>{invoice ? "Salvar" : "Lançar"}</Button>
         </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function HistoryDialog({ client, onClose }: { client: Client; onClose: () => void }) {
+  const qc = useQueryClient();
+  const historyQ = queryOptions({
+    queryKey: ["invoice-history", client.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("invoices")
+        .select("*")
+        .eq("client_id", client.id)
+        .order("reference_date", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as Invoice[];
+    },
+  });
+  const { data: invoices, isLoading } = useSuspenseQuery(historyQ);
+  const [launching, setLaunching] = useState(false);
+  const [editing, setEditing] = useState<Invoice | null>(null);
+
+  async function del(inv: Invoice) {
+    if (!confirm("Excluir esta fatura?")) return;
+    const { error } = await supabase.from("invoices").delete().eq("id", inv.id);
+    if (error) return toast.error(error.message);
+    toast.success("Fatura excluída");
+    qc.invalidateQueries();
+  }
+
+  return (
+    <Dialog open onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-5xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full" style={{ backgroundColor: client.color }} />
+            {client.name} — UC {client.uc_number}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+            <TrendingUp className="h-4 w-4" /> Histórico de Faturas
+          </div>
+          <Button
+            className="gap-2 text-white"
+            style={{ backgroundColor: client.color }}
+            onClick={() => setLaunching(true)}
+            disabled={!client.active}
+          >
+            <Plus className="h-4 w-4" /> Lançar Fatura
+          </Button>
+        </div>
+
+        <div className="max-h-[60vh] overflow-auto">
+          {isLoading ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">Carregando...</p>
+          ) : invoices.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="sticky top-0 bg-background">
+                <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="py-2 text-left font-medium">Mês</th>
+                  <th className="py-2 text-right font-medium">Consumo (kW)</th>
+                  <th className="py-2 text-right font-medium">S/ Usina</th>
+                  <th className="py-2 text-right font-medium">Cliente Pagou</th>
+                  <th className="py-2 text-right font-medium">Fat. Distribuidora</th>
+                  <th className="py-2 text-right font-medium">Lucro</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoices.map((inv) => {
+                  const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
+                  return (
+                    <tr key={inv.id} className="border-t">
+                      <td className="py-3">{monthLabel(new Date(inv.reference_date))}</td>
+                      <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                      <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
+                      <td className="py-3 text-right text-rose-600">{brl(Number(inv.client_pays))}</td>
+                      <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
+                      <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
+                      <td className="py-3 pl-2 text-right">
+                        <div className="flex justify-end gap-1">
+                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground">
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {launching && <InvoiceDialog client={client} onClose={() => setLaunching(false)} />}
+        {editing && <InvoiceDialog client={client} invoice={editing} onClose={() => setEditing(null)} />}
       </DialogContent>
     </Dialog>
   );
