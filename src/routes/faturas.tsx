@@ -10,8 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings } from "lucide-react";
-import { CLIENT_COLORS, brl, initial } from "@/lib/format";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, X } from "lucide-react";
+import { CLIENT_COLORS, brl, initial, monthLabel } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
@@ -20,6 +20,19 @@ type Client = {
   color: string; uc_number: string; notes: string | null; active: boolean;
 };
 type InvoiceRow = { id: string; client_id: string; reference_date: string };
+
+type Invoice = {
+  id: string;
+  client_id: string;
+  reference_date: string;
+  consumption_kw: number;
+  price_kw: number;
+  public_lighting: number;
+  interest_fine: number;
+  value_without_plant: number;
+  client_pays: number;
+  distributor_invoice: number;
+};
 
 const faturasQ = queryOptions({
   queryKey: ["faturas-page"],
@@ -62,6 +75,7 @@ function Faturas() {
   const [newClientOpen, setNewClientOpen] = useState(false);
   const [editClient, setEditClient] = useState<Client | null>(null);
   const [invoiceFor, setInvoiceFor] = useState<Client | null>(null);
+  const [historyFor, setHistoryFor] = useState<Client | null>(null);
 
   const active = data.clients.filter(c => c.active);
   const inactive = data.clients.filter(c => !c.active);
@@ -102,7 +116,11 @@ function Faturas() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
           <Card key={c.id} className="p-5">
-            <div className="mb-3 flex items-start justify-between">
+            <button
+              type="button"
+              onClick={() => setHistoryFor(c)}
+              className="mb-3 flex w-full items-start justify-between text-left"
+            >
               <div className="flex items-center gap-3">
                 <div
                   className="flex h-11 w-11 items-center justify-center rounded-lg text-base font-semibold text-white"
@@ -112,17 +130,18 @@ function Faturas() {
                 </div>
                 <div>
                   <div className="font-semibold">{c.name}</div>
+                  <div className="text-xs text-muted-foreground">Ver histórico de faturas</div>
                 </div>
               </div>
-              <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-muted-foreground hover:text-foreground">
+              <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                <button onClick={(e) => { e.stopPropagation(); setEditClient(c); }} className="p-1.5 text-muted-foreground hover:text-foreground">
                   <Settings className="h-4 w-4" />
                 </button>
-                <button onClick={() => toggleActive(c)} className="p-1.5 text-muted-foreground hover:text-foreground" title={c.active ? "Desativar" : "Ativar"}>
+                <button onClick={(e) => { e.stopPropagation(); toggleActive(c); }} className="p-1.5 text-muted-foreground hover:text-foreground" title={c.active ? "Desativar" : "Ativar"}>
                   {c.active ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
                 </button>
               </div>
-            </div>
+            </button>
             <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-emerald-500" /> 1 UC</span>
               <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}</span>
@@ -148,6 +167,12 @@ function Faturas() {
       )}
       {invoiceFor && (
         <InvoiceDialog client={invoiceFor} onClose={() => setInvoiceFor(null)} />
+      )}
+      {historyFor && (
+        <HistoryDialog
+          client={historyFor}
+          onClose={() => setHistoryFor(null)}
+        />
       )}
     </div>
   );
