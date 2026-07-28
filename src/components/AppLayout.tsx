@@ -1,13 +1,7 @@
-import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck, LogOut } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getMyAccess } from "@/lib/acessos.functions";
-import { pathToModule } from "@/lib/permissions";
-import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
@@ -22,62 +16,9 @@ const nav: NavItem[] = [
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const navigate = useNavigate();
-  const qc = useQueryClient();
-  const [ready, setReady] = useState(false);
-  const [userLabel, setUserLabel] = useState<string>("");
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!mounted) return;
-      if (!data.session) {
-        navigate({ to: "/auth", replace: true });
-        return;
-      }
-      const u = data.session.user;
-      setUserLabel((u.user_metadata as any)?.name || u.email || "");
-      setReady(true);
-    })();
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (!session) navigate({ to: "/auth", replace: true });
-    });
-    return () => { mounted = false; sub.subscription.unsubscribe(); };
-  }, [navigate]);
-
-  const accessFn = useServerFn(getMyAccess);
-  const access = useQuery({
-    queryKey: ["my-access"],
-    queryFn: () => accessFn(),
-    enabled: ready,
-  });
-
-  const isAdmin = access.data?.effective_admin ?? false;
-  const perms = new Set(access.data?.permissions ?? []);
-  const visibleNav = nav.filter((n) => {
-    if (n.adminOnly) return isAdmin;
-    return isAdmin || perms.has(n.module);
-  });
-  const currentModule = pathToModule(pathname);
-  const blocked = Boolean(
-    access.data && currentModule && !isAdmin && !perms.has(currentModule),
-  );
-
-  async function signOut() {
-    await qc.cancelQueries();
-    qc.clear();
-    await supabase.auth.signOut();
-    window.location.replace("/auth?manual=1");
-  }
-
-  if (!ready || access.isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">Carregando...</div>
-      </div>
-    );
-  }
+  // Login temporariamente desativado: acesso aberto, todos os módulos visíveis.
+  const visibleNav = nav;
+  const blocked = false;
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,12 +33,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <div className="text-lg font-bold text-foreground">JJ</div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground">{userLabel}</span>
-            <Button size="sm" variant="ghost" onClick={signOut}>
-              <LogOut className="mr-1 h-4 w-4" /> Sair
-            </Button>
-          </div>
+          <span className="text-xs text-muted-foreground">Acesso livre</span>
         </div>
       </header>
       <div className="flex">
