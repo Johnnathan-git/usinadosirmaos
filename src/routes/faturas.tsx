@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, X } from "lucide-react";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabel } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
@@ -116,11 +116,7 @@ function Faturas() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
           <Card key={c.id} className="p-5">
-            <button
-              type="button"
-              onClick={() => setHistoryFor(c)}
-              className="mb-3 flex w-full items-start justify-between text-left"
-            >
+            <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
                   className="flex h-11 w-11 items-center justify-center rounded-lg text-base font-semibold text-white"
@@ -130,30 +126,39 @@ function Faturas() {
                 </div>
                 <div>
                   <div className="font-semibold">{c.name}</div>
-                  <div className="text-xs text-muted-foreground">Ver histórico de faturas</div>
+                  <div className="text-xs text-muted-foreground">UC {c.uc_number}</div>
                 </div>
               </div>
-              <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
-                <button onClick={(e) => { e.stopPropagation(); setEditClient(c); }} className="p-1.5 text-muted-foreground hover:text-foreground">
+              <div className="flex gap-1">
+                <button onClick={() => setEditClient(c)} className="p-1.5 text-muted-foreground hover:text-foreground" aria-label={`Editar ${c.name}`}>
                   <Settings className="h-4 w-4" />
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); toggleActive(c); }} className="p-1.5 text-muted-foreground hover:text-foreground" title={c.active ? "Desativar" : "Ativar"}>
+                <button onClick={() => toggleActive(c)} className="p-1.5 text-muted-foreground hover:text-foreground" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
                   {c.active ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
                 </button>
               </div>
-            </button>
+            </div>
             <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-emerald-500" /> 1 UC</span>
               <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}</span>
             </div>
-            <Button
-              className="w-full gap-2 text-white"
-              style={{ backgroundColor: c.color }}
-              onClick={() => setInvoiceFor(c)}
-              disabled={!c.active}
-            >
-              <Plus className="h-4 w-4" /> Lançar Fatura do Mês
-            </Button>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={() => setHistoryFor(c)}
+              >
+                <Eye className="h-4 w-4" /> Abrir Faturas
+              </Button>
+              <Button
+                className="gap-2 text-white"
+                style={{ backgroundColor: c.color }}
+                onClick={() => setInvoiceFor(c)}
+                disabled={!c.active}
+              >
+                <Plus className="h-4 w-4" /> Lançar
+              </Button>
+            </div>
           </Card>
         ))}
       </div>
@@ -389,6 +394,11 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
     qc.invalidateQueries();
   }
 
+  const totalWithoutPlant = invoices.reduce((sum, inv) => sum + Number(inv.value_without_plant), 0);
+  const totalClientPays = invoices.reduce((sum, inv) => sum + Number(inv.client_pays), 0);
+  const totalDistributor = invoices.reduce((sum, inv) => sum + Number(inv.distributor_invoice), 0);
+  const netProfit = totalClientPays - totalDistributor;
+
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-5xl">
@@ -398,6 +408,25 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             {client.name} — UC {client.uc_number}
           </DialogTitle>
         </DialogHeader>
+
+        <div className="grid gap-3 md:grid-cols-4">
+          <Card className="p-4">
+            <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
+            <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-xs font-medium text-muted-foreground">Cliente Pagou</div>
+            <div className="mt-1 text-xl font-bold text-rose-600">{brl(totalClientPays)}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora</div>
+            <div className="mt-1 text-xl font-bold text-rose-500">{brl(totalDistributor)}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-xs font-medium text-muted-foreground">Lucro Líquido</div>
+            <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
+          </Card>
+        </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
@@ -444,10 +473,10 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 pl-2 text-right">
                         <div className="flex justify-end gap-1">
-                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground">
+                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabel(new Date(inv.reference_date))}`}>
                             <Pencil className="h-4 w-4" />
                           </button>
-                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600">
+                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600" aria-label={`Excluir fatura de ${monthLabel(new Date(inv.reference_date))}`}>
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
