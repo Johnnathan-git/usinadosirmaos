@@ -63,6 +63,7 @@ function AcessosContent() {
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
             <tr>
+              <th className="px-4 py-3">Nome</th>
               <th className="px-4 py-3">E-mail</th>
               <th className="px-4 py-3">Papel</th>
               <th className="px-4 py-3">Permissões</th>
@@ -73,7 +74,8 @@ function AcessosContent() {
           <tbody>
             {(q.data?.users ?? []).map((u) => (
               <tr key={u.id} className="border-t">
-                <td className="px-4 py-3 font-medium">{u.email}</td>
+                <td className="px-4 py-3 font-medium">{u.name || <span className="text-muted-foreground">—</span>}</td>
+                <td className="px-4 py-3">{u.email}</td>
                 <td className="px-4 py-3">
                   {u.is_admin ? (
                     <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
@@ -108,7 +110,7 @@ function AcessosContent() {
               </tr>
             ))}
             {q.data && q.data.users.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</td></tr>
             )}
           </tbody>
         </table>
@@ -117,7 +119,7 @@ function AcessosContent() {
   );
 }
 
-type UserRow = { id: string; email: string; is_admin: boolean; permissions: string[] };
+type UserRow = { id: string; email: string; name: string; is_admin: boolean; permissions: string[] };
 
 function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRow }) {
   const qc = useQueryClient();
@@ -125,6 +127,7 @@ function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRo
   const updateFn = useServerFn(updateManagedUser);
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(user?.email ?? "");
+  const [name, setName] = useState(user?.name ?? "");
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(user?.is_admin ?? false);
   const [perms, setPerms] = useState<string[]>(user?.permissions ?? []);
@@ -132,9 +135,9 @@ function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRo
   const m = useMutation({
     mutationFn: async () => {
       if (mode === "create") {
-        return createFn({ data: { email, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms } });
+        return createFn({ data: { email, password, name, is_admin: isAdmin, permissions: isAdmin ? [] : perms } });
       }
-      return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined } });
+      return updateFn({ data: { user_id: user!.id, name, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined } });
     },
     onSuccess: () => {
       toast.success(mode === "create" ? "Usuário criado." : "Usuário atualizado.");
@@ -159,6 +162,10 @@ function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRo
           <DialogTitle>{mode === "create" ? "Novo usuário" : `Editar ${user?.email}`}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
+          <div>
+            <Label>Nome</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome do usuário" />
+          </div>
           {mode === "create" && (
             <div>
               <Label>E-mail</Label>
