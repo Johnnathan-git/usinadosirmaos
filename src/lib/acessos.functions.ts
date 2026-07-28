@@ -4,6 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 type ManagedUser = {
   id: string;
   email: string;
+  name: string;
   created_at: string;
   is_admin: boolean;
   permissions: string[];
@@ -37,6 +38,7 @@ export const listManagedUsers = createServerFn({ method: "GET" })
     const users: ManagedUser[] = list.users.map((u) => ({
       id: u.id,
       email: u.email ?? "",
+      name: (u.user_metadata as any)?.name ?? "",
       created_at: u.created_at,
       is_admin: adminSet.has(u.id),
       permissions: permMap.get(u.id) ?? [],
@@ -46,7 +48,7 @@ export const listManagedUsers = createServerFn({ method: "GET" })
 
 export const createManagedUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { email: string; password: string; is_admin: boolean; permissions: string[] }) => d)
+  .inputValidator((d: { email: string; password: string; name: string; is_admin: boolean; permissions: string[] }) => d)
   .handler(async ({ data, context }) => {
     await assertEffectiveAdmin(context.supabase, context.userId);
     if (!data.email || !data.password || data.password.length < 6) {
@@ -57,6 +59,7 @@ export const createManagedUser = createServerFn({ method: "POST" })
       email: data.email.trim(),
       password: data.password,
       email_confirm: true,
+      user_metadata: { name: (data.name ?? "").trim() },
     });
     if (error || !created.user) throw new Error(error?.message ?? "Falha ao criar usuário.");
     const uid = created.user.id;
@@ -73,13 +76,18 @@ export const createManagedUser = createServerFn({ method: "POST" })
 
 export const updateManagedUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { user_id: string; is_admin: boolean; permissions: string[]; password?: string }) => d)
+  .inputValidator((d: { user_id: string; is_admin: boolean; permissions: string[]; password?: string; name?: string }) => d)
   .handler(async ({ data, context }) => {
     await assertEffectiveAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     if (data.password && data.password.length >= 6) {
       const { error } = await supabaseAdmin.auth.admin.updateUserById(data.user_id, { password: data.password });
+      if (error) throw new Error(error.message);
+    }
+
+    if (typeof data.name === "string") {
+      const { error } = await supabaseAdmin.auth.admin.updateUserById(data.user_id, { user_metadata: { name: data.name.trim() } });
       if (error) throw new Error(error.message);
     }
 
