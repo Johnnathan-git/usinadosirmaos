@@ -7,6 +7,7 @@ type ManagedUser = {
   created_at: string;
   is_admin: boolean;
   permissions: string[];
+  client_id: string | null;
 };
 
 async function assertEffectiveAdmin(supabase: any, userId: string) {
@@ -22,9 +23,10 @@ export const listManagedUsers = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: list, error } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
     if (error) throw new Error(error.message);
-    const [{ data: roles }, { data: perms }, { data: bootRaw }] = await Promise.all([
+    const [{ data: roles }, { data: perms }, { data: links }, { data: bootRaw }] = await Promise.all([
       supabaseAdmin.from("user_roles").select("user_id,role"),
       supabaseAdmin.from("user_permissions").select("user_id,module"),
+      supabaseAdmin.from("user_clients").select("user_id,client_id"),
       supabaseAdmin.rpc("is_bootstrap_mode"),
     ]);
     const adminSet = new Set((roles ?? []).filter((r: any) => r.role === "admin").map((r: any) => r.user_id));
@@ -34,19 +36,22 @@ export const listManagedUsers = createServerFn({ method: "GET" })
       arr.push(p.module);
       permMap.set(p.user_id, arr);
     });
+    const clientMap = new Map<string, string>();
+    (links ?? []).forEach((l: any) => clientMap.set(l.user_id, l.client_id));
     const users: ManagedUser[] = list.users.map((u) => ({
       id: u.id,
       email: u.email ?? "",
       created_at: u.created_at,
       is_admin: adminSet.has(u.id),
       permissions: permMap.get(u.id) ?? [],
+      client_id: clientMap.get(u.id) ?? null,
     }));
     return { users, bootstrap: Boolean(bootRaw) };
   });
 
 export const createManagedUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { email: string; password: string; is_admin: boolean; permissions: string[] }) => d)
+  .inputValidator((d: { email: string; password: string; is_admin: boolean; permissions: string[]; client_id?: string | null }) => d)
   .handler(async ({ data, context }) => {
     await assertEffectiveAdmin(context.supabase, context.userId);
     if (!data.email || !data.password || data.password.length < 6) {
@@ -68,12 +73,15 @@ export const createManagedUser = createServerFn({ method: "POST" })
         data.permissions.map((m) => ({ user_id: uid, module: m })),
       );
     }
+    if (data.client_id) {
+      await supabaseAdmin.from("user_clients").insert({ user_id: uid, client_id: data.client_id });
+    }
     return { id: uid };
   });
 
 export const updateManagedUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { user_id: string; is_admin: boolean; permissions: string[]; password?: string }) => d)
+  .inputValidator((d: { user_id: string; is_admin: boolean; permissions: string[]; password?: string; client_id?: string | null }) => d)
   .handler(async ({ data, context }) => {
     await assertEffectiveAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -97,6 +105,12 @@ export const updateManagedUser = createServerFn({ method: "POST" })
         data.permissions.map((m) => ({ user_id: data.user_id, module: m })),
       );
     }
+
+    // sync client link (one per user)
+    await supabaseAdmin.from("user_clients").delete().eq("user_id", data.user_id);
+    if (data.client_id) {
+      await supabaseAdmin.from("user_clients").insert({ user_id: data.user_id, client_id: data.client_id });
+    }
     return { ok: true };
   });
 
@@ -115,9 +129,10 @@ export const deleteManagedUser = createServerFn({ method: "POST" })
 export const getMyAccess = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const [rolesRes, permsRes, bootRes] = await Promise.all([
+    const [rolesRes, permsRes, linkRes, bootRes] = await Promise.all([
       context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
       context.supabase.from("user_permissions").select("module").eq("user_id", context.userId),
+      context.supabase.from("user_clients").select("client_id").eq("user_id", context.userId).maybeSingle(),
       context.supabase.rpc("is_bootstrap_mode"),
     ]);
     const is_admin = (rolesRes.data ?? []).some((r: any) => r.role === "admin");
@@ -127,5 +142,6 @@ export const getMyAccess = createServerFn({ method: "GET" })
       bootstrap,
       effective_admin: is_admin || bootstrap,
       permissions: (permsRes.data ?? []).map((p: any) => p.module as string),
+      client_id: (linkRes.data as any)?.client_id ?? null,
     };
   });
