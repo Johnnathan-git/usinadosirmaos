@@ -13,7 +13,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileDown, ChevronDown } from "lucide-react";
 import { brl, monthLabelLong } from "@/lib/format";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string;
@@ -24,13 +24,24 @@ type Client = { id: string; name: string; color: string };
 const q = queryOptions({
   queryKey: ["resultado-page"],
   queryFn: async () => {
-    const [i, c] = await Promise.all([
+    const [i, c, sess] = await Promise.all([
       supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant"),
       supabase.from("clients").select("id,name,color"),
+      supabase.auth.getSession(),
     ]);
     if (i.error) throw i.error;
     if (c.error) throw c.error;
-    return { invoices: (i.data ?? []) as Invoice[], clients: (c.data ?? []) as Client[] };
+    let restrictedClientId: string | null = null;
+    const uid = sess.data.session?.user?.id;
+    if (uid) {
+      const [{ data: link }, { data: roles }] = await Promise.all([
+        supabase.from("user_clients").select("client_id").eq("user_id", uid).maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", uid),
+      ]);
+      const isAdmin = (roles ?? []).some((r: any) => r.role === "admin");
+      if (!isAdmin && link?.client_id) restrictedClientId = link.client_id as string;
+    }
+    return { invoices: (i.data ?? []) as Invoice[], clients: (c.data ?? []) as Client[], restrictedClientId };
   },
 });
 
@@ -57,12 +68,16 @@ function Page() {
 
 function Resultado() {
   const { data } = useSuspenseQuery(q);
-  const [clientId, setClientId] = useState<string>("all");
+  const locked = data.restrictedClientId;
+  const [clientId, setClientId] = useState<string>(locked ?? "all");
+  useEffect(() => { if (locked) setClientId(locked); }, [locked]);
   const monthOptions = useMemo(() => {
     const set = new Set<string>();
-    data.invoices.forEach(i => set.add(i.reference_date.slice(0, 7)));
+    data.invoices
+      .filter(i => !locked || i.client_id === locked)
+      .forEach(i => set.add(i.reference_date.slice(0, 7)));
     return [...set].sort().reverse();
-  }, [data]);
+  }, [data, locked]);
   const [selectedMonths, setSelectedMonths] = useState<string[]>(monthOptions.slice(0, 1));
 
   const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
@@ -71,6 +86,7 @@ function Resultado() {
   const filtered = data.invoices.filter(inv => {
     const mk = inv.reference_date.slice(0, 7);
     if (!selectedMonths.includes(mk)) return false;
+    if (locked && inv.client_id !== locked) return false;
     if (clientId !== "all" && inv.client_id !== clientId) return false;
     return true;
   });
@@ -93,11 +109,13 @@ function Resultado() {
           <p className="text-sm text-muted-foreground">Economia gerada por mês e cliente</p>
         </div>
         <div className="flex gap-2">
-          <Select value={clientId} onValueChange={setClientId}>
+          <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
             <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todos os clientes</SelectItem>
-              {data.clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+              {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
+              {data.clients
+                .filter(c => !locked || c.id === locked)
+                .map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
           <Popover>

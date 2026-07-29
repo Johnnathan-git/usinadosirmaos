@@ -10,11 +10,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, ShieldCheck, Trash2, Pencil } from "lucide-react";
 import { MODULES } from "@/lib/permissions";
 import {
   listManagedUsers, createManagedUser, updateManagedUser, deleteManagedUser,
 } from "@/lib/acessos.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatDateBR } from "@/lib/format";
@@ -42,6 +44,16 @@ function AcessosPage() {
 function AcessosContent() {
   const listFn = useServerFn(listManagedUsers);
   const q = useQuery({ queryKey: ["managed-users"], queryFn: () => listFn() });
+  const clientsQ = useQuery({
+    queryKey: ["clients-simple"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("clients").select("id,name").order("name");
+      if (error) throw error;
+      return data as { id: string; name: string }[];
+    },
+  });
+  const clients = clientsQ.data ?? [];
+  const clientName = (id: string | null) => id ? (clients.find(c => c.id === id)?.name ?? "—") : null;
 
   return (
     <div className="space-y-6">
@@ -50,7 +62,7 @@ function AcessosContent() {
           <h1 className="text-2xl font-bold">Acessos</h1>
           <p className="text-sm text-muted-foreground">Cadastre usuários e defina o que cada um pode acessar.</p>
         </div>
-        <UserFormDialog mode="create" />
+        <UserFormDialog mode="create" clients={clients} />
       </div>
 
       {q.data?.bootstrap && (
@@ -66,6 +78,7 @@ function AcessosContent() {
               <th className="px-4 py-3">E-mail</th>
               <th className="px-4 py-3">Papel</th>
               <th className="px-4 py-3">Permissões</th>
+              <th className="px-4 py-3">Cliente</th>
               <th className="px-4 py-3">Criado em</th>
               <th className="px-4 py-3 text-right">Ações</th>
             </tr>
@@ -98,17 +111,20 @@ function AcessosContent() {
                     </div>
                   )}
                 </td>
+                <td className="px-4 py-3 text-xs">
+                  {clientName(u.client_id) ?? <span className="text-muted-foreground">—</span>}
+                </td>
                 <td className="px-4 py-3 text-xs text-muted-foreground">{formatDateBR(u.created_at)}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="inline-flex gap-1">
-                    <UserFormDialog mode="edit" user={u} />
+                    <UserFormDialog mode="edit" user={u} clients={clients} />
                     <DeleteUserButton userId={u.id} email={u.email} />
                   </div>
                 </td>
               </tr>
             ))}
             {q.data && q.data.users.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</td></tr>
             )}
           </tbody>
         </table>
@@ -117,9 +133,9 @@ function AcessosContent() {
   );
 }
 
-type UserRow = { id: string; email: string; is_admin: boolean; permissions: string[] };
+type UserRow = { id: string; email: string; is_admin: boolean; permissions: string[]; client_id: string | null };
 
-function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRow }) {
+function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user?: UserRow; clients: { id: string; name: string }[] }) {
   const qc = useQueryClient();
   const createFn = useServerFn(createManagedUser);
   const updateFn = useServerFn(updateManagedUser);
@@ -128,13 +144,15 @@ function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRo
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(user?.is_admin ?? false);
   const [perms, setPerms] = useState<string[]>(user?.permissions ?? []);
+  const [clientId, setClientId] = useState<string>(user?.client_id ?? "none");
 
   const m = useMutation({
     mutationFn: async () => {
+      const client_id = clientId === "none" ? null : clientId;
       if (mode === "create") {
-        return createFn({ data: { email, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms } });
+        return createFn({ data: { email, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms, client_id } });
       }
-      return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined } });
+      return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined, client_id } });
     },
     onSuccess: () => {
       toast.success(mode === "create" ? "Usuário criado." : "Usuário atualizado.");
@@ -195,6 +213,21 @@ function UserFormDialog({ mode, user }: { mode: "create" | "edit"; user?: UserRo
                   );
                 })}
               </div>
+            </div>
+          )}
+          {!isAdmin && (
+            <div>
+              <Label>Cliente vinculado (Resultado)</Label>
+              <Select value={clientId} onValueChange={setClientId}>
+                <SelectTrigger className="mt-1"><SelectValue placeholder="Selecione um cliente" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Nenhum (vê todos)</SelectItem>
+                  {clients.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-muted-foreground">Se selecionado, no módulo Resultado o usuário verá apenas as faturas deste cliente.</p>
             </div>
           )}
         </div>
