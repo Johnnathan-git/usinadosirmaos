@@ -1,7 +1,13 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getMyAccess } from "@/lib/acessos.functions";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
@@ -16,9 +22,52 @@ const nav: NavItem[] = [
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  // Login temporariamente desativado: acesso aberto, todos os módulos visíveis.
-  const visibleNav = nav;
-  const blocked = false;
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      if (!data.session) {
+        navigate({ to: "/auth" });
+      } else {
+        setReady(true);
+      }
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (!session) navigate({ to: "/auth" });
+    });
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, [navigate]);
+
+  const accessFn = useServerFn(getMyAccess);
+  const access = useQuery({
+    queryKey: ["my-access"],
+    queryFn: () => accessFn(),
+    enabled: ready,
+  });
+
+  const acc = access.data;
+  const visibleNav = acc
+    ? nav.filter((n) => acc.effective_admin || (!n.adminOnly && acc.permissions.includes(n.module)))
+    : [];
+  const current = nav.find((n) => n.to === "/" ? pathname === "/" : pathname.startsWith(n.to));
+  const blocked = Boolean(
+    acc && current && !acc.effective_admin && (current.adminOnly || !acc.permissions.includes(current.module)),
+  );
+
+  async function signOut() {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    window.location.replace("/auth?manual=1");
+  }
+
+  if (!ready || access.isLoading) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +82,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <div className="text-lg font-bold text-foreground">JJ</div>
             </div>
           </div>
-          <span className="text-xs text-muted-foreground">Acesso livre</span>
+          <Button size="sm" variant="ghost" onClick={signOut}>
+            <LogOut className="mr-2 h-4 w-4" /> Sair
+          </Button>
         </div>
       </header>
       <div className="flex">
