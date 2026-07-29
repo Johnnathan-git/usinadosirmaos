@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 type ManagedUser = {
   id: string;
@@ -9,8 +10,16 @@ type ManagedUser = {
   client_id: string | null;
 };
 
+async function assertEffectiveAdmin(supabase: any, userId: string) {
+  const { data, error } = await supabase.rpc("is_effective_admin", { _user_id: userId });
+  if (error) throw new Error(error.message);
+  if (!data) throw new Error("Acesso negado: apenas administradores.");
+}
+
 export const listManagedUsers = createServerFn({ method: "GET" })
-  .handler(async (): Promise<{ users: ManagedUser[]; bootstrap: boolean }> => {
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{ users: ManagedUser[]; bootstrap: boolean }> => {
+    await assertEffectiveAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: list, error } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
     if (error) throw new Error(error.message);
@@ -41,8 +50,10 @@ export const listManagedUsers = createServerFn({ method: "GET" })
   });
 
 export const createManagedUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { email: string; password: string; is_admin: boolean; permissions: string[]; client_id?: string | null }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertEffectiveAdmin(context.supabase, context.userId);
     if (!data.email || !data.password || data.password.length < 6) {
       throw new Error("Informe email e senha (mínimo 6 caracteres).");
     }
@@ -69,8 +80,10 @@ export const createManagedUser = createServerFn({ method: "POST" })
   });
 
 export const updateManagedUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { user_id: string; is_admin: boolean; permissions: string[]; password?: string; client_id?: string | null }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertEffectiveAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     if (data.password && data.password.length >= 6) {
@@ -102,8 +115,11 @@ export const updateManagedUser = createServerFn({ method: "POST" })
   });
 
 export const deleteManagedUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { user_id: string }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await assertEffectiveAdmin(context.supabase, context.userId);
+    if (data.user_id === context.userId) throw new Error("Você não pode excluir sua própria conta.");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.auth.admin.deleteUser(data.user_id);
     if (error) throw new Error(error.message);
@@ -111,12 +127,21 @@ export const deleteManagedUser = createServerFn({ method: "POST" })
   });
 
 export const getMyAccess = createServerFn({ method: "GET" })
-  .handler(async () => {
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const [rolesRes, permsRes, linkRes, bootRes] = await Promise.all([
+      context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
+      context.supabase.from("user_permissions").select("module").eq("user_id", context.userId),
+      context.supabase.from("user_clients").select("client_id").eq("user_id", context.userId).maybeSingle(),
+      context.supabase.rpc("is_bootstrap_mode"),
+    ]);
+    const is_admin = (rolesRes.data ?? []).some((r: any) => r.role === "admin");
+    const bootstrap = Boolean(bootRes.data);
     return {
-      is_admin: true,
-      bootstrap: true,
-      effective_admin: true,
-      permissions: [] as string[],
-      client_id: null as string | null,
+      is_admin,
+      bootstrap,
+      effective_admin: is_admin || bootstrap,
+      permissions: (permsRes.data ?? []).map((p: any) => p.module as string),
+      client_id: (linkRes.data as any)?.client_id ?? null,
     };
   });
