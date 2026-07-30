@@ -39,7 +39,7 @@ const dashboardQ = queryOptions({
 });
 
 export const Route = createFileRoute("/")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(dashboardQ),
+  ssr: false,
   component: DashboardPage,
   head: () => ({
     meta: [
