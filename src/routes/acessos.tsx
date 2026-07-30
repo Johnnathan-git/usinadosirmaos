@@ -17,11 +17,12 @@ import {
   listManagedUsers, createManagedUser, updateManagedUser, deleteManagedUser,
 } from "@/lib/acessos.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDateBR } from "@/lib/format";
 
 export const Route = createFileRoute("/acessos")({
+  ssr: false,
   component: AcessosPage,
   head: () => ({
     meta: [
@@ -43,9 +44,18 @@ function AcessosPage() {
 
 function AcessosContent() {
   const listFn = useServerFn(listManagedUsers);
-  const q = useQuery({ queryKey: ["managed-users"], queryFn: () => listFn() });
+  const [hasSession, setHasSession] = useState(false);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setHasSession(!!data.session));
+  }, []);
+  const q = useQuery({
+    queryKey: ["managed-users"],
+    queryFn: () => listFn(),
+    enabled: hasSession,
+  });
   const clientsQ = useQuery({
     queryKey: ["clients-simple"],
+    enabled: hasSession,
     queryFn: async () => {
       const { data, error } = await supabase.from("clients").select("id,name").order("name");
       if (error) throw error;
