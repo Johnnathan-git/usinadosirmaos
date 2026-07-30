@@ -237,7 +237,10 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button onClick={() => m.mutate()} disabled={m.isPending}>
+          <Button
+            onClick={() => m.mutate()}
+            disabled={m.isPending || (mode === "create" && (!email.trim() || password.length < 6))}
+          >
             {m.isPending ? "Salvando..." : "Salvar"}
           </Button>
         </DialogFooter>
