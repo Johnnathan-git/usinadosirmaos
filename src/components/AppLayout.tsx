@@ -45,11 +45,22 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const accessFn = useServerFn(getMyAccess);
   const access = useQuery({
     queryKey: ["my-access"],
-    queryFn: () => accessFn(),
+    queryFn: async () => {
+      // Garante que existe sessão (token) antes de chamar a função protegida.
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        navigate({ to: "/auth" });
+        return null;
+      }
+      return await accessFn();
+    },
     enabled: ready,
+    retry: false,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
   });
 
-  const acc = access.data;
+  const acc = access.data ?? undefined;
   const visibleNav = acc
     ? nav.filter((n) => acc.effective_admin || (!n.adminOnly && acc.permissions.includes(n.module)))
     : [];
