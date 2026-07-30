@@ -24,78 +24,27 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
-  const [rememberOwner, setRememberOwner] = useState(false);
-  const [autoTrying, setAutoTrying] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
     (async () => {
       const { data } = await supabase.auth.getSession();
-      if (data.session) { navigate({ to: "/", replace: true }); return; }
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("manual") === "1") return;
-      const raw = localStorage.getItem("usina-jj-owner");
-      if (!raw) return;
-      try {
-        const { email: e, password: p } = JSON.parse(raw) as { email: string; password: string };
-        if (!e || !p) return;
-        setAutoTrying(true);
-        const res = await supabase.auth.signInWithPassword({ email: e, password: p });
-        if (cancelled) return;
-        if (res.error) {
-          localStorage.removeItem("usina-jj-owner");
-          setAutoTrying(false);
-          setError("O acesso rápido salvo não funcionou mais. Faça login normalmente.");
-          return;
-        }
-        navigate({ to: "/", replace: true });
-      } catch {
-        localStorage.removeItem("usina-jj-owner");
-        setAutoTrying(false);
-      }
+      if (data.session) navigate({ to: "/", replace: true });
     })();
-    return () => { cancelled = true; };
   }, [navigate]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setInfo(null);
     if (!email.trim() || !password) { setError("Preencha usuário e senha."); return; }
     setLoading(true);
     const res = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (res.error) {
-      setError("Usuário ou senha inválidos. Se esqueceu a senha, redefina abaixo.");
+      setError("Usuário ou senha inválidos.");
       return;
-    }
-    if (rememberOwner) {
-      localStorage.setItem("usina-jj-owner", JSON.stringify({ email: email.trim(), password }));
     }
     toast.success("Bem-vindo!");
     navigate({ to: "/", replace: true });
-  }
-
-  async function resetPassword() {
-    setError(null);
-    setInfo(null);
-    if (!email.trim()) { setError("Informe seu e-mail para redefinir a senha."); return; }
-    setLoading(true);
-    const { error: err } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    setLoading(false);
-    if (err) { setError(err.message); return; }
-    setInfo("Enviamos um link de redefinição para o seu e-mail.");
-  }
-
-  if (autoTrying) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-white p-4">
-        <div className="text-sm text-muted-foreground">Entrando...</div>
-      </div>
-    );
   }
 
   return (
@@ -128,29 +77,10 @@ function AuthPage() {
               {error}
             </div>
           )}
-          {info && (
-            <div role="status" className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-              {info}
-            </div>
-          )}
-          <label className="flex items-center gap-2 text-sm text-muted-foreground select-none">
-            <input
-              type="checkbox"
-              checked={rememberOwner}
-              onChange={(e) => setRememberOwner(e.target.checked)}
-              className="h-4 w-4 rounded border-input accent-primary"
-            />
-            Este é meu acesso — pular login neste dispositivo
-          </label>
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Aguarde..." : "Entrar"}
           </Button>
         </form>
-        <div className="mt-3 text-center text-sm">
-          <button type="button" onClick={resetPassword} className="text-muted-foreground hover:text-primary hover:underline">
-            Esqueci minha senha
-          </button>
-        </div>
         <p className="mt-4 text-center text-xs text-muted-foreground">
           Novos usuários são cadastrados pelo administrador no módulo Acessos.
         </p>
