@@ -48,7 +48,7 @@ const fluxoQ = queryOptions({
 });
 
 export const Route = createFileRoute("/fluxo-caixa")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(fluxoQ),
+  ssr: false,
   component: Page,
   head: () => ({
     meta: [

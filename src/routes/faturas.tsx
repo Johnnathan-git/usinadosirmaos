@@ -48,7 +48,7 @@ const faturasQ = queryOptions({
 });
 
 export const Route = createFileRoute("/faturas")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(faturasQ),
+  ssr: false,
   component: FaturasPage,
   head: () => ({
     meta: [
