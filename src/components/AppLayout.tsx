@@ -58,6 +58,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
     acc && current && !acc.effective_admin && (current.adminOnly || !acc.permissions.includes(current.module)),
   );
 
+  // Se o usuário caiu numa rota sem permissão, leva para o primeiro módulo liberado.
+  useEffect(() => {
+    if (blocked && visibleNav.length > 0) {
+      navigate({ to: visibleNav[0].to, replace: true });
+    }
+  }, [blocked, visibleNav.length, navigate]);
+
   async function signOut() {
     await qc.cancelQueries();
     qc.clear();
@@ -88,6 +95,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
       <div className="flex">
+        {visibleNav.length > 0 && (
+          <div className="fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t bg-card md:hidden">
+            {visibleNav.map((item) => {
+              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
+                    "flex min-w-[76px] flex-1 flex-col items-center gap-1 px-2 py-2 text-[11px] font-medium",
+                    active ? "text-primary" : "text-muted-foreground",
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
         <aside className="sticky top-0 hidden h-[calc(100vh)] w-64 shrink-0 border-r bg-card p-3 md:block">
           <nav className="space-y-1">
             {visibleNav.map((item) => {
@@ -111,7 +139,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             })}
           </nav>
         </aside>
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 pb-24 md:pb-6">
           {blocked ? (
             <div className="mx-auto mt-16 max-w-md rounded-xl border bg-card p-8 text-center shadow-sm">
               <ShieldCheck className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
