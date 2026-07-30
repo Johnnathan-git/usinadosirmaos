@@ -10,10 +10,31 @@ type ManagedUser = {
   client_id: string | null;
 };
 
-async function assertEffectiveAdmin(supabase: any, userId: string) {
-  const { data, error } = await supabase.rpc("is_effective_admin", { _user_id: userId });
+async function isBootstrapMode() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { count } = await supabaseAdmin
+    .from("user_roles")
+    .select("user_id", { count: "exact", head: true })
+    .eq("role", "admin");
+  return (count ?? 0) === 0;
+}
+
+async function isEffectiveAdmin(supabase: any, userId: string) {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .eq("role", "admin")
+    .maybeSingle();
   if (error) throw new Error(error.message);
-  if (!data) throw new Error("Acesso negado: apenas administradores.");
+  if (data) return true;
+  return await isBootstrapMode();
+}
+
+async function assertEffectiveAdmin(supabase: any, userId: string) {
+  if (!(await isEffectiveAdmin(supabase, userId))) {
+    throw new Error("Acesso negado: apenas administradores.");
+  }
 }
 
 export const listManagedUsers = createServerFn({ method: "GET" })
@@ -23,11 +44,11 @@ export const listManagedUsers = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: list, error } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
     if (error) throw new Error(error.message);
-    const [{ data: roles }, { data: perms }, { data: links }, { data: bootRaw }] = await Promise.all([
+    const [{ data: roles }, { data: perms }, { data: links }, bootstrapMode] = await Promise.all([
       supabaseAdmin.from("user_roles").select("user_id,role"),
       supabaseAdmin.from("user_permissions").select("user_id,module"),
       supabaseAdmin.from("user_clients").select("user_id,client_id"),
-      supabaseAdmin.rpc("is_bootstrap_mode"),
+      isBootstrapMode(),
     ]);
     const adminSet = new Set((roles ?? []).filter((r: any) => r.role === "admin").map((r: any) => r.user_id));
     const permMap = new Map<string, string[]>();
@@ -46,7 +67,7 @@ export const listManagedUsers = createServerFn({ method: "GET" })
       permissions: permMap.get(u.id) ?? [],
       client_id: clientMap.get(u.id) ?? null,
     }));
-    return { users, bootstrap: Boolean(bootRaw) };
+    return { users, bootstrap: bootstrapMode };
   });
 
 export const createManagedUser = createServerFn({ method: "POST" })
@@ -129,14 +150,14 @@ export const deleteManagedUser = createServerFn({ method: "POST" })
 export const getMyAccess = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const [rolesRes, permsRes, linkRes, bootRes] = await Promise.all([
+    const [rolesRes, permsRes, linkRes, bootstrapMode] = await Promise.all([
       context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
       context.supabase.from("user_permissions").select("module").eq("user_id", context.userId),
       context.supabase.from("user_clients").select("client_id").eq("user_id", context.userId).maybeSingle(),
-      context.supabase.rpc("is_bootstrap_mode"),
+      isBootstrapMode(),
     ]);
     const is_admin = (rolesRes.data ?? []).some((r: any) => r.role === "admin");
-    const bootstrap = Boolean(bootRes.data);
+    const bootstrap = bootstrapMode;
     return {
       is_admin,
       bootstrap,

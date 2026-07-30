@@ -334,19 +334,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_permission: {
-        Args: { _module: string; _user_id: string }
-        Returns: boolean
-      }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      is_bootstrap_mode: { Args: never; Returns: boolean }
-      is_effective_admin: { Args: { _user_id: string }; Returns: boolean }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "user"
