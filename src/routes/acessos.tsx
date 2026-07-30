@@ -150,8 +150,12 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
     mutationFn: async () => {
       const client_id = clientId === "none" ? null : clientId;
       if (mode === "create") {
-        return createFn({ data: { email, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms, client_id } });
+        const mail = email.trim();
+        if (!mail || !/^\S+@\S+\.\S+$/.test(mail)) throw new Error("Informe um e-mail válido.");
+        if (password.length < 6) throw new Error("A senha deve ter no mínimo 6 caracteres.");
+        return createFn({ data: { email: mail, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms, client_id } });
       }
+      if (password && password.length < 6) throw new Error("A senha deve ter no mínimo 6 caracteres.");
       return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined, client_id } });
     },
     onSuccess: () => {
