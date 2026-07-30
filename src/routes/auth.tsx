@@ -24,8 +24,10 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    setHydrated(true);
     (async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) navigate({ to: "/", replace: true });
@@ -34,6 +36,7 @@ function AuthPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!hydrated || loading) return;
     setError(null);
     if (!email.trim() || !password) { setError("Preencha usuário e senha."); return; }
     setLoading(true);
@@ -61,7 +64,7 @@ function AuthPage() {
         </div>
         <h1 className="mb-1 text-center text-xl font-semibold">Entrar no sistema</h1>
         <p className="mb-6 text-center text-sm text-muted-foreground">Acesso restrito a usuários cadastrados</p>
-        <form onSubmit={submit} className="space-y-4">
+        <form onSubmit={submit} method="post" action="#" className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>
             <Input id="email" type="email" autoComplete="username" value={email}
@@ -77,8 +80,8 @@ function AuthPage() {
               {error}
             </div>
           )}
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Aguarde..." : "Entrar"}
+          <Button type="submit" disabled={loading || !hydrated} className="w-full">
+            {loading ? "Aguarde..." : hydrated ? "Entrar" : "Carregando..."}
           </Button>
         </form>
         <p className="mt-4 text-center text-xs text-muted-foreground">
