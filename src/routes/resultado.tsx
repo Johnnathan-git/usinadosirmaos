@@ -46,7 +46,7 @@ const q = queryOptions({
 });
 
 export const Route = createFileRoute("/resultado")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(q),
+  ssr: false,
   component: Page,
   head: () => ({
     meta: [
