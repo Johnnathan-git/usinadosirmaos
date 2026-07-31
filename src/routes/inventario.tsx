@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
@@ -64,6 +64,8 @@ function Page() {
 
 function Inventario() {
   const { data } = useSuspenseQuery(q);
+  const queryClient = useQueryClient();
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["inventario-page"] });
   const [tab, setTab] = useState("assets");
   const [assetOpen, setAssetOpen] = useState<Asset | true | null>(null);
   const [expenseOpen, setExpenseOpen] = useState<InvExpense | true | null>(null);
@@ -157,7 +159,7 @@ function Inventario() {
                       <td className="py-3 text-right font-semibold text-orange-600">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-3 pl-2 text-right">
                         <button onClick={() => setAssetOpen(a)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                        <button onClick={() => delRow("inventory_assets", a.id)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
                       </td>
                     </tr>
                   ))}
@@ -195,7 +197,7 @@ function Inventario() {
                     <td className="py-3 text-right font-semibold text-orange-600">{brl(Number(e.amount))}</td>
                     <td className="py-3 pl-2 text-right">
                       <button onClick={() => setExpenseOpen(e)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
@@ -213,21 +215,21 @@ function Inventario() {
         </TabsContent>
       </Tabs>
 
-      {assetOpen && <AssetDialog asset={assetOpen === true ? null : assetOpen} onClose={() => setAssetOpen(null)} />}
-      {expenseOpen && <InvExpenseDialog expense={expenseOpen === true ? null : expenseOpen} onClose={() => setExpenseOpen(null)} />}
+      {assetOpen && <AssetDialog asset={assetOpen === true ? null : assetOpen} onClose={() => setAssetOpen(null)} onSaved={refresh} />}
+      {expenseOpen && <InvExpenseDialog expense={expenseOpen === true ? null : expenseOpen} onClose={() => setExpenseOpen(null)} onSaved={refresh} />}
     </div>
   );
 }
 
-async function delRow(table: "inventory_assets" | "investment_expenses", id: string) {
+async function delRow(table: "inventory_assets" | "investment_expenses", id: string, onDone: () => void) {
   if (!confirm("Excluir este registro?")) return;
   const { error } = await supabase.from(table).delete().eq("id", id);
   if (error) return toast.error(error.message);
   toast.success("Registro excluído");
-  location.reload();
+  onDone();
 }
 
-function AssetDialog({ asset, onClose }: { asset: Asset | null; onClose: () => void }) {
+function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose: () => void; onSaved: () => void }) {
   const [f, setF] = useState({
     item: asset?.item ?? "",
     location: asset?.location ?? "Usina",
@@ -256,7 +258,8 @@ function AssetDialog({ asset, onClose }: { asset: Asset | null; onClose: () => v
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
     toast.success("Item salvo");
-    location.reload();
+    onSaved();
+    onClose();
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -280,7 +283,7 @@ function AssetDialog({ asset, onClose }: { asset: Asset | null; onClose: () => v
   );
 }
 
-function InvExpenseDialog({ expense, onClose }: { expense: InvExpense | null; onClose: () => void }) {
+function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense | null; onClose: () => void; onSaved: () => void }) {
   const today = new Date().toISOString().slice(0, 10);
   const [f, setF] = useState({
     description: expense?.description ?? "",
@@ -299,7 +302,8 @@ function InvExpenseDialog({ expense, onClose }: { expense: InvExpense | null; on
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
     toast.success("Gasto salvo");
-    location.reload();
+    onSaved();
+    onClose();
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
