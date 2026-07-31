@@ -29,7 +29,11 @@ const q = queryOptions({
   queryFn: async () => {
     const [a, e] = await Promise.all([
       supabase.from("inventory_assets").select("*").order("created_at", { ascending: false }),
-      supabase.from("investment_expenses").select("*").order("spent_on", { ascending: false }),
+      supabase
+        .from("investment_expenses")
+        .select("*")
+        .order("spent_on", { ascending: false })
+        .order("created_at", { ascending: true }),
     ]);
     if (a.error) throw a.error;
     if (e.error) throw e.error;
