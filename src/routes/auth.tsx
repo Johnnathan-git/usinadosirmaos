@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Home } from "lucide-react";
+import { Home, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   component: AuthPage,
   head: () => ({
     meta: [
@@ -25,6 +26,7 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     setHydrated(true);
@@ -32,22 +34,42 @@ function AuthPage() {
       const { data } = await supabase.auth.getSession();
       if (data.session) navigate({ to: "/", replace: true });
     })();
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (session) navigate({ to: "/", replace: true });
+    });
+    return () => sub.subscription.unsubscribe();
   }, [navigate]);
+
+  function describeError(message: string) {
+    const m = message.toLowerCase();
+    if (m.includes("email not confirmed")) return "E-mail ainda não confirmado. Peça ao administrador para reativar seu acesso.";
+    if (m.includes("rate limit") || m.includes("too many")) return "Muitas tentativas. Aguarde alguns minutos e tente de novo.";
+    if (m.includes("failed to fetch") || m.includes("network")) return "Sem conexão com o servidor. Verifique sua internet e tente novamente.";
+    if (m.includes("user is banned") || m.includes("disabled")) return "Este usuário está desativado. Fale com o administrador.";
+    return "Usuário ou senha inválidos.";
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!hydrated || loading) return;
     setError(null);
-    if (!email.trim() || !password) { setError("Preencha usuário e senha."); return; }
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail || !password) { setError("Preencha usuário e senha."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) { setError("Informe um e-mail válido."); return; }
     setLoading(true);
-    const res = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    setLoading(false);
-    if (res.error) {
-      setError("Usuário ou senha inválidos.");
-      return;
+    try {
+      const res = await supabase.auth.signInWithPassword({ email: cleanEmail, password });
+      if (res.error) {
+        setError(describeError(res.error.message));
+        return;
+      }
+      toast.success("Bem-vindo!");
+      navigate({ to: "/", replace: true });
+    } catch (err) {
+      setError(describeError(err instanceof Error ? err.message : ""));
+    } finally {
+      setLoading(false);
     }
-    toast.success("Bem-vindo!");
-    navigate({ to: "/", replace: true });
   }
 
   return (
@@ -67,13 +89,22 @@ function AuthPage() {
         <form onSubmit={submit} method="post" action="#" className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>
-            <Input id="email" type="email" autoComplete="username" value={email}
+            <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
+              required autoComplete="username" value={email}
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
           </div>
           <div>
             <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" autoComplete="current-password"
-              value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
+            <div className="relative">
+              <Input id="password" type={showPassword ? "text" : "password"} required
+                autoComplete="current-password" className="pr-10"
+                value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
+              <button type="button" onClick={() => setShowPassword(v => !v)}
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground">
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
           {error && (
             <div role="alert" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
