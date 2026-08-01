@@ -140,12 +140,12 @@ function Controle() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Controle da Usina</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Controle da Usina</h1>
           <p className="text-sm text-muted-foreground">Geração × consumo e rateio por cliente</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button onClick={() => setNewOpen(true)} className="gap-2 bg-emerald-500 hover:bg-emerald-600">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>

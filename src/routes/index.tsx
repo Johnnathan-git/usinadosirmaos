@@ -125,7 +125,7 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Dashboard</h1>
         <p className="text-sm text-muted-foreground">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
@@ -142,9 +142,9 @@ function Dashboard() {
         <StatCard icon={<Receipt className="h-5 w-5 text-violet-600" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="violet" />
       </div>
 
-      <Card className="p-6">
+      <Card className="surface-card p-4 sm:p-6">
         <h2 className="mb-4 text-lg font-semibold">Receita, Despesas e Lucro (últimos 6 meses)</h2>
-        <div className="h-80">
+        <div className="h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -160,7 +160,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="p-6">
+      <Card className="surface-card p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-amber-500" />
           <h2 className="text-lg font-semibold">Ranking — Clientes Mais Lucrativos</h2>
@@ -193,7 +193,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="p-6">
+      <Card className="surface-card p-4 sm:p-6">
         <h2 className="mb-4 text-lg font-semibold">Resumo mês a mês</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -223,7 +223,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="p-6">
+      <Card className="surface-card p-4 sm:p-6">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
             <Users className="h-6 w-6 text-muted-foreground" />
