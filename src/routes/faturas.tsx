@@ -440,16 +440,17 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
           <Card className="p-4">
-            <div className="text-xs font-medium text-muted-foreground">Cliente Pagou</div>
-            <div className="mt-1 text-xl font-bold text-rose-600">{brl(totalClientPays)}</div>
+            <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
+            <div className="mt-1 text-xl font-bold text-emerald-600">{brl(totalClientPays)}</div>
           </Card>
           <Card className="p-4">
-            <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora</div>
+            <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora (despesa)</div>
             <div className="mt-1 text-xl font-bold text-rose-500">{brl(totalDistributor)}</div>
           </Card>
           <Card className="p-4">
-            <div className="text-xs font-medium text-muted-foreground">Lucro Líquido</div>
+            <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
             <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
+            <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
           </Card>
         </div>
 
@@ -493,7 +494,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3">{monthLabel(new Date(inv.reference_date))}</td>
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                      <td className="py-3 text-right text-rose-600">{brl(Number(inv.client_pays))}</td>
+                      <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 pl-2 text-right">

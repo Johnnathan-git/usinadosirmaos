@@ -92,7 +92,9 @@ function Fluxo() {
   const monthExpenses = data.expenses.filter(e => e.reference_date.startsWith(monthKey));
 
   const receitas = monthInvoices.reduce((a, i) => a + Number(i.client_pays), 0);
-  const despesas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
+  const despesasOperacionais = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
+  const faturasDistribuidora = monthInvoices.reduce((a, i) => a + Number(i.distributor_invoice), 0);
+  const despesas = despesasOperacionais + faturasDistribuidora;
   const lucro = receitas - despesas;
 
   const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
@@ -133,12 +135,16 @@ function Fluxo() {
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
           <div className="text-2xl font-bold text-rose-700">{brl(despesas)}</div>
+          <div className="mt-1 text-xs text-rose-700/80">
+            Operacionais {brl(despesasOperacionais)} + Faturas distribuidora {brl(faturasDistribuidora)}
+          </div>
         </Card>
         <Card className="border-blue-200 bg-blue-50/60 p-5">
           <div className="mb-2 flex items-center gap-2 text-sm font-medium text-blue-700">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
           <div className={`text-2xl font-bold ${lucro < 0 ? "text-amber-600" : "text-blue-700"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-muted-foreground">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
@@ -155,8 +161,9 @@ function Fluxo() {
                   <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>Lucro: <span className="font-semibold text-blue-600">{brl(profit)}</span></div>
+                  <div>Lucro bruto: <span className="font-semibold text-blue-600">{brl(profit)}</span></div>
                   <div className="text-muted-foreground">Recebido: {brl(Number(inv.client_pays))}</div>
+                  <div className="text-muted-foreground">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
                 </div>
               </div>
             );
