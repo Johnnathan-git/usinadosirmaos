@@ -122,6 +122,22 @@ function Controle() {
     toast.success("Cliente removido do rateio");
   }
 
+  async function deleteClientForever(client_id: string, name: string) {
+    const typed = prompt(
+      `EXCLUSÃO DEFINITIVA de "${name}".\n\nIsso apaga o cliente e TODOS os dados lançados (faturas, rateio e vínculos de acesso). Essa ação não pode ser desfeita.\n\nDigite EXCLUIR para confirmar:`,
+    );
+    if (typed?.trim().toUpperCase() !== "EXCLUIR") return;
+    const inv = await supabase.from("invoices").delete().eq("client_id", client_id);
+    if (inv.error) return toast.error(inv.error.message);
+    const alloc = await supabase.from("client_allocations").delete().eq("client_id", client_id);
+    if (alloc.error) return toast.error(alloc.error.message);
+    await supabase.from("user_clients").delete().eq("client_id", client_id);
+    const cli = await supabase.from("clients").delete().eq("id", client_id);
+    if (cli.error) return toast.error(cli.error.message);
+    setRows(rs => rs.filter(r => r.client_id !== client_id));
+    toast.success(`Cliente ${name} excluído definitivamente`);
+  }
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -252,9 +268,22 @@ function Controle() {
                     </td>
                     {editing && (
                       <td className="py-3 pl-2 text-right">
-                        <button onClick={() => deleteRow(r.client_id)} className="text-muted-foreground hover:text-rose-600">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <div className="flex items-center justify-end gap-3">
+                          <button
+                            title="Remover do rateio (mantém o cadastro)"
+                            onClick={() => deleteRow(r.client_id)}
+                            className="text-muted-foreground hover:text-amber-600"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            title="Excluir cliente definitivamente (apaga todos os dados)"
+                            onClick={() => deleteClientForever(r.client_id, r.name)}
+                            className="inline-flex items-center gap-1 rounded-md border border-rose-200 px-2 py-1 text-xs font-medium text-rose-600 hover:bg-rose-50"
+                          >
+                            <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
+                          </button>
+                        </div>
                       </td>
                     )}
                   </tr>
