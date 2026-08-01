@@ -117,6 +117,7 @@ export type Database = {
       }
       inventory_assets: {
         Row: {
+          acquired_on: string | null
           brand: string | null
           category: string
           created_at: string
@@ -124,11 +125,14 @@ export type Database = {
           item: string
           location: string | null
           model: string | null
+          notes: string | null
           quantity: number
+          serial_number: string | null
           unit_value: number
           updated_at: string
         }
         Insert: {
+          acquired_on?: string | null
           brand?: string | null
           category?: string
           created_at?: string
@@ -136,11 +140,14 @@ export type Database = {
           item: string
           location?: string | null
           model?: string | null
+          notes?: string | null
           quantity?: number
+          serial_number?: string | null
           unit_value?: number
           updated_at?: string
         }
         Update: {
+          acquired_on?: string | null
           brand?: string | null
           category?: string
           created_at?: string
@@ -148,7 +155,9 @@ export type Database = {
           item?: string
           location?: string | null
           model?: string | null
+          notes?: string | null
           quantity?: number
+          serial_number?: string | null
           unit_value?: number
           updated_at?: string
         }
@@ -161,6 +170,7 @@ export type Database = {
           description: string
           id: string
           notes: string | null
+          responsible: string | null
           spent_on: string
           updated_at: string
         }
@@ -170,6 +180,7 @@ export type Database = {
           description: string
           id?: string
           notes?: string | null
+          responsible?: string | null
           spent_on: string
           updated_at?: string
         }
@@ -179,6 +190,7 @@ export type Database = {
           description?: string
           id?: string
           notes?: string | null
+          responsible?: string | null
           spent_on?: string
           updated_at?: string
         }
