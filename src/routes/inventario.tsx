@@ -334,12 +334,19 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
     amount: expense ? String(expense.amount) : "",
     spent_on: expense?.spent_on ?? today,
     notes: expense?.notes ?? "",
+    responsible: expense?.responsible ?? "",
   });
   const [saving, setSaving] = useState(false);
   async function submit() {
     if (!f.description.trim() || !f.amount || !f.spent_on) return toast.error("Preencha os campos obrigatórios");
     setSaving(true);
-    const payload = { description: f.description.trim(), amount: Number(f.amount), spent_on: f.spent_on, notes: f.notes || null };
+    const payload = {
+      description: f.description.trim(),
+      amount: Number(f.amount),
+      spent_on: f.spent_on,
+      notes: f.notes || null,
+      responsible: f.responsible || null,
+    };
     const res = expense
       ? await supabase.from("investment_expenses").update(payload).eq("id", expense.id)
       : await supabase.from("investment_expenses").insert(payload);
@@ -357,6 +364,17 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
           <div className="col-span-2"><Label>Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." /></div>
           <div><Label>Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} /></div>
           <div><Label>Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} /></div>
+          <div className="col-span-2">
+            <Label>Responsável</Label>
+            <select
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              value={f.responsible}
+              onChange={e => setF({ ...f, responsible: e.target.value })}
+            >
+              <option value="">Selecione…</option>
+              {RESPONSIBLES.map(r => <option key={r} value={r}>{r}</option>)}
+            </select>
+          </div>
           <div className="col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
         </div>
         <DialogFooter>
