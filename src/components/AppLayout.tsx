@@ -89,25 +89,26 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="flex items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-card/85 backdrop-blur supports-[backdrop-filter]:bg-card/70">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-sm sm:h-11 sm:w-11">
               <Home className="h-5 w-5" />
             </div>
-            <div className="leading-tight">
-              <div className="text-[10px] font-semibold tracking-widest text-primary">USINA</div>
-              <div className="text-lg font-bold text-foreground">JJ</div>
+            <div className="min-w-0 leading-tight">
+              <div className="text-[10px] font-semibold tracking-[0.2em] text-primary">USINA</div>
+              <div className="truncate text-lg font-bold text-foreground">JJ</div>
             </div>
           </div>
-          <Button size="sm" variant="ghost" onClick={signOut}>
-            <LogOut className="mr-2 h-4 w-4" /> Sair
+          <Button size="sm" variant="ghost" onClick={signOut} className="shrink-0 rounded-full">
+            <LogOut className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Sair</span>
           </Button>
         </div>
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t bg-card md:hidden">
+          <div className="fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-border/70 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -116,18 +117,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex min-w-[76px] flex-1 flex-col items-center gap-1 px-2 py-2 text-[11px] font-medium",
+                    "flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-2 text-[10px] font-semibold transition-colors",
                     active ? "text-primary" : "text-muted-foreground",
                   )}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="truncate">{item.label}</span>
+                  <span className={cn("grid h-8 w-8 place-items-center rounded-xl transition-colors", active && "bg-primary/10")}>
+                    <Icon className="h-[18px] w-[18px]" />
+                  </span>
+                  <span className="w-full truncate text-center">{item.label}</span>
                 </Link>
               );
             })}
           </div>
         )}
-        <aside className="sticky top-0 hidden h-[calc(100vh)] w-64 shrink-0 border-r bg-card p-3 md:block">
+        <aside className="sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-border/70 bg-card/60 p-3 md:block">
           <nav className="space-y-1">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
@@ -137,9 +140,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
                     active
-                      ? "bg-primary/10 text-primary"
+                      ? "bg-primary/10 text-primary shadow-[inset_3px_0_0_0_var(--primary)]"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   )}
                 >
@@ -150,7 +153,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             })}
           </nav>
         </aside>
-        <main className="flex-1 p-6 pb-24 md:pb-6">
+        <main className="min-w-0 flex-1 px-4 py-5 pb-28 sm:px-6 sm:py-6 md:pb-8">
           {blocked ? (
             <div className="mx-auto mt-16 max-w-md rounded-xl border bg-card p-8 text-center shadow-sm">
               <ShieldCheck className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
