@@ -1,0 +1,2 @@
+CREATE POLICY "user_clients_admin_delete" ON public.user_clients FOR DELETE TO authenticated USING (EXISTS (SELECT 1 FROM public.user_roles ur WHERE ur.user_id = auth.uid() AND ur.role = 'admin'::app_role));
+GRANT DELETE ON public.user_clients TO authenticated;
