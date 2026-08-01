@@ -72,8 +72,11 @@ function Dashboard() {
 
   const receitaMes = data.invoices.filter(i => inMonth(i.reference_date, curKey))
     .reduce((a, i) => a + Number(i.client_pays), 0);
-  const despesasMes = data.expenses.filter(e => inMonth(e.reference_date, curKey))
+  const faturasDistMes = data.invoices.filter(i => inMonth(i.reference_date, curKey))
+    .reduce((a, i) => a + Number(i.distributor_invoice), 0);
+  const despesasOperMes = data.expenses.filter(e => inMonth(e.reference_date, curKey))
     .reduce((a, e) => a + Number(e.amount), 0);
+  const despesasMes = despesasOperMes + faturasDistMes;
   const lucroMes = receitaMes - despesasMes;
   const receitaAno = data.invoices.filter(i => i.reference_date.startsWith(String(now.getFullYear())))
     .reduce((a, i) => a + Number(i.client_pays), 0);
@@ -91,8 +94,11 @@ function Dashboard() {
   const chartData = months.map(m => {
     const receita = data.invoices.filter(i => inMonth(i.reference_date, m.key))
       .reduce((a, i) => a + Number(i.client_pays), 0);
-    const despesas = data.expenses.filter(e => inMonth(e.reference_date, m.key))
+    const distribuidora = data.invoices.filter(i => inMonth(i.reference_date, m.key))
+      .reduce((a, i) => a + Number(i.distributor_invoice), 0);
+    const operacionais = data.expenses.filter(e => inMonth(e.reference_date, m.key))
       .reduce((a, e) => a + Number(e.amount), 0);
+    const despesas = operacionais + distribuidora;
     return { month: m.label, Receita: receita, Despesas: despesas, Lucro: receita - despesas };
   });
 
