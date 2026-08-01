@@ -13,6 +13,14 @@ export const monthLabelLong = (d: Date) => {
   return d.toLocaleString("en-US", { month: "long", year: "numeric" });
 };
 
+// Parses "yyyy-mm-dd" as a LOCAL date (avoids UTC shifting to previous month)
+export const parseISODateLocal = (iso: string) => {
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  return new Date(y, (m ?? 1) - 1, d ?? 1);
+};
+
+export const monthLabelFromISO = (iso: string) => monthLabel(parseISODateLocal(iso));
+
 export const formatDateBR = (iso: string) => {
   const [y, m, d] = iso.slice(0, 10).split("-");
   return `${d}/${m}/${y}`;

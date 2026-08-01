@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert } from "lucide-react";
-import { CLIENT_COLORS, brl, initial, monthLabel } from "@/lib/format";
+import { CLIENT_COLORS, brl, initial, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
@@ -491,7 +491,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                   return (
                     <tr key={inv.id} className="border-t">
-                      <td className="py-3">{monthLabel(new Date(inv.reference_date))}</td>
+                      <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
@@ -499,10 +499,10 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 pl-2 text-right">
                         <div className="flex justify-end gap-1">
-                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabel(new Date(inv.reference_date))}`}>
+                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Pencil className="h-4 w-4" />
                           </button>
-                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600" aria-label={`Excluir fatura de ${monthLabel(new Date(inv.reference_date))}`}>
+                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
