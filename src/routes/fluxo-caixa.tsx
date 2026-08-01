@@ -105,14 +105,14 @@ function Fluxo() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold">Fluxo de Caixa</h1>
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Fluxo de Caixa</h1>
           <p className="text-sm text-muted-foreground">Receitas, despesas e lucro mensal</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-36 sm:w-40"><SelectValue /></SelectTrigger>
             <SelectContent>
               {months.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
@@ -120,7 +120,7 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-rose-500 hover:bg-rose-600">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-rose-500 hover:bg-rose-600 sm:flex-none">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
@@ -179,15 +179,22 @@ function Fluxo() {
         {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>}
         <div className="space-y-2">
           {monthExpenses.map(e => (
-            <div key={e.id} className="flex items-start justify-between rounded-lg border p-3">
-              <div>
-                <div className="font-medium">{e.description}</div>
-                <span className="mt-1 inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border p-3">
+              <div className="min-w-0">
+                <div className="truncate font-medium">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
+                  {e.installment_total ? (
+                    <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                      Parcela {e.installment_no}/{e.installment_total}
+                    </span>
+                  ) : null}
+                </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-semibold text-rose-600">{brl(Number(e.amount))}</span>
-                <button onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                <button onClick={() => deleteExpense(e.id)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-semibold text-rose-600">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
