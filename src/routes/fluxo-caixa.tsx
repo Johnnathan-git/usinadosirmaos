@@ -25,6 +25,9 @@ type Invoice = {
 type Expense = {
   id: string; reference_date: string; category: string;
   description: string; amount: number; notes: string | null;
+  installment_group?: string | null;
+  installment_no?: number | null;
+  installment_total?: number | null;
 };
 type Client = { id: string; name: string };
 
@@ -102,14 +105,14 @@ function Fluxo() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-bold">Fluxo de Caixa</h1>
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Fluxo de Caixa</h1>
           <p className="text-sm text-muted-foreground">Receitas, despesas e lucro mensal</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-36 sm:w-40"><SelectValue /></SelectTrigger>
             <SelectContent>
               {months.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
@@ -117,7 +120,7 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-rose-500 hover:bg-rose-600">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-rose-500 hover:bg-rose-600 sm:flex-none">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
@@ -176,15 +179,22 @@ function Fluxo() {
         {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>}
         <div className="space-y-2">
           {monthExpenses.map(e => (
-            <div key={e.id} className="flex items-start justify-between rounded-lg border p-3">
-              <div>
-                <div className="font-medium">{e.description}</div>
-                <span className="mt-1 inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border p-3">
+              <div className="min-w-0">
+                <div className="truncate font-medium">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
+                  {e.installment_total ? (
+                    <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                      Parcela {e.installment_no}/{e.installment_total}
+                    </span>
+                  ) : null}
+                </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-semibold text-rose-600">{brl(Number(e.amount))}</span>
-                <button onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                <button onClick={() => deleteExpense(e.id)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-semibold text-rose-600">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
@@ -198,11 +208,24 @@ function Fluxo() {
   );
 }
 
-async function deleteExpense(id: string) {
-  if (!confirm("Excluir esta despesa?")) return;
-  const { error } = await supabase.from("expenses").delete().eq("id", id);
-  if (error) return toast.error(error.message);
-  toast.success("Despesa excluída");
+async function deleteExpense(e: Expense) {
+  const isParcel = Boolean(e.installment_group && (e.installment_total ?? 0) > 1);
+  if (isParcel) {
+    const all = confirm(
+      `Esta é a parcela ${e.installment_no}/${e.installment_total}.\n\nOK = excluir TODAS as parcelas desta compra.\nCancelar = excluir somente esta parcela.`,
+    );
+    const q = all
+      ? supabase.from("expenses").delete().eq("installment_group", e.installment_group!)
+      : supabase.from("expenses").delete().eq("id", e.id);
+    const { error } = await q;
+    if (error) return toast.error(error.message);
+    toast.success(all ? "Parcelas excluídas" : "Parcela excluída");
+  } else {
+    if (!confirm("Excluir esta despesa?")) return;
+    const { error } = await supabase.from("expenses").delete().eq("id", e.id);
+    if (error) return toast.error(error.message);
+    toast.success("Despesa excluída");
+  }
   location.reload();
 }
 
@@ -216,6 +239,9 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
     amount: expense ? String(expense.amount) : "",
     notes: expense?.notes ?? "",
   });
+  const [installments, setInstallments] = useState(false);
+  const [parcels, setParcels] = useState("2");
+  const [mode, setMode] = useState<"parcela" | "total">("parcela");
   const [saving, setSaving] = useState(false);
 
   async function submit() {
@@ -231,26 +257,54 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
       amount: Number(f.amount),
       notes: f.notes || null,
     };
-    const res = expense
-      ? await supabase.from("expenses").update(payload).eq("id", expense.id)
-      : await supabase.from("expenses").insert(payload);
+    let res;
+    if (expense) {
+      res = await supabase.from("expenses").update(payload).eq("id", expense.id);
+    } else if (installments && Number(parcels) > 1) {
+      const n = Math.min(120, Math.max(2, Math.round(Number(parcels))));
+      const total = mode === "total" ? Number(f.amount) : Number(f.amount) * n;
+      const base = Math.floor((total / n) * 100) / 100;
+      const group = crypto.randomUUID();
+      const [y, m] = f.reference_date.slice(0, 7).split("-").map(Number);
+      const rows = Array.from({ length: n }, (_, i) => {
+        const d = new Date(y, m - 1 + i, 1);
+        const amount = i === n - 1 ? Math.round((total - base * (n - 1)) * 100) / 100 : base;
+        return {
+          ...payload,
+          amount,
+          reference_date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`,
+          installment_group: group,
+          installment_no: i + 1,
+          installment_total: n,
+        };
+      });
+      res = await supabase.from("expenses").insert(rows);
+    } else {
+      res = await supabase.from("expenses").insert(payload);
+    }
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
-    toast.success(expense ? "Despesa atualizada" : "Despesa lançada");
+    toast.success(
+      expense ? "Despesa atualizada" : installments ? `${parcels} parcelas lançadas` : "Despesa lançada",
+    );
     qc.invalidateQueries();
     onClose();
   }
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{expense ? "Editar Despesa" : "Nova Despesa"}</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <Label>Data de Referência *</Label>
-            <Input type="date" value={f.reference_date} onChange={e => setF({ ...f, reference_date: e.target.value })} />
+            <Label>{installments ? "Mês da 1ª parcela *" : "Mês de Referência *"}</Label>
+            <Input
+              type="month"
+              value={f.reference_date.slice(0, 7)}
+              onChange={e => setF({ ...f, reference_date: `${e.target.value}-01` })}
+            />
           </div>
           <div>
             <Label>Categoria *</Label>
@@ -261,22 +315,58 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
               </SelectContent>
             </Select>
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Label>Descrição *</Label>
             <Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Fatura CEMIG maio/25" />
           </div>
-          <div className="col-span-2">
-            <Label>Valor (R$) *</Label>
-            <Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} />
+          {!expense && (
+            <div className="rounded-xl border bg-muted/40 p-3 sm:col-span-2">
+              <label className="flex items-center gap-2 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 accent-rose-500"
+                  checked={installments}
+                  onChange={e => setInstallments(e.target.checked)}
+                />
+                Compra parcelada (lançar parcelas futuras)
+              </label>
+              {installments && (
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>Nº de parcelas *</Label>
+                    <Input type="number" min={2} max={120} inputMode="numeric" value={parcels} onChange={e => setParcels(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>O valor informado é</Label>
+                    <Select value={mode} onValueChange={v => setMode(v as "parcela" | "total")}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="parcela">Valor de cada parcela</SelectItem>
+                        <SelectItem value="total">Valor total da compra</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <p className="text-xs text-muted-foreground sm:col-span-2">
+                    Serão criados {parcels || 0} lançamentos mensais a partir do mês escolhido.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="sm:col-span-2">
+            <Label>{installments ? (mode === "total" ? "Valor total (R$) *" : "Valor da parcela (R$) *") : "Valor (R$) *"}</Label>
+            <Input type="number" inputMode="decimal" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Label>Observações</Label>
             <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" />
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex-col gap-2 sm:flex-row">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-rose-500 hover:bg-rose-600">Lançar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-rose-500 hover:bg-rose-600">
+            {expense ? "Salvar" : installments ? "Lançar parcelas" : "Lançar"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

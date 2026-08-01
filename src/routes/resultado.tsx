@@ -103,14 +103,14 @@ function Resultado() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Resultado</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Resultado</h1>
           <p className="text-sm text-muted-foreground">Economia gerada por mês e cliente</p>
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="col-span-2 w-full sm:w-48"><SelectValue /></SelectTrigger>
             <SelectContent>
               {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
               {data.clients
@@ -120,7 +120,7 @@ function Resultado() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="w-full gap-2 sm:w-auto">
                 {selectedMonths.length} {selectedMonths.length === 1 ? "mês selecionado" : "meses selecionados"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -141,7 +141,7 @@ function Resultado() {
               {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas.</p>}
             </PopoverContent>
           </Popover>
-          <Button variant="outline" className="gap-2" onClick={() => window.print()}>
+          <Button variant="outline" className="w-full gap-2 sm:w-auto" onClick={() => window.print()}>
             <FileDown className="h-4 w-4" /> Exportar PDF
           </Button>
         </div>

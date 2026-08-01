@@ -108,12 +108,12 @@ function Faturas() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-start justify-between">
+      <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Clientes</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Clientes</h1>
           <p className="text-sm text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)}>
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
@@ -246,7 +246,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
@@ -346,11 +346,11 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <Label>Unidade Consumidora *</Label>
             <Input value={client.uc_number} disabled />
@@ -430,7 +430,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-5xl">
+      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: client.color }} />

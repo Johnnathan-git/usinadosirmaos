@@ -89,6 +89,9 @@ export type Database = {
           created_at: string
           description: string
           id: string
+          installment_group: string | null
+          installment_no: number | null
+          installment_total: number | null
           notes: string | null
           reference_date: string
           updated_at: string
@@ -99,6 +102,9 @@ export type Database = {
           created_at?: string
           description: string
           id?: string
+          installment_group?: string | null
+          installment_no?: number | null
+          installment_total?: number | null
           notes?: string | null
           reference_date: string
           updated_at?: string
@@ -109,6 +115,9 @@ export type Database = {
           created_at?: string
           description?: string
           id?: string
+          installment_group?: string | null
+          installment_no?: number | null
+          installment_total?: number | null
           notes?: string | null
           reference_date?: string
           updated_at?: string

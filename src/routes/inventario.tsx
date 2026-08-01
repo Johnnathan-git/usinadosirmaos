@@ -90,14 +90,14 @@ function Inventario() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Inventário</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Inventário</h1>
           <p className="text-sm text-muted-foreground">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
-          ? <Button onClick={() => setAssetOpen(true)} className="gap-2 bg-orange-500 hover:bg-orange-600"><Plus className="h-4 w-4" /> Novo Item</Button>
-          : <Button onClick={() => setExpenseOpen(true)} className="gap-2 bg-orange-500 hover:bg-orange-600"><Plus className="h-4 w-4" /> Novo Gasto</Button>
+          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-orange-500 hover:bg-orange-600 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
+          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-orange-500 hover:bg-orange-600 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
         }
       </div>
 
@@ -118,7 +118,7 @@ function Inventario() {
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList>
+        <TabsList className="w-full justify-start overflow-x-auto">
           <TabsTrigger value="assets" className="gap-2"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
           <TabsTrigger value="expenses" className="gap-2"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
         </TabsList>
@@ -280,10 +280,10 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader><DialogTitle>{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Label>Nome do Item *</Label><Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} /></div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2"><Label>Nome do Item *</Label><Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} /></div>
           <div>
             <Label>Categoria *</Label>
             {addingCat ? (
@@ -318,7 +318,7 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
           <div><Label>Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} /></div>
           <div><Label>Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} /></div>
           <div><Label>Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" /></div>
-          <div className="col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
+          <div className="sm:col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
@@ -360,13 +360,13 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader><DialogTitle>{expense ? "Editar Gasto" : "Novo Gasto de Investimento"}</DialogTitle></DialogHeader>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Label>Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." /></div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2"><Label>Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." /></div>
           <div><Label>Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} /></div>
           <div><Label>Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} /></div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Label>Responsável</Label>
             <select
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -377,7 +377,7 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
               {RESPONSIBLES.map(r => <option key={r} value={r}>{r}</option>)}
             </select>
           </div>
-          <div className="col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
+          <div className="sm:col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
