@@ -19,10 +19,15 @@ import { toast } from "sonner";
 type Asset = {
   id: string; item: string; location: string | null; category: string;
   brand: string | null; model: string | null; quantity: number; unit_value: number;
+  acquired_on: string | null; serial_number: string | null; notes: string | null;
 };
 type InvExpense = {
   id: string; description: string; amount: number; spent_on: string; notes: string | null;
+  responsible: string | null;
 };
+
+const BASE_CATEGORIES = ["Placa Solar", "Inversor", "Equipamentos Elétricos"];
+const RESPONSIBLES = ["John", "Jehn"];
 
 const q = queryOptions({
   queryKey: ["inventario-page"],
