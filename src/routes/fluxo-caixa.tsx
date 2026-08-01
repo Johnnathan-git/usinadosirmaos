@@ -25,6 +25,9 @@ type Invoice = {
 type Expense = {
   id: string; reference_date: string; category: string;
   description: string; amount: number; notes: string | null;
+  installment_group?: string | null;
+  installment_no?: number | null;
+  installment_total?: number | null;
 };
 type Client = { id: string; name: string };
 
