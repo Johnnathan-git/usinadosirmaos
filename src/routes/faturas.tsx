@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye } from "lucide-react";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabel } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
@@ -90,6 +90,22 @@ function Faturas() {
     qc.invalidateQueries();
   }
 
+  async function deleteClientForever(c: Client) {
+    const typed = window.prompt(
+      `EXCLUSÃO DEFINITIVA de "${c.name}".\n\nIsso apaga o cliente e TODOS os dados lançados (faturas, rateio e vínculos de acesso). Essa ação não pode ser desfeita.\n\nDigite EXCLUIR para confirmar:`,
+    );
+    if (typed?.trim().toUpperCase() !== "EXCLUIR") return;
+    const inv = await supabase.from("invoices").delete().eq("client_id", c.id);
+    if (inv.error) return toast.error(inv.error.message);
+    const alloc = await supabase.from("client_allocations").delete().eq("client_id", c.id);
+    if (alloc.error) return toast.error(alloc.error.message);
+    await supabase.from("user_clients").delete().eq("client_id", c.id);
+    const cli = await supabase.from("clients").delete().eq("id", c.id);
+    if (cli.error) return toast.error(cli.error.message);
+    toast.success(`Cliente ${c.name} excluído definitivamente`);
+    qc.invalidateQueries();
+  }
+
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex items-start justify-between">
@@ -159,6 +175,15 @@ function Faturas() {
                 <Plus className="h-4 w-4" /> Lançar
               </Button>
             </div>
+            {!c.active && (
+              <Button
+                variant="outline"
+                className="mt-2 w-full gap-2 border-rose-200 text-rose-600 hover:bg-rose-50"
+                onClick={() => deleteClientForever(c)}
+              >
+                <ShieldAlert className="h-4 w-4" /> Excluir definitivo
+              </Button>
+            )}
           </Card>
         ))}
       </div>
