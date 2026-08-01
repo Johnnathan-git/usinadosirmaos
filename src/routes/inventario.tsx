@@ -235,6 +235,9 @@ async function delRow(table: "inventory_assets" | "investment_expenses", id: str
 }
 
 function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose: () => void; onSaved: () => void }) {
+  const [customCats, setCustomCats] = useState<string[]>([]);
+  const [newCat, setNewCat] = useState("");
+  const [addingCat, setAddingCat] = useState(false);
   const [f, setF] = useState({
     item: asset?.item ?? "",
     location: asset?.location ?? "Usina",
@@ -243,8 +246,12 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
     model: asset?.model ?? "",
     quantity: asset ? String(asset.quantity) : "1",
     unit_value: asset ? String(asset.unit_value) : "",
+    acquired_on: asset?.acquired_on ?? "",
+    serial_number: asset?.serial_number ?? "",
+    notes: asset?.notes ?? "",
   });
   const [saving, setSaving] = useState(false);
+  const categories = [...new Set([...BASE_CATEGORIES, ...customCats, ...(f.category ? [f.category] : [])])];
   async function submit() {
     if (!f.item.trim()) return toast.error("Informe o item");
     setSaving(true);
@@ -256,6 +263,9 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
       model: f.model || null,
       quantity: Number(f.quantity) || 1,
       unit_value: Number(f.unit_value) || 0,
+      acquired_on: f.acquired_on || null,
+      serial_number: f.serial_number || null,
+      notes: f.notes || null,
     };
     const res = asset
       ? await supabase.from("inventory_assets").update(payload).eq("id", asset.id)
@@ -271,13 +281,42 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
       <DialogContent className="max-w-lg">
         <DialogHeader><DialogTitle>{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
         <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Label>Item *</Label><Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} /></div>
+          <div className="col-span-2"><Label>Nome do Item *</Label><Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} /></div>
+          <div>
+            <Label>Categoria *</Label>
+            {addingCat ? (
+              <div className="flex gap-2">
+                <Input autoFocus value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nova categoria" />
+                <Button type="button" variant="outline" onClick={() => {
+                  const v = newCat.trim();
+                  if (!v) return setAddingCat(false);
+                  setCustomCats(c => [...c, v]);
+                  setF({ ...f, category: v });
+                  setNewCat(""); setAddingCat(false);
+                }}>OK</Button>
+              </div>
+            ) : (
+              <select
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                value={f.category}
+                onChange={e => {
+                  if (e.target.value === "__new") { setAddingCat(true); return; }
+                  setF({ ...f, category: e.target.value });
+                }}
+              >
+                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                <option value="__new">+ Cadastrar nova categoria…</option>
+              </select>
+            )}
+          </div>
           <div><Label>Localização</Label><Input value={f.location} onChange={e => setF({ ...f, location: e.target.value })} /></div>
-          <div><Label>Categoria</Label><Input value={f.category} onChange={e => setF({ ...f, category: e.target.value })} /></div>
           <div><Label>Marca</Label><Input value={f.brand} onChange={e => setF({ ...f, brand: e.target.value })} /></div>
           <div><Label>Modelo</Label><Input value={f.model} onChange={e => setF({ ...f, model: e.target.value })} /></div>
-          <div><Label>Quantidade</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} /></div>
-          <div><Label>Valor Unit. (R$)</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} /></div>
+          <div><Label>Quantidade *</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} /></div>
+          <div><Label>Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} /></div>
+          <div><Label>Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} /></div>
+          <div><Label>Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" /></div>
+          <div className="col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
