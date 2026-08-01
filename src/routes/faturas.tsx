@@ -299,9 +299,9 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
 
 function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?: Invoice; onClose: () => void }) {
   const qc = useQueryClient();
-  const today = new Date().toISOString().slice(0, 10);
+  const currentMonth = new Date().toISOString().slice(0, 7);
   const [f, setF] = useState({
-    reference_date: invoice?.reference_date?.slice(0, 10) ?? today,
+    reference_month: invoice?.reference_date?.slice(0, 7) ?? currentMonth,
     consumption_kw: invoice ? String(invoice.consumption_kw) : "",
     price_kw: invoice ? String(invoice.price_kw) : "",
     public_lighting: invoice ? String(invoice.public_lighting) : "0",
@@ -313,6 +313,10 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
   const [saving, setSaving] = useState(false);
 
   async function submit() {
+    if (!f.reference_month) {
+      toast.error("Selecione o mês de referência");
+      return;
+    }
     if (!f.consumption_kw || !f.price_kw || !f.client_pays) {
       toast.error("Preencha os campos obrigatórios");
       return;
@@ -321,7 +325,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     const payload = {
       client_id: client.id,
       uc_number: client.uc_number,
-      reference_date: f.reference_date,
+      reference_date: `${f.reference_month}-01`,
       consumption_kw: Number(f.consumption_kw),
       price_kw: Number(f.price_kw),
       public_lighting: Number(f.public_lighting || 0),
@@ -352,8 +356,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Input value={client.uc_number} disabled />
           </div>
           <div>
-            <Label>Data de Referência *</Label>
-            <Input type="date" value={f.reference_date} onChange={e => setF({ ...f, reference_date: e.target.value })} />
+            <Label>Mês de Referência *</Label>
+            <Input type="month" value={f.reference_month} onChange={e => setF({ ...f, reference_month: e.target.value })} />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
