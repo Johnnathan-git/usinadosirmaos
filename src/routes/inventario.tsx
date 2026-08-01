@@ -188,6 +188,7 @@ function Inventario() {
                 <tr className="text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="pb-3 text-left font-medium">Descrição</th>
                   <th className="pb-3 text-left font-medium">Data</th>
+                  <th className="pb-3 text-left font-medium">Responsável</th>
                   <th className="pb-3 text-left font-medium">Observações</th>
                   <th className="pb-3 text-right font-medium">Valor</th>
                   <th></th>
@@ -198,6 +199,7 @@ function Inventario() {
                   <tr key={e.id} className="border-t">
                     <td className="py-3 font-medium">{e.description}</td>
                     <td className="py-3 text-muted-foreground">{formatDateBR(e.spent_on)}</td>
+                    <td className="py-3 text-muted-foreground">{e.responsible || "—"}</td>
                     <td className="py-3 text-muted-foreground">{e.notes || "—"}</td>
                     <td className="py-3 text-right font-semibold text-orange-600">{brl(Number(e.amount))}</td>
                     <td className="py-3 pl-2 text-right">
@@ -209,7 +211,7 @@ function Inventario() {
               </tbody>
               <tfoot>
                 <tr className="border-t bg-amber-50/60">
-                  <td colSpan={3} className="py-3 font-semibold">Total Gastos</td>
+                  <td colSpan={4} className="py-3 font-semibold">Total Gastos</td>
                   <td className="py-3 text-right font-bold text-orange-700">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
