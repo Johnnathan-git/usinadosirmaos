@@ -99,7 +99,14 @@ function Dashboard() {
     const operacionais = data.expenses.filter(e => inMonth(e.reference_date, m.key))
       .reduce((a, e) => a + Number(e.amount), 0);
     const despesas = operacionais + distribuidora;
-    return { month: m.label, Receita: receita, Despesas: despesas, Lucro: receita - despesas };
+    return {
+      month: m.label,
+      Receita: receita,
+      Despesas: despesas,
+      Operacionais: operacionais,
+      Distribuidora: distribuidora,
+      Lucro: receita - despesas,
+    };
   });
 
   // ranking
@@ -124,7 +131,13 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={<TrendingUp className="h-5 w-5 text-emerald-600" />} label={`Receita ${monthLabel(now)}`} value={brl(receitaMes)} tint="emerald" />
-        <StatCard icon={<TrendingDown className="h-5 w-5 text-rose-600" />} label={`Despesas ${monthLabel(now)}`} value={brl(despesasMes)} tint="rose" />
+        <StatCard
+          icon={<TrendingDown className="h-5 w-5 text-rose-600" />}
+          label={`Despesas ${monthLabel(now)}`}
+          value={brl(despesasMes)}
+          tint="rose"
+          hint={`Operacionais ${brl(despesasOperMes)} + Faturas distribuidora ${brl(faturasDistMes)}`}
+        />
         <StatCard icon={<DollarSign className="h-5 w-5 text-amber-600" />} label={`Lucro ${monthLabel(now)}`} value={brl(lucroMes)} tint="amber" highlight={lucroMes < 0} />
         <StatCard icon={<Receipt className="h-5 w-5 text-violet-600" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="violet" />
       </div>
@@ -188,6 +201,8 @@ function Dashboard() {
               <tr className="text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="pb-3 text-left font-medium">Mês</th>
                 <th className="pb-3 text-right font-medium">Receita</th>
+                <th className="pb-3 text-right font-medium">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-medium">Fat. Distribuidora</th>
                 <th className="pb-3 text-right font-medium">Despesas</th>
                 <th className="pb-3 text-right font-medium">Lucro</th>
               </tr>
@@ -197,6 +212,8 @@ function Dashboard() {
                 <tr key={row.month} className="border-t">
                   <td className="py-3 text-foreground">{row.month}</td>
                   <td className="py-3 text-right font-medium text-emerald-600">{brl(row.Receita)}</td>
+                  <td className="py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
+                  <td className="py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
                   <td className="py-3 text-right font-medium text-rose-600">{brl(row.Despesas)}</td>
                   <td className={`py-3 text-right font-semibold ${row.Lucro < 0 ? "text-amber-600" : "text-blue-600"}`}>{brl(row.Lucro)}</td>
                 </tr>
@@ -222,8 +239,8 @@ function Dashboard() {
 }
 
 function StatCard({
-  icon, label, value, tint, highlight,
-}: { icon: React.ReactNode; label: string; value: string; tint: string; highlight?: boolean }) {
+  icon, label, value, tint, highlight, hint,
+}: { icon: React.ReactNode; label: string; value: string; tint: string; highlight?: boolean; hint?: string }) {
   const bg: Record<string, string> = {
     emerald: "bg-emerald-50",
     rose: "bg-rose-50",
@@ -235,6 +252,7 @@ function StatCard({
       <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${bg[tint]}`}>{icon}</div>
       <div className="text-sm text-muted-foreground">{label}</div>
       <div className={`mt-1 text-2xl font-bold ${highlight ? "text-amber-600" : "text-foreground"}`}>{value}</div>
+      {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
     </Card>
   );
 }
