@@ -1,0 +1,258 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { AppLayout } from "@/components/AppLayout";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileDown, MessageCircle, Copy, RotateCcw } from "lucide-react";
+import { brl, monthLabelFromISO } from "@/lib/format";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+
+type Invoice = {
+  id: string; client_id: string; reference_date: string; uc_number: string;
+  consumption_kw: number; price_kw: number; public_lighting: number;
+  interest_fine: number; value_without_plant: number; client_pays: number;
+};
+type Client = { id: string; name: string; phone: string | null };
+
+const q = queryOptions({
+  queryKey: ["relatorio-page"],
+  queryFn: async () => {
+    const [i, c, sess] = await Promise.all([
+      supabase
+        .from("invoices")
+        .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays")
+        .order("reference_date", { ascending: false }),
+      supabase.from("clients").select("id,name,phone").order("name"),
+      supabase.auth.getSession(),
+    ]);
+    if (i.error) throw i.error;
+    if (c.error) throw c.error;
+    let restrictedClientId: string | null = null;
+    const uid = sess.data.session?.user?.id;
+    if (uid) {
+      const [{ data: link }, { data: roles }] = await Promise.all([
+        supabase.from("user_clients").select("client_id").eq("user_id", uid).maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", uid),
+      ]);
+      const isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
+      if (!isAdmin && link?.client_id) restrictedClientId = link.client_id as string;
+    }
+    return { invoices: (i.data ?? []) as Invoice[], clients: (c.data ?? []) as Client[], restrictedClientId };
+  },
+});
+
+export const Route = createFileRoute("/relatorio")({
+  ssr: false,
+  component: Page,
+  head: () => ({
+    meta: [
+      { title: "Relatório do Cliente — Usina JJ" },
+      { name: "description", content: "Monte, edite e envie a planilha mensal de economia para cada cliente." },
+      { property: "og:title", content: "Relatório do Cliente — Usina JJ" },
+      { property: "og:description", content: "Planilha mensal de economia pronta para enviar ao cliente." },
+    ],
+  }),
+});
+
+function Page() {
+  return (
+    <AppLayout>
+      <Suspense fallback={<div>Carregando...</div>}>
+        <Relatorio />
+      </Suspense>
+    </AppLayout>
+  );
+}
+
+type Row = {
+  id: string; mes: string; uc: string; consumo: string; preco: string;
+  ilum: string; juros: string; semUsina: string; comDesconto: string;
+};
+
+const numBR = (n: number, d = 2) =>
+  n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+
+function toRow(inv: Invoice): Row {
+  return {
+    id: inv.id,
+    mes: monthLabelFromISO(inv.reference_date).toLowerCase(),
+    uc: inv.uc_number ?? "",
+    consumo: numBR(Number(inv.consumption_kw), 0),
+    preco: numBR(Number(inv.price_kw), 6),
+    ilum: brl(Number(inv.public_lighting)),
+    juros: brl(Number(inv.interest_fine)),
+    semUsina: brl(Number(inv.value_without_plant)),
+    comDesconto: brl(Number(inv.client_pays)),
+  };
+}
+
+function Relatorio() {
+  const { data } = useSuspenseQuery(q);
+  const locked = data.restrictedClientId;
+  const clients = data.clients.filter((c) => !locked || c.id === locked);
+  const [clientId, setClientId] = useState<string>(locked ?? clients[0]?.id ?? "");
+  const [months, setMonths] = useState<string[]>([]);
+  const [rows, setRows] = useState<Row[]>([]);
+
+  const client = clients.find((c) => c.id === clientId);
+  const clientInvoices = useMemo(
+    () => data.invoices.filter((i) => i.client_id === clientId),
+    [data.invoices, clientId],
+  );
+  const monthOptions = useMemo(
+    () => [...new Set(clientInvoices.map((i) => i.reference_date.slice(0, 7)))].sort().reverse(),
+    [clientInvoices],
+  );
+
+  useEffect(() => {
+    setMonths(monthOptions.slice(0, 1));
+  }, [monthOptions.join(",")]);
+
+  const selected = useMemo(
+    () => clientInvoices.filter((i) => months.includes(i.reference_date.slice(0, 7))),
+    [clientInvoices, months],
+  );
+
+  useEffect(() => {
+    setRows(selected.map(toRow));
+  }, [selected.map((s) => s.id).join(",")]);
+
+  function edit(id: string, field: keyof Row, value: string) {
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
+  }
+
+  const plainText = () =>
+    [
+      `*${client?.name ?? ""} — Usina JJ*`,
+      ...rows.map(
+        (r) =>
+          `${r.mes} | UC ${r.uc} | ${r.consumo} kW | s/ usina ${r.semUsina} | *você pagou ${r.comDesconto}*`,
+      ),
+    ].join("\n");
+
+  return (
+    <div className="mx-auto max-w-6xl space-y-6">
+      <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Relatório do Cliente</h1>
+          <p className="text-sm text-muted-foreground">
+            Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => setRows(selected.map(toRow))}>
+            <RotateCcw className="h-4 w-4" /> Restaurar
+          </Button>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={async () => {
+              await navigator.clipboard.writeText(plainText());
+              toast.success("Resumo copiado.");
+            }}
+          >
+            <Copy className="h-4 w-4" /> Copiar
+          </Button>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={() => {
+              const phone = (client?.phone ?? "").replace(/\D/g, "");
+              const url = `https://wa.me/${phone ? (phone.length > 11 ? phone : `55${phone}`) : ""}?text=${encodeURIComponent(plainText())}`;
+              window.open(url, "_blank", "noopener");
+            }}
+          >
+            <MessageCircle className="h-4 w-4" /> WhatsApp
+          </Button>
+          <Button className="gap-2" onClick={() => window.print()}>
+            <FileDown className="h-4 w-4" /> Exportar PDF
+          </Button>
+        </div>
+      </div>
+
+      <Card className="no-print grid gap-3 p-4 sm:grid-cols-2">
+        <div>
+          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Cliente</div>
+          <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
+            <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectContent>
+              {clients.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Meses</div>
+          <div className="flex flex-wrap gap-1.5">
+            {monthOptions.map((m) => {
+              const on = months.includes(m);
+              return (
+                <button
+                  key={m}
+                  onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
+                    on ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  {monthLabelFromISO(`${m}-01`)}
+                </button>
+              );
+            })}
+            {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas para este cliente.</p>}
+          </div>
+        </div>
+      </Card>
+
+      <Card className="overflow-hidden p-0 elev-2">
+        <div className="bg-solar px-4 py-3 text-center">
+          <div className="font-display text-lg font-extrabold uppercase tracking-wide text-ink">
+            {client?.name ?? "—"}
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[860px] border-collapse text-sm">
+            <thead>
+              <tr className="bg-muted/60 text-[11px] uppercase leading-tight text-muted-foreground">
+                {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
+                  <th key={h} className="border border-border px-2 py-2 text-center font-semibold">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id}>
+                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
+                    <td key={f} className="border border-border p-0">
+                      <Input
+                        value={r[f]}
+                        onChange={(e) => edit(r.id, f, e.target.value)}
+                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 ${
+                          f === "comDesconto" ? "font-bold text-clay" : ""
+                        }`}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr><td colSpan={8} className="border border-border py-8 text-center text-muted-foreground">Selecione ao menos um mês.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        {rows.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-muted/40 px-4 py-3 text-sm">
+            <span className="text-muted-foreground">{rows.length} {rows.length === 1 ? "mês" : "meses"}</span>
+            <span className="num font-semibold">
+              Total pago pelo cliente:{" "}
+              {brl(rows.reduce((a, r) => a + (Number(r.comDesconto.replace(/[^\d,-]/g, "").replace(",", ".")) || 0), 0))}
+            </span>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+}

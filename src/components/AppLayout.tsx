@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, Home, ShieldCheck } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { getMyAccess } from "@/lib/acessos.functions";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import { BrandLockup } from "@/components/BrandMark";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
@@ -15,6 +16,7 @@ const nav: NavItem[] = [
   { to: "/faturas", label: "Lançamento de Faturas", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
   { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado" },
+  { to: "/relatorio", label: "Relatório do Cliente", icon: FileSpreadsheet, module: "relatorio" },
   { to: "/controle", label: "Controle", icon: Gauge, module: "controle" },
   { to: "/inventario", label: "Inventário", icon: Package, module: "inventario" },
   { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
@@ -62,12 +64,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   const acc = access.data ?? undefined;
   const visibleNav = acc
-    ? nav.filter((n) => acc.effective_admin || (!n.adminOnly && acc.permissions.includes(n.module)))
+    ? nav.filter(
+        (n) =>
+          acc.effective_admin ||
+          (!n.adminOnly &&
+            (acc.permissions.includes(n.module) ||
+              (n.module === "relatorio" && acc.permissions.includes("resultado")))),
+      )
     : [];
   const current = nav.find((n) => n.to === "/" ? pathname === "/" : pathname.startsWith(n.to));
-  const blocked = Boolean(
-    acc && current && !acc.effective_admin && (current.adminOnly || !acc.permissions.includes(current.module)),
-  );
+  const blocked = Boolean(acc && current && !visibleNav.some((n) => n.to === current.to));
 
   // Se o usuário caiu numa rota sem permissão, leva para o primeiro módulo liberado.
   useEffect(() => {
@@ -89,26 +95,32 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-card/85 backdrop-blur supports-[backdrop-filter]:bg-card/70">
+      <header className="no-print sticky top-0 z-50 border-b border-border/70 bg-card/85 backdrop-blur supports-[backdrop-filter]:bg-card/70">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-sm sm:h-11 sm:w-11">
-              <Home className="h-5 w-5" />
-            </div>
-            <div className="min-w-0 leading-tight">
-              <div className="text-[10px] font-semibold tracking-[0.2em] text-primary">USINA</div>
-              <div className="truncate text-lg font-bold text-foreground">JJ</div>
-            </div>
+            <BrandLockup />
+            {current && (
+              <div className="hidden min-w-0 items-center gap-2 border-l border-border/70 pl-3 md:flex">
+                <span className="text-xs text-muted-foreground">Painel</span>
+                <span className="text-xs text-muted-foreground/60">/</span>
+                <span className="truncate text-sm font-semibold text-foreground">{current.label}</span>
+              </div>
+            )}
           </div>
-          <Button size="sm" variant="ghost" onClick={signOut} className="shrink-0 rounded-full">
-            <LogOut className="h-4 w-4 sm:mr-2" />
-            <span className="hidden sm:inline">Sair</span>
-          </Button>
+          <div className="flex shrink-0 items-center gap-1 rounded-full border border-border/70 bg-background/60 p-1">
+            <span className="hidden px-2 text-xs font-medium text-muted-foreground sm:inline">
+              {acc?.effective_admin ? "Administrador" : "Usuário"}
+            </span>
+            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-full">
+              <LogOut className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Sair</span>
+            </Button>
+          </div>
         </div>
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-border/70 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-border/70 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -130,8 +142,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
             })}
           </div>
         )}
-        <aside className="sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-border/70 bg-card/60 p-3 md:block">
-          <nav className="space-y-1">
+        <aside className="no-print sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-border/70 bg-card/60 px-4 py-6 md:block">
+          <div className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Módulos
+          </div>
+          <nav className="space-y-1.5">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -140,14 +155,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
+                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
-                      ? "bg-primary/10 text-primary shadow-[inset_3px_0_0_0_var(--primary)]"
+                      ? "bg-primary text-primary-foreground elev-2"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   )}
                 >
-                  <Icon className="h-5 w-5" />
-                  {item.label}
+                  <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} />
+                  <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}

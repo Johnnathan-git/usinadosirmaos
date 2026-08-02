@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
-import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { Suspense } from "react";
 
@@ -81,6 +81,16 @@ function Dashboard() {
   const receitaAno = data.invoices.filter(i => i.reference_date.startsWith(String(now.getFullYear())))
     .reduce((a, i) => a + Number(i.client_pays), 0);
 
+  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevKey = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, "0")}`;
+  const receitaPrev = data.invoices.filter(i => inMonth(i.reference_date, prevKey))
+    .reduce((a, i) => a + Number(i.client_pays), 0);
+  const despesasPrev =
+    data.invoices.filter(i => inMonth(i.reference_date, prevKey)).reduce((a, i) => a + Number(i.distributor_invoice), 0) +
+    data.expenses.filter(e => inMonth(e.reference_date, prevKey)).reduce((a, e) => a + Number(e.amount), 0);
+  const lucroPrev = receitaPrev - despesasPrev;
+  const delta = (cur: number, old: number) => (old === 0 ? null : ((cur - old) / Math.abs(old)) * 100);
+
   // last 6 months
   const months: { key: string; label: string; date: Date }[] = [];
   for (let i = 5; i >= 0; i--) {
@@ -130,33 +140,53 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5 text-emerald-600" />} label={`Receita ${monthLabel(now)}`} value={brl(receitaMes)} tint="emerald" />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={brl(receitaMes)} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
-          icon={<TrendingDown className="h-5 w-5 text-rose-600" />}
+          icon={<TrendingDown className="h-5 w-5" />}
           label={`Despesas ${monthLabel(now)}`}
           value={brl(despesasMes)}
-          tint="rose"
-          hint={`Operacionais ${brl(despesasOperMes)} + Faturas distribuidora ${brl(faturasDistMes)}`}
+          tint="clay"
+          invertDelta
+          delta={delta(despesasMes, despesasPrev)}
+          hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5 text-amber-600" />} label={`Lucro ${monthLabel(now)}`} value={brl(lucroMes)} tint="amber" highlight={lucroMes < 0} />
-        <StatCard icon={<Receipt className="h-5 w-5 text-violet-600" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="violet" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={brl(lucroMes)} tint="solar" featured delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="sky" />
       </div>
 
       <Card className="surface-card p-4 sm:p-6">
-        <h2 className="mb-4 text-lg font-semibold">Receita, Despesas e Lucro (últimos 6 meses)</h2>
-        <div className="h-64 sm:h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(v: number) => brl(v)} />
-              <Legend />
-              <Bar dataKey="Receita" fill="#10b981" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Despesas" fill="#ef4444" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Lucro" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold">Receita, Despesas e Lucro</h2>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-muted-foreground">
+            {[["Receita", "var(--leaf)"], ["Despesas", "var(--clay)"], ["Lucro", "var(--solar)"]].map(([k, c]) => (
+              <span key={k} className="inline-flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
+                {k}
+              </span>
+            ))}
+            <span className="text-muted-foreground/70">últimos 6 meses</span>
+          </div>
+        </div>
+        <div className="-mx-2 overflow-x-auto px-2">
+          <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} barGap={4}>
+                <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.7} />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  width={54}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
+                />
+                <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.5 }} content={<ChartTooltip />} />
+                <Bar dataKey="Receita" fill="var(--leaf)" radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="Despesas" fill="var(--clay)" radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="Lucro" fill="var(--solar)" radius={[6, 6, 0, 0]} maxBarSize={34} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </Card>
 
@@ -178,7 +208,7 @@ function Dashboard() {
               <div className="flex-1">
                 <div className="mb-1 flex items-center justify-between">
                   <span className="text-sm font-medium">{c.name}</span>
-                  <span className="text-sm font-semibold text-blue-600">{brl(c.profit)}</span>
+                  <span className="num text-sm font-semibold text-foreground">{brl(c.profit)}</span>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                   <div
@@ -211,11 +241,11 @@ function Dashboard() {
               {summary.map(row => (
                 <tr key={row.month} className="border-t">
                   <td className="py-3 text-foreground">{row.month}</td>
-                  <td className="py-3 text-right font-medium text-emerald-600">{brl(row.Receita)}</td>
-                  <td className="py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
-                  <td className="py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
-                  <td className="py-3 text-right font-medium text-rose-600">{brl(row.Despesas)}</td>
-                  <td className={`py-3 text-right font-semibold ${row.Lucro < 0 ? "text-amber-600" : "text-blue-600"}`}>{brl(row.Lucro)}</td>
+                  <td className="num py-3 text-right font-medium text-leaf">{brl(row.Receita)}</td>
+                  <td className="num py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
+                  <td className="num py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
+                  <td className="num py-3 text-right font-medium text-clay">{brl(row.Despesas)}</td>
+                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-clay" : "text-foreground"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -238,21 +268,55 @@ function Dashboard() {
   );
 }
 
-function StatCard({
-  icon, label, value, tint, highlight, hint,
-}: { icon: React.ReactNode; label: string; value: string; tint: string; highlight?: boolean; hint?: string }) {
-  const bg: Record<string, string> = {
-    emerald: "bg-emerald-50",
-    rose: "bg-rose-50",
-    amber: "bg-amber-50",
-    violet: "bg-violet-50",
-  };
+function ChartTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
   return (
-    <Card className={`p-5 ${highlight ? "ring-1 ring-amber-200 bg-amber-50/40" : ""}`}>
-      <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${bg[tint]}`}>{icon}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${highlight ? "text-amber-600" : "text-foreground"}`}>{value}</div>
-      {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
+    <div className="rounded-xl border border-border bg-card px-3 py-2 elev-2">
+      <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
+      {payload.map((p: any) => (
+        <div key={p.dataKey} className="flex items-center justify-between gap-6 text-sm">
+          <span className="inline-flex items-center gap-2 text-muted-foreground">
+            <span className="h-2 w-2 rounded-sm" style={{ background: p.fill }} />
+            {p.dataKey}
+          </span>
+          <span className="num font-semibold text-foreground">{brl(Number(p.value))}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StatCard({
+  icon, label, value, tint, featured, hint, delta, invertDelta,
+}: {
+  icon: React.ReactNode; label: string; value: string; tint: "leaf" | "clay" | "solar" | "sky";
+  featured?: boolean; hint?: string; delta?: number | null; invertDelta?: boolean;
+}) {
+  const iconBg: Record<string, string> = {
+    leaf: "bg-leaf text-white",
+    clay: "bg-clay text-white",
+    solar: "bg-solar text-ink",
+    sky: "bg-sky text-white",
+  };
+  const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
+  return (
+    <Card className={`surface-card p-5 elev-1 transition-shadow hover:elev-2 ${featured ? "ring-1 ring-solar/60" : ""}`}>
+      <div className="mb-4 flex items-start justify-between gap-2">
+        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${iconBg[tint]}`}>{icon}</div>
+        {delta != null && Number.isFinite(delta) && (
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+              good ? "bg-leaf-soft text-leaf" : "bg-clay-soft text-clay"
+            }`}
+          >
+            {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+            {Math.abs(delta).toFixed(0)}%
+          </span>
+        )}
+      </div>
+      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="num-lg mt-1.5 text-[26px] font-extrabold leading-none text-foreground">{value}</div>
+      {hint && <div className="mt-2 text-xs text-muted-foreground">{hint}</div>}
     </Card>
   );
 }

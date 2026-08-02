@@ -12,12 +12,13 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileDown, ChevronDown } from "lucide-react";
-import { brl, monthLabelLong } from "@/lib/format";
+import { brl, monthLabelLong, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string;
   uc_number: string; consumption_kw: number; value_without_plant: number;
+  client_pays: number; distributor_invoice: number;
 };
 type Client = { id: string; name: string; color: string };
 
@@ -25,7 +26,7 @@ const q = queryOptions({
   queryKey: ["resultado-page"],
   queryFn: async () => {
     const [i, c, sess] = await Promise.all([
-      supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant"),
+      supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant,client_pays,distributor_invoice"),
       supabase.from("clients").select("id,name,color"),
       supabase.auth.getSession(),
     ]);
@@ -157,11 +158,14 @@ function Resultado() {
                 <thead>
                   <tr className="text-xs uppercase tracking-wide text-muted-foreground">
                     <th className="pb-3 text-left font-medium">Cliente</th>
+                    <th className="pb-3 text-left font-medium">Mês</th>
                     <th className="pb-3 text-left font-medium">UC</th>
-                    <th className="pb-3 text-right font-medium">Consumo</th>
+                    <th className="pb-3 text-right font-medium">Consumo (kW)</th>
                     <th className="pb-3 text-right font-medium">Valor s/ Usina</th>
                     <th className="pb-3 text-right font-medium">c/ 30% Desconto</th>
-                    <th className="pb-3 text-right font-medium text-emerald-600">Economia Gerada</th>
+                    <th className="pb-3 text-right font-medium">Cliente Pagou</th>
+                    <th className="pb-3 text-right font-medium">Fat. Distribuidora</th>
+                    <th className="pb-3 text-right font-medium text-primary">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -177,11 +181,14 @@ function Resultado() {
                             {clientName(inv.client_id)}
                           </span>
                         </td>
+                        <td className="py-3 text-muted-foreground">{monthLabelFromISO(inv.reference_date)}</td>
                         <td className="py-3 text-muted-foreground">{inv.uc_number}</td>
-                        <td className="py-3 text-right">{Number(inv.consumption_kw).toLocaleString("pt-BR")} kW</td>
-                        <td className="py-3 text-right">{brl(semUsina)}</td>
-                        <td className="py-3 text-right">{brl(desc)}</td>
-                        <td className="py-3 text-right font-semibold text-emerald-600">{brl(eco)}</td>
+                        <td className="py-3 text-right num">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="py-3 text-right num">{brl(semUsina)}</td>
+                        <td className="py-3 text-right num">{brl(desc)}</td>
+                        <td className="py-3 text-right num font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-3 text-right num text-clay">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-3 text-right num font-semibold text-primary">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -196,9 +203,9 @@ function Resultado() {
         <Card className="p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="border-none bg-gradient-to-br from-emerald-500 to-emerald-600 p-8 text-center text-white shadow-lg">
+      <Card className="border-none bg-ink p-8 text-center text-white elev-3">
         <div className="text-sm font-medium uppercase tracking-wide opacity-90">Economia total gerada</div>
-        <div className="mt-2 text-5xl font-bold">{brl(totalEconomia)}</div>
+        <div className="num-lg mt-2 text-4xl font-extrabold text-solar sm:text-5xl">{brl(totalEconomia)}</div>
         <div className="mt-2 text-sm opacity-90">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
