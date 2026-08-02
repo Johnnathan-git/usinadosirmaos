@@ -18,6 +18,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 type Invoice = {
   id: string; client_id: string; reference_date: string;
   uc_number: string; consumption_kw: number; value_without_plant: number;
+  client_pays: number; distributor_invoice: number;
 };
 type Client = { id: string; name: string; color: string };
 
@@ -25,7 +26,7 @@ const q = queryOptions({
   queryKey: ["resultado-page"],
   queryFn: async () => {
     const [i, c, sess] = await Promise.all([
-      supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant"),
+      supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant,client_pays,distributor_invoice"),
       supabase.from("clients").select("id,name,color"),
       supabase.auth.getSession(),
     ]);
