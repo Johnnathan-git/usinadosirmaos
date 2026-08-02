@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResultadoRouteImport } from './routes/resultado'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RelatorioRouteImport } from './routes/relatorio'
 import { Route as InventarioRouteImport } from './routes/inventario'
 import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
 import { Route as FaturasRouteImport } from './routes/faturas'
@@ -27,6 +28,11 @@ const ResultadoRoute = ResultadoRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatorioRoute = RelatorioRouteImport.update({
+  id: '/relatorio',
+  path: '/relatorio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InventarioRoute = InventarioRouteImport.update({
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
   '/inventario': typeof InventarioRoute
+  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
   '/inventario': typeof InventarioRoute
+  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/faturas': typeof FaturasRoute
   '/fluxo-caixa': typeof FluxoCaixaRoute
   '/inventario': typeof InventarioRoute
+  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/fluxo-caixa'
     | '/inventario'
+    | '/relatorio'
     | '/reset-password'
     | '/resultado'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/fluxo-caixa'
     | '/inventario'
+    | '/relatorio'
     | '/reset-password'
     | '/resultado'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/faturas'
     | '/fluxo-caixa'
     | '/inventario'
+    | '/relatorio'
     | '/reset-password'
     | '/resultado'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   FaturasRoute: typeof FaturasRoute
   FluxoCaixaRoute: typeof FluxoCaixaRoute
   InventarioRoute: typeof InventarioRoute
+  RelatorioRoute: typeof RelatorioRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultadoRoute: typeof ResultadoRoute
 }
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorio': {
+      id: '/relatorio'
+      path: '/relatorio'
+      fullPath: '/relatorio'
+      preLoaderRoute: typeof RelatorioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inventario': {
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaturasRoute: FaturasRoute,
   FluxoCaixaRoute: FluxoCaixaRoute,
   InventarioRoute: InventarioRoute,
+  RelatorioRoute: RelatorioRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultadoRoute: ResultadoRoute,
 }

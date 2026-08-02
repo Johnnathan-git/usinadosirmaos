@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Home, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { BrandMark } from "@/components/BrandMark";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -73,15 +74,19 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-white p-4">
-      <Card className="w-full max-w-md p-8 shadow-lg">
-        <div className="mb-6 flex flex-col items-center gap-2">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Home className="h-7 w-7" />
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md p-8 elev-3">
+        <div className="mb-6 flex flex-col items-center gap-3">
+          <div className="grid h-16 w-16 place-items-center rounded-2xl bg-ink p-2.5 elev-2">
+            <BrandMark />
           </div>
-          <div className="text-center leading-tight">
-            <div className="text-[10px] font-semibold tracking-widest text-primary">USINA</div>
-            <div className="text-2xl font-bold">JJ</div>
+          <div className="text-center leading-none">
+            <div className="font-display text-2xl font-extrabold tracking-tight">
+              Usina <span className="text-primary">JJ</span>
+            </div>
+            <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Energia solar
+            </div>
           </div>
         </div>
         <h1 className="mb-1 text-center text-xl font-semibold">Entrar no sistema</h1>
@@ -107,7 +112,7 @@ function AuthPage() {
             </div>
           </div>
           {error && (
-            <div role="alert" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+            <div role="alert" className="rounded-lg border border-clay/30 bg-clay-soft px-3 py-2 text-sm text-clay">
               {error}
             </div>
           )}
