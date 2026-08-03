@@ -5,11 +5,9 @@ import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileDown, MessageCircle, Copy, RotateCcw } from "lucide-react";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
