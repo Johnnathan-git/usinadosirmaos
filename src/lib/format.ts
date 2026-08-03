@@ -38,17 +38,20 @@ export const parseMonthKey = (key: string) => {
 export const initial = (s: string) => (s?.trim()?.[0] ?? "?").toUpperCase();
 
 export const CLIENT_COLORS = [
-  "#10b981",
-  "#3b82f6",
-  "#8b5cf6",
-  "#ec4899",
-  "#f97316",
-  "#eab308",
-  "#ef4444",
-  "#06b6d4",
-  "#6366f1",
-  "#14b8a6",
+  "#1B7F5A",
+  "#3E6B8A",
+  "#7A6A9B",
+  "#A06A72",
+  "#B08046",
+  "#8A8F4A",
+  "#94614F",
+  "#4E8A86",
+  "#5B6690",
+  "#3F7A6E",
 ];
+
+/** Fundo suave a partir da cor do cliente (visual mais sóbrio). */
+export const softBg = (hex: string) => `${hex}1F`;
 
 export const EXPENSE_CATEGORIES = [
   "Fatura Usina",

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/reset-password")({
   component: ResetPasswordPage,
   head: () => ({
     meta: [
-      { title: "Redefinir senha — Usina JJ" },
+      { title: "Redefinir senha — Usina dos Irmãos" },
       { name: "description", content: "Defina uma nova senha para acessar o sistema." },
     ],
   }),

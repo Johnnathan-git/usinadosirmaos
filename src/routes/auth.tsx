@@ -14,8 +14,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Entrar — Usina JJ" },
-      { name: "description", content: "Acesso ao sistema de gestão da Usina JJ." },
+      { title: "Entrar — Usina dos Irmãos" },
+      { name: "description", content: "Acesso ao sistema de gestão da Usina dos Irmãos." },
     ],
   }),
 });

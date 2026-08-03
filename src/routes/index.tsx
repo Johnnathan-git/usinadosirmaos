@@ -43,8 +43,8 @@ export const Route = createFileRoute("/")({
   component: DashboardPage,
   head: () => ({
     meta: [
-      { title: "Dashboard — Usina JJ" },
-      { name: "description", content: "Visão geral de receitas, despesas e lucro da Usina JJ." },
+      { title: "Dashboard — Usina dos Irmãos" },
+      { name: "description", content: "Visão geral de receitas, despesas e lucro da Usina dos Irmãos." },
     ],
   }),
 });
@@ -192,7 +192,7 @@ function Dashboard() {
 
       <Card className="surface-card p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-amber-500" />
+          <Trophy className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-lg font-semibold">Ranking — Clientes Mais Lucrativos</h2>
         </div>
         <div className="space-y-3">
@@ -200,8 +200,8 @@ function Dashboard() {
             <div key={c.id} className="flex items-center gap-3">
               <span className="w-5 text-right text-sm text-muted-foreground">{idx + 1}</span>
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-md text-sm font-semibold text-white"
-                style={{ backgroundColor: c.color }}
+                className="flex h-9 w-9 items-center justify-center rounded-md text-sm font-semibold"
+                style={{ backgroundColor: `${c.color}1F`, color: c.color }}
               >
                 {initial(c.name)}
               </div>
@@ -213,7 +213,7 @@ function Dashboard() {
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full"
-                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: c.color }}
+                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
                   />
                 </div>
               </div>
