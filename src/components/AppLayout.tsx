@@ -13,7 +13,7 @@ import { BrandLockup } from "@/components/BrandMark";
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutGrid, module: "dashboard" },
-  { to: "/faturas", label: "Lançamento de Faturas", icon: Users, module: "faturas" },
+  { to: "/faturas", label: "Faturas e Clientes", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
   { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado" },
   { to: "/relatorio", label: "Relatório do Cliente", icon: FileSpreadsheet, module: "relatorio" },
@@ -65,11 +65,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const acc = access.data ?? undefined;
   const visibleNav = acc
     ? nav.filter(
-        (n) =>
-          acc.effective_admin ||
-          (!n.adminOnly &&
-            (acc.permissions.includes(n.module) ||
-              (n.module === "relatorio" && acc.permissions.includes("resultado")))),
+        (n) => acc.effective_admin || (!n.adminOnly && acc.permissions.includes(n.module)),
       )
     : [];
   const current = nav.find((n) => n.to === "/" ? pathname === "/" : pathname.startsWith(n.to));
