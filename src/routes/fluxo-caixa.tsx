@@ -55,7 +55,7 @@ export const Route = createFileRoute("/fluxo-caixa")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Fluxo de Caixa — Usina JJ" },
+      { title: "Fluxo de Caixa — Usina dos Irmãos" },
       { name: "description", content: "Controle mensal de receitas e despesas." },
     ],
   }),

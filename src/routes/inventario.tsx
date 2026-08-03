@@ -51,7 +51,7 @@ export const Route = createFileRoute("/inventario")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Inventário — Usina JJ" },
+      { title: "Inventário — Usina dos Irmãos" },
       { name: "description", content: "Patrimônio, equipamentos e gastos de instalação." },
     ],
   }),

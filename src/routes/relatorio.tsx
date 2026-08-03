@@ -47,9 +47,9 @@ export const Route = createFileRoute("/relatorio")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Relatório do Cliente — Usina JJ" },
+      { title: "Relatório do Cliente — Usina dos Irmãos" },
       { name: "description", content: "Monte, edite e envie a planilha mensal de economia para cada cliente." },
-      { property: "og:title", content: "Relatório do Cliente — Usina JJ" },
+      { property: "og:title", content: "Relatório do Cliente — Usina dos Irmãos" },
       { property: "og:description", content: "Planilha mensal de economia pronta para enviar ao cliente." },
     ],
   }),

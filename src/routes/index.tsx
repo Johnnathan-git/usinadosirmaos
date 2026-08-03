@@ -43,8 +43,8 @@ export const Route = createFileRoute("/")({
   component: DashboardPage,
   head: () => ({
     meta: [
-      { title: "Dashboard — Usina JJ" },
-      { name: "description", content: "Visão geral de receitas, despesas e lucro da Usina JJ." },
+      { title: "Dashboard — Usina dos Irmãos" },
+      { name: "description", content: "Visão geral de receitas, despesas e lucro da Usina dos Irmãos." },
     ],
   }),
 });

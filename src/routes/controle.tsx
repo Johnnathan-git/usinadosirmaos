@@ -42,7 +42,7 @@ export const Route = createFileRoute("/controle")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Controle da Usina — Usina JJ" },
+      { title: "Controle da Usina — Usina dos Irmãos" },
       { name: "description", content: "Geração x consumo e rateio por cliente." },
     ],
   }),
