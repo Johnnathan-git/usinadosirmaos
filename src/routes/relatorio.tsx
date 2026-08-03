@@ -172,11 +172,16 @@ function Relatorio() {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[860px] border-collapse text-sm">
+          <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
               <tr className="bg-muted/60 text-[11px] uppercase leading-tight text-muted-foreground">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
-                  <th key={h} className="border border-border px-2 py-2 text-center font-semibold">{h}</th>
+                  <th
+                    key={h}
+                    className={`border border-border px-2 py-2 text-center font-semibold ${h === "UC" ? "min-w-[150px]" : ""}`}
+                  >
+                    {h}
+                  </th>
                 ))}
               </tr>
             </thead>

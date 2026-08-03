@@ -4,13 +4,14 @@ export const brl = (n: number) =>
   );
 
 export const monthLabel = (d: Date) => {
-  const m = d.toLocaleString("en-US", { month: "short" });
+  const m = d.toLocaleString("pt-BR", { month: "short" }).replace(".", "");
   const y = d.getFullYear().toString().slice(-2);
-  return `${m}/${y}`;
+  return `${m.charAt(0).toUpperCase()}${m.slice(1)}/${y}`;
 };
 
 export const monthLabelLong = (d: Date) => {
-  return d.toLocaleString("en-US", { month: "long", year: "numeric" });
+  const s = d.toLocaleString("pt-BR", { month: "long", year: "numeric" });
+  return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
 // Parses "yyyy-mm-dd" as a LOCAL date (avoids UTC shifting to previous month)
@@ -38,20 +39,20 @@ export const parseMonthKey = (key: string) => {
 export const initial = (s: string) => (s?.trim()?.[0] ?? "?").toUpperCase();
 
 export const CLIENT_COLORS = [
-  "#1B7F5A",
-  "#3E6B8A",
-  "#7A6A9B",
-  "#A06A72",
-  "#B08046",
-  "#8A8F4A",
-  "#94614F",
-  "#4E8A86",
-  "#5B6690",
-  "#3F7A6E",
+  "#0E6BA8",
+  "#E08A1E",
+  "#1E8E6A",
+  "#8E4EC6",
+  "#C2405A",
+  "#0D7A8C",
+  "#B4611A",
+  "#3E5CB8",
+  "#177A55",
+  "#9A2F6B",
 ];
 
 /** Fundo suave a partir da cor do cliente (visual mais sóbrio). */
-export const softBg = (hex: string) => `${hex}1F`;
+export const softBg = (hex: string) => `${hex}26`;
 
 export const EXPENSE_CATEGORIES = [
   "Fatura Usina",

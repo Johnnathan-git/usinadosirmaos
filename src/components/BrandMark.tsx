@@ -6,12 +6,12 @@ export function BrandMark({ className }: { className?: string }) {
     <svg viewBox="0 0 48 48" role="img" aria-label="Usina dos Irmãos" className={cn("h-full w-full", className)}>
       <defs>
         <linearGradient id="bm-sun" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#FFD469" />
-          <stop offset="100%" stopColor="#F0A93B" />
+          <stop offset="0%" stopColor="#FFC94A" />
+          <stop offset="100%" stopColor="#F08A1E" />
         </linearGradient>
         <linearGradient id="bm-panel" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#2A9C71" />
-          <stop offset="100%" stopColor="#15694B" />
+          <stop offset="0%" stopColor="#2F7FD1" />
+          <stop offset="100%" stopColor="#10386E" />
         </linearGradient>
       </defs>
       <circle cx="24" cy="17" r="7.5" fill="url(#bm-sun)" />
@@ -23,13 +23,13 @@ export function BrandMark({ className }: { className?: string }) {
           width="1.8"
           height="3.6"
           rx="0.9"
-          fill="#FFD469"
+          fill="#FFC94A"
           opacity="0.9"
           transform={`rotate(${a} 24 17)`}
         />
       ))}
       <path d="M13 43 L18.5 27.5 H29.5 L35 43 Z" fill="url(#bm-panel)" />
-      <g stroke="#F7F5F0" strokeWidth="1" opacity="0.6">
+      <g stroke="#EAF2FB" strokeWidth="1" opacity="0.65">
         <path d="M17 38.5 H31" />
         <path d="M19 33 H29" />
         <path d="M24 27.5 V43" />
@@ -41,7 +41,7 @@ export function BrandMark({ className }: { className?: string }) {
 export function BrandLockup({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-border/70 bg-muted p-1.5 elev-1 sm:h-11 sm:w-11">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-primary/25 bg-gradient-to-br from-sky-soft to-solar-soft p-1.5 elev-1 sm:h-11 sm:w-11">
         <BrandMark />
       </div>
       {!compact && (

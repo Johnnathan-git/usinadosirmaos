@@ -145,18 +145,20 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="p-6">
-            <h2 className="mb-4 text-lg font-semibold">{monthLabelLong(d)}</h2>
+          <Card key={mk} className="overflow-hidden p-0 elev-2">
+            <div className="border-b border-border bg-muted/50 px-4 py-3">
+              <h2 className="text-base font-semibold">{monthLabelLong(d)}</h2>
+            </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="pb-3 text-left font-medium">Mês</th>
-                    <th className="pb-3 text-right font-medium">Consumo (kW)</th>
-                    <th className="pb-3 text-right font-medium">Valor s/ Usina</th>
-                    <th className="pb-3 text-right font-medium">c/ 30% Desconto</th>
-                    <th className="pb-3 text-right font-medium">Cliente Pagou</th>
-                    <th className="pb-3 text-right font-medium text-primary">Economia Gerada</th>
+                  <tr className="bg-muted/60 text-[11px] uppercase leading-tight text-muted-foreground">
+                    <th className="border border-border px-2 py-2 text-center font-semibold">Mês</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold">Consumo (kW)</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold">Valor s/ Usina</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold">c/ 30% Desconto</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold">Cliente Pagou</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold text-primary">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -165,13 +167,13 @@ function Resultado() {
                     const desc = semUsina * 0.7;
                     const eco = semUsina * 0.3;
                     return (
-                      <tr key={inv.id} className="border-t">
-                        <td className="py-3 text-muted-foreground">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right num">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="py-3 text-right num">{brl(semUsina)}</td>
-                        <td className="py-3 text-right num">{brl(desc)}</td>
-                        <td className="py-3 text-right num font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right num font-semibold text-primary">{brl(eco)}</td>
+                      <tr key={inv.id}>
+                        <td className="whitespace-nowrap border border-border px-2 py-2.5 text-center text-muted-foreground">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(semUsina)}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(desc)}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-primary">{brl(eco)}</td>
                       </tr>
                     );
                   })}
