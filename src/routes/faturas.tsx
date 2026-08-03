@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert } from "lucide-react";
-import { CLIENT_COLORS, brl, initial, monthLabelFromISO } from "@/lib/format";
+import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
@@ -135,8 +135,8 @@ function Faturas() {
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-11 w-11 items-center justify-center rounded-lg text-base font-semibold text-white"
-                  style={{ backgroundColor: c.color }}
+                  className="flex h-11 w-11 items-center justify-center rounded-lg text-base font-semibold"
+                  style={{ backgroundColor: softBg(c.color), color: c.color }}
                 >
                   {initial(c.name)}
                 </div>
@@ -155,7 +155,7 @@ function Faturas() {
               </div>
             </div>
             <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-emerald-500" /> 1 UC</span>
+              <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-primary" /> 1 UC</span>
               <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}</span>
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
@@ -167,8 +167,7 @@ function Faturas() {
                 <Eye className="h-4 w-4" /> Abrir Faturas
               </Button>
               <Button
-                className="gap-2 text-white"
-                style={{ backgroundColor: c.color }}
+                className="gap-2"
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >

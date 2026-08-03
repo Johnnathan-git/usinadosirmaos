@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-/** Marca da Usina JJ: sol + painel solar. */
+/** Marca da Usina dos Irmãos: sol + painel solar. */
 export function BrandMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" role="img" aria-label="Usina JJ" className={cn("h-full w-full", className)}>
+    <svg viewBox="0 0 48 48" role="img" aria-label="Usina dos Irmãos" className={cn("h-full w-full", className)}>
       <defs>
         <linearGradient id="bm-sun" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#FFD469" />
@@ -41,13 +41,13 @@ export function BrandMark({ className }: { className?: string }) {
 export function BrandLockup({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-ink p-1.5 elev-2 sm:h-11 sm:w-11">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-border/70 bg-muted p-1.5 elev-1 sm:h-11 sm:w-11">
         <BrandMark />
       </div>
       {!compact && (
         <div className="min-w-0 leading-none">
           <div className="font-display text-[15px] font-extrabold tracking-tight text-foreground">
-            Usina <span className="text-primary">JJ</span>
+            Usina <span className="text-primary">dos Irmãos</span>
           </div>
           <div className="mt-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Energia solar
