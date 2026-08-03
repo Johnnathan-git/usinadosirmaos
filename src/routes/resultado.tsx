@@ -11,7 +11,7 @@ import {
   Popover, PopoverContent, PopoverTrigger,
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileDown, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { brl, monthLabelLong, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 
@@ -81,9 +81,6 @@ function Resultado() {
   }, [data, locked]);
   const [selectedMonths, setSelectedMonths] = useState<string[]>(monthOptions.slice(0, 1));
 
-  const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
-  const clientColor = (id: string) => data.clients.find(c => c.id === id)?.color ?? "#94a3b8";
-
   const filtered = data.invoices.filter(inv => {
     const mk = inv.reference_date.slice(0, 7);
     if (!selectedMonths.includes(mk)) return false;
@@ -142,9 +139,6 @@ function Resultado() {
               {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas.</p>}
             </PopoverContent>
           </Popover>
-          <Button variant="outline" className="w-full gap-2 sm:w-auto" onClick={() => window.print()}>
-            <FileDown className="h-4 w-4" /> Exportar PDF
-          </Button>
         </div>
       </div>
 
@@ -157,14 +151,11 @@ function Resultado() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="pb-3 text-left font-medium">Cliente</th>
                     <th className="pb-3 text-left font-medium">Mês</th>
-                    <th className="pb-3 text-left font-medium">UC</th>
                     <th className="pb-3 text-right font-medium">Consumo (kW)</th>
                     <th className="pb-3 text-right font-medium">Valor s/ Usina</th>
                     <th className="pb-3 text-right font-medium">c/ 30% Desconto</th>
                     <th className="pb-3 text-right font-medium">Cliente Pagou</th>
-                    <th className="pb-3 text-right font-medium">Fat. Distribuidora</th>
                     <th className="pb-3 text-right font-medium text-primary">Economia Gerada</th>
                   </tr>
                 </thead>
@@ -175,19 +166,11 @@ function Resultado() {
                     const eco = semUsina * 0.3;
                     return (
                       <tr key={inv.id} className="border-t">
-                        <td className="py-3">
-                          <span className="inline-flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: clientColor(inv.client_id) }} />
-                            {clientName(inv.client_id)}
-                          </span>
-                        </td>
                         <td className="py-3 text-muted-foreground">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-muted-foreground">{inv.uc_number}</td>
                         <td className="py-3 text-right num">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                         <td className="py-3 text-right num">{brl(semUsina)}</td>
                         <td className="py-3 text-right num">{brl(desc)}</td>
                         <td className="py-3 text-right num font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right num text-clay">{brl(Number(inv.distributor_invoice))}</td>
                         <td className="py-3 text-right num font-semibold text-primary">{brl(eco)}</td>
                       </tr>
                     );
@@ -203,10 +186,10 @@ function Resultado() {
         <Card className="p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="border-none bg-ink p-8 text-center text-white elev-3">
-        <div className="text-sm font-medium uppercase tracking-wide opacity-90">Economia total gerada</div>
-        <div className="num-lg mt-2 text-4xl font-extrabold text-solar sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-2 text-sm opacity-90">
+      <Card className="border border-primary/20 bg-primary/10 p-8 text-center elev-1">
+        <div className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Economia total gerada</div>
+        <div className="num-lg mt-2 text-4xl font-extrabold text-primary sm:text-5xl">{brl(totalEconomia)}</div>
+        <div className="mt-2 text-sm text-muted-foreground">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
       </Card>
