@@ -203,12 +203,8 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-muted/40 px-4 py-3 text-sm">
-            <span className="text-muted-foreground">{rows.length} {rows.length === 1 ? "mês" : "meses"}</span>
-            <span className="num font-semibold">
-              Total pago pelo cliente:{" "}
-              {brl(rows.reduce((a, r) => a + (Number(r.comDesconto.replace(/[^\d,-]/g, "").replace(",", ".")) || 0), 0))}
-            </span>
+          <div className="border-t border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+            {rows.length} {rows.length === 1 ? "mês" : "meses"}
           </div>
         )}
       </Card>
