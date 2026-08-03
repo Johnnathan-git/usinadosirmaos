@@ -3,7 +3,6 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -123,15 +122,6 @@ function Relatorio() {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
   }
 
-  const plainText = () =>
-    [
-      `*${client?.name ?? ""} — Usina JJ*`,
-      ...rows.map(
-        (r) =>
-          `${r.mes} | UC ${r.uc} | ${r.consumo} kW | s/ usina ${r.semUsina} | *você pagou ${r.comDesconto}*`,
-      ),
-    ].join("\n");
-
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
@@ -140,35 +130,6 @@ function Relatorio() {
           <p className="text-sm text-muted-foreground">
             Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
           </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" className="gap-2" onClick={() => setRows(selected.map(toRow))}>
-            <RotateCcw className="h-4 w-4" /> Restaurar
-          </Button>
-          <Button
-            variant="outline"
-            className="gap-2"
-            onClick={async () => {
-              await navigator.clipboard.writeText(plainText());
-              toast.success("Resumo copiado.");
-            }}
-          >
-            <Copy className="h-4 w-4" /> Copiar
-          </Button>
-          <Button
-            variant="outline"
-            className="gap-2"
-            onClick={() => {
-              const phone = (client?.phone ?? "").replace(/\D/g, "");
-              const url = `https://wa.me/${phone ? (phone.length > 11 ? phone : `55${phone}`) : ""}?text=${encodeURIComponent(plainText())}`;
-              window.open(url, "_blank", "noopener");
-            }}
-          >
-            <MessageCircle className="h-4 w-4" /> WhatsApp
-          </Button>
-          <Button className="gap-2" onClick={() => window.print()}>
-            <FileDown className="h-4 w-4" /> Exportar PDF
-          </Button>
         </div>
       </div>
 
