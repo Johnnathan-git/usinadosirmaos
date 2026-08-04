@@ -144,8 +144,8 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Dashboard</h1>
+        <p className="text-sm text-slate-500">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -163,33 +163,32 @@ function Dashboard() {
         <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="sky" />
       </div>
 
-      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold">Receita, Despesas e Lucro</h2>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-muted-foreground">
+          <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
             {[["Receita", "var(--leaf)"], ["Despesas", "var(--destructive)"], ["Lucro", "var(--solar)"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
                 {k}
               </span>
             ))}
-            <span className="text-muted-foreground/70">últimos 6 meses</span>
           </div>
         </div>
         <div className="-mx-2 overflow-x-auto px-2">
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barGap={4}>
-                <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.7} />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} />
+                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeOpacity={0.7} />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B" }} />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   width={54}
-                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                  tick={{ fontSize: 11, fill: "#64748B" }}
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.5 }} content={<ChartTooltip />} />
+                <Tooltip cursor={{ fill: "#F1F5F9", opacity: 0.5 }} content={<ChartTooltip />} />
                 <Bar dataKey="Receita" fill="var(--leaf)" radius={[4, 4, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="var(--destructive)" radius={[4, 4, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Lucro" fill="var(--solar)" radius={[4, 4, 0, 0]} maxBarSize={32} />
@@ -199,27 +198,27 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <div className="mb-4 flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-lg font-semibold">Ranking — Clientes Mais Lucrativos</h2>
+          <Trophy className="h-5 w-5 text-slate-400" />
+          <h2 className="text-lg font-bold text-slate-800">Ranking — Clientes Mais Lucrativos</h2>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {ranking.map((c, idx) => (
             <div key={c.id} className="flex items-center gap-3">
-              <span className="w-5 text-right text-sm text-muted-foreground">{idx + 1}</span>
+              <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-md text-sm font-semibold"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold"
                 style={{ backgroundColor: `${c.color}1F`, color: c.color }}
               >
                 {initial(c.name)}
               </div>
               <div className="flex-1">
                 <div className="mb-1 flex items-center justify-between">
-                  <span className="text-sm font-medium">{c.name}</span>
-                  <span className="num text-sm font-semibold text-foreground">{brl(c.profit)}</span>
+                  <span className="text-sm font-semibold text-slate-800">{c.name}</span>
+                  <span className="num text-sm font-bold text-slate-900">{brl(c.profit)}</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
                     className="h-full rounded-full"
                     style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
@@ -228,33 +227,33 @@ function Dashboard() {
               </div>
             </div>
           ))}
-          {ranking.length === 0 && <p className="text-sm text-muted-foreground">Nenhum cliente cadastrado.</p>}
+          {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold">Resumo mês a mês</h2>
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Resumo mês a mês</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50">
-                <th className="pb-3 text-left font-medium">Mês</th>
-                <th className="pb-3 text-right font-medium">Receita</th>
-                <th className="pb-3 text-right font-medium">Desp. Operacionais</th>
-                <th className="pb-3 text-right font-medium">Fat. Distribuidora</th>
-                <th className="pb-3 text-right font-medium">Despesas</th>
-                <th className="pb-3 text-right font-medium">Lucro</th>
+              <tr className="border-b border-slate-200">
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Mês</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Receita</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Fat. Distribuidora</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Despesas</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Lucro</th>
               </tr>
             </thead>
             <tbody>
               {summary.map(row => (
-                <tr key={row.month} className="border-t even:bg-slate-50/50">
-                  <td className="py-3 text-foreground">{row.month}</td>
-                  <td className="num py-3 text-right font-medium text-leaf">{brl(row.Receita)}</td>
-                  <td className="num py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
-                  <td className="num py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
-                  <td className="num py-3 text-right font-medium text-destructive">{brl(row.Despesas)}</td>
-                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{brl(row.Lucro)}</td>
+                <tr key={row.month} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                  <td className="py-4 text-slate-800 font-medium">{row.month}</td>
+                  <td className="num py-4 text-right font-semibold text-[#059669]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right text-slate-500">{brl(row.Operacionais)}</td>
+                  <td className="num py-4 text-right text-slate-500">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#DC2626]">{brl(row.Despesas)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -262,14 +261,14 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
-            <Users className="h-6 w-6 text-muted-foreground" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
+            <Users className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-sm text-muted-foreground">Total de Clientes</div>
-            <div className="text-2xl font-bold">{data.clients.length}</div>
+            <div className="text-sm text-slate-500 font-medium">Total de Clientes</div>
+            <div className="text-2xl font-bold text-slate-800">{data.clients.length}</div>
           </div>
         </div>
       </Card>
