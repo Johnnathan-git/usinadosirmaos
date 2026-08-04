@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Coloca outra cor no Lucro anual que harmonize com o resto, e mude a sigla tbem, ficou igual ao Lucro do mes
+ * Execute esta instrucao no projeto: Criar a opçao do usuario que cadastrei alterar a senha dele após ele fazer o login e criar a opçao do adminstrador de resetar a senha pelo modulo Acessos.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

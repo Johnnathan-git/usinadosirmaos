@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, ShieldCheck, Trash2, Pencil } from "lucide-react";
+import { Plus, ShieldCheck, Trash2, Pencil, KeyRound } from "lucide-react";
 import { MODULES } from "@/lib/permissions";
 import {
   listManagedUsers, createManagedUser, updateManagedUser, deleteManagedUser, changeMyPassword
@@ -132,6 +132,7 @@ function AcessosContent() {
                   <td className="px-6 py-4 text-right">
                     <div className="inline-flex gap-2">
                       <UserFormDialog mode="edit" user={u} clients={clients} />
+                      <ResetPasswordDialog user={u} />
                       <DeleteUserButton userId={u.id} email={u.email} />
                     </div>
                   </td>
@@ -328,6 +329,60 @@ function ChangeOwnPasswordDialog() {
             className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium"
           >
             {m.isPending ? "Alterando..." : "Confirmar Alteração"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ResetPasswordDialog({ user }: { user: UserRow }) {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const updateFn = useServerFn(updateManagedUser);
+  const qc = useQueryClient();
+  
+  const m = useMutation({
+    mutationFn: () => updateFn({ data: { user_id: user.id, password, is_admin: user.is_admin, permissions: user.permissions, client_id: user.client_id } }),
+    onSuccess: () => {
+      toast.success(`Senha de ${user.email} resetada.`);
+      setOpen(false);
+      setPassword("");
+      qc.invalidateQueries({ queryKey: ["managed-users"] });
+    },
+    onError: (e: any) => toast.error(e?.message ?? "Falha ao resetar senha."),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#2E5C8A]">
+          <KeyRound className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Resetar Senha: {user.email}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <Label>Nova Senha Temporária</Label>
+            <Input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="Mínimo 6 caracteres" 
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button 
+            onClick={() => m.mutate()} 
+            disabled={m.isPending || password.length < 6}
+            className="bg-[#2E5C8A] hover:bg-[#254A6E] text-white font-medium"
+          >
+            {m.isPending ? "Resetando..." : "Confirmar Novo Acesso"}
           </Button>
         </DialogFooter>
       </DialogContent>
