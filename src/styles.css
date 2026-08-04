@@ -183,7 +183,7 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     font-weight: 700;
   }
 
@@ -194,18 +194,21 @@
 
   th {
     text-transform: uppercase;
-    color: #475569;
-    font-size: 0.875rem; /* text-sm */
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem; /* text-xs */
     font-weight: 600;
     text-align: left;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid var(--color-border);
+    letter-spacing: 0.05em;
   }
 
   td {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #E2E8F0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-numeric);
+    font-variant-numeric: tabular-nums;
   }
 
   tr:last-child td {
@@ -236,16 +239,18 @@
 
 /* Números monetários alinhados em colunas */
 @utility num {
+  font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
   letter-spacing: -0.01em;
 }
 
 @utility num-lg {
-  font-family: var(--font-display);
+  font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
   letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 @media print {
