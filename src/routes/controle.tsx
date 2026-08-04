@@ -117,28 +117,12 @@ function Controle() {
     toast.success("Removido da simulação");
   }
 
-  async function deleteClientForever(client_id: string, name: string) {
-    const typed = prompt(
-      `EXCLUSÃO DEFINITIVA de "${name}".\n\nIsso apaga o cliente e TODOS os dados lançados (faturas, rateio e vínculos de acesso). Essa ação não pode ser desfeita.\n\nDigite EXCLUIR para confirmar:`,
-    );
-    if (typed?.trim().toUpperCase() !== "EXCLUIR") return;
-    const inv = await supabase.from("invoices").delete().eq("client_id", client_id);
-    if (inv.error) return toast.error(inv.error.message);
-    const alloc = await supabase.from("client_allocations").delete().eq("client_id", client_id);
-    if (alloc.error) return toast.error(alloc.error.message);
-    await supabase.from("user_clients").delete().eq("client_id", client_id);
-    const cli = await supabase.from("clients").delete().eq("id", client_id);
-    if (cli.error) return toast.error(cli.error.message);
-    setRows(rs => rs.filter(r => r.client_id !== client_id));
-    toast.success(`Cliente ${name} excluído definitivamente`);
-  }
-
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Controle da Usina</h1>
-          <p className="text-sm text-slate-500">Geração × consumo e rateio por cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Simulação de Controle</h1>
+          <p className="text-sm text-slate-500">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
@@ -149,16 +133,13 @@ function Controle() {
               <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border border-slate-200 text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2">
-                <X className="h-4 w-4" /> Cancelar
-              </Button>
-              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
-                <Save className="h-4 w-4" /> Salvar
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+                <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
             <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
-              <Pencil className="h-4 w-4" /> Editar
+              <Pencil className="h-4 w-4" /> Editar Simulação
             </Button>
           )}
         </div>
