@@ -475,28 +475,38 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                 </label>
               </Button>
               {f.attachment_url && (
-                <button 
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      const path = f.attachment_url!;
-                      if (path.startsWith('http')) {
-                        window.open(path, '_blank');
-                        return;
+                <div className="flex items-center gap-2">
+                  <button 
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        const path = f.attachment_url!;
+                        const { data, error } = await supabase.storage
+                          .from('faturas_v3_privado_v2')
+                          .createSignedUrl(path, 60);
+                        if (error) throw error;
+                        
+                        const a = document.createElement('a');
+                        a.href = data.signedUrl;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.click();
+                      } catch (err: any) {
+                        toast.error("Erro ao abrir arquivo: " + err.message);
                       }
-                      const { data, error } = await supabase.storage
-                        .from('faturas_v3_privado_v2')
-                        .createSignedUrl(path, 3600);
-                      if (error) throw error;
-                      window.open(data.signedUrl, '_blank');
-                    } catch (err: any) {
-                      toast.error("Erro ao abrir arquivo: " + err.message);
-                    }
-                  }}
-                  className="text-xs text-primary hover:underline flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0"
-                >
-                  <Eye className="h-3 w-3" /> Ver anexo
-                </button>
+                    }}
+                    className="text-xs text-primary hover:underline flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0"
+                  >
+                    <Eye className="h-3 w-3" /> Ver anexo
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setF(prev => ({ ...prev, attachment_url: "" }))}
+                    className="text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0"
+                  >
+                    Remover
+                  </button>
+                </div>
               )}
             </div>
           </div>
