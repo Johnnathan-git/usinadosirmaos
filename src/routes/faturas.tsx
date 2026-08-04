@@ -195,7 +195,7 @@ function Faturas() {
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2"
+                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#D64545] hover:bg-slate-50 rounded-lg px-4 py-2"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
@@ -619,7 +619,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                           <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Pencil className="h-4 w-4" />
                           </button>
-                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-[#D64545]" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
