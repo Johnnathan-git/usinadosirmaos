@@ -160,8 +160,13 @@ function Resultado() {
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Desconto</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">
+                      {clientId !== "all" 
+                        ? `Valor c/ ${data.clients.find(c => c.id === clientId)?.discount_pct}% desconto` 
+                        : "Desconto"}
+                    </th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
@@ -180,6 +185,7 @@ function Resultado() {
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{brl(semUsina)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{brl(desc)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2F6F62]">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#B5533E]">{brl(Number(inv.distributor_invoice))}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#1C2333]">{brl(eco)}</td>
                       </tr>
                     );
