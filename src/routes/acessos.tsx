@@ -279,7 +279,7 @@ function DeleteUserButton({ userId, email }: { userId: string; email: string }) 
     <Button size="sm" variant="ghost" onClick={() => {
       if (confirm(`Excluir ${email}? Esta ação não pode ser desfeita.`)) m.mutate();
     }}>
-      <Trash2 className="h-4 w-4 text-rose-600" />
+      <Trash2 className="h-4 w-4 text-[#D64545]" />
     </Button>
   );
 }
