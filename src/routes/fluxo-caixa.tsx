@@ -171,8 +171,8 @@ function Fluxo() {
                     {initial(client?.name ?? "?")}
                   </div>
                   <div>
-                    <div className="font-semibold text-[#1C2333]">{client?.name ?? "—"}</div>
-                    <div className="text-xs text-[#6B7280]">{monthLabel(monthDate)}</div>
+                    <div className="font-bold text-[#1C2333]">{client?.name ?? "—"}</div>
+                    <div className="text-xs font-medium text-[#6B7280]">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
                 <div className="text-right text-sm">

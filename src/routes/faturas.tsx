@@ -148,7 +148,7 @@ function Faturas() {
                 </div>
                 <div>
                   <div className="font-bold text-[#1C2333]">{c.name}</div>
-                  <div className="text-xs text-[#6B7280]">UC {c.uc_number}</div>
+                  <div className="text-xs font-medium text-[#6B7280]">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
