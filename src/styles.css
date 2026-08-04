@@ -42,7 +42,7 @@
   
   /* Cores Semânticas Financeiras */
   --color-positive: #2F6F62;
-  --color-negative: #B5533E;
+  --color-negative: #D64545;
   --color-amber: #C98A3E;
   --color-navy: #151B2E;
 }
@@ -65,7 +65,7 @@
   --muted-foreground: #6B7280;
   --accent: #E4E7EC;
   --accent-foreground: #1C2333;
-  --destructive: #B5533E;
+  --destructive: #D64545;
   --destructive-foreground: #FFFFFF;
   --border: #E4E7EC;
   --input: #E4E7EC;
