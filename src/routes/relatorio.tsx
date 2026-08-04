@@ -133,7 +133,7 @@ function Relatorio() {
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-[#6B7280]">
+          <p className="text-sm font-medium text-[#4B5563]">
             Planilha mensal de economia pronta para enviar ao cliente.
           </p>
         </div>
@@ -141,7 +141,7 @@ function Relatorio() {
 
       <Card className="no-print rounded-[10px] border border-[#E4E7EC] bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-sm">
         <div>
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Cliente</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
             <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#374151] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
@@ -150,7 +150,7 @@ function Relatorio() {
           </Select>
         </div>
         <div>
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Meses</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Meses</div>
           <div className="flex flex-wrap gap-2">
             {monthOptions.map((m) => {
               const on = months.includes(m);
@@ -159,7 +159,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#6B7280] hover:bg-slate-50"
+                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#4B5563] hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}

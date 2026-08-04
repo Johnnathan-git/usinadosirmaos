@@ -90,7 +90,7 @@ function AuthPage() {
           </div>
         </div>
         <h1 className="mb-1 text-center text-xl font-bold text-[#374151]">Entrar no sistema</h1>
-        <p className="mb-6 text-center text-sm font-medium text-[#6B7280]">Acesso restrito a usuários cadastrados</p>
+        <p className="mb-6 text-center text-sm font-medium text-[#4B5563]">Acesso restrito a usuários cadastrados</p>
         <form onSubmit={submit} method="post" action="#" className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>

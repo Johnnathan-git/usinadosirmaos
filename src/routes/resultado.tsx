@@ -108,7 +108,7 @@ function Resultado() {
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
           <h1 className="truncate text-2xl font-bold tracking-tight text-[#374151] sm:text-3xl">Resultado</h1>
-          <p className="text-sm font-medium text-[#6B7280]">Economia gerada por mês e cliente</p>
+          <p className="text-sm font-medium text-[#4B5563]">Economia gerada por mês e cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
@@ -157,17 +157,17 @@ function Resultado() {
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 bg-slate-50/30">
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">
                       {clientId !== "all" 
                         ? `Valor c/ ${data.clients.find(c => c.id === clientId)?.discount_pct}% desconto` 
                         : "Valor c/ desconto"}
                     </th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Economia Gerada</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -180,7 +180,7 @@ function Resultado() {
                     const eco = semUsina * discountFactor;
                     return (
                       <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-                        <td className="whitespace-nowrap px-4 py-4 text-center text-[#6B7280] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="whitespace-nowrap px-4 py-4 text-center text-[#4B5563] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{brl(semUsina)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{brl(desc)}</td>

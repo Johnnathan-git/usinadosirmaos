@@ -70,7 +70,7 @@ function AcessosContent() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Acessos</h1>
-          <p className="text-sm font-medium text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
+          <p className="text-sm font-medium text-[#4B5563]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ChangeOwnPasswordDialog />
@@ -89,12 +89,12 @@ function AcessosContent() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#F5F6F8]">
-                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">E-mail</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Papel</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Permissões</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Criado em</th>
-                <th className="px-6 py-4 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Ações</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Papel</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Permissões</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Criado em</th>
+                <th className="px-6 py-4 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -125,7 +125,7 @@ function AcessosContent() {
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
                     {clientName(u.client_id) ?? <span className="text-[#9CA3AF]">—</span>}
                   </td>
                   <td className="px-6 py-4 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider num">{formatDateBR(u.created_at)}</td>

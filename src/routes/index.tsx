@@ -140,7 +140,7 @@ function Dashboard() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
         <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
-        <p className="text-sm font-medium text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
+        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -161,7 +161,7 @@ function Dashboard() {
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
-          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
             {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: c }} />
@@ -240,22 +240,22 @@ function Dashboard() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#E4E7EC]">
-                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Receita</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Despesas</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Lucro</th>
+                <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Receita</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Despesas</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Lucro</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
                 <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                  <td className="num py-4 text-right font-medium text-[#6B7280]">{brl(row.Receita)}</td>
-                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
-                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
-                  <td className="num py-4 text-right font-medium text-[#6B7280]">{brl(row.Despesas)}</td>
+                  <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
+                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
                   <td className="num py-4 text-right font-bold text-[#2E5C8A]">{brl(row.Lucro)}</td>
                 </tr>
               ))}
@@ -270,7 +270,7 @@ function Dashboard() {
             <Users className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Total de Clientes</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
             <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
           </div>
         </div>
@@ -334,7 +334,7 @@ function StatCard({
           </span>
         )}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
       <div className="mt-1.5 text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
         {brl(value)}
       </div>

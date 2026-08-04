@@ -97,7 +97,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <BrandLockup />
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
-            <span className="hidden px-3 text-xs font-semibold text-[#6B7280] uppercase tracking-wide sm:inline">
+            <span className="hidden px-3 text-xs font-semibold text-[#4B5563] uppercase tracking-wide sm:inline">
               {acc?.effective_admin ? "Administrador" : "Usuário"}
             </span>
             <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
@@ -162,7 +162,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <div className="mx-auto mt-20 max-w-md rounded-xl border border-[#E4E7EC] bg-white p-10 text-center shadow-sm">
               <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#9CA3AF]" />
               <h2 className="text-xl font-bold text-[#374151]">Acesso restrito</h2>
-              <p className="mt-2 text-sm text-[#6B7280] font-medium">Você não tem permissão para acessar este módulo.</p>
+              <p className="mt-2 text-sm text-[#4B5563] font-medium">Você não tem permissão para acessar este módulo.</p>
             </div>
           ) : children}
         </main>

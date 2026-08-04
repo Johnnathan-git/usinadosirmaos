@@ -150,7 +150,7 @@ function Controle() {
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
           <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Controle</h1>
-          <p className="text-sm font-medium text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
+          <p className="text-sm font-medium text-[#4B5563]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button onClick={() => setNewOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
@@ -158,7 +158,7 @@ function Controle() {
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
               <Button onClick={() => setEditing(false)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold">
@@ -166,7 +166,7 @@ function Controle() {
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
               <Pencil className="h-4 w-4" /> Editar
             </Button>
           )}
@@ -174,28 +174,28 @@ function Controle() {
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
+        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
           <Zap className="h-4 w-4 text-[#C98A3E]" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Nº de placas</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Nº de placas</Label>
             {editing ? (
               <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
             ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">kW por placa/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">kW por placa/mês</Label>
             {editing ? (
               <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
             ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Geração total/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Geração total/mês</Label>
             <div className="text-2xl font-bold text-[#374151] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Consumo total clientes</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Consumo total clientes</Label>
             <div className="text-2xl font-bold text-[#374151] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
@@ -203,17 +203,17 @@ function Controle() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><TrendingUp className="h-4 w-4 text-[#2E5C8A]" /> Saldo de Energia</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><TrendingUp className="h-4 w-4 text-[#2E5C8A]" /> Saldo de Energia</div>
           <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#D64545]" : "text-[#2E5C8A]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><BarChart3 className="h-4 w-4 text-[#374151]" /> Aproveitamento</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><BarChart3 className="h-4 w-4 text-[#374151]" /> Aproveitamento</div>
           <div className="text-2xl font-bold text-[#374151] num-lg">{aproveitamento.toFixed(1)}%</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
           <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2E5C8A]" : "text-[#D64545]"}`}>
             {totalPct.toFixed(2)}%
           </div>
@@ -226,18 +226,18 @@ function Controle() {
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm overflow-hidden">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-bold text-[#374151]">Rateio por Cliente</h2>
-          <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">{rows.length} cliente(s)</span>
+          <span className="text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#E4E7EC]">
-                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente</th>
-                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Unid. Consumidora</th>
-                <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Rateio %</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">kW Alocado/Mês</th>
-                <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo Médio</th>
-                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Saldo Cliente</th>
+                <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Unid. Consumidora</th>
+                <th className="pb-3 text-center font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Rateio %</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">kW Alocado/Mês</th>
+                <th className="pb-3 text-center font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Consumo Médio</th>
+                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Saldo Cliente</th>
                 {editing && <th></th>}
               </tr>
             </thead>
@@ -253,7 +253,7 @@ function Controle() {
                         {r.name}
                       </span>
                     </td>
-                    <td className="py-4 text-[#6B7280]">{r.uc || "—"}</td>
+                    <td className="py-4 text-[#4B5563]">{r.uc || "—"}</td>
                     <td className="py-4 text-center">
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" step="0.01" value={r.pct}
