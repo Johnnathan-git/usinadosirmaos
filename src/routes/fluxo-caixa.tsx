@@ -120,34 +120,34 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-rose-500 hover:bg-rose-600 sm:flex-none">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-destructive hover:bg-destructive/90 sm:flex-none">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-emerald-200 bg-emerald-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700">
+        <Card className="border-emerald-200 bg-emerald-50/60 p-5 elev-1">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-700">
             <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
           <div className="text-2xl font-bold text-emerald-700">{brl(receitas)}</div>
         </Card>
-        <Card className="border-rose-200 bg-rose-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-rose-700">
+        <Card className="border-destructive/20 bg-destructive/10 p-5 elev-1">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-destructive">
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
-          <div className="text-2xl font-bold text-rose-700">{brl(despesas)}</div>
-          <div className="mt-1 text-xs text-rose-700/80">
+          <div className="text-2xl font-bold text-destructive">{brl(despesas)}</div>
+          <div className="mt-1 text-xs text-destructive/80 font-medium">
             Operacionais {brl(despesasOperacionais)} + Faturas distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="border-blue-200 bg-blue-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-blue-700">
+        <Card className="border-solar/20 bg-solar p-5 elev-2">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-solar-foreground">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-amber-600" : "text-blue-700"}`}>{brl(lucro)}</div>
-          <div className="mt-1 text-xs text-muted-foreground">Receitas − (operacionais + distribuidora)</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-solar-foreground"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-solar-foreground/80 font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
@@ -164,7 +164,7 @@ function Fluxo() {
                   <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>Lucro bruto: <span className="font-semibold text-blue-600">{brl(profit)}</span></div>
+                  <div>Lucro bruto: <span className="font-semibold text-solar">{brl(profit)}</span></div>
                   <div className="text-muted-foreground">Recebido: {brl(Number(inv.client_pays))}</div>
                   <div className="text-muted-foreground">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
                 </div>
@@ -192,9 +192,9 @@ function Fluxo() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-semibold text-rose-600">{brl(Number(e.amount))}</span>
+                <span className="whitespace-nowrap font-semibold text-destructive">{brl(Number(e.amount))}</span>
                 <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
@@ -364,7 +364,7 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
         </div>
         <DialogFooter className="flex-col gap-2 sm:flex-row">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-rose-500 hover:bg-rose-600">
+          <Button onClick={submit} disabled={saving} className="bg-destructive hover:bg-destructive/90">
             {expense ? "Salvar" : installments ? "Lançar parcelas" : "Lançar"}
           </Button>
         </DialogFooter>
