@@ -225,11 +225,11 @@ function Relatorio() {
                                 window.open(path, '_blank');
                                 return;
                               }
-                              const { data, error } = await supabase.storage
+                              // We use the public URL since we made the bucket public for troubleshooting
+                              const { data } = supabase.storage
                                 .from('faturas_private')
-                                .createSignedUrl(path, 60);
-                              if (error) throw error;
-                              window.open(data.signedUrl, '_blank');
+                                .getPublicUrl(path);
+                              window.open(data.publicUrl, '_blank');
                             } catch (err: any) {
                               console.error(err);
                               alert("Erro ao abrir arquivo: " + err.message);
