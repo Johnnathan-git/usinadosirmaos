@@ -166,8 +166,8 @@ function Relatorio() {
       </Card>
 
       <Card className="overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm">
-        <div className="bg-[#F5F6F8] px-6 py-4 text-center border-b border-[#E4E7EC]">
-          <div className="text-lg font-bold uppercase tracking-widest text-[#1C2333]">
+        <div className="bg-[#C97B5E] px-6 py-6 text-center border-b border-[#E4E7EC]">
+          <div className="text-2xl font-bold uppercase tracking-[0.2em] text-white font-grotesk">
             {client?.name ?? "—"}
           </div>
         </div>
