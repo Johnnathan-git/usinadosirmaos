@@ -1,7 +1,9 @@
 /**
  * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
  */
+import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
+
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";

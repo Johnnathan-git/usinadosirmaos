@@ -101,14 +101,14 @@ function Resultado() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Resultado</h1>
-          <p className="text-sm text-slate-500">Economia gerada por mês e cliente</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Resultado</h1>
+          <p className="text-sm text-muted-foreground">Economia gerada por mês e cliente</p>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:flex">
+        <div className="flex flex-wrap items-center gap-2">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white border border-slate-200 rounded-lg shadow-none"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-full sm:w-48 h-10 border-border bg-card rounded-lg shadow-sm"><SelectValue /></SelectTrigger>
             <SelectContent>
               {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
               {data.clients
@@ -118,83 +118,95 @@ function Resultado() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg">
-                {selectedMonths.length} {selectedMonths.length === 1 ? "mês selecionado" : "meses selecionados"}
-                <ChevronDown className="h-4 w-4" />
+              <Button variant="outline" className="h-10 w-full gap-2 sm:w-auto border-border bg-card text-foreground hover:bg-background rounded-lg font-semibold shadow-sm">
+                {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"}
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="max-h-72 w-56 overflow-auto bg-white border border-slate-200 rounded-xl shadow-lg">
-              {monthOptions.map(m => {
-                const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
-                const checked = selectedMonths.includes(m);
-                return (
-                  <label key={m} className="flex cursor-pointer items-center gap-2 py-2 px-3 hover:bg-slate-50 rounded-lg transition-colors">
-                    <Checkbox checked={checked} onCheckedChange={(v) => {
-                      setSelectedMonths(sm => v ? [...sm, m] : sm.filter(x => x !== m));
-                    }} />
-                    <span className="text-sm font-medium text-slate-700">{monthLabelLong(d)}</span>
-                  </label>
-                );
-              })}
-              {monthOptions.length === 0 && <p className="text-sm text-slate-500 p-3">Sem faturas.</p>}
+            <PopoverContent className="max-h-72 w-56 overflow-auto bg-card border-border rounded-xl shadow-lg p-2">
+              <div className="space-y-1">
+                {monthOptions.map(m => {
+                  const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
+                  const checked = selectedMonths.includes(m);
+                  return (
+                    <label key={m} className="flex cursor-pointer items-center gap-3 py-2 px-3 hover:bg-background rounded-lg transition-colors">
+                      <Checkbox checked={checked} onCheckedChange={(v) => {
+                        setSelectedMonths(sm => v ? [...sm, m] : sm.filter(x => x !== m));
+                      }} />
+                      <span className="text-xs font-semibold text-foreground uppercase tracking-wider">{monthLabelLong(d)}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              {monthOptions.length === 0 && <p className="text-sm text-muted-foreground p-3 text-center">Sem faturas.</p>}
             </PopoverContent>
           </Popover>
         </div>
       </div>
 
-      {sortedMonths.map(mk => {
-        const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
-        return (
-          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
-            <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-              <h2 className="text-base font-bold text-slate-800">{monthLabelLong(d)}</h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] border-collapse text-sm">
-                <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/30">
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Mês</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo (kW)</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">c/ 30% Desconto</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Cliente Pagou</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Economia Gerada</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {byMonth.get(mk)!.map(inv => {
-                    const semUsina = Number(inv.value_without_plant);
-                    const desc = semUsina * 0.7;
-                    const eco = semUsina * 0.3;
-                    return (
-                      <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-                        <td className="whitespace-nowrap px-4 py-4 text-center text-slate-500 font-medium">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700 font-medium">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(semUsina)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(desc)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#059669]">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-slate-800">{brl(eco)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+      <div className="grid grid-cols-1 gap-6">
+        {sortedMonths.map(mk => {
+          const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
+          return (
+            <Card key={mk} className="overflow-hidden bg-card border-border rounded-xl shadow-sm">
+              <div className="border-b border-border bg-background/50 px-6 py-4">
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-widest">{monthLabelLong(d)}</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[760px]">
+                  <thead>
+                    <tr className="border-b border-border bg-background/20">
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Mês</th>
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Consumo</th>
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">v. sem Usina</th>
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">c/ 30% Desc.</th>
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Pago</th>
+                      <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Economia</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/50">
+                    {byMonth.get(mk)!.map(inv => {
+                      const semUsina = Number(inv.value_without_plant);
+                      const desc = semUsina * 0.7;
+                      const eco = semUsina * 0.3;
+                      return (
+                        <tr key={inv.id} className="hover:bg-background/50 transition-colors">
+                          <td className="px-6 py-4 text-center text-[10px] font-bold text-muted-foreground uppercase">{monthLabelFromISO(inv.reference_date)}</td>
+                          <td className="num px-6 py-4 text-center text-sm font-semibold text-foreground">{Number(inv.consumption_kw).toLocaleString("pt-BR")} kW</td>
+                          <td className="num px-6 py-4 text-center text-sm font-medium text-foreground">{brl(semUsina)}</td>
+                          <td className="num px-6 py-4 text-center text-sm font-medium text-foreground">{brl(desc)}</td>
+                          <td className="num px-6 py-4 text-center text-sm font-bold text-profit">{brl(Number(inv.client_pays))}</td>
+                          <td className="num px-6 py-4 text-center text-sm font-bold text-accent">{brl(eco)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          );
+        })}
+
+        {sortedMonths.length === 0 && (
+          <Card className="bg-card border-border rounded-xl p-16 text-center text-muted-foreground shadow-sm">
+            Selecione ao menos um mês com faturas para visualizar o resultado.
           </Card>
-        );
-      })}
+        )}
 
-      {sortedMonths.length === 0 && (
-        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
-      )}
-
-      <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center shadow-none">
-        <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Economia total gerada para o cliente</div>
-        <div className="num-lg mt-3 text-4xl font-bold text-[#059669] sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-4 text-sm text-slate-400 font-semibold">
-          {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
-        </div>
-      </Card>
+        <Card className="bg-primary p-10 text-center shadow-lg border-none relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,var(--color-accent),transparent_120%)] opacity-10 group-hover:opacity-20 transition-opacity" />
+          <div className="relative z-10">
+            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent/80 mb-4">Economia total gerada</div>
+            <div className="num text-5xl font-bold text-white sm:text-6xl tracking-tighter">{brl(totalEconomia)}</div>
+            <div className="mt-6 flex items-center justify-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              <span>{selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"}</span>
+              <span className="h-1 w-1 rounded-full bg-slate-600" />
+              <span>{filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}</span>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
+
   );
 }
