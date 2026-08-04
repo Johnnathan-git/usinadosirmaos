@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Paperclip } from "lucide-react";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
