@@ -1,3 +1,6 @@
+/**
+ * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
+ */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -107,7 +110,7 @@ function Fluxo() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Fluxo de Caixa</h1>
+          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Fluxo de Caixa</h1>
           <p className="text-sm text-muted-foreground">Receitas, despesas e lucro mensal</p>
         </div>
         <div className="flex flex-wrap gap-2">

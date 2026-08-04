@@ -1,3 +1,6 @@
+/**
+ * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
+ */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
@@ -113,7 +116,7 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Lançamento de Faturas</h1>
+          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Faturas</h1>
           <p className="text-sm text-slate-500">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">

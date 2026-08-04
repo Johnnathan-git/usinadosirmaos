@@ -77,7 +77,7 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #F8FAFC;
+  --background: #F1F5F9; /* Slate 100 - fundo um pouco mais encorpado */
   --foreground: #1E293B;
   
   /* Cores Profissionais: Verde Suave (#16A34A) e Vermelho Suave (#DC2626) */
@@ -105,8 +105,8 @@
   --primary-glow: #1E293B;
   --gradient-primary: none;
   --gradient-surface: none;
-  --shadow-soft: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+  --shadow-soft: 0 2px 4px 0 rgb(0 0 0 / 0.04);
+  --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.06);
   
   --secondary: #FFFFFF;
   --secondary-foreground: #475569;
