@@ -154,10 +154,10 @@ function Fluxo() {
         </Card>
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <h2 className="mb-4 text-lg font-bold text-slate-800">Faturas dos clientes</h2>
-        {monthInvoices.length === 0 && <p className="text-sm text-slate-500">Nenhuma fatura neste mês.</p>}
-        <div className="divide-y divide-slate-100">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Faturas dos clientes</h2>
+        {monthInvoices.length === 0 && <p className="text-sm text-[#6B7280]">Nenhuma fatura neste mês.</p>}
+        <div className="divide-y divide-[#F5F6F8]">
           {monthInvoices.map(inv => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             const client = data.clients.find(c => c.id === inv.client_id);
@@ -171,14 +171,14 @@ function Fluxo() {
                     {initial(client?.name ?? "?")}
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-800">{client?.name ?? "—"}</div>
-                    <div className="text-sm text-slate-500">{monthLabel(monthDate)}</div>
+                    <div className="font-semibold text-[#1C2333]">{client?.name ?? "—"}</div>
+                    <div className="text-xs text-[#6B7280]">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>Lucro bruto: <span className="font-bold text-[#16A34A]">{brl(profit)}</span></div>
-                  <div className="text-slate-500">Recebido: {brl(Number(inv.client_pays))}</div>
-                  <div className="text-slate-500">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
+                  <div className="text-[#6B7280] font-medium">Lucro bruto: <span className="font-bold text-[#2F6F62] num">{brl(profit)}</span></div>
+                  <div className="text-[#9CA3AF] text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
+                  <div className="text-[#9CA3AF] text-xs">Fat. distribuidora: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
                 </div>
               </div>
             );
