@@ -79,22 +79,22 @@ function AcessosContent() {
       </div>
 
       {q.data?.bootstrap && (
-        <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+        <div className="rounded-lg border border-[#C98A3E]/20 bg-[#C98A3E]/10 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
           Nenhum administrador cadastrado ainda — todos os usuários autenticados têm acesso total até o primeiro admin ser marcado.
         </div>
       )}
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-0 shadow-none overflow-hidden">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50/50">
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">E-mail</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Papel</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Permissões</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Criado em</th>
-                <th className="px-6 py-4 text-right font-semibold text-slate-500 uppercase text-xs">Ações</th>
+              <tr className="bg-[#F5F6F8]">
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Papel</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Permissões</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Criado em</th>
+                <th className="px-6 py-4 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody>
