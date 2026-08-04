@@ -120,7 +120,7 @@ function Faturas() {
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold shadow-sm">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -186,10 +186,10 @@ function Faturas() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 rounded-lg px-4 py-2"
+                className="w-full gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2 font-medium"
                 onClick={() => setHistoryFor(c)}
               >
-                <Eye className="h-4 w-4" /> Ver histórico
+                <Eye className="h-4 w-4 text-slate-400" /> Ver histórico
               </Button>
             </div>
             {!c.active && (
