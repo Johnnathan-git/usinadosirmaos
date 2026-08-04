@@ -204,7 +204,7 @@ function Relatorio() {
                           onChange={(e) => edit(r.id, f, e.target.value)}
                           className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
                             f === "comDesconto" 
-                              ? "font-bold text-[#2563EB] bg-[#2563EB]/5 text-base" 
+                              ? "font-bold text-[#2E5C8A] bg-[#2E5C8A]/5 text-base" 
 
                               : f === "semUsina"
                               ? "text-[#D64545] font-bold"
