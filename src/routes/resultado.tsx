@@ -158,7 +158,7 @@ function Resultado() {
                     <th className="border border-border px-2 py-2 text-center font-semibold">Valor s/ Usina</th>
                     <th className="border border-border px-2 py-2 text-center font-semibold">c/ 30% Desconto</th>
                     <th className="border border-border px-2 py-2 text-center font-semibold">Cliente Pagou</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold text-primary">Economia Gerada</th>
+                    <th className="border border-border px-2 py-2 text-center font-semibold text-solar">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -173,7 +173,7 @@ function Resultado() {
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(semUsina)}</td>
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(desc)}</td>
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-primary">{brl(eco)}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-solar">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -188,10 +188,10 @@ function Resultado() {
         <Card className="p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="border border-primary/20 bg-primary/10 p-8 text-center elev-1">
-        <div className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Economia total gerada</div>
-        <div className="num-lg mt-2 text-4xl font-extrabold text-primary sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-2 text-sm text-muted-foreground">
+      <Card className="border border-solar/20 bg-solar p-8 text-center elev-2">
+        <div className="text-sm font-bold uppercase tracking-wide text-solar-foreground">Economia total gerada para o cliente</div>
+        <div className="num-lg mt-2 text-4xl font-extrabold text-solar-foreground sm:text-5xl">{brl(totalEconomia)}</div>
+        <div className="mt-2 text-sm text-solar-foreground/80 font-medium">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
       </Card>
