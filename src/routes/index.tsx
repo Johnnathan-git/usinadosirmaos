@@ -315,7 +315,7 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md"
+      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md"
       style={{ borderTop: `3px solid ${semanticColor}` }}
     >
       <div className="mb-4 flex items-start justify-between gap-2">
@@ -335,7 +335,7 @@ function StatCard({
         )}
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
-      <div className="mt-2 text-2xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+      <div className="mt-1.5 text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
         {brl(value)}
       </div>
       {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
