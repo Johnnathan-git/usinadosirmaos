@@ -191,7 +191,7 @@ function Fluxo() {
         {monthExpenses.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors">
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors zebra-stripe">
               <div className="min-w-0">
                 <div className="truncate font-bold text-[#374151]">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
