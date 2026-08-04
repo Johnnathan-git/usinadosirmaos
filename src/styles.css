@@ -157,3 +157,11 @@ div[style*="Edit with Lovable"],
   position: absolute !important;
   z-index: -9999 !important;
 }
+160: 
+161: @utility scrollbar-hide {
+162:   -ms-overflow-style: none;
+163:   scrollbar-width: none;
+164:   &::-webkit-scrollbar {
+165:     display: none;
+166:   }
+167: }
