@@ -207,6 +207,7 @@ export type Database = {
       }
       invoices: {
         Row: {
+          attachment_url: string | null
           client_id: string
           client_pays: number
           consumption_kw: number
@@ -214,6 +215,7 @@ export type Database = {
           distributor_invoice: number
           id: string
           interest_fine: number
+          notes: string | null
           price_kw: number
           public_lighting: number
           reference_date: string
@@ -222,6 +224,7 @@ export type Database = {
           value_without_plant: number
         }
         Insert: {
+          attachment_url?: string | null
           client_id: string
           client_pays?: number
           consumption_kw?: number
@@ -229,6 +232,7 @@ export type Database = {
           distributor_invoice?: number
           id?: string
           interest_fine?: number
+          notes?: string | null
           price_kw?: number
           public_lighting?: number
           reference_date: string
@@ -237,6 +241,7 @@ export type Database = {
           value_without_plant?: number
         }
         Update: {
+          attachment_url?: string | null
           client_id?: string
           client_pays?: number
           consumption_kw?: number
@@ -244,6 +249,7 @@ export type Database = {
           distributor_invoice?: number
           id?: string
           interest_fine?: number
+          notes?: string | null
           price_kw?: number
           public_lighting?: number
           reference_date?: string
