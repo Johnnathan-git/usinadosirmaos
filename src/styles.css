@@ -80,16 +80,16 @@
   --background: #F8FAFC;
   --foreground: #1E293B;
   
-  /* Cores Profissionais: Esmeralda (#059669) e Vermelho (#DC2626) */
-  --solar: #0F172A; /* Azul marinho escuro para destaques/primário */
-  --solar-soft: #E2E8F0;
-  --leaf: #059669;
-  --leaf-soft: #D1FAE5;
-  --sky: #2563EB;
-  --sky-soft: #DBEAFE;
-  --clay: #DC2626;
-  --clay-soft: #FEE2E2;
-  --ink: #0F172A;
+  /* Cores Profissionais: Verde Suave (#16A34A) e Vermelho Suave (#DC2626) */
+  --solar: #1E293B; /* Slate 800 - Menos preto que o 900 */
+  --solar-soft: #F1F5F9;
+  --leaf: #16A34A; /* Green 600 - Verde clássico menos vibrante que emerald */
+  --leaf-soft: #F0FDF4;
+  --sky: #3B82F6;
+  --sky-soft: #EFF6FF;
+  --clay: #DC2626; /* Red 600 */
+  --clay-soft: #FEF2F2;
+  --ink: #1E293B;
   --solar-foreground: #FFFFFF;
   
   --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -100,7 +100,7 @@
   --card-foreground: #1E293B;
   --popover: #FFFFFF;
   --popover-foreground: #1E293B;
-  --primary: #0F172A;
+  --primary: #1E293B;
   --primary-foreground: #FFFFFF;
   --primary-glow: #1E293B;
   --gradient-primary: none;
@@ -118,12 +118,12 @@
   --destructive-foreground: #FFFFFF;
   --border: #E2E8F0;
   --input: #E2E8F0;
-  --ring: #0F172A;
+  --ring: #1E293B;
   
-  --chart-1: #059669;
+  --chart-1: #16A34A;
   --chart-2: #DC2626;
-  --chart-3: #0F172A;
-  --chart-4: #2563EB;
+  --chart-3: #1E293B;
+  --chart-4: #3B82F6;
   --chart-5: #64748B;
   
   --sidebar: #FFFFFF;

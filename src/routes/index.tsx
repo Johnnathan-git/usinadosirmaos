@@ -1,16 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Instrução:
- * Mantenha os 4 cartões de totais (Receita, Despesas, Lucro, Receita 2026) e o gráfico de barras abaixo deles. Não altere os dados numéricos.
- * 
- * Altere APENAS o estilo:
- * 
- * Cartões de Total: Adicione bg-white rounded-xl border border-slate-200 shadow-sm p-6 a cada um deles.
- * 
- * Valores dos Cartões: Mude a cor dos números:
- * 
- * Números de Receita/Lucro: text-emerald-600 font-bold text-2xl.
- * 
- * Números de Despesas: text-red-600 font-bold text-2xl.
+ * Execute esta instrucao no projeto: Cara, deixe o sistema mais leve com menos black, e outra onde é despesa deve ser na cor vermelho e onde é receita e lucro na cor verde. Nada de cores vibrantes.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -173,7 +162,7 @@ function Dashboard() {
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
-            {[["Receita", "#059669"], ["Despesas", "#DC2626"], ["Lucro", "#2563EB"]].map(([k, c]) => (
+            {[["Receita", "#16A34A"], ["Despesas", "#DC2626"], ["Lucro", "#3B82F6"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
                 {k}
@@ -195,9 +184,9 @@ function Dashboard() {
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
                 <Tooltip cursor={{ fill: "#F8FAFC", opacity: 0.5 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#059669" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Receita" fill="#16A34A" radius={[4, 4, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="#DC2626" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#2563EB" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#3B82F6" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -255,11 +244,11 @@ function Dashboard() {
               {summary.map(row => (
                 <tr key={row.month} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
                   <td className="py-4 text-slate-800 font-medium">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#059669]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#16A34A]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-slate-500">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-slate-500">{brl(row.Distribuidora)}</td>
                   <td className="num py-4 text-right font-semibold text-[#DC2626]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{brl(row.Lucro)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -307,8 +296,8 @@ function StatCard({
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const isEmerald = tint === "leaf";
-  const iconColor = isEmerald ? "text-emerald-600" : "text-red-600";
-  const textColor = isEmerald ? "text-emerald-600" : "text-red-600";
+  const iconColor = isEmerald ? "text-green-600" : "text-red-600";
+  const textColor = isEmerald ? "text-green-600" : "text-red-600";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className, iconColor)
@@ -326,7 +315,7 @@ function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
-              good ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+              good ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
