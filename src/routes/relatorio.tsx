@@ -13,7 +13,7 @@ type Invoice = {
   consumption_kw: number; price_kw: number; public_lighting: number;
   interest_fine: number; value_without_plant: number; client_pays: number;
 };
-type Client = { id: string; name: string; phone: string | null };
+type Client = { id: string; name: string; phone: string | null; discount_pct: number };
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
@@ -23,7 +23,7 @@ const q = queryOptions({
         .from("invoices")
         .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays")
         .order("reference_date", { ascending: false }),
-      supabase.from("clients").select("id,name,phone").order("name"),
+      supabase.from("clients").select("id,name,phone,discount_pct").order("name"),
       supabase.auth.getSession(),
     ]);
     if (i.error) throw i.error;
@@ -73,7 +73,9 @@ type Row = {
 const numBR = (n: number, d = 2) =>
   n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
 
-function toRow(inv: Invoice): Row {
+function toRow(inv: Invoice, client?: Client): Row {
+  const discountPct = client?.discount_pct ?? 30;
+  const discountFactor = discountPct / 100;
   return {
     id: inv.id,
     mes: monthLabelFromISO(inv.reference_date).toLowerCase(),
@@ -83,7 +85,7 @@ function toRow(inv: Invoice): Row {
     ilum: brl(Number(inv.public_lighting)),
     juros: brl(Number(inv.interest_fine)),
     semUsina: brl(Number(inv.value_without_plant)),
-    comDesconto: brl(Number(inv.client_pays)),
+    comDesconto: brl(Number(inv.value_without_plant) * (1 - discountFactor)),
   };
 }
 
@@ -115,8 +117,8 @@ function Relatorio() {
   );
 
   useEffect(() => {
-    setRows(selected.map(toRow));
-  }, [selected.map((s) => s.id).join(",")]);
+    setRows(selected.map(s => toRow(s, client)));
+  }, [selected.map((s) => s.id).join(","), client?.discount_pct]);
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
@@ -175,7 +177,7 @@ function Relatorio() {
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
               <tr className="bg-[#F5F6F8]">
-                {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
+                {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", `Valor c/ ${client?.discount_pct ?? 30}% desconto`].map((h) => (
                   <th
                     key={h}
                     className={`border border-[#E4E7EC] px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider ${h === "UC" ? "min-w-[150px]" : ""}`}

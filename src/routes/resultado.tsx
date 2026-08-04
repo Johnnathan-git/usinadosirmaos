@@ -20,14 +20,14 @@ type Invoice = {
   uc_number: string; consumption_kw: number; value_without_plant: number;
   client_pays: number; distributor_invoice: number;
 };
-type Client = { id: string; name: string; color: string };
+type Client = { id: string; name: string; color: string; discount_pct: number };
 
 const q = queryOptions({
   queryKey: ["resultado-page"],
   queryFn: async () => {
     const [i, c, sess] = await Promise.all([
       supabase.from("invoices").select("id,client_id,reference_date,uc_number,consumption_kw,value_without_plant,client_pays,distributor_invoice"),
-      supabase.from("clients").select("id,name,color"),
+      supabase.from("clients").select("id,name,color,discount_pct"),
       supabase.auth.getSession(),
     ]);
     if (i.error) throw i.error;
@@ -97,7 +97,11 @@ function Resultado() {
   }
   const sortedMonths = [...byMonth.keys()].sort().reverse();
 
-  const totalEconomia = filtered.reduce((a, i) => a + Number(i.value_without_plant) * 0.3, 0);
+  const totalEconomia = filtered.reduce((a, i) => {
+    const c = data.clients.find(x => x.id === i.client_id);
+    const discount = (c?.discount_pct ?? 30) / 100;
+    return a + Number(i.value_without_plant) * discount;
+  }, 0);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -156,16 +160,19 @@ function Resultado() {
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">c/ 30% Desconto</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Desconto</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
                   {byMonth.get(mk)!.map(inv => {
+                    const c = data.clients.find(x => x.id === inv.client_id);
+                    const discountPct = c?.discount_pct ?? 30;
+                    const discountFactor = discountPct / 100;
                     const semUsina = Number(inv.value_without_plant);
-                    const desc = semUsina * 0.7;
-                    const eco = semUsina * 0.3;
+                    const desc = semUsina * (1 - discountFactor);
+                    const eco = semUsina * discountFactor;
                     return (
                       <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
                         <td className="whitespace-nowrap px-4 py-4 text-center text-[#6B7280] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
