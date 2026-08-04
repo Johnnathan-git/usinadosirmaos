@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Agora sim deu certo. No modulo Relatorio do Cliente na ultima coluna Doc, mudar para baixar fatura. Veja se cabe
+ * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
@@ -136,7 +136,7 @@ function Faturas() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
           <Card key={c.id} className="relative overflow-hidden rounded-xl border border-[#E4E7EC] bg-white p-4 shadow-none transition-all hover:shadow-md" style={{ borderLeft: `3px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">

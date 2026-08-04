@@ -179,7 +179,7 @@ function Resultado() {
                     const desc = semUsina * (1 - discountFactor);
                     const eco = semUsina * discountFactor;
                     return (
-                      <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                      <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors zebra-stripe">
                         <td className="whitespace-nowrap px-4 py-4 text-center text-[#4B5563] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{brl(semUsina)}</td>
