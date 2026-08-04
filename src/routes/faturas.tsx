@@ -117,14 +117,14 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Faturas</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Faturas</h1>
           <p className="text-sm font-medium text-[#6B7280]">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-[#151B2E]/5 border border-[#151B2E]/10 text-[#151B2E] hover:bg-[#151B2E]/10 rounded-lg px-4 py-2 font-bold shadow-none transition-colors">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -148,7 +148,7 @@ function Faturas() {
                   {initial(c.name)}
                 </div>
                 <div>
-                  <div className="font-bold text-[#1C2333]">{c.name}</div>
+                  <div className="font-bold text-[#374151]">{c.name}</div>
                   <div className="text-xs font-medium text-[#6B7280]">UC {c.uc_number}</div>
                 </div>
               </div>
