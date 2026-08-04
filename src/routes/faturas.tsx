@@ -114,91 +114,88 @@ function Faturas() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Faturas</h1>
-          <p className="text-sm text-slate-500">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Faturas e Clientes</h1>
+          <p className="text-sm text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
         </div>
-        <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 rounded-lg">
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => setShowInactive(v => !v)} className="h-9 border-border bg-card text-foreground rounded-lg px-4">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold shadow-sm">
+          <Button size="sm" onClick={() => setNewClientOpen(true)} className="h-9 gap-2 bg-primary text-white hover:bg-primary/90 rounded-lg px-4 font-semibold shadow-sm">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
       </div>
 
       {shown.length === 0 && (
-        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">
+        <Card className="bg-card border-border rounded-xl p-10 text-center text-muted-foreground shadow-sm">
           {showInactive ? "Nenhum cliente inativo." : "Nenhum cliente cadastrado. Clique em Novo Cliente."}
         </Card>
       )}
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-none transition-all hover:shadow-sm">
-            <div className="mb-3 flex w-full items-start justify-between text-left">
+          <Card key={c.id} className="bg-card border-border rounded-xl p-5 shadow-sm hover:shadow-md transition-all">
+            <div className="mb-4 flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div
                   className={cn(
-                    "flex h-11 w-11 items-center justify-center rounded-lg text-base font-bold transition-colors",
+                    "flex h-11 w-11 items-center justify-center rounded-lg text-base font-bold",
                     getClientSoftColor(c.color)
                   )}
                 >
                   {initial(c.name)}
                 </div>
                 <div>
-                  <div className="font-bold text-slate-800">{c.name}</div>
-                  <div className="text-xs text-slate-500">UC {c.uc_number}</div>
+                  <div className="font-bold text-foreground">{c.name}</div>
+                  <div className="num text-xs font-medium text-muted-foreground">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" aria-label={`Editar ${c.name}`}>
+                <button onClick={() => setEditClient(c)} className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background">
                   <Settings className="h-4 w-4" />
                 </button>
-                <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
+                <button onClick={() => toggleActive(c)} className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-background">
                   {c.active ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex gap-4 text-sm text-slate-400">
-              <span className="flex items-center gap-1 font-medium"><Zap className="h-4 w-4" /> 1 UC</span>
-              <span className="flex items-center gap-1 font-medium">
-                <FileText className="h-4 w-4" /> 
+            <div className="mb-5 flex gap-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-accent" /> 1 UC</span>
+              <span className="flex items-center gap-1.5">
+                <FileText className="h-3.5 w-3.5 text-accent" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
-              {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-slate-400">
-                  <Paperclip className="h-3.5 w-3.5" /> Anexos
-                </span>
-              )}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="space-y-2">
               <Button
+                size="sm"
                 className={cn(
-                  "w-full gap-2 transition-all hover:shadow-md text-white font-bold rounded-lg px-4 py-2",
+                  "w-full gap-2 text-white font-bold rounded-lg h-9 shadow-sm",
                   getClientButtonColor(c.color)
                 )}
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
-                <Plus className="h-4 w-4 text-white" /> 
+                <Plus className="h-4 w-4" /> 
                 <span>Lançar Fatura</span>
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2 font-medium"
+                className="w-full gap-2 border-border bg-card text-foreground hover:bg-background rounded-lg h-9 font-semibold"
                 onClick={() => setHistoryFor(c)}
               >
-                <Eye className="h-4 w-4 text-slate-400" /> Ver histórico
+                <Eye className="h-4 w-4 text-muted-foreground" /> Ver histórico
               </Button>
             </div>
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2"
+                size="sm"
+                className="mt-2 w-full gap-2 border-expense/20 bg-expense/5 text-expense hover:bg-expense/10 rounded-lg h-9 font-semibold"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
@@ -207,6 +204,7 @@ function Faturas() {
           </Card>
         ))}
       </div>
+
 
       {(newClientOpen || editClient) && (
         <ClientDialog
