@@ -384,7 +384,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
       const filePath = `invoices/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('arquivos_faturas_v2_private')
+        .from('faturas')
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false
@@ -393,7 +393,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('arquivos_faturas_v2_private')
+        .from('faturas')
         .getPublicUrl(filePath);
 
       setF(prev => ({ ...prev, attachment_url: publicUrl }));
