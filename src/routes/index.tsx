@@ -227,28 +227,28 @@ function Dashboard() {
       </Card>
 
       <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-slate-800">Resumo mês a mês</h2>
+        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Resumo de Lançamentos</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Mês</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Receita</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Desp. Operacionais</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Fat. Distribuidora</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Despesas</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Lucro</th>
+              <tr className="border-b border-[#E4E7EC]">
+                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Receita</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Despesas</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Lucro</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
-                <tr key={row.month} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                  <td className="py-4 text-slate-800 font-medium">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#16A34A]">{brl(row.Receita)}</td>
-                  <td className="num py-4 text-right text-slate-500">{brl(row.Operacionais)}</td>
-                  <td className="num py-4 text-right text-slate-500">{brl(row.Distribuidora)}</td>
-                  <td className="num py-4 text-right font-semibold text-[#DC2626]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(row.Lucro)}</td>
+                <tr key={row.month} className="hover:bg-[#F5F6F8]">
+                  <td className="py-4 text-[#1C2333] font-semibold">{row.month}</td>
+                  <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
+                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#B5533E]">{brl(row.Despesas)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#B5533E]" : "text-[#C98A3E]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -256,14 +256,14 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
             <Users className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-sm text-slate-500 font-medium">Total de Clientes</div>
-            <div className="text-2xl font-bold text-slate-800">{data.clients.length}</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Total de Clientes</div>
+            <div className="text-2xl font-bold text-[#1C2333]">{data.clients.length}</div>
           </div>
         </div>
       </Card>
