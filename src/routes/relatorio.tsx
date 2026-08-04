@@ -126,25 +126,25 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Relatório do Cliente</h1>
-          <p className="text-sm text-slate-500 font-medium">
-            Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
+          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Relatório do Cliente</h1>
+          <p className="text-sm text-[#6B7280]">
+            Planilha mensal de economia pronta para enviar ao cliente.
           </p>
         </div>
       </div>
 
-      <Card className="no-print bg-white border border-slate-200 rounded-xl grid gap-4 p-6 sm:grid-cols-2 shadow-none">
+      <Card className="no-print rounded-[10px] border border-[#E4E7EC] bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-sm">
         <div>
-          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Cliente</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white border-slate-200 rounded-lg"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#1C2333] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
-              {clients.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#1C2333]">{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
         <div>
-          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Meses</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Meses</div>
           <div className="flex flex-wrap gap-2">
             {monthOptions.map((m) => {
               const on = months.includes(m);
@@ -152,8 +152,8 @@ function Relatorio() {
                 <button
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
-                  className={`rounded-lg border px-4 py-1.5 text-xs font-bold transition-all ${
-                    on ? "bg-slate-900 border-slate-900 text-white shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                  className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
+                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#6B7280] hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
