@@ -204,7 +204,7 @@ function Controle() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
@@ -214,7 +214,7 @@ function Controle() {
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#B5533E]"}`}>
+          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#D64545]"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
@@ -267,7 +267,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : <span className="font-bold text-[#1C2333] num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>
+                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -275,7 +275,7 @@ function Controle() {
                         <button
                           title="Remover da simulação"
                           onClick={() => deleteRow(r.client_id)}
-                          className="text-[#9CA3AF] hover:text-[#B5533E]"
+                          className="text-[#9CA3AF] hover:text-[#D64545]"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -292,7 +292,7 @@ function Controle() {
                 <td className="py-4 text-center font-bold text-[#1C2333] num">{totalPct.toFixed(2)}%</td>
                 <td className="py-4 text-right font-bold text-[#1C2333] num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-4 text-center font-bold text-[#1C2333] num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>
+                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}
