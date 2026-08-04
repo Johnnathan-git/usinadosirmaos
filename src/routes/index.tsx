@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No dashboard substitui a informação de Receita anual por Lucro anual. Observação, tem que extrair de fato os lucros no sistema.
+ * Execute esta instrucao no projeto: Coloca outra cor no Lucro anual que harmonize com o resto, e mude a sigla tbem, ficou igual ao Lucro do mes
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -9,7 +9,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 type Invoice = {
@@ -160,7 +160,7 @@ function Dashboard() {
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
         <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro Anual" value={lucroAnualReal} tint="sky" />
+        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
@@ -305,11 +305,22 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#D64545" : tint === "sky" ? "#2E5C8A" : "#C98A3E";
-  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : tint === "sky" ? "bg-[#2E5C8A]/10" : "bg-[#C98A3E]/10";
+  const semanticColor = 
+    tint === "leaf" ? "#2F6F62" : 
+    tint === "clay" ? "#D64545" : 
+    tint === "sky" ? "#2E5C8A" : 
+    tint === "amber" ? "#C98A3E" :
+    "#64748B";
+  
+  const iconBg = 
+    tint === "leaf" ? "bg-[#2F6F62]/10" : 
+    tint === "clay" ? "bg-[#D64545]/10" : 
+    tint === "sky" ? "bg-[#2E5C8A]/10" : 
+    tint === "amber" ? "bg-[#C98A3E]/10" :
+    "bg-slate-100";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className),
