@@ -154,7 +154,7 @@ function Dashboard() {
         <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="sky" />
       </div>
 
-      <Card className="surface-card p-4 sm:p-6">
+      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Receita, Despesas e Lucro</h2>
           <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-muted-foreground">
@@ -190,7 +190,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="surface-card p-4 sm:p-6">
+      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-lg font-semibold">Ranking — Clientes Mais Lucrativos</h2>
@@ -223,12 +223,12 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="surface-card p-4 sm:p-6">
+      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
         <h2 className="mb-4 text-lg font-semibold">Resumo mês a mês</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
                 <th className="pb-3 text-left font-medium">Mês</th>
                 <th className="pb-3 text-right font-medium">Receita</th>
                 <th className="pb-3 text-right font-medium">Desp. Operacionais</th>
@@ -239,7 +239,7 @@ function Dashboard() {
             </thead>
             <tbody>
               {summary.map(row => (
-                <tr key={row.month} className="border-t">
+                <tr key={row.month} className="border-t even:bg-slate-50/50">
                   <td className="py-3 text-foreground">{row.month}</td>
                   <td className="num py-3 text-right font-medium text-leaf">{brl(row.Receita)}</td>
                   <td className="num py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
@@ -253,7 +253,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="surface-card p-4 sm:p-6">
+      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
             <Users className="h-6 w-6 text-muted-foreground" />
@@ -293,16 +293,16 @@ function StatCard({
   featured?: boolean; hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const iconBg: Record<string, string> = {
-    leaf: "bg-leaf text-white",
+    leaf: "bg-emerald-600 text-white",
     clay: "bg-destructive text-white",
-    solar: "bg-solar text-ink",
-    sky: "bg-sky text-white",
+    solar: "bg-blue-600 text-white",
+    sky: "bg-blue-600 text-white",
   };
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   return (
-    <Card className={`surface-card p-5 elev-1 transition-shadow hover:elev-2 ${featured ? "ring-1 ring-solar/60" : ""}`}>
+    <Card className={`bg-card p-5 border-none shadow-sm transition-shadow hover:shadow-md ${featured ? "ring-1 ring-blue-500/20" : ""}`}>
       <div className="mb-4 flex items-start justify-between gap-2">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${iconBg[tint]}`}>{icon}</div>
+        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${iconBg[tint]}`}>{icon}</div>
         {delta != null && Number.isFinite(delta) && (
           <span
             className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
