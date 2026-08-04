@@ -12,6 +12,7 @@ type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
   consumption_kw: number; price_kw: number; public_lighting: number;
   interest_fine: number; value_without_plant: number; client_pays: number;
+  attachment_url: string | null;
 };
 type Client = { id: string; name: string; phone: string | null; discount_pct: number };
 
@@ -21,7 +22,7 @@ const q = queryOptions({
     const [i, c, sess] = await Promise.all([
       supabase
         .from("invoices")
-        .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays")
+        .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays,attachment_url")
         .order("reference_date", { ascending: false }),
       supabase.from("clients").select("id,name,phone,discount_pct").order("name"),
       supabase.auth.getSession(),
@@ -68,6 +69,7 @@ function Page() {
 type Row = {
   id: string; mes: string; uc: string; consumo: string; preco: string;
   ilum: string; juros: string; semUsina: string; comDesconto: string;
+  attachment_url?: string | null;
 };
 
 const numBR = (n: number, d = 2) =>
@@ -86,6 +88,7 @@ function toRow(inv: Invoice, client?: Client): Row {
     juros: brl(Number(inv.interest_fine)),
     semUsina: brl(Number(inv.value_without_plant)),
     comDesconto: brl(Number(inv.value_without_plant) * (1 - discountFactor)),
+    attachment_url: inv.attachment_url,
   };
 }
 
@@ -178,35 +181,55 @@ function Relatorio() {
             <thead>
               <tr className="bg-[#F8FAFC]">
                 {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor SEM Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
-                  <th
-                    key={h}
-                    className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""}`}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
-                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-[#F1F5F9] p-0">
-                      <Input
-                        value={r[f]}
-                        onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
-                          f === "comDesconto" 
-                            ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-base" 
-                            : f === "semUsina"
-                            ? "text-[#D64545] font-bold"
-                            : "text-[#374151] font-medium"
-                        }`}
-                      />
-                    </td>
+                    <th
+                      key={h}
+                      className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""}`}
+                    >
+                      {h}
+                    </th>
                   ))}
+                  <th className="border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest w-12">
+                    Doc
+                  </th>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
+                    {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
+                      <td key={f} className="border border-[#F1F5F9] p-0">
+                        <Input
+                          value={r[f]}
+                          onChange={(e) => edit(r.id, f, e.target.value)}
+                          className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
+                            f === "comDesconto" 
+                              ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-base" 
+                              : f === "semUsina"
+                              ? "text-[#D64545] font-bold"
+                              : "text-[#374151] font-medium"
+                          }`}
+                        />
+                      </td>
+                    ))}
+                    <td className="border border-[#F1F5F9] p-0 text-center align-middle">
+                      {r.attachment_url ? (
+                        <a 
+                          href={r.attachment_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex h-14 w-full items-center justify-center text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors"
+                          title="Baixar Fatura"
+                        >
+                          <Paperclip className="h-4 w-4" />
+                        </a>
+                      ) : (
+                        <div className="flex h-14 w-full items-center justify-center text-slate-300">
+                          <Paperclip className="h-4 w-4 opacity-30" />
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               {rows.length === 0 && (
                 <tr><td colSpan={8} className="py-20 text-center text-slate-400 font-medium italic">Selecione os meses acima para gerar o relatório.</td></tr>
               )}
