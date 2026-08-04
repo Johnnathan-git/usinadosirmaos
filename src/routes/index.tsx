@@ -139,7 +139,7 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Dashboard</h1>
+        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
         <p className="text-sm font-medium text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
@@ -243,7 +243,7 @@ function Dashboard() {
             <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
                 <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
-                  <td className="py-4 text-[#1C2333] font-bold">{row.month}</td>
+                  <td className="py-4 text-[#374151] font-bold">{row.month}</td>
                   <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
