@@ -191,8 +191,8 @@ function Relatorio() {
                       {h}
                     </th>
                   ))}
-                  <th className="border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest w-12">
-                    Doc
+                  <th className="border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest min-w-[120px]">
+                    Baixar Fatura
                   </th>
                 </tr>
               </thead>
@@ -234,10 +234,11 @@ function Relatorio() {
                               alert("Erro ao abrir arquivo: " + err.message);
                             }
                           }}
-                          className="flex h-14 w-full items-center justify-center text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors"
+                          className="flex h-14 w-full items-center justify-center gap-2 text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
                           title="Baixar Fatura"
                         >
-                          <Paperclip className="h-4 w-4" />
+                          <Paperclip className="h-3 w-3" />
+                          <span>Baixar</span>
                         </button>
                       ) : (
                         <div className="flex h-14 w-full items-center justify-center text-slate-300">
