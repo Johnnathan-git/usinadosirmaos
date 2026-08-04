@@ -81,7 +81,7 @@ function AuthPage() {
             <BrandMark className="h-12 w-12" />
           </div>
           <div className="text-center leading-none">
-            <div className="font-display text-2xl font-bold tracking-tight text-[#1C2333]">
+            <div className="font-display text-2xl font-bold tracking-tight text-[#374151]">
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -89,8 +89,8 @@ function AuthPage() {
             </div>
           </div>
         </div>
-        <h1 className="mb-1 text-center text-xl font-bold text-[#1C2333]">Entrar no sistema</h1>
-        <p className="mb-6 text-center text-sm font-medium text-[#6B7280]">Acesso restrito a usuários cadastrados</p>
+        <h1 className="mb-1 text-center text-xl font-bold text-[#374151]">Entrar no sistema</h1>
+        <p className="mb-6 text-center text-sm font-medium text-[#4B5563]">Acesso restrito a usuários cadastrados</p>
         <form onSubmit={submit} method="post" action="#" className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>
