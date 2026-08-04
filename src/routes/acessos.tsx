@@ -66,11 +66,11 @@ function AcessosContent() {
   const clientName = (id: string | null) => id ? (clients.find(c => c.id === id)?.name ?? "—") : null;
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Acessos</h1>
-          <p className="text-sm text-muted-foreground">Cadastre usuários e defina o que cada um pode acessar.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Acessos</h1>
+          <p className="text-sm text-slate-500 font-medium">Cadastre usuários e defina o que cada um pode acessar.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ChangeOwnPasswordDialog />
@@ -79,68 +79,70 @@ function AcessosContent() {
       </div>
 
       {q.data?.bootstrap && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Nenhum administrador cadastrado ainda — todos os usuários autenticados têm acesso total até o primeiro admin ser marcado. Crie um usuário administrador para restringir o acesso.
+        <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+          Nenhum administrador cadastrado ainda — todos os usuários autenticados têm acesso total até o primeiro admin ser marcado.
         </div>
       )}
 
-      <Card className="p-0 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="px-4 py-3">E-mail</th>
-              <th className="px-4 py-3">Papel</th>
-              <th className="px-4 py-3">Permissões</th>
-              <th className="px-4 py-3">Cliente</th>
-              <th className="px-4 py-3">Criado em</th>
-              <th className="px-4 py-3 text-right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(q.data?.users ?? []).map((u) => (
-              <tr key={u.id} className="border-t">
-                <td className="px-4 py-3 font-medium">{u.email}</td>
-                <td className="px-4 py-3">
-                  {u.is_admin ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                      <ShieldCheck className="h-3 w-3" /> Administrador
-                    </span>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">Usuário</span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  {u.is_admin ? (
-                    <span className="text-xs text-muted-foreground">Todos os módulos</span>
-                  ) : u.permissions.length === 0 ? (
-                    <span className="text-xs text-muted-foreground">Nenhuma</span>
-                  ) : (
-                    <div className="flex flex-wrap gap-1">
-                      {u.permissions.map((p) => (
-                        <span key={p} className="rounded bg-muted px-1.5 py-0.5 text-xs">
-                          {MODULE_OPTIONS.find((m) => m.key === p)?.label ?? p}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-xs">
-                  {clientName(u.client_id) ?? <span className="text-muted-foreground">—</span>}
-                </td>
-                <td className="px-4 py-3 text-xs text-muted-foreground">{formatDateBR(u.created_at)}</td>
-                <td className="px-4 py-3 text-right">
-                  <div className="inline-flex gap-1">
-                    <UserFormDialog mode="edit" user={u} clients={clients} />
-                    <DeleteUserButton userId={u.id} email={u.email} />
-                  </div>
-                </td>
+      <Card className="bg-white border border-slate-200 rounded-xl p-0 shadow-none overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-slate-50/50">
+                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Papel</th>
+                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Permissões</th>
+                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
+                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Criado em</th>
+                <th className="px-6 py-4 text-right font-semibold text-slate-500 uppercase text-xs">Ações</th>
               </tr>
-            ))}
-            {q.data && q.data.users.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {(q.data?.users ?? []).map((u) => (
+                <tr key={u.id} className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
+                  <td className="px-6 py-4 font-bold text-slate-800">{u.email}</td>
+                  <td className="px-6 py-4">
+                    {u.is_admin ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                        <ShieldCheck className="h-3 w-3" /> Administrador
+                      </span>
+                    ) : (
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Usuário</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {u.is_admin ? (
+                      <span className="text-xs font-semibold text-slate-400 uppercase">Todos os módulos</span>
+                    ) : u.permissions.length === 0 ? (
+                      <span className="text-xs text-slate-400">—</span>
+                    ) : (
+                      <div className="flex flex-wrap gap-1">
+                        {u.permissions.map((p) => (
+                          <span key={p} className="rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 uppercase">
+                            {MODULE_OPTIONS.find((m) => m.key === p)?.label ?? p}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase">
+                    {clientName(u.client_id) ?? <span className="text-slate-300">—</span>}
+                  </td>
+                  <td className="px-6 py-4 text-xs font-medium text-slate-500">{formatDateBR(u.created_at)}</td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="inline-flex gap-2">
+                      <UserFormDialog mode="edit" user={u} clients={clients} />
+                      <DeleteUserButton userId={u.id} email={u.email} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {q.data && q.data.users.length === 0 && (
+                <tr><td colSpan={6} className="px-6 py-12 text-center text-sm text-slate-500 font-medium">Nenhum usuário cadastrado.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </div>
   );
@@ -184,9 +186,9 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {mode === "create" ? (
-          <Button><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
+          <Button className="bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
         ) : (
-          <Button size="sm" variant="ghost"><Pencil className="h-4 w-4" /></Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></Button>
         )}
       </DialogTrigger>
       <DialogContent>
@@ -300,7 +302,7 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Alterar Minha Senha</Button>
+        <Button variant="outline" className="bg-white border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg">Alterar Minha Senha</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -127,46 +127,46 @@ function Fluxo() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#059669]">
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#059669]">
             <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
           <div className="text-2xl font-bold text-[#059669]">{brl(receitas)}</div>
         </Card>
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-destructive">
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#DC2626]">
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
           <div className="text-2xl font-bold text-[#DC2626]">{brl(despesas)}</div>
-          <div className="mt-1 text-xs text-muted-foreground font-medium">
+          <div className="mt-1 text-xs text-slate-500 font-medium">
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900">
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-800">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-slate-900"}`}>{brl(lucro)}</div>
-          <div className="mt-1 text-xs text-muted-foreground font-medium">Receitas − (operacionais + distribuidora)</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-slate-800"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
-      <Card className="p-6">
-        <h2 className="mb-4 text-lg font-semibold">Faturas dos clientes</h2>
-        {monthInvoices.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma fatura neste mês.</p>}
-        <div className="divide-y">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Faturas dos clientes</h2>
+        {monthInvoices.length === 0 && <p className="text-sm text-slate-500">Nenhuma fatura neste mês.</p>}
+        <div className="divide-y divide-slate-100">
           {monthInvoices.map(inv => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             return (
-              <div key={inv.id} className="flex items-start justify-between py-3">
+              <div key={inv.id} className="flex items-start justify-between py-4">
                 <div>
-                  <div className="font-medium">{clientName(inv.client_id)}</div>
-                  <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
+                  <div className="font-semibold text-slate-800">{clientName(inv.client_id)}</div>
+                  <div className="text-sm text-slate-500">{monthLabel(monthDate)}</div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>Lucro bruto: <span className="font-semibold text-solar">{brl(profit)}</span></div>
-                  <div className="text-muted-foreground">Recebido: {brl(Number(inv.client_pays))}</div>
-                  <div className="text-muted-foreground">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
+                  <div>Lucro bruto: <span className="font-bold text-slate-800">{brl(profit)}</span></div>
+                  <div className="text-slate-500">Recebido: {brl(Number(inv.client_pays))}</div>
+                  <div className="text-slate-500">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
                 </div>
               </div>
             );
@@ -174,27 +174,27 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="p-6">
-        <h2 className="mb-4 text-lg font-semibold">Despesas lançadas — {monthLabel(monthDate)}</h2>
-        {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>}
-        <div className="space-y-2">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Despesas lançadas — {monthLabel(monthDate)}</h2>
+        {monthExpenses.length === 0 && <p className="text-sm text-slate-500">Nenhuma despesa neste mês.</p>}
+        <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border p-3">
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border border-slate-100 p-4">
               <div className="min-w-0">
-                <div className="truncate font-medium">{e.description}</div>
+                <div className="truncate font-semibold text-slate-800">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-1">
-                  <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
+                  <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">{e.category}</span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+                    <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-semibold text-destructive">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-bold text-[#DC2626]">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
