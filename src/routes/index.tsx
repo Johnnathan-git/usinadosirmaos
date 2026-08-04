@@ -186,7 +186,7 @@ function Dashboard() {
                 <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
                 <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="#D64545" radius={[2, 2, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
