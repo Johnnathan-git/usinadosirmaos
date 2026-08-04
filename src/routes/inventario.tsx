@@ -199,7 +199,7 @@ function Inventario() {
                   <tr key={e.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
                     <td className="py-4 font-bold text-[#1C2333]">{e.description}</td>
                     <td className="py-4 text-[#6B7280] font-medium num">{formatDateBR(e.spent_on)}</td>
-                    <td className="py-4 text-[#1C2333] font-bold"><span className="rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.responsible || "—"}</span></td>
+                    <td className="py-4 text-[#1C2333] font-bold"><span className="rounded-md bg-[#2563EB]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">{e.responsible || "—"}</span></td>
                     <td className="py-4 text-[#6B7280] italic">{e.notes || "—"}</td>
                     <td className="py-4 text-right font-bold text-[#1C2333] num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
