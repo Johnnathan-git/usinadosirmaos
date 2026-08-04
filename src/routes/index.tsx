@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: O mesmo erro.
+ * Execute esta instrucao no projeto: Mesmo erro. Vou nem te mandar print mais
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

@@ -228,9 +228,12 @@ function Relatorio() {
                               
                               const a = document.createElement('a');
                               a.href = data.signedUrl;
-                              a.target = '_blank'; a.download = path.split('/').pop();
+                              a.target = '_blank';
+                              a.download = path.split('/').pop() || 'fatura.pdf';
                               a.rel = 'noopener noreferrer';
+                              document.body.appendChild(a);
                               a.click();
+                              setTimeout(() => document.body.removeChild(a), 100);
                             } catch (err: any) {
                               console.error(err);
                               alert("Erro ao abrir arquivo: " + err.message);
