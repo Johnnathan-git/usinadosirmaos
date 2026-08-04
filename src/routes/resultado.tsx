@@ -186,7 +186,7 @@ function Resultado() {
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{brl(desc)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#374151]">{brl(Number(inv.client_pays))}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#D64545]">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2F6F62]">{brl(eco)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2563EB]">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -201,7 +201,7 @@ function Resultado() {
         <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="rounded-[10px] border border-[#E4E7EC] bg-[#1F4A40] p-10 text-center shadow-sm">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-[#2563EB] p-10 text-center shadow-sm">
         <div className="text-xs font-bold uppercase tracking-widest text-white/70">Economia total gerada para o cliente</div>
         <div className="num-lg mt-3 text-4xl font-bold text-white sm:text-5xl">{brl(totalEconomia)}</div>
         <div className="mt-4 text-sm text-white/50 font-bold">

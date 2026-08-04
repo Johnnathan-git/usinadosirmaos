@@ -41,9 +41,9 @@
   --color-sidebar-foreground: var(--sidebar-foreground);
   
   /* Cores Semânticas Financeiras */
-  --color-positive: #2F6F62;
+  --color-positive: #2563EB;
   --color-negative: #D64545;
-  --color-revenue: #2563EB;
+  --color-revenue: #2F6F62;
   --color-amber: #C98A3E;
   --color-navy: #151B2E;
 }

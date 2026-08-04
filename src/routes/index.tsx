@@ -144,7 +144,7 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="sky" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -154,8 +154,8 @@ function Dashboard() {
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="leaf" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="sky" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
@@ -252,11 +252,11 @@ function Dashboard() {
               {summary.map(row => (
                 <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#2563EB]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
                   <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>{brl(row.Lucro)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#2563EB]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -326,7 +326,7 @@ function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+              good ? "bg-[#2563EB]/10 text-[#2563EB]" : "bg-[#D64545]/10 text-[#D64545]"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
