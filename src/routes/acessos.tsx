@@ -99,36 +99,36 @@ function AcessosContent() {
             </thead>
             <tbody>
               {(q.data?.users ?? []).map((u) => (
-                <tr key={u.id} className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-slate-800">{u.email}</td>
+                <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
+                  <td className="px-6 py-4 font-bold text-[#1C2333]">{u.email}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                         <ShieldCheck className="h-3 w-3" /> Administrador
                       </span>
                     ) : (
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Usuário</span>
+                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Usuário</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="text-xs font-semibold text-slate-400 uppercase">Todos os módulos</span>
+                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Todos os módulos</span>
                     ) : u.permissions.length === 0 ? (
-                      <span className="text-xs text-slate-400">—</span>
+                      <span className="text-[10px] text-[#9CA3AF]">—</span>
                     ) : (
                       <div className="flex flex-wrap gap-1">
                         {u.permissions.map((p) => (
-                          <span key={p} className="rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 uppercase">
+                          <span key={p} className="rounded-md bg-[#151B2E]/10 px-2 py-0.5 text-[10px] font-bold text-[#151B2E] uppercase tracking-wider">
                             {MODULE_OPTIONS.find((m) => m.key === p)?.label ?? p}
                           </span>
                         ))}
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase">
-                    {clientName(u.client_id) ?? <span className="text-slate-300">—</span>}
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+                    {clientName(u.client_id) ?? <span className="text-[#9CA3AF]">—</span>}
                   </td>
-                  <td className="px-6 py-4 text-xs font-medium text-slate-500">{formatDateBR(u.created_at)}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider num">{formatDateBR(u.created_at)}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="inline-flex gap-2">
                       <UserFormDialog mode="edit" user={u} clients={clients} />
@@ -186,9 +186,9 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {mode === "create" ? (
-          <Button className="bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
+          <Button className="bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
         ) : (
-          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></Button>
         )}
       </DialogTrigger>
       <DialogContent>
