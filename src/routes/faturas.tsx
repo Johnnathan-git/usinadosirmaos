@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
-import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonColor } from "@/lib/format";
+import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonStyles } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
@@ -174,10 +174,8 @@ function Faturas() {
             </div>
             <div className="flex flex-col gap-2">
               <Button
-                className={cn(
-                  "w-full gap-2 transition-all hover:shadow-md text-white font-bold rounded-lg px-4 py-2",
-                  getClientButtonColor(c.color)
-                )}
+                className="w-full gap-2 transition-all hover:opacity-90 text-white font-bold rounded-lg px-4 py-2 border-0"
+                style={getClientButtonStyles(c.color)}
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
