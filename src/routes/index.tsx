@@ -162,7 +162,7 @@ function Dashboard() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-            {[["Receita", "#2563EB"], ["Despesas", "#D64545"], ["Lucro", "#2F6F62"]].map(([k, c]) => (
+            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2563EB"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                 {k}
