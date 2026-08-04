@@ -600,7 +600,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-positive">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                      <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
+                      <td className="py-3 text-right font-semibold text-[#2563EB]">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
                           <a 
