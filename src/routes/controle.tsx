@@ -73,14 +73,42 @@ function Controle() {
   useEffect(() => {
     // We still load initial data from DB for convenience, 
     // but we will only update LOCAL state.
-    setRows(data.clients.map(c => {
+    const initialRows = data.clients.map(c => {
       const a = data.allocs.find(x => x.client_id === c.id);
       return {
         client_id: c.id, name: c.name, uc: c.uc_number ?? "", color: c.color,
         pct: a ? Number(a.allocation_pct) : 0,
         avg: a ? Number(a.avg_consumption) : 0,
       };
-    }));
+    });
+
+    // Check if CASA JOHN or CASA JEHN are already in the list
+    const hasJohn = initialRows.some(r => r.name.toUpperCase().includes("CASA JOHN"));
+    const hasJehn = initialRows.some(r => r.name.toUpperCase().includes("CASA JEHN"));
+
+    if (!hasJohn) {
+      initialRows.push({
+        client_id: "casa-john-temp",
+        name: "CASA JOHN",
+        uc: "358186701220",
+        color: CLIENT_COLORS[0],
+        pct: 2.25,
+        avg: 130
+      });
+    }
+
+    if (!hasJehn) {
+      initialRows.push({
+        client_id: "casa-jehn-temp",
+        name: "CASA JEHN",
+        uc: "426058801290",
+        color: CLIENT_COLORS[1],
+        pct: 2.25,
+        avg: 130
+      });
+    }
+
+    setRows(initialRows);
     setConfig(data.config);
   }, [data]);
 
