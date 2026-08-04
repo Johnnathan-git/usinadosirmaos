@@ -149,18 +149,18 @@ function Controle() {
           <p className="text-sm text-muted-foreground">Geração × consumo e rateio por cliente</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-emerald-500 hover:bg-emerald-600">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 hover:bg-slate-800">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border-amber-300 text-amber-700 hover:bg-amber-50">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border-slate-200 text-slate-700 hover:bg-slate-50">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-rose-300 text-rose-600 hover:bg-rose-50">
+              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-slate-200 text-destructive hover:bg-slate-50">
                 <X className="h-4 w-4" /> Cancelar
               </Button>
-              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 hover:bg-slate-800">
                 <Save className="h-4 w-4" /> Salvar
               </Button>
             </>
@@ -172,7 +172,7 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="border-amber-200 bg-amber-50/60 p-6">
+      <Card className="border-none shadow-sm bg-white p-6">
         <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-amber-700">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
@@ -201,19 +201,19 @@ function Controle() {
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-emerald-200 bg-emerald-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold ${saldo < 0 ? "text-rose-600" : "text-emerald-700"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-xs text-emerald-700/70">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold ${saldo < 0 ? "text-destructive" : "text-emerald-600"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mt-1 text-xs text-muted-foreground">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="border-blue-200 bg-blue-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-blue-700"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-blue-700">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-xs text-blue-700/70">Do total gerado utilizado</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-blue-600">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-xs text-muted-foreground">Do total gerado utilizado</div>
         </Card>
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium"><Zap className="h-4 w-4" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-600" : "text-amber-600"}`}>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-600" : "text-destructive"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
@@ -222,7 +222,7 @@ function Controle() {
         </Card>
       </div>
 
-      <Card className="p-6">
+      <Card className="border-none shadow-sm bg-white overflow-hidden p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Rateio por Cliente</h2>
           <span className="text-xs text-muted-foreground">{rows.length} cliente(s)</span>
@@ -230,7 +230,7 @@ function Controle() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500">
                 <th className="pb-3 text-left font-medium">Cliente</th>
                 <th className="pb-3 text-left font-medium">Unid. Consumidora</th>
                 <th className="pb-3 text-center font-medium">Rateio %</th>
@@ -245,7 +245,7 @@ function Controle() {
                 const alloc = totalGen * (Number(r.pct) / 100);
                 const saldoCli = alloc - Number(r.avg);
                 return (
-                  <tr key={r.client_id} className="border-t">
+                  <tr key={r.client_id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                     <td className="py-3 font-medium uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
@@ -266,7 +266,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : `${Number(r.avg).toLocaleString("pt-BR")} kW`}
                     </td>
-                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-destructive" : "text-emerald-600"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -282,7 +282,7 @@ function Controle() {
                           <button
                             title="Excluir cliente definitivamente (apaga todos os dados)"
                             onClick={() => deleteClientForever(r.client_id, r.name)}
-                            className="inline-flex items-center gap-1 rounded-md border border-rose-200 px-2 py-1 text-xs font-medium text-rose-600 hover:bg-rose-50"
+                            className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-destructive hover:bg-slate-50"
                           >
                             <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
                           </button>
@@ -293,14 +293,14 @@ function Controle() {
                 );
               })}
             </tbody>
-            <tfoot className="border-t-2 border-muted-foreground/20 font-bold bg-muted/50">
+            <tfoot className="border-t-2 border-slate-100 font-bold bg-slate-50">
               <tr>
                 <td className="py-3 px-2">TOTAIS</td>
                 <td className="py-3"></td>
                 <td className="py-3 text-center">{totalPct.toFixed(2)}%</td>
                 <td className="py-3 text-right">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-3 text-center">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-destructive" : "text-emerald-600"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}

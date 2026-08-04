@@ -120,34 +120,34 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-destructive hover:bg-destructive/90 sm:flex-none">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-slate-900 hover:bg-slate-800 sm:flex-none">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-emerald-200 bg-emerald-50/60 p-5 elev-1">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-700">
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600">
             <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
-          <div className="text-2xl font-bold text-emerald-700">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-emerald-600">{brl(receitas)}</div>
         </Card>
-        <Card className="border-destructive/20 bg-destructive/10 p-5 elev-1">
+        <Card className="border-none shadow-sm bg-white p-5">
           <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-destructive">
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
           <div className="text-2xl font-bold text-destructive">{brl(despesas)}</div>
-          <div className="mt-1 text-xs text-destructive/80 font-medium">
-            Operacionais {brl(despesasOperacionais)} + Faturas distribuidora {brl(faturasDistribuidora)}
+          <div className="mt-1 text-xs text-muted-foreground font-medium">
+            Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="border-solar border-2 bg-solar p-5 elev-3">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink">
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-ink"}`}>{brl(lucro)}</div>
-          <div className="mt-1 text-xs text-ink/80 font-medium">Receitas − (operacionais + distribuidora)</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-blue-600"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-muted-foreground font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
@@ -185,7 +185,7 @@ function Fluxo() {
                 <div className="mt-1 flex flex-wrap gap-1">
                   <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs">{e.category}</span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                    <span className="inline-block rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}

@@ -133,7 +133,7 @@ function Relatorio() {
         </div>
       </div>
 
-      <Card className="no-print grid gap-3 p-4 sm:grid-cols-2">
+      <Card className="no-print border-none shadow-sm bg-white grid gap-3 p-4 sm:grid-cols-2">
         <div>
           <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
@@ -153,7 +153,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    on ? "border-solar bg-solar text-solar-foreground shadow-sm" : "border-solar/20 text-solar/80 hover:bg-solar/5"
+                    on ? "bg-slate-900 text-white" : "border-slate-200 text-slate-500 hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -165,16 +165,16 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 elev-3 border-solar/30">
-        <div className="bg-solar/10 px-4 py-3 text-center border-b border-solar/20">
-          <div className="font-display text-lg font-bold uppercase tracking-wide text-solar">
+      <Card className="overflow-hidden p-0 border-none shadow-sm bg-white">
+        <div className="bg-slate-50 px-4 py-3 text-center border-b border-slate-200">
+          <div className="font-display text-lg font-bold uppercase tracking-wide text-slate-900">
             {client?.name ?? "—"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-muted/60 text-[11px] uppercase leading-tight text-muted-foreground">
+              <tr className="bg-slate-50 text-[11px] uppercase leading-tight text-slate-500">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
                   <th
                     key={h}
@@ -187,14 +187,14 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id}>
+                <tr key={r.id} className="even:bg-slate-50/30">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
                     <td key={f} className="border border-border p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 ${
-                          f === "comDesconto" ? "font-bold text-solar" : ""
+                          f === "comDesconto" ? "font-bold text-blue-600" : ""
                         }`}
                       />
                     </td>

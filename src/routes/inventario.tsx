@@ -96,24 +96,24 @@ function Inventario() {
           <p className="text-sm text-muted-foreground">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
-          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-orange-500 hover:bg-orange-600 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
-          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-orange-500 hover:bg-orange-600 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
+          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-slate-900 hover:bg-slate-800 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
+          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-slate-900 hover:bg-slate-800 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
         }
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-sky-200 bg-sky-50/60 p-5 elev-1">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-sky-700"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-sky-700">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-xs text-sky-700/70">Ativos + Gastos</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><TrendingUp className="h-4 w-4" /> Total Investido</div>
+          <div className="text-2xl font-bold text-blue-600">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-xs text-muted-foreground">Ativos + Gastos</div>
         </Card>
-        <Card className="border-leaf-200 bg-leaf-50/60 p-5 elev-1">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-leaf-700"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-leaf-700">{brl(totalAtivos)}</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-emerald-600">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="border-solar border-2 bg-solar p-5 elev-2">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-ink">{brl(totalGastos)}</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-blue-600">{brl(totalGastos)}</div>
         </Card>
       </div>
 
@@ -124,15 +124,15 @@ function Inventario() {
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
-          <Card className="p-6">
+          <Card className="p-6 border-none shadow-sm bg-white">
             <div className="mb-4 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
-                className={`rounded-full px-3 py-1 text-sm ${category === "all" ? "bg-orange-500 text-white" : "bg-muted"}`}>
+                className={`rounded-full px-3 py-1 text-sm ${category === "all" ? "bg-slate-900 text-white" : "bg-muted"}`}>
                 Todos
               </button>
               {categories.map(([cat, count]) => (
                 <button key={cat} onClick={() => setCategory(cat)}
-                  className={`rounded-full px-3 py-1 text-sm ${category === cat ? "bg-orange-500 text-white" : "bg-muted"}`}>
+                  className={`rounded-full px-3 py-1 text-sm ${category === cat ? "bg-slate-900 text-white" : "bg-muted"}`}>
                   {cat} ({count})
                 </button>
               ))}
@@ -140,7 +140,7 @@ function Inventario() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+                  <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
                     <th className="pb-3 text-left font-medium">Item</th>
                     <th className="pb-3 text-left font-medium">Categoria</th>
                     <th className="pb-3 text-left font-medium">Marca / Modelo</th>
@@ -152,7 +152,7 @@ function Inventario() {
                 </thead>
                 <tbody>
                   {filteredAssets.map(a => (
-                    <tr key={a.id} className="border-t">
+                    <tr key={a.id} className="border-t even:bg-slate-50/50">
                       <td className="py-3">
                         <div className="font-medium">{a.item}</div>
                         {a.location && <div className="text-xs text-muted-foreground">{a.location}</div>}
@@ -161,7 +161,7 @@ function Inventario() {
                       <td className="py-3 text-muted-foreground">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
                       <td className="py-3 text-center">{a.quantity}</td>
                       <td className="py-3 text-right">{brl(Number(a.unit_value))}</td>
-                      <td className="py-3 text-right font-semibold text-orange-600">{brl(Number(a.unit_value) * a.quantity)}</td>
+                      <td className="py-3 text-right font-semibold text-blue-600">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-3 pl-2 text-right">
                         <button onClick={() => setAssetOpen(a)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
                         <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
@@ -170,9 +170,9 @@ function Inventario() {
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t bg-amber-50/60">
+                  <tr className="border-t bg-slate-50/80">
                     <td colSpan={5} className="py-3 font-semibold">Total Patrimônio</td>
-                    <td className="py-3 text-right font-bold text-amber-700">{brl(totalAtivos)}</td>
+                    <td className="py-3 text-right font-bold text-blue-600">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -182,10 +182,10 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="p-6">
+          <Card className="p-6 border-none shadow-sm bg-white">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+                <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
                   <th className="pb-3 text-left font-medium">Descrição</th>
                   <th className="pb-3 text-left font-medium">Data</th>
                   <th className="pb-3 text-left font-medium">Responsável</th>
@@ -196,12 +196,12 @@ function Inventario() {
               </thead>
               <tbody>
                 {data.expenses.map(e => (
-                  <tr key={e.id} className="border-t">
+                  <tr key={e.id} className="border-t even:bg-slate-50/50">
                     <td className="py-3 font-medium">{e.description}</td>
                     <td className="py-3 text-muted-foreground">{formatDateBR(e.spent_on)}</td>
                     <td className="py-3 text-muted-foreground">{e.responsible || "—"}</td>
                     <td className="py-3 text-muted-foreground">{e.notes || "—"}</td>
-                    <td className="py-3 text-right font-semibold text-orange-600">{brl(Number(e.amount))}</td>
+                    <td className="py-3 text-right font-semibold text-blue-600">{brl(Number(e.amount))}</td>
                     <td className="py-3 pl-2 text-right">
                       <button onClick={() => setExpenseOpen(e)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
                       <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
@@ -210,9 +210,9 @@ function Inventario() {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t bg-amber-50/60">
+                <tr className="border-t bg-slate-50/80">
                   <td colSpan={4} className="py-3 font-semibold">Total Gastos</td>
-                  <td className="py-3 text-right font-bold text-orange-700">{brl(totalGastos)}</td>
+                  <td className="py-3 text-right font-bold text-blue-600">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>
@@ -322,7 +322,7 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-orange-500 hover:bg-orange-600">Salvar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -41,7 +41,7 @@ export function BrandMark({ className }: { className?: string }) {
 export function BrandLockup({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-primary/25 bg-gradient-to-br from-sky-soft to-solar-soft p-1.5 elev-1 sm:h-11 sm:w-11">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-border bg-white p-1.5 shadow-sm sm:h-11 sm:w-11">
         <BrandMark />
       </div>
       {!compact && (

@@ -119,7 +119,7 @@ function Faturas() {
           <Button variant="outline" onClick={() => setShowInactive(v => !v)}>
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 hover:bg-slate-800">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -133,7 +133,7 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="p-5">
+          <Card key={c.id} className="p-5 border-none shadow-sm bg-white">
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
@@ -170,7 +170,7 @@ function Faturas() {
             </div>
             <div className="flex flex-col gap-2">
               <Button
-                className="w-full gap-2 transition-all hover:shadow-md"
+                className="w-full gap-2 transition-all hover:shadow-md text-white font-semibold"
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
                 style={{ backgroundColor: c.color }}
@@ -190,7 +190,7 @@ function Faturas() {
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border-rose-200 text-rose-600 hover:bg-rose-50"
+                className="mt-2 w-full gap-2 border-slate-200 text-destructive hover:bg-slate-50"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
@@ -302,7 +302,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving}>{client ? "Salvar" : "Criar"}</Button>
+          <Button onClick={submit} disabled={saving} className="bg-slate-900 hover:bg-slate-800">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -479,7 +479,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-emerald-600 hover:bg-emerald-700">Salvar</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -527,19 +527,19 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </DialogHeader>
 
         <div className="grid gap-3 md:grid-cols-4">
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
             <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
             <div className="mt-1 text-xl font-bold text-emerald-600">{brl(totalClientPays)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora (despesa)</div>
-            <div className="mt-1 text-xl font-bold text-rose-500">{brl(totalDistributor)}</div>
+            <div className="mt-1 text-xl font-bold text-destructive">{brl(totalDistributor)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
             <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
@@ -547,7 +547,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600">
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
@@ -567,15 +567,15 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
           ) : (
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-background">
-                <tr className="text-xs uppercase tracking-wide text-muted-foreground">
-                  <th className="py-2 text-left font-medium">Mês</th>
-                  <th className="py-2 text-right font-medium">Consumo (kW)</th>
-                  <th className="py-2 text-right font-medium">S/ Usina</th>
-                  <th className="py-2 text-right font-medium">Cliente Pagou</th>
-                  <th className="py-2 text-right font-medium">Fat. Distribuidora</th>
-                  <th className="py-2 text-right font-medium">Lucro</th>
-                  <th className="py-2 text-center font-medium">Anexo</th>
+              <thead className="sticky top-0 bg-slate-50">
+                <tr className="text-[10px] uppercase tracking-wider text-slate-500">
+                  <th className="px-2 py-2 text-left font-semibold">Mês</th>
+                  <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
+                  <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
+                  <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
+                  <th className="px-2 py-2 text-right font-semibold">Fat. Distribuidora</th>
+                  <th className="px-2 py-2 text-right font-semibold">Lucro</th>
+                  <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                   <th></th>
                 </tr>
               </thead>
@@ -583,12 +583,12 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                 {invoices.map((inv) => {
                   const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                   return (
-                    <tr key={inv.id} className="border-t">
+                    <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
-                      <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
+                      <td className="py-3 text-right text-destructive">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
@@ -596,7 +596,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                             href={inv.attachment_url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
                             title="Ver anexo"
                           >
                             <Paperclip className="h-4 w-4" />
