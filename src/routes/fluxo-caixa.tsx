@@ -29,7 +29,7 @@ type Expense = {
   installment_no?: number | null;
   installment_total?: number | null;
 };
-type Client = { id: string; name: string };
+type Client = { id: string; name: string; color: string };
 
 const fluxoQ = queryOptions({
   queryKey: ["fluxo-page"],
@@ -37,7 +37,7 @@ const fluxoQ = queryOptions({
     const [i, e, c] = await Promise.all([
       supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice"),
       supabase.from("expenses").select("*").order("reference_date", { ascending: false }),
-      supabase.from("clients").select("id,name"),
+      supabase.from("clients").select("id,name,color"),
     ]);
     if (i.error) throw i.error;
     if (e.error) throw e.error;
