@@ -103,12 +103,12 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Resultado</h1>
-          <p className="text-sm text-muted-foreground">Economia gerada por mês e cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Resultado</h1>
+          <p className="text-sm text-slate-500">Economia gerada por mês e cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="col-span-2 w-full sm:w-48"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white border border-slate-200 rounded-lg shadow-none"><SelectValue /></SelectTrigger>
             <SelectContent>
               {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
               {data.clients
@@ -118,25 +118,25 @@ function Resultado() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full gap-2 sm:w-auto">
+              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg">
                 {selectedMonths.length} {selectedMonths.length === 1 ? "mês selecionado" : "meses selecionados"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="max-h-72 w-56 overflow-auto">
+            <PopoverContent className="max-h-72 w-56 overflow-auto bg-white border border-slate-200 rounded-xl shadow-lg">
               {monthOptions.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
                 const checked = selectedMonths.includes(m);
                 return (
-                  <label key={m} className="flex cursor-pointer items-center gap-2 py-1.5">
+                  <label key={m} className="flex cursor-pointer items-center gap-2 py-2 px-3 hover:bg-slate-50 rounded-lg transition-colors">
                     <Checkbox checked={checked} onCheckedChange={(v) => {
                       setSelectedMonths(sm => v ? [...sm, m] : sm.filter(x => x !== m));
                     }} />
-                    <span className="text-sm">{monthLabelLong(d)}</span>
+                    <span className="text-sm font-medium text-slate-700">{monthLabelLong(d)}</span>
                   </label>
                 );
               })}
-              {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas.</p>}
+              {monthOptions.length === 0 && <p className="text-sm text-slate-500 p-3">Sem faturas.</p>}
             </PopoverContent>
           </Popover>
         </div>
@@ -145,20 +145,20 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden p-0 border shadow-sm bg-white">
-            <div className="border-b border-slate-100 bg-slate-50/50 px-4 py-3">
-              <h2 className="text-base font-semibold text-slate-900">{monthLabelLong(d)}</h2>
+          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
+            <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+              <h2 className="text-base font-bold text-slate-800">{monthLabelLong(d)}</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="bg-slate-50">
-                    <th className="border border-border px-2 py-2 text-center font-semibold">Mês</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold">Consumo (kW)</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold">Valor s/ Usina</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold">c/ 30% Desconto</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold">Cliente Pagou</th>
-                    <th className="border border-border px-2 py-2 text-center font-semibold text-solar">Economia Gerada</th>
+                  <tr className="border-b border-slate-100 bg-slate-50/30">
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Mês</th>
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo (kW)</th>
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Valor s/ Usina</th>
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">c/ 30% Desconto</th>
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -167,13 +167,13 @@ function Resultado() {
                     const desc = semUsina * 0.7;
                     const eco = semUsina * 0.3;
                     return (
-                      <tr key={inv.id} className="even:bg-slate-50/30">
-                        <td className="whitespace-nowrap border border-border px-2 py-2.5 text-center text-muted-foreground">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(semUsina)}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(desc)}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-slate-900">{brl(eco)}</td>
+                      <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                        <td className="whitespace-nowrap px-4 py-4 text-center text-slate-500 font-medium">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700 font-medium">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(semUsina)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(desc)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#059669]">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-slate-800">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -185,13 +185,13 @@ function Resultado() {
       })}
 
       {sortedMonths.length === 0 && (
-        <Card className="p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
+        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="border shadow-sm bg-white p-8 text-center">
-        <div className="text-sm font-bold uppercase tracking-wide text-slate-500">Economia total gerada para o cliente</div>
-        <div className="num-lg mt-2 text-4xl font-extrabold text-[#059669] sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-2 text-sm text-slate-400 font-medium">
+      <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center shadow-none">
+        <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Economia total gerada para o cliente</div>
+        <div className="num-lg mt-3 text-4xl font-bold text-[#059669] sm:text-5xl">{brl(totalEconomia)}</div>
+        <div className="mt-4 text-sm text-slate-400 font-semibold">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
       </Card>
