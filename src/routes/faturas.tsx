@@ -552,7 +552,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
-            <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
+            <div className="mt-1 text-xl font-bold text-[#2563EB]">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
           </Card>
         </div>
@@ -596,11 +596,11 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   return (
                     <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                      <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                      <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-positive">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                      <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
+                      <td className="py-3 text-right font-semibold text-[#2563EB]">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
                           <a 

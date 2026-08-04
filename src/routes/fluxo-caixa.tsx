@@ -145,11 +145,11 @@ function Fluxo() {
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#D64545" : "#2F6F62"}` }}>
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#D64545" : "#2563EB"}` }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
-            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#D64545" : "#2F6F62" }} /> Lucro do Mês
+            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#D64545" : "#2563EB" }} /> Lucro do Mês
           </div>
-          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#D64545" : "#2F6F62" }}>{brl(lucro)}</div>
+          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#D64545" : "#2563EB" }}>{brl(lucro)}</div>
           <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
@@ -176,7 +176,7 @@ function Fluxo() {
                   </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div className="text-[#6B7280] font-bold">Lucro bruto: <span className="font-bold text-[#2F6F62] num">{brl(profit)}</span></div>
+                  <div className="text-[#6B7280] font-bold">Lucro bruto: <span className="font-bold text-[#2563EB] num">{brl(profit)}</span></div>
                   <div className="text-[#9CA3AF] text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
                   <div className="text-[#9CA3AF] text-xs">Fat. distribuidora: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
                 </div>
@@ -195,7 +195,7 @@ function Fluxo() {
               <div className="min-w-0">
                 <div className="truncate font-bold text-[#1C2333]">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
-                  <span className="inline-block rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.category}</span>
+                  <span className="inline-block rounded-md bg-[#6B7280]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{e.category}</span>
                   {e.installment_total ? (
                     <span className="inline-block rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
                       Parcela {e.installment_no}/{e.installment_total}
