@@ -487,14 +487,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                           .createSignedUrl(path, 60);
                         if (error) throw error;
                         
-                        const a = document.createElement('a');
-                        a.href = data.signedUrl;
-                        a.target = '_blank';
-                        a.download = path.split('/').pop() || 'fatura.pdf';
-                        a.rel = 'noopener noreferrer';
-                        document.body.appendChild(a);
-                        a.click();
-                        setTimeout(() => document.body.removeChild(a), 100);
+                        // Proxy download via our own API to avoid direct Supabase URL being blocked
+                        const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                        window.location.href = downloadUrl;
                       } catch (err: any) {
                         toast.error("Erro ao abrir arquivo: " + err.message);
                       }
@@ -644,13 +639,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   .createSignedUrl(path, 3600);
                                 if (error) throw error;
                                 const a = document.createElement('a');
-                                a.href = data.signedUrl;
-                                a.target = '_blank';
-                                a.download = path.split('/').pop() || 'fatura.pdf';
-                                a.rel = 'noopener noreferrer';
-                                document.body.appendChild(a);
-                                a.click();
-                                setTimeout(() => document.body.removeChild(a), 100);
+                                const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                                window.location.href = downloadUrl;
                               } catch (err: any) {
                                 toast.error("Erro ao abrir arquivo: " + err.message);
                               }
