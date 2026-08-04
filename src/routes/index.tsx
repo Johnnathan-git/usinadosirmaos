@@ -292,12 +292,12 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "blue";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const iconColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
-  const textColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
-  const iconBg = tint === "leaf" ? "bg-green-50" : tint === "clay" ? "bg-red-50" : "bg-blue-50";
+  const iconColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
+  const textColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
+  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#B5533E]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className, iconColor)
@@ -306,16 +306,16 @@ function StatCard({
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
   return (
-    <Card className="bg-white p-6 border border-slate-200 rounded-xl shadow-sm transition-all hover:shadow-md">
+    <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md">
       <div className="mb-4 flex items-start justify-between gap-2">
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg border border-transparent shadow-sm", iconBg)}>
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
         </div>
         {delta != null && Number.isFinite(delta) && (
           <span
             className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
-              good ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#B5533E]/10 text-[#B5533E]"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
@@ -323,11 +323,11 @@ function StatCard({
           </span>
         )}
       </div>
-      <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</div>
-      <div className={cn("mt-2 text-2xl font-bold leading-none tabular-nums", textColor)}>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
+      <div className={cn("mt-2 text-2xl font-bold leading-none num-lg", textColor)}>
         {brl(value)}
       </div>
-      {hint && <div className="mt-3 text-[10px] leading-relaxed text-slate-400 font-medium">{hint}</div>}
+      {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
     </Card>
   );
 }
