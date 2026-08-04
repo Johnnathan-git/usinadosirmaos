@@ -19,6 +19,7 @@ import { Route as ControleRouteImport } from './routes/controle'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AcessosRouteImport } from './routes/acessos'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicDownloadRouteImport } from './routes/api/public/download'
 
 const ResultadoRoute = ResultadoRouteImport.update({
   id: '/resultado',
@@ -70,6 +71,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDownloadRoute = ApiPublicDownloadRouteImport.update({
+  id: '/api/public/download',
+  path: '/api/public/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/api/public/download'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/api/public/download'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/api/public/download'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   RelatorioRoute: typeof RelatorioRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultadoRoute: typeof ResultadoRoute
+  ApiPublicDownloadRoute: typeof ApiPublicDownloadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/download': {
+      id: '/api/public/download'
+      path: '/api/public/download'
+      fullPath: '/api/public/download'
+      preLoaderRoute: typeof ApiPublicDownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   RelatorioRoute: RelatorioRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultadoRoute: ResultadoRoute,
+  ApiPublicDownloadRoute: ApiPublicDownloadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -227,13 +227,8 @@ function Relatorio() {
                               if (error) throw error;
                               
                               const a = document.createElement('a');
-                              a.href = data.signedUrl;
-                              a.target = '_blank';
-                              a.download = path.split('/').pop() || 'fatura.pdf';
-                              a.rel = 'noopener noreferrer';
-                              document.body.appendChild(a);
-                              a.click();
-                              setTimeout(() => document.body.removeChild(a), 100);
+                              const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                              window.location.href = downloadUrl;
                             } catch (err: any) {
                               console.error(err);
                               alert("Erro ao abrir arquivo: " + err.message);
