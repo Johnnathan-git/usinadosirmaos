@@ -1,37 +1,71 @@
-:root {
-  /* Fundo principal e UI */
-  --color-background: #F5F6F8;
-  --color-foreground: #1C2333;
-  --color-sidebar-bg: #151B2E;
-  --color-sidebar-item-active: #1F2A45;
-  --color-accent-gold: #C98A3E;
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
 
-  /* Financeiro profissional */
-  --color-profit: #2F6F62;
-  --color-expense: #B5533E;
-  
-  /* Cores de interface */
-  --color-card: #FFFFFF;
-  --color-border: #E4E7EC;
-  --color-text-secondary: #6B7280;
-  --color-primary-button: #151B2E;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", sans-serif;
-  --font-numeric: "JetBrains Mono", monospace;
-  
-  /* Mapeamento para Tailwind */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
   --color-background: #F5F6F8;
   --color-foreground: #1C2333;
+  
   --color-primary: #151B2E;
+  --color-primary-foreground: #FFFFFF;
+  
   --color-accent: #C98A3E;
+  --color-accent-foreground: #FFFFFF;
+
   --color-profit: #2F6F62;
+  --color-profit-soft: #2F6F621A;
+  
   --color-expense: #B5533E;
+  --color-expense-soft: #B5533E1A;
+
   --color-card: #FFFFFF;
+  --color-card-foreground: #1C2333;
+  
   --color-border: #E4E7EC;
-  --color-muted: #6B7280;
+  --color-muted-foreground: #6B7280;
+
+  --radius-lg: 10px;
+  --radius-xl: 12px;
 }
+
+:root {
+  --background: #F5F6F8;
+  --foreground: #1C2333;
+  --card: #FFFFFF;
+  --card-foreground: #1C2333;
+  --primary: #151B2E;
+  --primary-foreground: #FFFFFF;
+  --border: #E4E7EC;
+  --muted-foreground: #6B7280;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
 
 @layer base {
   body {
