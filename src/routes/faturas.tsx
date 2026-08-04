@@ -119,7 +119,7 @@ function Faturas() {
           <Button variant="outline" onClick={() => setShowInactive(v => !v)}>
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 hover:bg-slate-800">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -133,7 +133,7 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="p-5">
+          <Card key={c.id} className="p-5 border-none shadow-sm bg-white">
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
@@ -170,7 +170,7 @@ function Faturas() {
             </div>
             <div className="flex flex-col gap-2">
               <Button
-                className="w-full gap-2 transition-all hover:shadow-md"
+                className="w-full gap-2 transition-all hover:shadow-md text-white font-semibold"
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
                 style={{ backgroundColor: c.color }}

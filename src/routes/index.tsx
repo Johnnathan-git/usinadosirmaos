@@ -1,3 +1,12 @@
+/**
+ * Execute esta instrucao no projeto: Ajuste o visual do meu app para um estilo claro e profissional:
+ * 
+ * Cores: fundo #f4f6f9, cards brancos com sombra suave, verde esmeralda (#059669) para números positivos e azul (#2563eb) para destaques. Fonte Inter.
+ * 
+ * Organização: cards lado a lado, tabelas com cabeçalho cinza claro e linhas zebradas, botões com fundo escuro e cantos arredondados.
+ * 
+ * Aplique isso em todas as telas mantendo todas as funcionalidades e dados existentes.
+ */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
