@@ -201,19 +201,19 @@ function Controle() {
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-emerald-200 bg-emerald-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold ${saldo < 0 ? "text-rose-600" : "text-emerald-700"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-xs text-emerald-700/70">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold ${saldo < 0 ? "text-destructive" : "text-emerald-600"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mt-1 text-xs text-muted-foreground">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="border-blue-200 bg-blue-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-blue-700"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-blue-700">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-xs text-blue-700/70">Do total gerado utilizado</div>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-blue-600">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-xs text-muted-foreground">Do total gerado utilizado</div>
         </Card>
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium"><Zap className="h-4 w-4" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-600" : "text-amber-600"}`}>
+        <Card className="border-none shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-600" : "text-destructive"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
