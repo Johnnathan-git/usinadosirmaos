@@ -162,10 +162,11 @@ function Resultado() {
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">
                       {clientId !== "all" 
-                        ? `Desconto (${data.clients.find(c => c.id === clientId)?.discount_pct}%)` 
+                        ? `Valor c/ ${data.clients.find(c => c.id === clientId)?.discount_pct}% desconto` 
                         : "Desconto"}
                     </th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
                     <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
