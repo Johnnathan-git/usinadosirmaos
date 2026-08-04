@@ -157,6 +157,12 @@ div[style*="Edit with Lovable"],
   position: absolute !important;
   z-index: -9999 !important;
 }
+169: 
+170: @utility zebra-stripe {
+171:   &:nth-child(even) {
+172:     background-color: rgba(245, 246, 248, 0.5);
+173:   }
+174: }
 160: 
 161: @utility scrollbar-hide {
 162:   -ms-overflow-style: none;

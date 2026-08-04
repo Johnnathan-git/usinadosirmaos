@@ -250,7 +250,7 @@ function Dashboard() {
             </thead>
             <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
-                <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
+                <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors zebra-stripe">
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
                   <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
