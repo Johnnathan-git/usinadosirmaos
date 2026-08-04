@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, ShieldCheck, Trash2, Pencil } from "lucide-react";
 import { MODULES } from "@/lib/permissions";
 import {
-  listManagedUsers, createManagedUser, updateManagedUser, deleteManagedUser,
+  listManagedUsers, createManagedUser, updateManagedUser, deleteManagedUser, changeMyPassword
 } from "@/lib/acessos.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
@@ -67,12 +67,15 @@ function AcessosContent() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">Acessos</h1>
           <p className="text-sm text-muted-foreground">Cadastre usuários e defina o que cada um pode acessar.</p>
         </div>
-        <UserFormDialog mode="create" clients={clients} />
+        <div className="flex flex-wrap gap-2">
+          <ChangeOwnPasswordDialog />
+          <UserFormDialog mode="create" clients={clients} />
+        </div>
       </div>
 
       {q.data?.bootstrap && (
@@ -276,5 +279,54 @@ function DeleteUserButton({ userId, email }: { userId: string; email: string }) 
     }}>
       <Trash2 className="h-4 w-4 text-rose-600" />
     </Button>
+  );
+}
+
+function ChangeOwnPasswordDialog() {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const changeFn = useServerFn(changeMyPassword);
+  
+  const m = useMutation({
+    mutationFn: () => changeFn({ data: { password } }),
+    onSuccess: () => {
+      toast.success("Senha alterada com sucesso.");
+      setOpen(false);
+      setPassword("");
+    },
+    onError: (e: any) => toast.error(e?.message ?? "Falha ao alterar senha."),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Alterar Minha Senha</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Alterar Minha Senha</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <Label>Nova Senha</Label>
+            <Input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="Mínimo 6 caracteres" 
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button 
+            onClick={() => m.mutate()} 
+            disabled={m.isPending || password.length < 6}
+          >
+            {m.isPending ? "Alterando..." : "Confirmar Alteração"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -82,7 +82,7 @@ function AuthPage() {
           </div>
           <div className="text-center leading-none">
             <div className="font-display text-2xl font-extrabold tracking-tight">
-              Usina <span className="text-primary">JJ</span>
+              Usina <span className="text-primary">dos Irmãos</span>
             </div>
             <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Energia solar
