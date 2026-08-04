@@ -81,8 +81,8 @@ function AuthPage() {
             <BrandMark />
           </div>
           <div className="text-center leading-none">
-            <div className="font-display text-2xl font-extrabold tracking-tight">
-              Usina <span className="text-primary">dos Irmãos</span>
+            <div className="font-display text-2xl font-bold tracking-tight text-slate-900">
+              Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Energia solar
@@ -112,7 +112,7 @@ function AuthPage() {
             </div>
           </div>
           {error && (
-            <div role="alert" className="rounded-lg border border-clay/30 bg-clay-soft px-3 py-2 text-sm text-clay">
+            <div role="alert" className="rounded-lg border border-[#DC2626]/30 bg-rose-50 px-3 py-2 text-sm text-[#DC2626]">
               {error}
             </div>
           )}

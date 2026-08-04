@@ -103,7 +103,7 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Resultado</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Resultado</h1>
           <p className="text-sm text-muted-foreground">Economia gerada por mês e cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
@@ -145,14 +145,14 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden p-0 border-none shadow-sm bg-white">
+          <Card key={mk} className="overflow-hidden p-0 border shadow-sm bg-white">
             <div className="border-b border-slate-100 bg-slate-50/50 px-4 py-3">
               <h2 className="text-base font-semibold text-slate-900">{monthLabelLong(d)}</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="bg-slate-50 text-[11px] uppercase leading-tight text-slate-500">
+                  <tr className="bg-slate-50">
                     <th className="border border-border px-2 py-2 text-center font-semibold">Mês</th>
                     <th className="border border-border px-2 py-2 text-center font-semibold">Consumo (kW)</th>
                     <th className="border border-border px-2 py-2 text-center font-semibold">Valor s/ Usina</th>
@@ -173,7 +173,7 @@ function Resultado() {
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(semUsina)}</td>
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center">{brl(desc)}</td>
                         <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-medium text-leaf">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-blue-600">{brl(eco)}</td>
+                        <td className="num whitespace-nowrap border border-border px-2 py-2.5 text-center font-semibold text-slate-900">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -188,9 +188,9 @@ function Resultado() {
         <Card className="p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="border-none shadow-sm bg-white p-8 text-center">
+      <Card className="border shadow-sm bg-white p-8 text-center">
         <div className="text-sm font-bold uppercase tracking-wide text-slate-500">Economia total gerada para o cliente</div>
-        <div className="num-lg mt-2 text-4xl font-extrabold text-blue-600 sm:text-5xl">{brl(totalEconomia)}</div>
+        <div className="num-lg mt-2 text-4xl font-extrabold text-[#059669] sm:text-5xl">{brl(totalEconomia)}</div>
         <div className="mt-2 text-sm text-slate-400 font-medium">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>

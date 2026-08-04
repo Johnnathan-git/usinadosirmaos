@@ -145,7 +145,7 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Controle da Usina</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Controle da Usina</h1>
           <p className="text-sm text-muted-foreground">Geração × consumo e rateio por cliente</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
@@ -172,8 +172,8 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="border-none shadow-sm bg-white p-6">
-        <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-amber-700">
+      <Card className="border shadow-sm bg-white p-6">
+        <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-900">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -191,7 +191,7 @@ function Controle() {
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-amber-700">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <div className="text-2xl font-bold text-slate-900">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">Consumo total clientes</Label>
@@ -201,19 +201,19 @@ function Controle() {
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold ${saldo < 0 ? "text-destructive" : "text-emerald-600"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold ${saldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-xs text-muted-foreground">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-blue-600">{aproveitamento.toFixed(1)}%</div>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-slate-900">{aproveitamento.toFixed(1)}%</div>
           <div className="mt-1 text-xs text-muted-foreground">Do total gerado utilizado</div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><Zap className="h-4 w-4" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-600" : "text-destructive"}`}>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-[#059669]" : "text-[#DC2626]"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
@@ -222,7 +222,7 @@ function Controle() {
         </Card>
       </div>
 
-      <Card className="border-none shadow-sm bg-white overflow-hidden p-6">
+      <Card className="border shadow-sm bg-white overflow-hidden p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Rateio por Cliente</h2>
           <span className="text-xs text-muted-foreground">{rows.length} cliente(s)</span>
@@ -230,7 +230,7 @@ function Controle() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500">
+              <tr className="bg-slate-50">
                 <th className="pb-3 text-left font-medium">Cliente</th>
                 <th className="pb-3 text-left font-medium">Unid. Consumidora</th>
                 <th className="pb-3 text-center font-medium">Rateio %</th>
@@ -266,7 +266,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : `${Number(r.avg).toLocaleString("pt-BR")} kW`}
                     </td>
-                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-destructive" : "text-emerald-600"}`}>
+                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -300,7 +300,7 @@ function Controle() {
                 <td className="py-3 text-center">{totalPct.toFixed(2)}%</td>
                 <td className="py-3 text-right">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-3 text-center">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-destructive" : "text-emerald-600"}`}>
+                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}

@@ -126,14 +126,14 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Relatório do Cliente</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Relatório do Cliente</h1>
           <p className="text-sm text-muted-foreground">
             Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
           </p>
         </div>
       </div>
 
-      <Card className="no-print border-none shadow-sm bg-white grid gap-3 p-4 sm:grid-cols-2">
+      <Card className="no-print border shadow-sm bg-white grid gap-3 p-4 sm:grid-cols-2">
         <div>
           <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
@@ -165,7 +165,7 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 border-none shadow-sm bg-white">
+      <Card className="overflow-hidden p-0 border shadow-sm bg-white">
         <div className="bg-slate-50 px-4 py-3 text-center border-b border-slate-200">
           <div className="font-display text-lg font-bold uppercase tracking-wide text-slate-900">
             {client?.name ?? "—"}
@@ -174,7 +174,7 @@ function Relatorio() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-slate-50 text-[11px] uppercase leading-tight text-slate-500">
+              <tr className="bg-slate-50">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
                   <th
                     key={h}
@@ -194,7 +194,7 @@ function Relatorio() {
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 ${
-                          f === "comDesconto" ? "font-bold text-blue-600" : ""
+                          f === "comDesconto" ? "font-bold text-slate-900" : ""
                         }`}
                       />
                     </td>

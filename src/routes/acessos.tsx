@@ -86,7 +86,7 @@ function AcessosContent() {
 
       <Card className="p-0 overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
+          <thead className="bg-slate-50">
             <tr>
               <th className="px-4 py-3">E-mail</th>
               <th className="px-4 py-3">Papel</th>

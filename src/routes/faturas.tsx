@@ -112,7 +112,7 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Lançamento de Faturas</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Lançamento de Faturas</h1>
           <p className="text-sm text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
@@ -133,7 +133,7 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="p-5 border-none shadow-sm bg-white">
+          <Card key={c.id} className="p-5 border shadow-sm bg-white">
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
@@ -179,9 +179,9 @@ function Faturas() {
                 <span className="text-white font-semibold">Lançar Fatura do Mês</span>
               </Button>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                className="w-full gap-2 border-slate-200 text-slate-600 hover:bg-slate-50"
                 onClick={() => setHistoryFor(c)}
               >
                 <Eye className="h-4 w-4" /> Ver histórico
