@@ -167,20 +167,21 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm">
-        <div className="bg-[#C97B5E] px-6 py-6 text-center border-b border-[#E4E7EC]">
-          <div className="text-2xl font-bold uppercase tracking-[0.2em] text-white font-grotesk">
+      <Card className="overflow-hidden rounded-[16px] border border-[#E4E7EC] bg-white p-0 shadow-lg">
+        <div className="bg-[#C97B5E] px-8 py-10 text-center border-b border-[#E4E7EC]">
+          <div className="text-sm font-bold uppercase tracking-[0.3em] text-white/80 mb-2">Relatório de Economia</div>
+          <div className="text-3xl font-bold uppercase tracking-[0.2em] text-white">
             {client?.name ?? "—"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-[#F5F6F8]">
-                {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", `Valor c/ ${client?.discount_pct ?? 30}% desconto`].map((h) => (
+              <tr className="bg-[#F8FAFC]">
+                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor SEM Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
                   <th
                     key={h}
-                    className={`border border-[#E4E7EC] px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider ${h === "UC" ? "min-w-[150px]" : ""}`}
+                    className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""}`}
                   >
                     {h}
                   </th>
@@ -189,14 +190,18 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-[#E4E7EC] last:border-0 hover:bg-[#F5F6F8] transition-colors">
+                <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-[#E4E7EC] p-0">
+                    <td key={f} className="border border-[#F1F5F9] p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-[#E4E7EC] ${
-                          f === "comDesconto" ? "font-bold text-[#1C2333]" : "text-[#1C2333] font-bold"
+                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
+                          f === "comDesconto" 
+                            ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-base" 
+                            : f === "semUsina"
+                            ? "text-[#D64545] font-bold"
+                            : "text-[#374151] font-medium"
                         }`}
                       />
                     </td>
@@ -204,14 +209,19 @@ function Relatorio() {
                 </tr>
               ))}
               {rows.length === 0 && (
-                <tr><td colSpan={8} className="py-12 text-center text-slate-500 font-medium">Selecione ao menos um mês.</td></tr>
+                <tr><td colSpan={8} className="py-20 text-center text-slate-400 font-medium italic">Selecione os meses acima para gerar o relatório.</td></tr>
               )}
             </tbody>
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-[#E4E7EC] bg-[#F5F6F8] px-6 py-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-            {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
+          <div className="border-t border-[#F1F5F9] bg-[#F8FAFC] px-8 py-6 flex justify-between items-center">
+            <div className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">
+              {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
+            </div>
+            <div className="text-[10px] font-bold text-[#C97B5E] uppercase tracking-widest">
+              Usina dos Irmãos • Energia Inteligente
+            </div>
           </div>
         )}
       </Card>
