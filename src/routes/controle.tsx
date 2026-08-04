@@ -348,7 +348,7 @@ function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} className="bg-slate-900 text-white hover:bg-slate-800">Adicionar</Button>
+          <Button onClick={submit} className="bg-[#151B2E] text-white hover:bg-[#1F2A45] font-medium">Adicionar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
