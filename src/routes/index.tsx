@@ -304,7 +304,7 @@ function StatCard({
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#D64545" : tint === "sky" ? "#2E5C8A" : "#C98A3E";
-  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : tint === "sky" ? "bg-[#2563EB]/10" : "bg-[#C98A3E]/10";
+  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : tint === "sky" ? "bg-[#2E5C8A]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className),
