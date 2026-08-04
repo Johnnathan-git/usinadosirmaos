@@ -164,7 +164,7 @@ function Inventario() {
                       <td className="py-4 text-right font-bold text-[#2F6F62] num">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-4 pl-4 text-right">
                         <button onClick={() => setAssetOpen(a)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
-                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-[#9CA3AF] hover:text-[#D64545]"><Trash2 className="h-4 w-4" /></button>
                       </td>
                     </tr>
                   ))}
@@ -204,7 +204,7 @@ function Inventario() {
                     <td className="py-4 text-right font-bold text-[#1C2333] num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
                       <button onClick={() => setExpenseOpen(e)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-[#9CA3AF] hover:text-[#D64545]"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}

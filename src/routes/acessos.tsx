@@ -255,6 +255,7 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
           <Button
             onClick={() => m.mutate()}
             disabled={m.isPending || (mode === "create" && (!email.trim() || password.length < 6))}
+            className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold"
           >
             {m.isPending ? "Salvando..." : "Salvar"}
           </Button>
@@ -279,7 +280,7 @@ function DeleteUserButton({ userId, email }: { userId: string; email: string }) 
     <Button size="sm" variant="ghost" onClick={() => {
       if (confirm(`Excluir ${email}? Esta ação não pode ser desfeita.`)) m.mutate();
     }}>
-      <Trash2 className="h-4 w-4 text-rose-600" />
+      <Trash2 className="h-4 w-4 text-[#D64545]" />
     </Button>
   );
 }
@@ -324,6 +325,7 @@ function ChangeOwnPasswordDialog() {
           <Button 
             onClick={() => m.mutate()} 
             disabled={m.isPending || password.length < 6}
+            className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold"
           >
             {m.isPending ? "Alterando..." : "Confirmar Alteração"}
           </Button>

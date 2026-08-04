@@ -195,7 +195,7 @@ function Faturas() {
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2"
+                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#D64545] hover:bg-slate-50 rounded-lg px-4 py-2"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
@@ -441,9 +441,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF(prev => ({ ...prev, client_pays: e.target.value }))} placeholder="676,37" />
           </div>
         </div>
-        <Card className="mt-2 border-emerald-100 bg-emerald-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-emerald-800">Fatura do Cliente — concessionária (R$)</div>
-          <div className="mb-2 text-xs text-emerald-700/70">Valor que você paga à concessionária por este cliente</div>
+        <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
+          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — concessionária (R$)</div>
+          <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
           <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
         
@@ -490,7 +490,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -544,11 +544,11 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
-            <div className="mt-1 text-xl font-bold text-emerald-600">{brl(totalClientPays)}</div>
+            <div className="mt-1 text-xl font-bold text-positive">{brl(totalClientPays)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora (despesa)</div>
-            <div className="mt-1 text-xl font-bold text-destructive">{brl(totalDistributor)}</div>
+            <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
@@ -558,7 +558,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600">
+          <div className="flex items-center gap-2 text-sm font-semibold text-positive">
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
@@ -598,8 +598,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                      <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
-                      <td className="py-3 text-right text-destructive">{brl(Number(inv.distributor_invoice))}</td>
+                      <td className="py-3 text-right text-positive">{brl(Number(inv.client_pays))}</td>
+                      <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
@@ -619,7 +619,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                           <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Pencil className="h-4 w-4" />
                           </button>
-                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-rose-600" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-[#D64545]" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>

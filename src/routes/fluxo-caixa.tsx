@@ -136,20 +136,20 @@ function Fluxo() {
           </div>
           <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(receitas)}</div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #B5533E" }}>
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #D64545" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
-            <TrendingDown className="h-4 w-4 text-[#B5533E]" /> Total de Despesas
+            <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total de Despesas
           </div>
-          <div className="text-2xl font-bold text-[#B5533E] num-lg">{brl(despesas)}</div>
+          <div className="text-2xl font-bold text-[#D64545] num-lg">{brl(despesas)}</div>
           <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#B5533E" : "#2F6F62"}` }}>
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#D64545" : "#2F6F62"}` }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
-            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#B5533E" : "#2F6F62" }} /> Lucro do Mês
+            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#D64545" : "#2F6F62" }} /> Lucro do Mês
           </div>
-          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#B5533E" : "#2F6F62" }}>{brl(lucro)}</div>
+          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#D64545" : "#2F6F62" }}>{brl(lucro)}</div>
           <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
@@ -204,9 +204,9 @@ function Fluxo() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-bold text-[#B5533E] num-lg">{brl(Number(e.amount))}</span>
+                <span className="whitespace-nowrap font-bold text-[#D64545] num-lg">{brl(Number(e.amount))}</span>
                 <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#1C2333] transition-colors"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#B5533E] transition-colors"><Trash2 className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#D64545] transition-colors"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
