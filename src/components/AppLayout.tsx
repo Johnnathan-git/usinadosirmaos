@@ -100,7 +100,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <span className="hidden px-3 text-xs font-semibold text-[#6B7280] uppercase tracking-wide sm:inline">
               {acc?.effective_admin ? "Administrador" : "Usuário"}
             </span>
-            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#1C2333]">
+            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
               <LogOut className="h-4 w-4 sm:mr-2" />
               <span className="hidden font-semibold sm:inline">Sair</span>
             </Button>
@@ -161,7 +161,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           {blocked ? (
             <div className="mx-auto mt-20 max-w-md rounded-xl border border-[#E4E7EC] bg-white p-10 text-center shadow-sm">
               <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#9CA3AF]" />
-              <h2 className="text-xl font-bold text-[#1C2333]">Acesso restrito</h2>
+              <h2 className="text-xl font-bold text-[#374151]">Acesso restrito</h2>
               <p className="mt-2 text-sm text-[#6B7280] font-medium">Você não tem permissão para acessar este módulo.</p>
             </div>
           ) : children}

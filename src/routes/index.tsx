@@ -160,7 +160,7 @@ function Dashboard() {
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
+          <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
             {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
@@ -204,7 +204,7 @@ function Dashboard() {
       <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-slate-400" />
-          <h2 className="text-lg font-bold text-slate-800">Ranking — Clientes Mais Lucrativos</h2>
+          <h2 className="text-lg font-bold text-[#374151]">Ranking — Clientes Mais Lucrativos</h2>
         </div>
         <div className="space-y-4">
           {ranking.map((c, idx) => (
@@ -218,8 +218,8 @@ function Dashboard() {
               </div>
               <div className="flex-1">
                 <div className="mb-1 flex items-center justify-between">
-                  <span className="text-sm font-bold text-[#1C2333]">{c.name}</span>
-                  <span className="num text-sm font-bold text-[#1C2333]">{brl(c.profit)}</span>
+                  <span className="text-sm font-bold text-[#374151]">{c.name}</span>
+                  <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
@@ -235,7 +235,7 @@ function Dashboard() {
       </Card>
 
       <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Resumo de Lançamentos</h2>
+        <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -271,7 +271,7 @@ function Dashboard() {
           </div>
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Total de Clientes</div>
-            <div className="text-2xl font-bold text-[#1C2333]">{data.clients.length}</div>
+            <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
           </div>
         </div>
       </Card>

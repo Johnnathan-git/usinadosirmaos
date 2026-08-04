@@ -110,7 +110,7 @@ function Fluxo() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Fluxo de Caixa</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Fluxo de Caixa</h1>
           <p className="text-sm font-medium text-[#6B7280]">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -155,7 +155,7 @@ function Fluxo() {
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Faturas dos clientes</h2>
+        <h2 className="mb-6 text-lg font-bold text-[#374151]">Faturas dos clientes</h2>
         {monthInvoices.length === 0 && <p className="text-sm text-[#6B7280]">Nenhuma fatura neste mês.</p>}
         <div className="divide-y divide-[#F5F6F8]">
           {monthInvoices.map(inv => {
@@ -171,7 +171,7 @@ function Fluxo() {
                     {initial(client?.name ?? "?")}
                   </div>
                   <div>
-                    <div className="font-bold text-[#1C2333]">{client?.name ?? "—"}</div>
+                    <div className="font-bold text-[#374151]">{client?.name ?? "—"}</div>
                     <div className="text-xs font-medium text-[#6B7280]">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
@@ -187,13 +187,13 @@ function Fluxo() {
       </Card>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Despesas lançadas — {monthLabel(monthDate)}</h2>
+        <h2 className="mb-6 text-lg font-bold text-[#374151]">Despesas lançadas — {monthLabel(monthDate)}</h2>
         {monthExpenses.length === 0 && <p className="text-sm text-[#6B7280]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
             <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors">
               <div className="min-w-0">
-                <div className="truncate font-bold text-[#1C2333]">{e.description}</div>
+                <div className="truncate font-bold text-[#374151]">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
                   <span className="inline-block rounded-md bg-[#6B7280]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{e.category}</span>
                   {e.installment_total ? (
@@ -205,7 +205,7 @@ function Fluxo() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="whitespace-nowrap font-bold text-[#D64545] num-lg">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#1C2333] transition-colors"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#374151] transition-colors"><Pencil className="h-4 w-4" /></button>
                 <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#D64545] transition-colors"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>

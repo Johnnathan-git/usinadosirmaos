@@ -132,7 +132,7 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Relatório do Cliente</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Relatório do Cliente</h1>
           <p className="text-sm font-medium text-[#6B7280]">
             Planilha mensal de economia pronta para enviar ao cliente.
           </p>
@@ -143,9 +143,9 @@ function Relatorio() {
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#1C2333] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#374151] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
-              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#1C2333]">{c.name}</SelectItem>)}
+              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#374151]">{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>

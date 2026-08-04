@@ -149,7 +149,7 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Controle</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Controle</h1>
           <p className="text-sm font-medium text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
@@ -182,21 +182,21 @@ function Controle() {
             <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Nº de placas</Label>
             {editing ? (
               <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.panels_count}</div>}
+            ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.panels_count}</div>}
           </div>
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">kW por placa/mês</Label>
             {editing ? (
               <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.kw_per_panel} kW</div>}
+            ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <div className="text-2xl font-bold text-[#374151] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Consumo total clientes</Label>
-            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <div className="text-2xl font-bold text-[#374151] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
@@ -208,8 +208,8 @@ function Controle() {
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><BarChart3 className="h-4 w-4 text-[#1C2333]" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-[#1C2333] num-lg">{aproveitamento.toFixed(1)}%</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><BarChart3 className="h-4 w-4 text-[#374151]" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-[#374151] num-lg">{aproveitamento.toFixed(1)}%</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
@@ -225,7 +225,7 @@ function Controle() {
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm overflow-hidden">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-[#1C2333]">Rateio por Cliente</h2>
+          <h2 className="text-lg font-bold text-[#374151]">Rateio por Cliente</h2>
           <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto">
@@ -247,7 +247,7 @@ function Controle() {
                 const saldoCli = alloc - Number(r.avg);
                 return (
                   <tr key={r.client_id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
-                    <td className="py-4 font-bold text-[#1C2333] uppercase">
+                    <td className="py-4 font-bold text-[#374151] uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full shadow-sm" style={{ backgroundColor: r.color }} />
                         {r.name}
@@ -258,14 +258,14 @@ function Controle() {
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" step="0.01" value={r.pct}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, pct: Number(e.target.value) } : x))} />
-                        : <span className="font-bold text-[#1C2333] num">{Number(r.pct).toFixed(2)}%</span>}
+                        : <span className="font-bold text-[#374151] num">{Number(r.pct).toFixed(2)}%</span>}
                     </td>
-                    <td className="py-4 text-right text-[#1C2333] font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                    <td className="py-4 text-right text-[#374151] font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                     <td className="py-4 text-center">
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-[#E4E7EC]" type="number" value={r.avg}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
-                        : <span className="font-bold text-[#1C2333] num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
+                        : <span className="font-bold text-[#374151] num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
                     <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#D64545]" : "text-[#2E5C8A]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
@@ -287,11 +287,11 @@ function Controle() {
             </tbody>
             <tfoot className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
               <tr>
-                <td className="py-4 px-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider">TOTAIS</td>
+                <td className="py-4 px-4 font-bold text-[#374151] uppercase text-[10px] tracking-wider">TOTAIS</td>
                 <td className="py-4"></td>
-                <td className="py-4 text-center font-bold text-[#1C2333] num">{totalPct.toFixed(2)}%</td>
-                <td className="py-4 text-right font-bold text-[#1C2333] num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                <td className="py-4 text-center font-bold text-[#1C2333] num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className="py-4 text-center font-bold text-[#374151] num">{totalPct.toFixed(2)}%</td>
+                <td className="py-4 text-right font-bold text-[#374151] num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-4 text-center font-bold text-[#374151] num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
                 <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#D64545]" : "text-[#2E5C8A]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>

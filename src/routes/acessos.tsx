@@ -69,7 +69,7 @@ function AcessosContent() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Acessos</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Acessos</h1>
           <p className="text-sm font-medium text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -100,7 +100,7 @@ function AcessosContent() {
             <tbody>
               {(q.data?.users ?? []).map((u) => (
                 <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
-                  <td className="px-6 py-4 font-bold text-[#1C2333]">{u.email}</td>
+                  <td className="px-6 py-4 font-bold text-[#374151]">{u.email}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
@@ -188,7 +188,7 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
         {mode === "create" ? (
           <Button className="bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
         ) : (
-          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#374151]"><Pencil className="h-4 w-4" /></Button>
         )}
       </DialogTrigger>
       <DialogContent>
