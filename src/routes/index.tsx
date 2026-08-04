@@ -256,7 +256,7 @@ function Dashboard() {
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
                   <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#2563EB]"}`}>{brl(row.Lucro)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#2E5C8A]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
