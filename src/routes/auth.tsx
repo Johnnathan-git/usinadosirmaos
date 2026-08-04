@@ -77,7 +77,7 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md p-8 elev-3">
         <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="grid h-16 w-16 place-items-center rounded-2xl bg-ink p-2.5 elev-2">
+          <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white p-1 elev-2">
             <BrandMark />
           </div>
           <div className="text-center leading-none">
