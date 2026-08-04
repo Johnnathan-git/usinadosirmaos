@@ -139,32 +139,32 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Dashboard</h1>
-        <p className="text-sm text-slate-500">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Dashboard</h1>
+        <p className="text-sm text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
-          label={`Despesas ${monthLabel(now)}`}
+          label="Despesas Mensais"
           value={despesasMes}
           tint="clay"
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={lucroMes} tint="blue" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={receitaAno} tint="leaf" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
-            {[["Receita", "#16A34A"], ["Despesas", "#DC2626"], ["Lucro", "#3B82F6"]].map(([k, c]) => (
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
+          <div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold text-[#6B7280] uppercase tracking-wider">
+            {[["Receita", "#2F6F62"], ["Despesas", "#B5533E"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
+                <span className="h-2 w-2 rounded-sm" style={{ background: c }} />
                 {k}
               </span>
             ))}
@@ -174,19 +174,19 @@ function Dashboard() {
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barGap={4}>
-                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeDasharray="3 3" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B", fontWeight: 500 }} dy={10} />
+                <CartesianGrid vertical={false} stroke="#F5F6F8" />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }} dy={10} />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   width={54}
-                  tick={{ fontSize: 11, fill: "#64748B", fontWeight: 500 }}
+                  tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }}
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "#F8FAFC", opacity: 0.5 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#16A34A" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="#DC2626" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#3B82F6" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
+                <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#B5533E" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -227,28 +227,28 @@ function Dashboard() {
       </Card>
 
       <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-slate-800">Resumo mês a mês</h2>
+        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Resumo de Lançamentos</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Mês</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Receita</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Desp. Operacionais</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Fat. Distribuidora</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Despesas</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Lucro</th>
+              <tr className="border-b border-[#E4E7EC]">
+                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Receita</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Fat. Distribuidora</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Despesas</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Lucro</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
-                <tr key={row.month} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                  <td className="py-4 text-slate-800 font-medium">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#16A34A]">{brl(row.Receita)}</td>
-                  <td className="num py-4 text-right text-slate-500">{brl(row.Operacionais)}</td>
-                  <td className="num py-4 text-right text-slate-500">{brl(row.Distribuidora)}</td>
-                  <td className="num py-4 text-right font-semibold text-[#DC2626]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(row.Lucro)}</td>
+                <tr key={row.month} className="hover:bg-[#F5F6F8]">
+                  <td className="py-4 text-[#1C2333] font-semibold">{row.month}</td>
+                  <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
+                  <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#B5533E]">{brl(row.Despesas)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#B5533E]" : "text-[#C98A3E]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -256,14 +256,14 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
             <Users className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-sm text-slate-500 font-medium">Total de Clientes</div>
-            <div className="text-2xl font-bold text-slate-800">{data.clients.length}</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#6B7280]">Total de Clientes</div>
+            <div className="text-2xl font-bold text-[#1C2333]">{data.clients.length}</div>
           </div>
         </div>
       </Card>
@@ -292,12 +292,12 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "blue";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const iconColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
-  const textColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
-  const iconBg = tint === "leaf" ? "bg-green-50" : tint === "clay" ? "bg-red-50" : "bg-blue-50";
+  const iconColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
+  const textColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
+  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#B5533E]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className, iconColor)
@@ -306,16 +306,16 @@ function StatCard({
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
   return (
-    <Card className="bg-white p-6 border border-slate-200 rounded-xl shadow-sm transition-all hover:shadow-md">
+    <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md">
       <div className="mb-4 flex items-start justify-between gap-2">
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg border border-transparent shadow-sm", iconBg)}>
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
         </div>
         {delta != null && Number.isFinite(delta) && (
           <span
             className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
-              good ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#B5533E]/10 text-[#B5533E]"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
@@ -323,11 +323,11 @@ function StatCard({
           </span>
         )}
       </div>
-      <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</div>
-      <div className={cn("mt-2 text-2xl font-bold leading-none tabular-nums", textColor)}>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
+      <div className={cn("mt-2 text-2xl font-bold leading-none num-lg", textColor)}>
         {brl(value)}
       </div>
-      {hint && <div className="mt-3 text-[10px] leading-relaxed text-slate-400 font-medium">{hint}</div>}
+      {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
     </Card>
   );
 }

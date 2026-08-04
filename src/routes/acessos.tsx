@@ -69,8 +69,8 @@ function AcessosContent() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Acessos</h1>
-          <p className="text-sm text-slate-500 font-medium">Cadastre usuários e defina o que cada um pode acessar.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Acessos</h1>
+          <p className="text-sm text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ChangeOwnPasswordDialog />
@@ -79,56 +79,56 @@ function AcessosContent() {
       </div>
 
       {q.data?.bootstrap && (
-        <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+        <div className="rounded-lg border border-[#C98A3E]/20 bg-[#C98A3E]/10 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
           Nenhum administrador cadastrado ainda — todos os usuários autenticados têm acesso total até o primeiro admin ser marcado.
         </div>
       )}
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-0 shadow-none overflow-hidden">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50/50">
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">E-mail</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Papel</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Permissões</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
-                <th className="px-6 py-4 text-left font-semibold text-slate-500 uppercase text-xs">Criado em</th>
-                <th className="px-6 py-4 text-right font-semibold text-slate-500 uppercase text-xs">Ações</th>
+              <tr className="bg-[#F5F6F8]">
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Papel</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Permissões</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Criado em</th>
+                <th className="px-6 py-4 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody>
               {(q.data?.users ?? []).map((u) => (
-                <tr key={u.id} className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-slate-800">{u.email}</td>
+                <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
+                  <td className="px-6 py-4 font-bold text-[#1C2333]">{u.email}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                         <ShieldCheck className="h-3 w-3" /> Administrador
                       </span>
                     ) : (
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Usuário</span>
+                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Usuário</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="text-xs font-semibold text-slate-400 uppercase">Todos os módulos</span>
+                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Todos os módulos</span>
                     ) : u.permissions.length === 0 ? (
-                      <span className="text-xs text-slate-400">—</span>
+                      <span className="text-[10px] text-[#9CA3AF]">—</span>
                     ) : (
                       <div className="flex flex-wrap gap-1">
                         {u.permissions.map((p) => (
-                          <span key={p} className="rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 uppercase">
+                          <span key={p} className="rounded-md bg-[#151B2E]/10 px-2 py-0.5 text-[10px] font-bold text-[#151B2E] uppercase tracking-wider">
                             {MODULE_OPTIONS.find((m) => m.key === p)?.label ?? p}
                           </span>
                         ))}
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-xs font-semibold text-slate-600 uppercase">
-                    {clientName(u.client_id) ?? <span className="text-slate-300">—</span>}
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
+                    {clientName(u.client_id) ?? <span className="text-[#9CA3AF]">—</span>}
                   </td>
-                  <td className="px-6 py-4 text-xs font-medium text-slate-500">{formatDateBR(u.created_at)}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider num">{formatDateBR(u.created_at)}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="inline-flex gap-2">
                       <UserFormDialog mode="edit" user={u} clients={clients} />
@@ -186,9 +186,9 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {mode === "create" ? (
-          <Button className="bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
+          <Button className="bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
         ) : (
-          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></Button>
         )}
       </DialogTrigger>
       <DialogContent>

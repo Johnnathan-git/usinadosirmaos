@@ -149,95 +149,95 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Simulação de Controle</h1>
-          <p className="text-sm text-slate-500">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Controle</h1>
+          <p className="text-sm text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button onClick={() => setEditing(false)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold">
                 <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
               <Pencil className="h-4 w-4" /> Editar Simulação
             </Button>
           )}
         </div>
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-xs text-slate-500">Nº de placas</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Nº de placas</Label>
             {editing ? (
               <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-slate-800">{config.panels_count}</div>}
+            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-xs text-slate-500">kW por placa/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">kW por placa/mês</Label>
             {editing ? (
               <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-slate-800">{config.kw_per_panel} kW</div>}
+            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-xs text-slate-500">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-slate-800">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-xs text-slate-500">Consumo total clientes</Label>
-            <div className="text-2xl font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold ${saldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-slate-800">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">Do total gerado utilizado</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><Zap className="h-4 w-4" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-[#059669]" : "text-[#DC2626]"}`}>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#B5533E]"}`}>
             {totalPct.toFixed(2)}%
           </div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">
             {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none overflow-hidden">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-800">Rateio por Cliente</h2>
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{rows.length} cliente(s)</span>
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm overflow-hidden">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-[#1C2333]">Rateio por Cliente</h2>
+          <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
-                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Unid. Consumidora</th>
-                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Rateio %</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">kW Alocado/Mês</th>
-                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo Médio</th>
-                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Saldo Cliente</th>
+              <tr className="border-b border-[#E4E7EC]">
+                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Unid. Consumidora</th>
+                <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Rateio %</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">kW Alocado/Mês</th>
+                <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo Médio</th>
+                <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Saldo Cliente</th>
                 {editing && <th></th>}
               </tr>
             </thead>
@@ -246,28 +246,28 @@ function Controle() {
                 const alloc = totalGen * (Number(r.pct) / 100);
                 const saldoCli = alloc - Number(r.avg);
                 return (
-                  <tr key={r.client_id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50">
-                    <td className="py-4 font-semibold text-slate-800 uppercase">
+                  <tr key={r.client_id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
+                    <td className="py-4 font-bold text-[#1C2333] uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
                         {r.name}
                       </span>
                     </td>
-                    <td className="py-4 text-slate-500">{r.uc || "—"}</td>
+                    <td className="py-4 text-[#6B7280]">{r.uc || "—"}</td>
                     <td className="py-4 text-center">
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" step="0.01" value={r.pct}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, pct: Number(e.target.value) } : x))} />
-                        : <span className="font-medium text-slate-700">{Number(r.pct).toFixed(2)}%</span>}
+                        : <span className="font-bold text-[#1C2333] num">{Number(r.pct).toFixed(2)}%</span>}
                     </td>
-                    <td className="py-4 text-right text-slate-700 font-medium">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                    <td className="py-4 text-right text-[#1C2333] font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                     <td className="py-4 text-center">
                       {editing
-                        ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" value={r.avg}
+                        ? <Input className="mx-auto w-24 text-center border-[#E4E7EC]" type="number" value={r.avg}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
-                        : <span className="font-medium text-slate-700">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
+                        : <span className="font-bold text-[#1C2333] num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={`py-4 text-right font-bold ${saldoCli < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
+                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -275,7 +275,7 @@ function Controle() {
                         <button
                           title="Remover da simulação"
                           onClick={() => deleteRow(r.client_id)}
-                          className="text-slate-400 hover:text-amber-600"
+                          className="text-[#9CA3AF] hover:text-[#B5533E]"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -285,14 +285,14 @@ function Controle() {
                 );
               })}
             </tbody>
-            <tfoot className="border-t-2 border-slate-200 bg-slate-50/50">
+            <tfoot className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
               <tr>
-                <td className="py-4 px-4 font-bold text-slate-800">TOTAIS</td>
+                <td className="py-4 px-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider">TOTAIS</td>
                 <td className="py-4"></td>
-                <td className="py-4 text-center font-bold text-slate-800">{totalPct.toFixed(2)}%</td>
-                <td className="py-4 text-right font-bold text-slate-800">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                <td className="py-4 text-center font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-4 text-right font-bold ${totalSaldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
+                <td className="py-4 text-center font-bold text-[#1C2333] num">{totalPct.toFixed(2)}%</td>
+                <td className="py-4 text-right font-bold text-[#1C2333] num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-4 text-center font-bold text-[#1C2333] num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}

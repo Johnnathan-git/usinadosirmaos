@@ -126,25 +126,25 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Relatório do Cliente</h1>
-          <p className="text-sm text-slate-500 font-medium">
-            Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
+          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Relatório do Cliente</h1>
+          <p className="text-sm text-[#6B7280]">
+            Planilha mensal de economia pronta para enviar ao cliente.
           </p>
         </div>
       </div>
 
-      <Card className="no-print bg-white border border-slate-200 rounded-xl grid gap-4 p-6 sm:grid-cols-2 shadow-none">
+      <Card className="no-print rounded-[10px] border border-[#E4E7EC] bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-sm">
         <div>
-          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Cliente</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white border-slate-200 rounded-lg"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#1C2333] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
-              {clients.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#1C2333]">{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
         <div>
-          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Meses</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Meses</div>
           <div className="flex flex-wrap gap-2">
             {monthOptions.map((m) => {
               const on = months.includes(m);
@@ -152,8 +152,8 @@ function Relatorio() {
                 <button
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
-                  className={`rounded-lg border px-4 py-1.5 text-xs font-bold transition-all ${
-                    on ? "bg-slate-900 border-slate-900 text-white shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                  className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
+                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#6B7280] hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -165,20 +165,20 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
-        <div className="bg-slate-50/50 px-6 py-4 text-center border-b border-slate-100">
-          <div className="text-lg font-bold uppercase tracking-widest text-slate-800">
+      <Card className="overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm">
+        <div className="bg-[#F5F6F8] px-6 py-4 text-center border-b border-[#E4E7EC]">
+          <div className="text-lg font-bold uppercase tracking-widest text-[#1C2333]">
             {client?.name ?? "—"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-slate-50/30">
+              <tr className="bg-[#F5F6F8]">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
                   <th
                     key={h}
-                    className={`border border-slate-100 px-4 py-3 text-center font-bold text-slate-500 uppercase text-xs ${h === "UC" ? "min-w-[150px]" : ""}`}
+                    className={`border border-[#E4E7EC] px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider ${h === "UC" ? "min-w-[150px]" : ""}`}
                   >
                     {h}
                   </th>
@@ -187,14 +187,14 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors">
+                <tr key={r.id} className="border-b border-[#E4E7EC] last:border-0 hover:bg-[#F5F6F8] transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-slate-100 p-0">
+                    <td key={f} className="border border-[#E4E7EC] p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-slate-200 ${
-                          f === "comDesconto" ? "font-bold text-slate-900" : "text-slate-700 font-medium"
+                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-[#E4E7EC] ${
+                          f === "comDesconto" ? "font-bold text-[#1C2333]" : "text-[#6B7280] font-medium"
                         }`}
                       />
                     </td>
@@ -208,7 +208,7 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-slate-100 bg-slate-50/30 px-6 py-4 text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          <div className="border-t border-[#E4E7EC] bg-[#F5F6F8] px-6 py-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
             {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
           </div>
         )}

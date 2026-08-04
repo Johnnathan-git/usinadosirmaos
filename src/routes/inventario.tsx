@@ -92,47 +92,47 @@ function Inventario() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Inventário</h1>
-          <p className="text-sm text-slate-500">Patrimônio, equipamentos e gastos de instalação</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Inventário</h1>
+          <p className="text-sm text-[#6B7280]">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
-          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
-          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
+          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
+          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
         }
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-900"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-slate-900">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-xs text-slate-500">Ativos + Gastos</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><TrendingUp className="h-4 w-4" /> Total Investido</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-[#059669]">{brl(totalAtivos)}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-900"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-slate-900">{brl(totalGastos)}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{brl(totalGastos)}</div>
         </Card>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="w-full justify-start overflow-x-auto bg-slate-100 p-1 rounded-lg">
-          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
-          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
+        <TabsList className="w-full justify-start overflow-x-auto bg-[#F5F6F8] p-1 rounded-lg">
+          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#1C2333] data-[state=active]:shadow-sm font-bold text-[#6B7280]"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
+          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#1C2333] data-[state=active]:shadow-sm font-bold text-[#6B7280]"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+          <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
             <div className="mb-6 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
-                className={`rounded-lg px-4 py-1.5 text-sm font-medium ${category === "all" ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+                className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === "all" ? "bg-[#151B2E] text-white shadow-sm" : "bg-[#F5F6F8] text-[#6B7280] hover:bg-slate-200"}`}>
                 Todos
               </button>
               {categories.map(([cat, count]) => (
                 <button key={cat} onClick={() => setCategory(cat)}
-                  className={`rounded-lg px-4 py-1.5 text-sm font-medium ${category === cat ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+                  className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === cat ? "bg-[#151B2E] text-white shadow-sm" : "bg-[#F5F6F8] text-[#6B7280] hover:bg-slate-200"}`}>
                   {cat} ({count})
                 </button>
               ))}
@@ -140,39 +140,39 @@ function Inventario() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Item</th>
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Categoria</th>
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Marca / Modelo</th>
-                    <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Qtd</th>
-                    <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Valor Unit.</th>
-                    <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Total</th>
+                  <tr className="border-b border-[#E4E7EC]">
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Item</th>
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Categoria</th>
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Marca / Modelo</th>
+                    <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Qtd</th>
+                    <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor Unit.</th>
+                    <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Total</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredAssets.map(a => (
-                    <tr key={a.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                    <tr key={a.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
                       <td className="py-4">
-                        <div className="font-semibold text-slate-800">{a.item}</div>
-                        {a.location && <div className="text-xs text-slate-500">{a.location}</div>}
+                        <div className="font-bold text-[#1C2333]">{a.item}</div>
+                        {a.location && <div className="text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">{a.location}</div>}
                       </td>
-                      <td className="py-4"><span className="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">{a.category}</span></td>
-                      <td className="py-4 text-slate-500">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
-                      <td className="py-4 text-center text-slate-700 font-medium">{a.quantity}</td>
-                      <td className="py-4 text-right text-slate-700">{brl(Number(a.unit_value))}</td>
-                      <td className="py-4 text-right font-bold text-[#059669]">{brl(Number(a.unit_value) * a.quantity)}</td>
+                      <td className="py-4"><span className="rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">{a.category}</span></td>
+                      <td className="py-4 text-[#6B7280] font-medium">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
+                      <td className="py-4 text-center text-[#1C2333] font-bold num">{a.quantity}</td>
+                      <td className="py-4 text-right text-[#1C2333] font-medium num">{brl(Number(a.unit_value))}</td>
+                      <td className="py-4 text-right font-bold text-[#2F6F62] num">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-4 pl-4 text-right">
-                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
-                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
+                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-slate-200">
-                    <td colSpan={5} className="py-4 font-bold text-slate-800">Total Patrimônio</td>
-                    <td className="py-4 text-right font-bold text-[#059669]">{brl(totalAtivos)}</td>
+                  <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
+                    <td colSpan={5} className="py-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider px-4">Total Patrimônio</td>
+                    <td className="py-4 text-right font-bold text-[#2F6F62] num px-4">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -182,37 +182,37 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+          <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Descrição</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Data</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Responsável</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Observações</th>
-                  <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Valor</th>
+                <tr className="border-b border-[#E4E7EC]">
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Descrição</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Data</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Responsável</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Observações</th>
+                  <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {data.expenses.map(e => (
-                  <tr key={e.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                    <td className="py-4 font-semibold text-slate-800">{e.description}</td>
-                    <td className="py-4 text-slate-500">{formatDateBR(e.spent_on)}</td>
-                    <td className="py-4 text-slate-500">{e.responsible || "—"}</td>
-                    <td className="py-4 text-slate-500">{e.notes || "—"}</td>
-                    <td className="py-4 text-right font-bold text-slate-900">{brl(Number(e.amount))}</td>
+                  <tr key={e.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
+                    <td className="py-4 font-bold text-[#1C2333]">{e.description}</td>
+                    <td className="py-4 text-[#6B7280] font-medium num">{formatDateBR(e.spent_on)}</td>
+                    <td className="py-4 text-[#1C2333] font-bold"><span className="rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.responsible || "—"}</span></td>
+                    <td className="py-4 text-[#6B7280] italic">{e.notes || "—"}</td>
+                    <td className="py-4 text-right font-bold text-[#1C2333] num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
-                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-slate-200">
-                  <td colSpan={4} className="py-4 font-bold text-slate-800">Total Gastos</td>
-                  <td className="py-4 text-right font-bold text-slate-900">{brl(totalGastos)}</td>
+                <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
+                  <td colSpan={4} className="py-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
+                  <td className="py-4 text-right font-bold text-[#1C2333] num px-4">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>
