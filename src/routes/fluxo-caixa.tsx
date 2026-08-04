@@ -14,7 +14,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 import { Plus, TrendingUp, TrendingDown, DollarSign, Pencil, Trash2 } from "lucide-react";
-import { brl, monthLabel, EXPENSE_CATEGORIES } from "@/lib/format";
+import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -29,7 +29,7 @@ type Expense = {
   installment_no?: number | null;
   installment_total?: number | null;
 };
-type Client = { id: string; name: string };
+type Client = { id: string; name: string; color: string };
 
 const fluxoQ = queryOptions({
   queryKey: ["fluxo-page"],
@@ -37,7 +37,7 @@ const fluxoQ = queryOptions({
     const [i, e, c] = await Promise.all([
       supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice"),
       supabase.from("expenses").select("*").order("reference_date", { ascending: false }),
-      supabase.from("clients").select("id,name"),
+      supabase.from("clients").select("id,name,color"),
     ]);
     if (i.error) throw i.error;
     if (e.error) throw e.error;
@@ -157,14 +157,23 @@ function Fluxo() {
         <div className="divide-y divide-slate-100">
           {monthInvoices.map(inv => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
+            const client = data.clients.find(c => c.id === inv.client_id);
             return (
               <div key={inv.id} className="flex items-start justify-between py-4">
-                <div>
-                  <div className="font-semibold text-slate-800">{clientName(inv.client_id)}</div>
-                  <div className="text-sm text-slate-500">{monthLabel(monthDate)}</div>
+                <div className="flex items-center gap-3">
+                  <div 
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold"
+                    style={{ backgroundColor: `${client?.color ?? '#64748B'}1F`, color: client?.color ?? '#64748B' }}
+                  >
+                    {initial(client?.name ?? "?")}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-slate-800">{client?.name ?? "—"}</div>
+                    <div className="text-sm text-slate-500">{monthLabel(monthDate)}</div>
+                  </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div>Lucro bruto: <span className="font-bold text-slate-800">{brl(profit)}</span></div>
+                  <div>Lucro bruto: <span className="font-bold text-[#16A34A]">{brl(profit)}</span></div>
                   <div className="text-slate-500">Recebido: {brl(Number(inv.client_pays))}</div>
                   <div className="text-slate-500">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
                 </div>
