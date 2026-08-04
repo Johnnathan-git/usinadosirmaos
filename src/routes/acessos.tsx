@@ -73,7 +73,6 @@ function AcessosContent() {
           <p className="text-sm font-medium text-[#4B5563]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <ChangeOwnPasswordDialog />
           <UserFormDialog mode="create" clients={clients} />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +9,12 @@ import { getMyAccess } from "@/lib/acessos.functions";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { BrandLockup } from "@/components/BrandMark";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { changeMyPassword } from "@/lib/acessos.functions";
+import { toast } from "sonner";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
@@ -100,6 +106,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <span className="hidden px-3 text-xs font-semibold text-[#4B5563] uppercase tracking-wide sm:inline">
               {acc?.effective_admin ? "Administrador" : "Usuário"}
             </span>
+            <ChangeOwnPasswordDialog />
             <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
               <LogOut className="h-4 w-4 sm:mr-2" />
               <span className="hidden font-semibold sm:inline">Sair</span>
@@ -168,5 +175,58 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
     </div>
+  );
+}
+
+function ChangeOwnPasswordDialog() {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const changeFn = useServerFn(changeMyPassword);
+  
+  const m = useMutation({
+    mutationFn: () => changeFn({ data: { password } }),
+    onSuccess: () => {
+      toast.success("Senha alterada com sucesso.");
+      setOpen(false);
+      setPassword("");
+    },
+    onError: (e: any) => toast.error(e?.message ?? "Falha ao alterar senha."),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="ghost" className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
+          <KeyRound className="h-4 w-4 sm:mr-2" />
+          <span className="hidden font-semibold sm:inline">Senha</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Alterar Minha Senha</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <Label>Nova Senha</Label>
+            <Input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="Mínimo 6 caracteres" 
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button 
+            onClick={() => m.mutate()} 
+            disabled={m.isPending || password.length < 6}
+            className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium"
+          >
+            {m.isPending ? "Alterando..." : "Confirmar Alteração"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
