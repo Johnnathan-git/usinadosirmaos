@@ -121,7 +121,7 @@ function AuthPage() {
           </Button>
         </form>
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          Novos usuários são cadastrados pelo administrador no módulo Acessos.
+          Novos usuarios são cadastrados exclusivamente pelo administrador
         </p>
       </Card>
     </div>
