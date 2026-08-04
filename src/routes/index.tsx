@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Mesmo erro. Não consigo nem anexar mais
+ * Execute esta instrucao no projeto: Que doidera, tu nao vai conseguir resolver. Agora esta anexando mas continua abrindo uma pagina do chrome com erro. E pra melhorar nao esta aparecendo no relatorio do cliente
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
