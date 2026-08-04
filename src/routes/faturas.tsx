@@ -604,15 +604,28 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right font-semibold text-[#2E5C8A]">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
-                          <a 
-                            href={inv.attachment_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
+                          <button 
+                            onClick={async () => {
+                              try {
+                                const path = inv.attachment_url!;
+                                if (path.startsWith('http')) {
+                                  window.open(path, '_blank');
+                                  return;
+                                }
+                                const { data, error } = await supabase.storage
+                                  .from('faturas_private')
+                                  .createSignedUrl(path, 60);
+                                if (error) throw error;
+                                window.open(data.signedUrl, '_blank');
+                              } catch (err: any) {
+                                toast.error("Erro ao abrir arquivo: " + err.message);
+                              }
+                            }}
                             className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
                             title="Ver anexo"
                           >
                             <Paperclip className="h-4 w-4" />
-                          </a>
+                          </button>
                         ) : "—"}
                       </td>
                       <td className="py-3 pl-2 text-right">
