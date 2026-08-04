@@ -50,12 +50,12 @@
 :root {
   --radius: 10px;
   --background: #F5F6F8;
-  --foreground: #1C2333;
+  --foreground: #374151;
   
   --card: #FFFFFF;
-  --card-foreground: #1C2333;
+  --card-foreground: #374151;
   --popover: #FFFFFF;
-  --popover-foreground: #1C2333;
+  --popover-foreground: #374151;
   --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
   
@@ -64,7 +64,7 @@
   --muted: #F5F6F8;
   --muted-foreground: #6B7280;
   --accent: #E4E7EC;
-  --accent-foreground: #1C2333;
+  --accent-foreground: #374151;
   --destructive: #D64545;
   --destructive-foreground: #FFFFFF;
   --border: #E4E7EC;
