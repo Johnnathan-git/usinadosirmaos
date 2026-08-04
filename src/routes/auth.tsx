@@ -85,7 +85,7 @@ function AuthPage() {
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Energia solar
+              Gestão de energia
             </div>
           </div>
         </div>
