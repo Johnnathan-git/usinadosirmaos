@@ -190,7 +190,7 @@ function Faturas() {
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border-rose-200 text-rose-600 hover:bg-rose-50"
+                className="mt-2 w-full gap-2 border-slate-200 text-destructive hover:bg-slate-50"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
@@ -302,7 +302,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving}>{client ? "Salvar" : "Criar"}</Button>
+          <Button onClick={submit} disabled={saving} className="bg-slate-900 hover:bg-slate-800">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

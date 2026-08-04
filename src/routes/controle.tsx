@@ -154,13 +154,13 @@ function Controle() {
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border-amber-300 text-amber-700 hover:bg-amber-50">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border-slate-200 text-slate-700 hover:bg-slate-50">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-rose-300 text-rose-600 hover:bg-rose-50">
+              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-slate-200 text-destructive hover:bg-slate-50">
                 <X className="h-4 w-4" /> Cancelar
               </Button>
-              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 hover:bg-slate-800">
                 <Save className="h-4 w-4" /> Salvar
               </Button>
             </>
@@ -282,7 +282,7 @@ function Controle() {
                           <button
                             title="Excluir cliente definitivamente (apaga todos os dados)"
                             onClick={() => deleteClientForever(r.client_id, r.name)}
-                            className="inline-flex items-center gap-1 rounded-md border border-rose-200 px-2 py-1 text-xs font-medium text-rose-600 hover:bg-rose-50"
+                            className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-destructive hover:bg-slate-50"
                           >
                             <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
                           </button>
