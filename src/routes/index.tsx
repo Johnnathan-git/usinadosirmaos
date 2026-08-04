@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Agora sim deu certo. No modulo Relatorio do Cliente na ultima coluna Doc, mudar para baixar fatura. Veja se cabe
+ * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
