@@ -15,7 +15,7 @@ type Invoice = {
   interest_fine: number; value_without_plant: number; client_pays: number;
   attachment_url: string | null;
 };
-type Client = { id: string; name: string; phone: string | null; discount_pct: number };
+type Client = { id: string; name: string; phone: string | null; discount_pct: number; color: string };
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
@@ -25,7 +25,7 @@ const q = queryOptions({
         .from("invoices")
         .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays,attachment_url")
         .order("reference_date", { ascending: false }),
-      supabase.from("clients").select("id,name,phone,discount_pct").order("name"),
+      supabase.from("clients").select("id,name,phone,discount_pct,color").order("name"),
       supabase.auth.getSession(),
     ]);
     if (i.error) throw i.error;
@@ -174,7 +174,10 @@ function Relatorio() {
       </Card>
 
       <Card className="overflow-hidden rounded-[16px] border border-[#E4E7EC] bg-white p-0 shadow-lg">
-        <div className="bg-[#C97B5E] px-8 py-5 text-center border-b border-[#E4E7EC]">
+        <div 
+          className="px-8 py-5 text-center border-b border-[#E4E7EC]"
+          style={{ backgroundColor: client?.color ?? "#C97B5E" }}
+        >
           <div className="text-xl font-medium uppercase tracking-[0.25em] text-white/95">
             {client?.name ?? "—"}
           </div>
