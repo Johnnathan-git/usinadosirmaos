@@ -490,7 +490,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
