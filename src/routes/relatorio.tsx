@@ -169,7 +169,7 @@ function Relatorio() {
 
       <Card className="overflow-hidden rounded-[16px] border border-[#E4E7EC] bg-white p-0 shadow-lg">
         <div className="bg-[#C97B5E] px-8 py-10 text-center border-b border-[#E4E7EC]">
-          <div className="text-sm font-bold uppercase tracking-[0.3em] text-white/80 mb-2">Relatório de Economia</div>
+          
           <div className="text-3xl font-bold uppercase tracking-[0.2em] text-white">
             {client?.name ?? "—"}
           </div>
