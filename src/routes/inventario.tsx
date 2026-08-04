@@ -92,47 +92,47 @@ function Inventario() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Inventário</h1>
-          <p className="text-sm text-slate-500">Patrimônio, equipamentos e gastos de instalação</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Inventário</h1>
+          <p className="text-sm text-[#6B7280]">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
-          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
-          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
+          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
+          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
         }
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-900"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-slate-900">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-xs text-slate-500">Ativos + Gastos</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><TrendingUp className="h-4 w-4" /> Total Investido</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-[#059669]">{brl(totalAtivos)}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-900"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-slate-900">{brl(totalGastos)}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{brl(totalGastos)}</div>
         </Card>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="w-full justify-start overflow-x-auto bg-slate-100 p-1 rounded-lg">
-          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
-          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
+        <TabsList className="w-full justify-start overflow-x-auto bg-[#F5F6F8] p-1 rounded-lg">
+          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#1C2333] data-[state=active]:shadow-sm font-bold text-[#6B7280]"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
+          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#1C2333] data-[state=active]:shadow-sm font-bold text-[#6B7280]"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+          <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
             <div className="mb-6 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
-                className={`rounded-lg px-4 py-1.5 text-sm font-medium ${category === "all" ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+                className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === "all" ? "bg-[#151B2E] text-white shadow-sm" : "bg-[#F5F6F8] text-[#6B7280] hover:bg-slate-200"}`}>
                 Todos
               </button>
               {categories.map(([cat, count]) => (
                 <button key={cat} onClick={() => setCategory(cat)}
-                  className={`rounded-lg px-4 py-1.5 text-sm font-medium ${category === cat ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+                  className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === cat ? "bg-[#151B2E] text-white shadow-sm" : "bg-[#F5F6F8] text-[#6B7280] hover:bg-slate-200"}`}>
                   {cat} ({count})
                 </button>
               ))}
@@ -140,13 +140,13 @@ function Inventario() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Item</th>
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Categoria</th>
-                    <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Marca / Modelo</th>
-                    <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Qtd</th>
-                    <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Valor Unit.</th>
-                    <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Total</th>
+                  <tr className="border-b border-[#E4E7EC]">
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Item</th>
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Categoria</th>
+                    <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Marca / Modelo</th>
+                    <th className="pb-3 text-center font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Qtd</th>
+                    <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor Unit.</th>
+                    <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Total</th>
                     <th></th>
                   </tr>
                 </thead>
