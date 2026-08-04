@@ -475,14 +475,28 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                 </label>
               </Button>
               {f.attachment_url && (
-                <a 
-                  href={f.attachment_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-xs text-primary hover:underline flex items-center gap-1"
+                <button 
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const path = f.attachment_url!;
+                      if (path.startsWith('http')) {
+                        window.open(path, '_blank');
+                        return;
+                      }
+                      const { data, error } = await supabase.storage
+                        .from('faturas_v3_privado_v2')
+                        .createSignedUrl(path, 3600);
+                      if (error) throw error;
+                      window.open(data.signedUrl, '_blank');
+                    } catch (err: any) {
+                      toast.error("Erro ao abrir arquivo: " + err.message);
+                    }
+                  }}
+                  className="text-xs text-primary hover:underline flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0"
                 >
                   <Eye className="h-3 w-3" /> Ver anexo
-                </a>
+                </button>
               )}
             </div>
           </div>
@@ -612,7 +626,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   return;
                                 }
                                 const { data, error } = await supabase.storage
-                                  .from('faturas_v3_privado')
+                                  .from('faturas_v3_privado_v2')
                                   .createSignedUrl(path, 3600);
                                 if (error) throw error;
                                 window.open(data.signedUrl, '_blank');
