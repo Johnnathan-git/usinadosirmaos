@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
+ * Execute esta instrucao no projeto: Não consegui nem trocar a fatura que já estava em anexo. Olha o print
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
@@ -387,7 +387,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         .from('faturas_v3_privado_v2')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: true
         });
 
       if (uploadError) throw uploadError;
