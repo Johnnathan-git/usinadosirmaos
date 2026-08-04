@@ -479,7 +479,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-emerald-600 hover:bg-emerald-700">Salvar</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -527,19 +527,19 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </DialogHeader>
 
         <div className="grid gap-3 md:grid-cols-4">
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
             <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
             <div className="mt-1 text-xl font-bold text-emerald-600">{brl(totalClientPays)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora (despesa)</div>
-            <div className="mt-1 text-xl font-bold text-rose-500">{brl(totalDistributor)}</div>
+            <div className="mt-1 text-xl font-bold text-destructive">{brl(totalDistributor)}</div>
           </Card>
-          <Card className="p-4">
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
             <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
@@ -547,7 +547,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600">
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
