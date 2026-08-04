@@ -139,32 +139,32 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Dashboard</h1>
-        <p className="text-sm text-slate-500">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Dashboard</h1>
+        <p className="text-sm text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
-          label={`Despesas ${monthLabel(now)}`}
+          label="Despesas Mensais"
           value={despesasMes}
           tint="clay"
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={lucroMes} tint="blue" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={receitaAno} tint="leaf" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
-            {[["Receita", "#16A34A"], ["Despesas", "#DC2626"], ["Lucro", "#3B82F6"]].map(([k, c]) => (
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
+          <div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold text-[#6B7280] uppercase tracking-wider">
+            {[["Receita", "#2F6F62"], ["Despesas", "#B5533E"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
+                <span className="h-2 w-2 rounded-sm" style={{ background: c }} />
                 {k}
               </span>
             ))}
@@ -174,19 +174,19 @@ function Dashboard() {
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barGap={4}>
-                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeDasharray="3 3" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B", fontWeight: 500 }} dy={10} />
+                <CartesianGrid vertical={false} stroke="#F5F6F8" />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }} dy={10} />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   width={54}
-                  tick={{ fontSize: 11, fill: "#64748B", fontWeight: 500 }}
+                  tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }}
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "#F8FAFC", opacity: 0.5 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#16A34A" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="#DC2626" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#3B82F6" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
+                <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#B5533E" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
