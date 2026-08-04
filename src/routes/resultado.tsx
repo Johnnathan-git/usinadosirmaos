@@ -201,10 +201,10 @@ function Resultado() {
         <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="rounded-[10px] border border-[#E4E7EC] bg-[#2E5C8A] p-10 text-center shadow-sm">
-        <div className="text-xs font-bold uppercase tracking-widest text-white/70">Economia total gerada para o cliente</div>
-        <div className="num-lg mt-3 text-4xl font-bold text-white sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-4 text-sm text-white/50 font-bold">
+      <Card className="rounded-xl border border-slate-200 bg-[#2E5C8A] p-6 text-center shadow-none">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-white/70">Economia total gerada</div>
+        <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl">{brl(totalEconomia)}</div>
+        <div className="mt-2 text-[10px] text-white/50 font-bold uppercase tracking-wider">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
       </Card>
