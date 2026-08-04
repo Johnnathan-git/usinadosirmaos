@@ -172,7 +172,7 @@ function Inventario() {
                 <tfoot>
                   <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
                     <td colSpan={5} className="py-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider px-4">Total Patrimônio</td>
-                    <td className="py-4 text-right font-bold text-[#2F6F62] num px-4">{brl(totalAtivos)}</td>
+                    <td className="py-4 text-right font-bold text-[#2563EB] num px-4">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
