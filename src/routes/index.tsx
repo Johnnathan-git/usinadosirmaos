@@ -303,7 +303,7 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactElement; label: string; value: number; tint: "leaf" | "clay";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const isEmerald = tint === "leaf";
