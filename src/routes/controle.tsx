@@ -214,7 +214,7 @@ function Controle() {
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#D64545]"}`}>
+          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2563EB]" : "text-[#D64545]"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
