@@ -249,7 +249,7 @@ function Controle() {
                   <tr key={r.client_id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
                     <td className="py-4 font-bold text-[#1C2333] uppercase">
                       <span className="inline-flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
+                        <span className="h-2 w-2 rounded-full shadow-sm" style={{ backgroundColor: r.color }} />
                         {r.name}
                       </span>
                     </td>
