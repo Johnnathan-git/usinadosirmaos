@@ -118,13 +118,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
+                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
                     active ? "text-[#151B2E]" : "text-[#9CA3AF]",
                   )}
                 >
-                  <span className={cn("grid h-9 w-9 place-items-center rounded-lg transition-all", active ? "bg-[#1F2A45] text-white" : "hover:bg-slate-50")}>
-                    <Icon className="h-5 w-5" />
-                  </span>
+                  {active && <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#C98A3E]" />}
+                  <Icon className="h-5 w-5" />
                   <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
                 </Link>
               );
@@ -144,12 +143,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold outline-none transition-all",
+                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
                     active
-                      ? "bg-[#1F2A45] text-white border-l-4 border-[#C98A3E]"
-                      : "text-[#9CA3AF] hover:bg-[#1F2A45] hover:text-white",
+                      ? "text-white"
+                      : "text-[#9CA3AF] hover:text-white",
                   )}
                 >
+                  {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>

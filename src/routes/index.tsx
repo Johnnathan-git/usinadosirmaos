@@ -140,7 +140,7 @@ function Dashboard() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
         <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Dashboard</h1>
-        <p className="text-sm text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
+        <p className="text-sm font-medium text-[#6B7280]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -161,10 +161,10 @@ function Dashboard() {
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
-          <div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold text-[#6B7280] uppercase tracking-wider">
+          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
             {[["Receita", "#2F6F62"], ["Despesas", "#B5533E"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-sm" style={{ background: c }} />
+                <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                 {k}
               </span>
             ))}
@@ -203,15 +203,15 @@ function Dashboard() {
             <div key={c.id} className="flex items-center gap-3">
               <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold"
-                style={{ backgroundColor: `${c.color}1F`, color: c.color }}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                style={{ backgroundColor: c.color }}
               >
                 {initial(c.name)}
               </div>
               <div className="flex-1">
                 <div className="mb-1 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-800">{c.name}</span>
-                  <span className="num text-sm font-bold text-slate-900">{brl(c.profit)}</span>
+                  <span className="text-sm font-bold text-[#1C2333]">{c.name}</span>
+                  <span className="num text-sm font-bold text-[#1C2333]">{brl(c.profit)}</span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
@@ -242,8 +242,8 @@ function Dashboard() {
             </thead>
             <tbody className="divide-y divide-[#F5F6F8]">
               {summary.map(row => (
-                <tr key={row.month} className="hover:bg-[#F5F6F8]">
-                  <td className="py-4 text-[#1C2333] font-semibold">{row.month}</td>
+                <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
+                  <td className="py-4 text-[#1C2333] font-bold">{row.month}</td>
                   <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
@@ -295,18 +295,21 @@ function StatCard({
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const iconColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
-  const textColor = tint === "leaf" ? "text-[#2F6F62]" : tint === "clay" ? "text-[#B5533E]" : "text-[#C98A3E]";
+  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#B5533E" : "#C98A3E";
   const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#B5533E]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
-    className: cn(icon.props.className, iconColor)
+    className: cn(icon.props.className),
+    style: { color: semanticColor }
   });
 
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
   return (
-    <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md">
+    <Card 
+      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md"
+      style={{ borderTop: `3px solid ${semanticColor}` }}
+    >
       <div className="mb-4 flex items-start justify-between gap-2">
         <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
@@ -324,7 +327,7 @@ function StatCard({
         )}
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
-      <div className={cn("mt-2 text-2xl font-bold leading-none num-lg", textColor)}>
+      <div className="mt-2 text-2xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
         {brl(value)}
       </div>
       {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
