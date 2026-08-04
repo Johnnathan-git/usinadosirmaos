@@ -147,6 +147,17 @@ export const deleteManagedUser = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const changeMyPassword = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { password: string }) => d)
+  .handler(async ({ data, context }) => {
+    if (data.password.length < 6) throw new Error("A senha deve ter no mínimo 6 caracteres.");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(context.userId, { password: data.password });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const getMyAccess = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
