@@ -165,7 +165,7 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 elev-2 border-solar/30">
+      <Card className="overflow-hidden p-0 elev-3 border-solar/30">
         <div className="bg-solar/10 px-4 py-3 text-center border-b border-solar/20">
           <div className="font-display text-lg font-bold uppercase tracking-wide text-solar">
             {client?.name ?? "—"}

@@ -271,7 +271,7 @@ function Dashboard() {
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-border bg-card px-3 py-2 elev-2">
+    <div className="rounded-xl border border-border bg-card px-3 py-2 elev-3">
       <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
       {payload.map((p: any) => (
         <div key={p.dataKey} className="flex items-center justify-between gap-6 text-sm">
