@@ -110,8 +110,8 @@ function Fluxo() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Fluxo de Caixa</h1>
-          <p className="text-sm text-muted-foreground">Receitas, despesas e lucro mensal</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Fluxo de Caixa</h1>
+          <p className="text-sm text-[#6B7280]">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
@@ -123,34 +123,34 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-slate-900 hover:bg-slate-800 sm:flex-none">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-[#151B2E] hover:bg-[#1F2A45] sm:flex-none font-bold">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#059669]">
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">
             <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
-          <div className="text-2xl font-bold text-[#059669]">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(receitas)}</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#DC2626]">
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#B5533E]">
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
-          <div className="text-2xl font-bold text-[#DC2626]">{brl(despesas)}</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">
+          <div className="text-2xl font-bold text-[#B5533E] num-lg">{brl(despesas)}</div>
+          <div className="mt-2 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(lucro)}</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">Receitas − (operacionais + distribuidora)</div>
+          <div className={`text-2xl font-bold num-lg ${lucro < 0 ? "text-[#B5533E]" : "text-[#C98A3E]"}`}>{brl(lucro)}</div>
+          <div className="mt-2 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
