@@ -165,20 +165,20 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
-        <div className="bg-slate-50/50 px-6 py-4 text-center border-b border-slate-100">
-          <div className="text-lg font-bold uppercase tracking-widest text-slate-800">
+      <Card className="overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-0 shadow-sm">
+        <div className="bg-[#F5F6F8] px-6 py-4 text-center border-b border-[#E4E7EC]">
+          <div className="text-lg font-bold uppercase tracking-widest text-[#1C2333]">
             {client?.name ?? "—"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-slate-50/30">
+              <tr className="bg-[#F5F6F8]">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
                   <th
                     key={h}
-                    className={`border border-slate-100 px-4 py-3 text-center font-bold text-slate-500 uppercase text-xs ${h === "UC" ? "min-w-[150px]" : ""}`}
+                    className={`border border-[#E4E7EC] px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider ${h === "UC" ? "min-w-[150px]" : ""}`}
                   >
                     {h}
                   </th>
@@ -187,14 +187,14 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors">
+                <tr key={r.id} className="border-b border-[#E4E7EC] last:border-0 hover:bg-[#F5F6F8] transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-slate-100 p-0">
+                    <td key={f} className="border border-[#E4E7EC] p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-slate-200 ${
-                          f === "comDesconto" ? "font-bold text-slate-900" : "text-slate-700 font-medium"
+                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-[#E4E7EC] ${
+                          f === "comDesconto" ? "font-bold text-[#1C2333]" : "text-[#6B7280] font-medium"
                         }`}
                       />
                     </td>
