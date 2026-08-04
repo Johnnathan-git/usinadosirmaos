@@ -81,8 +81,9 @@ function AuthPage() {
       
       <Card className="relative w-full max-w-md border-none bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-10">
         <div className="mb-8 flex flex-col items-center gap-4">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[#F5F6F8] p-2 ring-1 ring-[#E4E7EC]">
-            <BrandMark className="h-12 w-12" />
+          <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl bg-white p-3 shadow-[0_10px_40px_-10px_rgba(21,27,46,0.12)] ring-1 ring-[#F1F5F9]">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#151B2E]/5 to-transparent opacity-50" />
+            <BrandMark className="relative z-10 h-14 w-14 drop-shadow-sm" />
           </div>
           <div className="text-center">
             <div className="font-display text-2xl font-bold tracking-tight text-[#151B2E]">
