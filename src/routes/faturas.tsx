@@ -615,7 +615,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   .from('faturas_private')
                                   .createSignedUrl(path, 60);
                                 if (error) throw error;
-                                window.open(data.signedUrl, '_blank');
+                                window.open(data.publicUrl, '_blank');
                               } catch (err: any) {
                                 toast.error("Erro ao abrir arquivo: " + err.message);
                               }
