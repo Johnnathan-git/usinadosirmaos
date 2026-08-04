@@ -144,7 +144,7 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="sky" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -155,14 +155,14 @@ function Dashboard() {
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
         <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="leaf" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="sky" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2F6F62"]].map(([k, c]) => (
+            {[["Receita", "#2563EB"], ["Despesas", "#D64545"], ["Lucro", "#2F6F62"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                 {k}
@@ -184,7 +184,7 @@ function Dashboard() {
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
                 <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Receita" fill="#2563EB" radius={[2, 2, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="#D64545" radius={[2, 2, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Lucro" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
@@ -244,7 +244,7 @@ function Dashboard() {
               {summary.map(row => (
                 <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#2563EB]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
                   <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
@@ -295,8 +295,8 @@ function StatCard({
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#D64545" : "#C98A3E";
-  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : "bg-[#C98A3E]/10";
+  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#D64545" : tint === "sky" ? "#2563EB" : "#C98A3E";
+  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : tint === "sky" ? "bg-[#2563EB]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className),
