@@ -142,7 +142,7 @@ function Controle() {
 
   function deleteRow(client_id: string) {
     setRows(rs => rs.filter(r => r.client_id !== client_id));
-    toast.success("Removido da simulação");
+    toast.success("Removido localmente");
   }
 
   return (
@@ -167,7 +167,7 @@ function Controle() {
             </>
           ) : (
             <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
-              <Pencil className="h-4 w-4" /> Editar Simulação
+              <Pencil className="h-4 w-4" /> Editar
             </Button>
           )}
         </div>
@@ -324,7 +324,7 @@ function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n
     if (!Number.isFinite(pctNum) || pctNum < 0) return toast.error("Rateio % é obrigatório");
     
     onAdd(f.name.trim(), f.uc_number.trim(), avgNum, pctNum);
-    toast.success("Adicionado à simulação");
+    toast.success("Adicionado com sucesso");
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -348,7 +348,7 @@ function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} className="bg-slate-900 text-white hover:bg-slate-800">Adicionar à Simulação</Button>
+          <Button onClick={submit} className="bg-slate-900 text-white hover:bg-slate-800">Adicionar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
