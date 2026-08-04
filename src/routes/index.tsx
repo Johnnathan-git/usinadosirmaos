@@ -162,7 +162,7 @@ function Dashboard() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-            {[["Receita", "#2F6F62"], ["Despesas", "#B5533E"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
+            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                 {k}
@@ -185,7 +185,7 @@ function Dashboard() {
                 />
                 <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
                 <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="#B5533E" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#D64545" radius={[2, 2, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
@@ -247,8 +247,8 @@ function Dashboard() {
                   <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
-                  <td className="num py-4 text-right font-semibold text-[#B5533E]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#B5533E]" : "text-[#C98A3E]"}`}>{brl(row.Lucro)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#C98A3E]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -295,8 +295,8 @@ function StatCard({
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#B5533E" : "#C98A3E";
-  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#B5533E]/10" : "bg-[#C98A3E]/10";
+  const semanticColor = tint === "leaf" ? "#2F6F62" : tint === "clay" ? "#D64545" : "#C98A3E";
+  const iconBg = tint === "leaf" ? "bg-[#2F6F62]/10" : tint === "clay" ? "bg-[#D64545]/10" : "bg-[#C98A3E]/10";
   
   const styledIcon = React.cloneElement(icon, {
     className: cn(icon.props.className),
@@ -318,7 +318,7 @@ function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#B5533E]/10 text-[#B5533E]"
+              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
