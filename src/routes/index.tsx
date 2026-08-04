@@ -181,9 +181,9 @@ function Dashboard() {
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
                 <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.5 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="var(--leaf)" radius={[6, 6, 0, 0]} maxBarSize={34} />
-                <Bar dataKey="Despesas" fill="var(--destructive)" radius={[6, 6, 0, 0]} maxBarSize={34} />
-                <Bar dataKey="Lucro" fill="var(--solar)" radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="Receita" fill="var(--leaf)" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="var(--destructive)" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="var(--solar)" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
