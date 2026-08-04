@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
+ * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
