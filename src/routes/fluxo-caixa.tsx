@@ -1,9 +1,7 @@
 /**
  * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
  */
-import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
@@ -110,14 +108,14 @@ function Fluxo() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Fluxo de Caixa</h1>
-          <p className="text-sm text-muted-foreground">{monthLabel(monthDate)}</p>
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Fluxo de Caixa</h1>
+          <p className="text-sm text-muted-foreground">Receitas, despesas e lucro mensal</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-40 h-10 border-border bg-card rounded-lg"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-36 sm:w-40"><SelectValue /></SelectTrigger>
             <SelectContent>
               {months.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
@@ -125,98 +123,95 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg px-4 h-10 font-semibold shadow-sm">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-slate-900 hover:bg-slate-800 sm:flex-none">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-profit">
-            Receitas
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#059669]">
+            <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
-          <div className="num text-2xl font-bold text-profit">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-[#059669]">{brl(receitas)}</div>
         </Card>
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-expense">
-            Despesas
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#DC2626]">
+            <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
-          <div className="num text-2xl font-bold text-expense">{brl(despesas)}</div>
-          <div className="num mt-2 text-[9px] font-bold text-muted-foreground/70 uppercase">
-            Oper. {brl(despesasOperacionais)} + Distr. {brl(faturasDistribuidora)}
+          <div className="text-2xl font-bold text-[#DC2626]">{brl(despesas)}</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">
+            Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-accent">
-            Lucro do Mês
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
+            <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={cn("num text-2xl font-bold", lucro < 0 ? "text-expense" : "text-profit")}>{brl(lucro)}</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <h2 className="mb-6 text-lg font-semibold text-foreground">Faturas Clientes</h2>
-          {monthInvoices.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma fatura lançada.</p>}
-          <div className="divide-y divide-border/50">
-            {monthInvoices.map(inv => {
-              const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
-              const client = data.clients.find(c => c.id === inv.client_id);
-              return (
-                <div key={inv.id} className="flex items-center justify-between py-4">
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-bold"
-                      style={{ backgroundColor: `${client?.color ?? '#64748B'}1A`, color: client?.color ?? '#64748B' }}
-                    >
-                      {initial(client?.name ?? "?")}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-foreground">{client?.name ?? "—"}</div>
-                      <div className="num text-[10px] font-medium text-muted-foreground">{monthLabel(monthDate)}</div>
-                    </div>
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Faturas dos clientes</h2>
+        {monthInvoices.length === 0 && <p className="text-sm text-slate-500">Nenhuma fatura neste mês.</p>}
+        <div className="divide-y divide-slate-100">
+          {monthInvoices.map(inv => {
+            const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
+            const client = data.clients.find(c => c.id === inv.client_id);
+            return (
+              <div key={inv.id} className="flex items-start justify-between py-4">
+                <div className="flex items-center gap-3">
+                  <div 
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold"
+                    style={{ backgroundColor: `${client?.color ?? '#64748B'}1F`, color: client?.color ?? '#64748B' }}
+                  >
+                    {initial(client?.name ?? "?")}
                   </div>
-                  <div className="text-right">
-                    <div className={cn("num text-sm font-bold", profit < 0 ? "text-expense" : "text-profit")}>{brl(profit)}</div>
-                    <div className="num text-[10px] font-medium text-muted-foreground uppercase">Bruto</div>
+                  <div>
+                    <div className="font-semibold text-slate-800">{client?.name ?? "—"}</div>
+                    <div className="text-sm text-slate-500">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </Card>
-
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <h2 className="mb-6 text-lg font-semibold text-foreground">Despesas Operacionais</h2>
-          {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa lançada.</p>}
-          <div className="space-y-3">
-            {monthExpenses.map(e => (
-              <div key={e.id} className="group flex items-center justify-between p-4 rounded-xl border border-border/50 hover:bg-background/50 transition-colors">
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-foreground uppercase tracking-tight">{e.description}</div>
-                  <div className="mt-1 flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-muted-foreground/60 uppercase">{e.category}</span>
-                    {e.installment_total && (
-                      <span className="text-[10px] font-bold text-accent uppercase tracking-tighter">
-                        Parc. {e.installment_no}/{e.installment_total}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 pl-4">
-                  <span className="num text-sm font-bold text-expense">{brl(Number(e.amount))}</span>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => setEdit(e)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"><Pencil className="h-3.5 w-3.5" /></button>
-                    <button onClick={() => deleteExpense(e)} className="p-1.5 text-muted-foreground hover:text-expense transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
-                  </div>
+                <div className="text-right text-sm">
+                  <div>Lucro bruto: <span className="font-bold text-[#16A34A]">{brl(profit)}</span></div>
+                  <div className="text-slate-500">Recebido: {brl(Number(inv.client_pays))}</div>
+                  <div className="text-slate-500">Fat. distribuidora: {brl(Number(inv.distributor_invoice))}</div>
                 </div>
               </div>
-            ))}
-          </div>
-        </Card>
-      </div>
+            );
+          })}
+        </div>
+      </Card>
 
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Despesas lançadas — {monthLabel(monthDate)}</h2>
+        {monthExpenses.length === 0 && <p className="text-sm text-slate-500">Nenhuma despesa neste mês.</p>}
+        <div className="space-y-3">
+          {monthExpenses.map(e => (
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border border-slate-100 p-4">
+              <div className="min-w-0">
+                <div className="truncate font-semibold text-slate-800">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">{e.category}</span>
+                  {e.installment_total ? (
+                    <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                      Parcela {e.installment_no}/{e.installment_total}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="whitespace-nowrap font-bold text-[#DC2626]">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
 
       {(newOpen || edit) && (
         <ExpenseDialog expense={edit} onClose={() => { setNewOpen(false); setEdit(null); }} />

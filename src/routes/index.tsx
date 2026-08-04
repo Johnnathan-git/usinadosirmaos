@@ -138,35 +138,33 @@ function Dashboard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">{monthLabelLong(now)}</p>
-        </div>
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Dashboard</h1>
+        <p className="text-sm text-slate-500">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-4 w-4" />} label={`Receita ${monthLabel(now)}`} value={receitaMes} tint="profit" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
-          icon={<TrendingDown className="h-4 w-4" />}
+          icon={<TrendingDown className="h-5 w-5" />}
           label={`Despesas ${monthLabel(now)}`}
           value={despesasMes}
-          tint="expense"
+          tint="clay"
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
-          hint={`Operacionais ${brl(despesasOperMes)} + Distr. ${brl(faturasDistMes)}`}
+          hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-4 w-4" />} label={`Lucro ${monthLabel(now)}`} value={lucroMes} tint="accent" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-4 w-4" />} label={`Receita ${now.getFullYear()}`} value={receitaAno} tint="profit" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={lucroMes} tint="blue" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={receitaAno} tint="leaf" />
       </div>
 
-      <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-foreground">Performance Financeira</h2>
-          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-            {[["Receita", "#2F6F62"], ["Despesas", "#B5533E"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
-              <span key={k} className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
+            {[["Receita", "#16A34A"], ["Despesas", "#DC2626"], ["Lucro", "#3B82F6"]].map(([k, c]) => (
+              <span key={k} className="inline-flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
                 {k}
               </span>
             ))}
@@ -175,85 +173,100 @@ function Dashboard() {
         <div className="-mx-2 overflow-x-auto px-2">
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barGap={6}>
-                <CartesianGrid vertical={false} stroke="#E4E7EC" strokeDasharray="3 3" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: "#6B7280", fontWeight: 600 }} dy={10} />
+              <BarChart data={chartData} barGap={4}>
+                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeDasharray="3 3" />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B", fontWeight: 500 }} dy={10} />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  width={60}
-                  tick={{ fontSize: 10, fill: "#6B7280", fontWeight: 600 }}
-                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${(v / 1000).toFixed(0)}k` : String(v))}
+                  width={54}
+                  tick={{ fontSize: 11, fill: "#64748B", fontWeight: 500 }}
+                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "#F5F6F8", opacity: 0.8 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={24} />
-                <Bar dataKey="Despesas" fill="#B5533E" radius={[2, 2, 0, 0]} maxBarSize={24} />
-                <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={24} />
+                <Tooltip cursor={{ fill: "#F8FAFC", opacity: 0.5 }} content={<ChartTooltip />} />
+                <Bar dataKey="Receita" fill="#16A34A" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#DC2626" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#3B82F6" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-6 flex items-center gap-2">
-            <Trophy className="h-4 w-4 text-accent" />
-            <h2 className="text-lg font-semibold text-foreground">Ranking de Lucratividade</h2>
-          </div>
-          <div className="space-y-5">
-            {ranking.map((c, idx) => (
-              <div key={c.id} className="flex items-center gap-4">
-                <span className="num w-4 text-xs font-medium text-muted-foreground">{(idx + 1).toString().padStart(2, '0')}</span>
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-bold"
-                  style={{ backgroundColor: `${c.color}1A`, color: c.color }}
-                >
-                  {initial(c.name)}
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <div className="mb-4 flex items-center gap-2">
+          <Trophy className="h-5 w-5 text-slate-400" />
+          <h2 className="text-lg font-bold text-slate-800">Ranking — Clientes Mais Lucrativos</h2>
+        </div>
+        <div className="space-y-4">
+          {ranking.map((c, idx) => (
+            <div key={c.id} className="flex items-center gap-3">
+              <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
+              <div
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold"
+                style={{ backgroundColor: `${c.color}1F`, color: c.color }}
+              >
+                {initial(c.name)}
+              </div>
+              <div className="flex-1">
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-slate-800">{c.name}</span>
+                  <span className="num text-sm font-bold text-slate-900">{brl(c.profit)}</span>
                 </div>
-                <div className="flex-1">
-                  <div className="mb-1.5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-foreground">{c.name}</span>
-                    <span className="num text-sm font-semibold text-foreground">{brl(c.profit)}</span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-background">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: c.color }}
-                    />
-                  </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
+                  />
                 </div>
               </div>
-            ))}
-          </div>
-        </Card>
+            </div>
+          ))}
+          {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
+        </div>
+      </Card>
 
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <h2 className="mb-6 text-lg font-semibold text-foreground">Resumo Operacional</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="pb-3 text-left text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Mês</th>
-                  <th className="pb-3 text-right text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Receita</th>
-                  <th className="pb-3 text-right text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Lucro</th>
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Resumo mês a mês</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200">
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Mês</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Receita</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Desp. Operacionais</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Fat. Distribuidora</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Despesas</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Lucro</th>
+              </tr>
+            </thead>
+            <tbody>
+              {summary.map(row => (
+                <tr key={row.month} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                  <td className="py-4 text-slate-800 font-medium">{row.month}</td>
+                  <td className="num py-4 text-right font-semibold text-[#16A34A]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right text-slate-500">{brl(row.Operacionais)}</td>
+                  <td className="num py-4 text-right text-slate-500">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right font-semibold text-[#DC2626]">{brl(row.Despesas)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(row.Lucro)}</td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-border/50">
-                {summary.slice(0, 5).map(row => (
-                  <tr key={row.month} className="group hover:bg-background/50 transition-colors">
-                    <td className="py-3.5 text-sm font-medium text-foreground">{row.month}</td>
-                    <td className="num py-3.5 text-right text-sm font-medium text-foreground">{brl(row.Receita)}</td>
-                    <td className={cn("num py-3.5 text-right text-sm font-bold", row.Lucro < 0 ? "text-expense" : "text-profit")}>
-                      {brl(row.Lucro)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
+            <Users className="h-6 w-6" />
           </div>
-        </Card>
-      </div>
+          <div>
+            <div className="text-sm text-slate-500 font-medium">Total de Clientes</div>
+            <div className="text-2xl font-bold text-slate-800">{data.clients.length}</div>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }
@@ -261,19 +274,17 @@ function Dashboard() {
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-border bg-card p-3 shadow-lg">
-      <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className="space-y-1.5">
-        {payload.map((p: any) => (
-          <div key={p.dataKey} className="flex items-center justify-between gap-8">
-            <span className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: p.fill }} />
-              {p.dataKey}
-            </span>
-            <span className="num text-xs font-bold text-foreground">{brl(Number(p.value))}</span>
-          </div>
-        ))}
-      </div>
+    <div className="rounded-xl border border-border bg-card px-3 py-2 elev-3">
+      <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
+      {payload.map((p: any) => (
+        <div key={p.dataKey} className="flex items-center justify-between gap-6 text-sm">
+          <span className="inline-flex items-center gap-2 text-muted-foreground">
+            <span className="h-2 w-2 rounded-sm" style={{ background: p.fill }} />
+            {p.dataKey}
+          </span>
+          <span className="num font-semibold text-foreground">{brl(Number(p.value))}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -281,33 +292,30 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactElement<any>; label: string; value: number; tint: "profit" | "expense" | "accent";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "blue";
   hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const colorMap = {
-    profit: { text: "text-profit", bg: "bg-profit/10", icon: "text-profit" },
-    expense: { text: "text-expense", bg: "bg-expense/10", icon: "text-expense" },
-    accent: { text: "text-accent", bg: "bg-accent/10", icon: "text-accent" },
-  };
+  const iconColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
+  const textColor = tint === "leaf" ? "text-green-600" : tint === "clay" ? "text-red-600" : "text-blue-600";
+  const iconBg = tint === "leaf" ? "bg-green-50" : tint === "clay" ? "bg-red-50" : "bg-blue-50";
   
-  const colors = colorMap[tint];
   const styledIcon = React.cloneElement(icon, {
-    className: cn(icon.props.className, colors.icon)
+    className: cn(icon.props.className, iconColor)
   });
 
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
   return (
-    <Card className="bg-card p-6 border-border rounded-xl shadow-sm hover:shadow-md transition-all">
-      <div className="mb-4 flex items-start justify-between">
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", colors.bg)}>
+    <Card className="bg-white p-6 border border-slate-200 rounded-xl shadow-sm transition-all hover:shadow-md">
+      <div className="mb-4 flex items-start justify-between gap-2">
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg border border-transparent shadow-sm", iconBg)}>
           {styledIcon}
         </div>
         {delta != null && Number.isFinite(delta) && (
           <span
             className={cn(
-              "inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-profit/10 text-profit" : "bg-expense/10 text-expense"
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
+              good ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
@@ -315,11 +323,11 @@ function StatCard({
           </span>
         )}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className={cn("num mt-1.5 text-2xl font-bold", colors.text)}>
+      <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</div>
+      <div className={cn("mt-2 text-2xl font-bold leading-none tabular-nums", textColor)}>
         {brl(value)}
       </div>
-      {hint && <div className="mt-3 text-[9px] font-medium leading-relaxed text-muted-foreground/70">{hint}</div>}
+      {hint && <div className="mt-3 text-[10px] leading-relaxed text-slate-400 font-medium">{hint}</div>}
     </Card>
   );
 }

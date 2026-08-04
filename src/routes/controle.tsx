@@ -1,7 +1,5 @@
-import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
@@ -149,125 +147,136 @@ function Controle() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Cálculo Operacional</h1>
-          <p className="text-sm text-muted-foreground">Simulação de geração × consumo e rateio</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Simulação de Controle</h1>
+          <p className="text-sm text-slate-500">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button onClick={() => setNewOpen(true)} className="h-10 gap-2 bg-primary text-white hover:bg-primary/90 rounded-lg px-4 font-semibold shadow-sm">
+        <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="h-10 gap-2 border-border bg-card text-foreground hover:bg-background rounded-lg px-4 font-semibold">
-                <RefreshCw className="h-4 w-4 text-muted-foreground" /> Recalcular
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+                <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button onClick={() => setEditing(false)} className="h-10 gap-2 bg-accent text-white hover:bg-accent/90 rounded-lg px-4 font-bold">
-                <X className="h-4 w-4" /> Fechar
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+                <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="h-10 gap-2 border-border bg-card text-foreground hover:bg-background rounded-lg px-4 font-semibold">
-              <Pencil className="h-4 w-4 text-muted-foreground" /> Editar
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+              <Pencil className="h-4 w-4" /> Editar Simulação
             </Button>
           )}
         </div>
       </div>
 
-      <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          <Zap className="h-4 w-4 text-accent" /> Configuração da Usina
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800">
+          <Zap className="h-4 w-4" /> Geração da Usina
         </div>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Nº de placas</Label>
+            <Label className="text-xs text-slate-500">Nº de placas</Label>
             {editing ? (
-              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-2 h-9 border-border bg-background" />
-            ) : <div className="num mt-1 text-2xl font-bold text-foreground">{config.panels_count}</div>}
+              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
+            ) : <div className="text-2xl font-bold text-slate-800">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">kW por placa</Label>
+            <Label className="text-xs text-slate-500">kW por placa/mês</Label>
             {editing ? (
-              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-2 h-9 border-border bg-background" />
-            ) : <div className="num mt-1 text-2xl font-bold text-foreground">{config.kw_per_panel} kW</div>}
+              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
+            ) : <div className="text-2xl font-bold text-slate-800">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Geração Total</Label>
-            <div className="num mt-1 text-2xl font-bold text-foreground">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-xs text-slate-500">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-slate-800">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Consumo Total</Label>
-            <div className="num mt-1 text-2xl font-bold text-foreground">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-xs text-slate-500">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-profit">Saldo de Energia</div>
-          <div className={cn("num text-2xl font-bold", saldo < 0 ? "text-expense" : "text-profit")}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold ${saldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-foreground">Aproveitamento</div>
-          <div className="num text-2xl font-bold text-foreground">{aproveitamento.toFixed(1)}%</div>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-slate-800">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">Do total gerado utilizado</div>
         </Card>
-        <Card className="bg-card border-border rounded-xl p-6 shadow-sm">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-accent">Status Rateio</div>
-          <div className={cn("num text-2xl font-bold", Math.abs(totalPct - 100) < 0.5 ? "text-profit" : "text-expense")}>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-[#059669]" : "text-[#DC2626]"}`}>
             {totalPct.toFixed(2)}%
+          </div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">
+            {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
       </div>
 
-      <Card className="bg-card border-border rounded-xl shadow-sm overflow-hidden">
-        <div className="border-b border-border bg-background/50 px-6 py-4">
-          <h2 className="text-xs font-bold text-foreground uppercase tracking-widest">Rateio da Usina</h2>
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none overflow-hidden">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-800">Rateio por Cliente</h2>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-background/20">
-                <th className="px-6 py-3.5 text-left text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Cliente</th>
-                <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Rateio %</th>
-                <th className="px-6 py-3.5 text-right text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Alocado</th>
-                <th className="px-6 py-3.5 text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Consumo</th>
-                <th className="px-6 py-3.5 text-right text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Saldo</th>
-                {editing && <th className="px-6 py-3.5"></th>}
+              <tr className="border-b border-slate-100">
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Unid. Consumidora</th>
+                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Rateio %</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">kW Alocado/Mês</th>
+                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo Médio</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Saldo Cliente</th>
+                {editing && <th></th>}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/50">
+            <tbody>
               {rows.map((r, idx) => {
                 const alloc = totalGen * (Number(r.pct) / 100);
                 const saldoCli = alloc - Number(r.avg);
                 return (
-                  <tr key={r.client_id} className="hover:bg-background/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3 text-sm font-semibold text-foreground uppercase">
-                        <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: r.color }} />
+                  <tr key={r.client_id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50">
+                    <td className="py-4 font-semibold text-slate-800 uppercase">
+                      <span className="inline-flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
                         {r.name}
-                      </div>
-                      <div className="num mt-0.5 text-[10px] font-medium text-muted-foreground ml-4 uppercase tracking-tighter">UC {r.uc || "—"}</div>
+                      </span>
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="py-4 text-slate-500">{r.uc || "—"}</td>
+                    <td className="py-4 text-center">
                       {editing
-                        ? <Input className="num mx-auto h-8 w-24 text-center border-border bg-background" type="number" step="0.01" value={r.pct}
+                        ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" step="0.01" value={r.pct}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, pct: Number(e.target.value) } : x))} />
-                        : <span className="num text-sm font-bold text-foreground">{Number(r.pct).toFixed(2)}%</span>}
+                        : <span className="font-medium text-slate-700">{Number(r.pct).toFixed(2)}%</span>}
                     </td>
-                    <td className="num px-6 py-4 text-right text-sm font-medium text-foreground">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="py-4 text-right text-slate-700 font-medium">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                    <td className="py-4 text-center">
                       {editing
-                        ? <Input className="num mx-auto h-8 w-24 text-center border-border bg-background" type="number" value={r.avg}
+                        ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" value={r.avg}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
-                        : <span className="num text-sm font-medium text-foreground">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
+                        : <span className="font-medium text-slate-700">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={cn("num px-6 py-4 text-right text-sm font-bold", saldoCli < 0 ? "text-expense" : "text-profit")}>
+                    <td className={`py-4 text-right font-bold ${saldoCli < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
-                      <td className="px-6 py-4 text-right">
-                        <button onClick={() => deleteRow(r.client_id)} className="p-2 text-muted-foreground hover:text-expense transition-colors">
+                      <td className="py-4 pl-4 text-right">
+                        <button
+                          title="Remover da simulação"
+                          onClick={() => deleteRow(r.client_id)}
+                          className="text-slate-400 hover:text-amber-600"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </td>
@@ -276,22 +285,23 @@ function Controle() {
                 );
               })}
             </tbody>
-            <tfoot className="bg-background/50">
+            <tfoot className="border-t-2 border-slate-200 bg-slate-50/50">
               <tr>
-                <td className="px-6 py-4 text-[10px] font-bold text-foreground uppercase tracking-[0.2em]">Resumo Final</td>
-                <td className="num px-6 py-4 text-center text-sm font-bold text-foreground">{totalPct.toFixed(2)}%</td>
-                <td className="num px-6 py-4 text-right text-sm font-bold text-foreground">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                <td className="num px-6 py-4 text-center text-sm font-bold text-foreground">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={cn("num px-6 py-4 text-right text-sm font-bold", totalSaldo < 0 ? "text-expense" : "text-profit")}>
+                <td className="py-4 px-4 font-bold text-slate-800">TOTAIS</td>
+                <td className="py-4"></td>
+                <td className="py-4 text-center font-bold text-slate-800">{totalPct.toFixed(2)}%</td>
+                <td className="py-4 text-right font-bold text-slate-800">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-4 text-center font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className={`py-4 text-right font-bold ${totalSaldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
-                {editing && <td className="px-6 py-4"></td>}
+                {editing && <td></td>}
               </tr>
             </tfoot>
           </table>
+          {rows.length === 0 && <p className="py-8 text-center text-sm text-slate-500">Nenhum cliente ativo.</p>}
         </div>
       </Card>
-
 
       {newOpen && (
         <NewSimClientDialog 
