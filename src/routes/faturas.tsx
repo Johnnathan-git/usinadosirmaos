@@ -383,9 +383,12 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
       const fileName = `${client.id}/${Date.now()}.${fileExt}`;
       const filePath = `invoices/${fileName}`;
 
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('attachments')
-        .upload(filePath, file);
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
       if (uploadError) throw uploadError;
 
