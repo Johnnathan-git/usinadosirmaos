@@ -196,23 +196,23 @@ function Inventario() {
               </thead>
               <tbody>
                 {data.expenses.map(e => (
-                  <tr key={e.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                    <td className="py-4 font-semibold text-slate-800">{e.description}</td>
-                    <td className="py-4 text-slate-500">{formatDateBR(e.spent_on)}</td>
-                    <td className="py-4 text-slate-500">{e.responsible || "—"}</td>
-                    <td className="py-4 text-slate-500">{e.notes || "—"}</td>
-                    <td className="py-4 text-right font-bold text-slate-900">{brl(Number(e.amount))}</td>
+                  <tr key={e.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
+                    <td className="py-4 font-bold text-[#1C2333]">{e.description}</td>
+                    <td className="py-4 text-[#6B7280] font-medium num">{formatDateBR(e.spent_on)}</td>
+                    <td className="py-4 text-[#1C2333] font-bold"><span className="rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.responsible || "—"}</span></td>
+                    <td className="py-4 text-[#6B7280] italic">{e.notes || "—"}</td>
+                    <td className="py-4 text-right font-bold text-[#1C2333] num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
-                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-slate-200">
-                  <td colSpan={4} className="py-4 font-bold text-slate-800">Total Gastos</td>
-                  <td className="py-4 text-right font-bold text-slate-900">{brl(totalGastos)}</td>
+                <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
+                  <td colSpan={4} className="py-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
+                  <td className="py-4 text-right font-bold text-[#1C2333] num px-4">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>

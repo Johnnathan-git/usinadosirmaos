@@ -69,8 +69,8 @@ function AcessosContent() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Acessos</h1>
-          <p className="text-sm text-slate-500 font-medium">Cadastre usuários e defina o que cada um pode acessar.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Acessos</h1>
+          <p className="text-sm text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ChangeOwnPasswordDialog />
