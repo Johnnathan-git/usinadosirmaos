@@ -195,7 +195,7 @@ function Fluxo() {
               <div className="min-w-0">
                 <div className="truncate font-bold text-[#1C2333]">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
-                  <span className="inline-block rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.category}</span>
+                  <span className="inline-block rounded-md bg-[#2563EB]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">{e.category}</span>
                   {e.installment_total ? (
                     <span className="inline-block rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
                       Parcela {e.installment_no}/{e.installment_total}
