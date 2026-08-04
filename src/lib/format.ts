@@ -52,7 +52,29 @@ export const CLIENT_COLORS = [
 ];
 
 /** Fundo suave a partir da cor do cliente (visual mais sóbrio). */
-export const softBg = (hex: string) => `${hex}26`;
+export const softBg = (hex: string) => `${hex}20`;
+
+/** Converte a cor principal para um tom pastel claro. */
+export const getClientSoftColor = (color: string) => {
+  const c = color.toLowerCase();
+  if (c.includes('#0e6ba8') || c.includes('#3e5cb8') || c.includes('#0d7a8c')) return 'bg-blue-100 text-blue-900';
+  if (c.includes('#e08a1e') || c.includes('#b4611a')) return 'bg-orange-100 text-orange-900';
+  if (c.includes('#1e8e6a') || c.includes('#177a55')) return 'bg-emerald-100 text-emerald-900';
+  if (c.includes('#8e4ec6')) return 'bg-purple-100 text-purple-900';
+  if (c.includes('#c2405a') || c.includes('#9a2f6b')) return 'bg-pink-100 text-pink-900';
+  return 'bg-slate-100 text-slate-900';
+};
+
+/** Retorna a classe do botão baseada na cor do cliente. */
+export const getClientButtonColor = (color: string) => {
+  const c = color.toLowerCase();
+  if (c.includes('#0e6ba8') || c.includes('#3e5cb8') || c.includes('#0d7a8c')) return 'bg-blue-600 hover:bg-blue-700';
+  if (c.includes('#e08a1e') || c.includes('#b4611a')) return 'bg-orange-600 hover:bg-orange-700';
+  if (c.includes('#1e8e6a') || c.includes('#177a55')) return 'bg-emerald-600 hover:bg-emerald-700';
+  if (c.includes('#8e4ec6')) return 'bg-purple-600 hover:bg-purple-700';
+  if (c.includes('#c2405a') || c.includes('#9a2f6b')) return 'bg-pink-600 hover:bg-pink-700';
+  return 'bg-slate-900 hover:bg-slate-800';
+};
 
 export const EXPENSE_CATEGORIES = [
   "Fatura Usina",
