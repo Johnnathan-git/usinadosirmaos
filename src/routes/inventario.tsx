@@ -161,7 +161,7 @@ function Inventario() {
                       <td className="py-4 text-[#6B7280] font-medium">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
                       <td className="py-4 text-center text-[#1C2333] font-bold num">{a.quantity}</td>
                       <td className="py-4 text-right text-[#1C2333] font-medium num">{brl(Number(a.unit_value))}</td>
-                      <td className="py-4 text-right font-bold text-[#2F6F62] num">{brl(Number(a.unit_value) * a.quantity)}</td>
+                      <td className="py-4 text-right font-bold text-[#2563EB] num">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-4 pl-4 text-right">
                         <button onClick={() => setAssetOpen(a)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
                         <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-[#9CA3AF] hover:text-[#D64545]"><Trash2 className="h-4 w-4" /></button>
