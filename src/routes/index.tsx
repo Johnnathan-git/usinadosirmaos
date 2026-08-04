@@ -315,7 +315,7 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm transition-all hover:shadow-md"
+      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md"
       style={{ borderTop: `3px solid ${semanticColor}` }}
     >
       <div className="mb-4 flex items-start justify-between gap-2">
