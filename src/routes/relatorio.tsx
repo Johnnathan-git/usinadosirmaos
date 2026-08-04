@@ -221,16 +221,16 @@ function Relatorio() {
                           onClick={async () => {
                             try {
                               const path = r.attachment_url!;
-                              if (path.startsWith('http')) {
-                                window.open(path, '_blank');
-                                return;
-                              }
-                              // We use the new bucket faturas_v3_privado_v2
                               const { data, error } = await supabase.storage
                                 .from('faturas_v3_privado_v2')
-                                .createSignedUrl(path, 3600);
+                                .createSignedUrl(path, 60);
                               if (error) throw error;
-                              window.open(data.signedUrl, '_blank');
+                              
+                              const a = document.createElement('a');
+                              a.href = data.signedUrl;
+                              a.target = '_blank';
+                              a.rel = 'noopener noreferrer';
+                              a.click();
                             } catch (err: any) {
                               console.error(err);
                               alert("Erro ao abrir arquivo: " + err.message);
