@@ -392,37 +392,37 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Data de Referência *</Label>
-            <Input type="month" value={f.reference_month} onChange={e => setF({ ...prev => ({ ...prev, reference_month: e.target.value }) })} />
+            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => setF({ ...prev => ({ ...prev, consumption_kw: e.target.value }) })} placeholder="Ex: 537" />
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => setF(prev => ({ ...prev, consumption_kw: e.target.value }))} placeholder="Ex: 537" />
           </div>
           <div>
             <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => setF({ ...prev => ({ ...prev, price_kw: e.target.value }) })} placeholder="Ex: 1,185396" />
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => setF(prev => ({ ...prev, price_kw: e.target.value }))} placeholder="Ex: 1,185396" />
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => setF({ ...prev => ({ ...prev, public_lighting: e.target.value }) })} placeholder="Ex: 26,36" />
+            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => setF(prev => ({ ...prev, public_lighting: e.target.value }))} placeholder="Ex: 26,36" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => setF({ ...prev => ({ ...prev, interest_fine: e.target.value }) })} placeholder="0" />
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => setF(prev => ({ ...prev, interest_fine: e.target.value }))} placeholder="0" />
           </div>
           <div>
             <Label>Valor S/ Usina (R$) *</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} onChange={e => setF({ ...prev => ({ ...prev, value_without_plant: e.target.value }) })} placeholder="676,37" />
+            <Input type="number" step="0.01" value={f.value_without_plant} onChange={e => setF(prev => ({ ...prev, value_without_plant: e.target.value }))} placeholder="676,37" />
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$) *</Label>
-            <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF({ ...prev => ({ ...prev, client_pays: e.target.value }) })} placeholder="676,37" />
+            <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF(prev => ({ ...prev, client_pays: e.target.value }))} placeholder="676,37" />
           </div>
         </div>
         <Card className="mt-2 border-emerald-100 bg-emerald-50/50 p-4">
           <div className="mb-1 text-sm font-medium text-emerald-800">Fatura do Cliente — concessionária (R$)</div>
           <div className="mb-2 text-xs text-emerald-700/70">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF({ ...prev => ({ ...prev, distributor_invoice: e.target.value }) })} className="bg-white" placeholder="676,37" />
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
         
         <div className="space-y-4 mt-4">
@@ -430,7 +430,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Label>Observações</Label>
             <Textarea 
               value={f.notes} 
-              onChange={e => setF({ ...prev => ({ ...prev, notes: e.target.value }) })} 
+              onChange={e => setF(prev => ({ ...prev, notes: e.target.value }))} 
               placeholder="Opcional"
               className="mt-1"
             />
