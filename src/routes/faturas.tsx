@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Mesmo erro. Vou nem te mandar print mais
+ * Execute esta instrucao no projeto: A mesma bosta.
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
