@@ -159,10 +159,10 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex gap-4 text-sm text-slate-500">
-              <span className="flex items-center gap-1 font-medium"><Zap className="h-4 w-4 text-slate-400" /> 1 UC</span>
+            <div className="mb-4 flex gap-4 text-sm text-slate-400">
+              <span className="flex items-center gap-1 font-medium"><Zap className="h-4 w-4" /> 1 UC</span>
               <span className="flex items-center gap-1 font-medium">
-                <FileText className="h-4 w-4 text-slate-400" /> 
+                <FileText className="h-4 w-4" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
