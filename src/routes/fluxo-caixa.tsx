@@ -127,26 +127,26 @@ function Fluxo() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600">
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#059669]">
             <TrendingUp className="h-4 w-4" /> Total de Receitas
           </div>
-          <div className="text-2xl font-bold text-emerald-600">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-[#059669]">{brl(receitas)}</div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
+        <Card className="border shadow-sm bg-white p-5">
           <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-destructive">
             <TrendingDown className="h-4 w-4" /> Total de Despesas
           </div>
-          <div className="text-2xl font-bold text-destructive">{brl(despesas)}</div>
+          <div className="text-2xl font-bold text-[#DC2626]">{brl(despesas)}</div>
           <div className="mt-1 text-xs text-muted-foreground font-medium">
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600">
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-blue-600"}`}>{brl(lucro)}</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-slate-900"}`}>{brl(lucro)}</div>
           <div className="mt-1 text-xs text-muted-foreground font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>

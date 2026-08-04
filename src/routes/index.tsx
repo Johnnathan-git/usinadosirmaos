@@ -304,12 +304,12 @@ function StatCard({
   const iconBg: Record<string, string> = {
     leaf: "bg-emerald-600 text-white",
     clay: "bg-destructive text-white",
-    solar: "bg-blue-600 text-white",
-    sky: "bg-blue-600 text-white",
+    solar: "bg-slate-900 text-white",
+    sky: "bg-slate-900 text-white",
   };
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   return (
-    <Card className={`bg-card p-5 border-none shadow-sm transition-shadow hover:shadow-md ${featured ? "ring-1 ring-blue-500/20" : ""}`}>
+    <Card className={`bg-card p-5 border shadow-sm transition-shadow hover:shadow-md ${featured ? "ring-1 ring-slate-900/20" : ""}`}>
       <div className="mb-4 flex items-start justify-between gap-2">
         <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${iconBg[tint]}`}>{icon}</div>
         {delta != null && Number.isFinite(delta) && (
