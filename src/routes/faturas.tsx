@@ -394,7 +394,6 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
       setF(prev => ({ ...prev, attachment_url: filePath }));
       toast.success("Arquivo anexado!");
-      toast.success("Arquivo anexado!");
     } catch (err: any) {
       toast.error("Erro ao subir arquivo: " + err.message);
     } finally {
