@@ -149,7 +149,7 @@ function Controle() {
           <p className="text-sm text-muted-foreground">Geração × consumo e rateio por cliente</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-emerald-500 hover:bg-emerald-600">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 hover:bg-slate-800">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
@@ -172,7 +172,7 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="border-amber-200 bg-amber-50/60 p-6">
+      <Card className="border-none shadow-sm bg-white p-6">
         <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-amber-700">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
@@ -222,7 +222,7 @@ function Controle() {
         </Card>
       </div>
 
-      <Card className="p-6">
+      <Card className="border-none shadow-sm bg-white overflow-hidden p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Rateio por Cliente</h2>
           <span className="text-xs text-muted-foreground">{rows.length} cliente(s)</span>
@@ -230,7 +230,7 @@ function Controle() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500">
                 <th className="pb-3 text-left font-medium">Cliente</th>
                 <th className="pb-3 text-left font-medium">Unid. Consumidora</th>
                 <th className="pb-3 text-center font-medium">Rateio %</th>
@@ -245,7 +245,7 @@ function Controle() {
                 const alloc = totalGen * (Number(r.pct) / 100);
                 const saldoCli = alloc - Number(r.avg);
                 return (
-                  <tr key={r.client_id} className="border-t">
+                  <tr key={r.client_id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                     <td className="py-3 font-medium uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
@@ -266,7 +266,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : `${Number(r.avg).toLocaleString("pt-BR")} kW`}
                     </td>
-                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-destructive" : "text-emerald-600"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -293,14 +293,14 @@ function Controle() {
                 );
               })}
             </tbody>
-            <tfoot className="border-t-2 border-muted-foreground/20 font-bold bg-muted/50">
+            <tfoot className="border-t-2 border-slate-100 font-bold bg-slate-50">
               <tr>
                 <td className="py-3 px-2">TOTAIS</td>
                 <td className="py-3"></td>
                 <td className="py-3 text-center">{totalPct.toFixed(2)}%</td>
                 <td className="py-3 text-right">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-3 text-center">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-destructive" : "text-emerald-600"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}
