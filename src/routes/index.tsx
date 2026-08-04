@@ -154,8 +154,8 @@ function Dashboard() {
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="leaf" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="sky" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="revenue" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
