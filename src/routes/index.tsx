@@ -1,5 +1,5 @@
 /**
- * Dashboard principal da Usina dos Irmãos
+ * Execute esta instrucao no projeto: Não consegui nem trocar a fatura que já estava em anexo. Olha o print
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
