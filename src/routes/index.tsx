@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Criar a opçao do usuario que cadastrei alterar a senha dele após ele fazer o login e criar a opçao do adminstrador de resetar a senha pelo modulo Acessos.
+ * Execute esta instrucao no projeto: Não precisa dessa opçao de alterar minha senha ao lado de + Novo Usuario. Preciso que tenha essa opçao para os usuários que logarem no sistema.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
