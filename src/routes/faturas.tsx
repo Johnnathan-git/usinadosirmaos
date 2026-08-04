@@ -170,19 +170,21 @@ function Faturas() {
             </div>
             <div className="flex flex-col gap-2">
               <Button
-                variant="outline"
-                className="gap-2"
-                onClick={() => setHistoryFor(c)}
-              >
-                <Eye className="h-4 w-4" /> Abrir Faturas
-              </Button>
-              <Button
-                className="gap-2"
+                className="w-full gap-2 transition-all hover:shadow-md"
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
-                className="gap-2 bg-rose-500 hover:bg-rose-600"
+                style={{ backgroundColor: c.color }}
               >
-                <Plus className="h-4 w-4" /> Lançar Fatura do Mês
+                <Plus className="h-4 w-4 text-white" /> 
+                <span className="text-white font-semibold">Lançar Fatura do Mês</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                onClick={() => setHistoryFor(c)}
+              >
+                <Eye className="h-4 w-4" /> Ver histórico
               </Button>
             </div>
             {!c.active && (
