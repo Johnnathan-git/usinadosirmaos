@@ -173,20 +173,28 @@ function Dashboard() {
         <div className="-mx-2 overflow-x-auto px-2">
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barGap={4}>
-                <CartesianGrid vertical={false} stroke="#F5F6F8" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }} dy={10} />
+              <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid vertical={false} stroke="#F1F5F9" strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="month" 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }} 
+                  dy={10} 
+                />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  width={54}
-                  tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "IBM Plex Mono" }}
-                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
+                  tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="#2563EB" radius={[2, 2, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="#D64545" radius={[2, 2, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Tooltip 
+                  cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
+                  content={<ChartTooltip />} 
+                />
+                <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2563EB" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
