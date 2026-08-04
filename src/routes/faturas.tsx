@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: auditar fluxo, sem alterar nada
+ * Execute esta instrucao no projeto: Mesmo erro. Não consigo nem anexar mais
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
