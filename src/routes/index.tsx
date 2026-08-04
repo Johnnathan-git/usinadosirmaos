@@ -326,7 +326,7 @@ function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+              good ? "bg-[#2563EB]/10 text-[#2563EB]" : "bg-[#D64545]/10 text-[#D64545]"
             )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
