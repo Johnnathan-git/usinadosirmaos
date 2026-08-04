@@ -611,10 +611,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   window.open(path, '_blank');
                                   return;
                                 }
-                                const { data, error } = await supabase.storage
+                                const { data } = supabase.storage
                                   .from('faturas_private')
-                                  .createSignedUrl(path, 60);
-                                if (error) throw error;
+                                  .getPublicUrl(path);
                                 window.open(data.publicUrl, '_blank');
                               } catch (err: any) {
                                 toast.error("Erro ao abrir arquivo: " + err.message);
