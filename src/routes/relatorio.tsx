@@ -126,59 +126,59 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Relatório do Cliente</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Relatório do Cliente</h1>
+          <p className="text-sm text-slate-500 font-medium">
             Monte a planilha do mês, ajuste o que precisar e envie direto para o cliente.
           </p>
         </div>
       </div>
 
-      <Card className="no-print border shadow-sm bg-white grid gap-3 p-4 sm:grid-cols-2">
+      <Card className="no-print bg-white border border-slate-200 rounded-xl grid gap-4 p-6 sm:grid-cols-2 shadow-none">
         <div>
-          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Cliente</div>
+          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white border-slate-200 rounded-lg"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
               {clients.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
         <div>
-          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Meses</div>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-500">Meses</div>
+          <div className="flex flex-wrap gap-2">
             {monthOptions.map((m) => {
               const on = months.includes(m);
               return (
                 <button
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    on ? "bg-slate-900 text-white" : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                  className={`rounded-lg border px-4 py-1.5 text-xs font-bold transition-all ${
+                    on ? "bg-slate-900 border-slate-900 text-white shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
                 </button>
               );
             })}
-            {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas para este cliente.</p>}
+            {monthOptions.length === 0 && <p className="text-sm text-slate-500">Sem faturas para este cliente.</p>}
           </div>
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 border shadow-sm bg-white">
-        <div className="bg-slate-50 px-4 py-3 text-center border-b border-slate-200">
-          <div className="font-display text-lg font-bold uppercase tracking-wide text-slate-900">
+      <Card className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
+        <div className="bg-slate-50/50 px-6 py-4 text-center border-b border-slate-100">
+          <div className="text-lg font-bold uppercase tracking-widest text-slate-800">
             {client?.name ?? "—"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-sm">
             <thead>
-              <tr className="bg-slate-50">
+              <tr className="bg-slate-50/30">
                 {["Mês referência", "UC", "Consumo kW", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor s/ usina", "Valor c/ 30% desconto"].map((h) => (
                   <th
                     key={h}
-                    className={`border border-border px-2 py-2 text-center font-semibold ${h === "UC" ? "min-w-[150px]" : ""}`}
+                    className={`border border-slate-100 px-4 py-3 text-center font-bold text-slate-500 uppercase text-xs ${h === "UC" ? "min-w-[150px]" : ""}`}
                   >
                     {h}
                   </th>
@@ -187,14 +187,14 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="even:bg-slate-50/30">
+                <tr key={r.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-border p-0">
+                    <td key={f} className="border border-slate-100 p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 ${
-                          f === "comDesconto" ? "font-bold text-slate-900" : ""
+                        className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-slate-200 ${
+                          f === "comDesconto" ? "font-bold text-slate-900" : "text-slate-700 font-medium"
                         }`}
                       />
                     </td>
@@ -202,14 +202,14 @@ function Relatorio() {
                 </tr>
               ))}
               {rows.length === 0 && (
-                <tr><td colSpan={8} className="border border-border py-8 text-center text-muted-foreground">Selecione ao menos um mês.</td></tr>
+                <tr><td colSpan={8} className="py-12 text-center text-slate-500 font-medium">Selecione ao menos um mês.</td></tr>
               )}
             </tbody>
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
-            {rows.length} {rows.length === 1 ? "mês" : "meses"}
+          <div className="border-t border-slate-100 bg-slate-50/30 px-6 py-4 text-sm font-semibold text-slate-500 uppercase tracking-wide">
+            {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
           </div>
         )}
       </Card>
