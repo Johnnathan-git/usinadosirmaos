@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: auditar fluxo, sem alterar nada
+ * Execute esta instrucao no projeto: Mesmo erro. Não consigo nem anexar mais
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
