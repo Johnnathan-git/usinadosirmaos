@@ -69,9 +69,10 @@ function Controle() {
   const [config, setConfig] = useState<Config>(data.config);
   const [rows, setRows] = useState<Row[]>([]);
   const [newOpen, setNewOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    // We still load initial data from DB for convenience, 
+    // but we will only update LOCAL state.
     setRows(data.clients.map(c => {
       const a = data.allocs.find(x => x.client_id === c.id);
       return {
@@ -95,34 +96,25 @@ function Controle() {
   function recalcRateio() {
     if (totalConsumo <= 0) return toast.error("Cadastre consumo médio para recalcular");
     setRows(rs => rs.map(r => ({ ...r, pct: +(Number(r.avg) / totalConsumo * 100).toFixed(2) })));
-    toast.success("Rateio recalculado");
+    toast.success("Rateio recalculado localmente");
   }
 
-  async function saveAll() {
-    setSaving(true);
-    const cfgRes = await supabase.from("plant_config").update({
-      panels_count: Number(config.panels_count),
-      kw_per_panel: Number(config.kw_per_panel),
-    }).eq("id", 1);
-    if (cfgRes.error) { setSaving(false); return toast.error(cfgRes.error.message); }
-    const payload = rows.map(r => ({
-      client_id: r.client_id,
-      allocation_pct: Number(r.pct),
-      avg_consumption: Number(r.avg),
-    }));
-    const upsert = await supabase.from("client_allocations").upsert(payload);
-    setSaving(false);
-    if (upsert.error) return toast.error(upsert.error.message);
-    toast.success("Alterações salvas");
-    setEditing(false);
-    location.reload();
+  function addTempClient(name: string, uc: string, avg: number, pct: number) {
+    const newRow: Row = {
+      client_id: crypto.randomUUID(),
+      name,
+      uc,
+      color: CLIENT_COLORS[rows.length % CLIENT_COLORS.length],
+      avg,
+      pct
+    };
+    setRows([...rows, newRow]);
+    setNewOpen(false);
   }
 
-  async function deleteRow(client_id: string) {
-    if (!confirm("Remover este cliente do rateio? O cadastro do cliente é mantido.")) return;
-    await supabase.from("client_allocations").delete().eq("client_id", client_id);
+  function deleteRow(client_id: string) {
     setRows(rs => rs.filter(r => r.client_id !== client_id));
-    toast.success("Cliente removido do rateio");
+    toast.success("Removido da simulação");
   }
 
   async function deleteClientForever(client_id: string, name: string) {
