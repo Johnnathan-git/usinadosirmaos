@@ -111,7 +111,7 @@ function Fluxo() {
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
           <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Fluxo de Caixa</h1>
-          <p className="text-sm text-[#6B7280]">Gestão de receitas e despesas operacionais</p>
+          <p className="text-sm font-medium text-[#6B7280]">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
@@ -130,27 +130,27 @@ function Fluxo() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">
-            <TrendingUp className="h-4 w-4" /> Total de Receitas
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #2F6F62" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
+            <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Total de Receitas
           </div>
           <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(receitas)}</div>
         </Card>
-        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#B5533E]">
-            <TrendingDown className="h-4 w-4" /> Total de Despesas
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #B5533E" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
+            <TrendingDown className="h-4 w-4 text-[#B5533E]" /> Total de Despesas
           </div>
           <div className="text-2xl font-bold text-[#B5533E] num-lg">{brl(despesas)}</div>
-          <div className="mt-2 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">
+          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
-            <DollarSign className="h-4 w-4" /> Lucro do Mês
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#B5533E" : "#2F6F62"}` }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
+            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#B5533E" : "#2F6F62" }} /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold num-lg ${lucro < 0 ? "text-[#B5533E]" : "text-[#C98A3E]"}`}>{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
+          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#B5533E" : "#2F6F62" }}>{brl(lucro)}</div>
+          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 
@@ -165,8 +165,8 @@ function Fluxo() {
               <div key={inv.id} className="flex items-start justify-between py-4">
                 <div className="flex items-center gap-3">
                   <div 
-                    className="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold"
-                    style={{ backgroundColor: `${client?.color ?? '#64748B'}1F`, color: client?.color ?? '#64748B' }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                    style={{ backgroundColor: client?.color ?? '#64748B' }}
                   >
                     {initial(client?.name ?? "?")}
                   </div>
@@ -176,7 +176,7 @@ function Fluxo() {
                   </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div className="text-[#6B7280] font-medium">Lucro bruto: <span className="font-bold text-[#2F6F62] num">{brl(profit)}</span></div>
+                  <div className="text-[#6B7280] font-bold">Lucro bruto: <span className="font-bold text-[#2F6F62] num">{brl(profit)}</span></div>
                   <div className="text-[#9CA3AF] text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
                   <div className="text-[#9CA3AF] text-xs">Fat. distribuidora: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
                 </div>

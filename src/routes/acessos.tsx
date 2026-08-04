@@ -70,7 +70,7 @@ function AcessosContent() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Acessos</h1>
-          <p className="text-sm text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
+          <p className="text-sm font-medium text-[#6B7280]">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ChangeOwnPasswordDialog />
