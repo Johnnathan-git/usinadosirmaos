@@ -222,21 +222,21 @@ function Controle() {
         </Card>
       </div>
 
-      <Card className="border shadow-sm bg-white overflow-hidden p-6">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none overflow-hidden">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Rateio por Cliente</h2>
-          <span className="text-xs text-muted-foreground">{rows.length} cliente(s)</span>
+          <h2 className="text-lg font-bold text-slate-800">Rateio por Cliente</h2>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50">
-                <th className="pb-3 text-left font-medium">Cliente</th>
-                <th className="pb-3 text-left font-medium">Unid. Consumidora</th>
-                <th className="pb-3 text-center font-medium">Rateio %</th>
-                <th className="pb-3 text-right font-medium">kW Alocado/Mês</th>
-                <th className="pb-3 text-center font-medium">Consumo Médio</th>
-                <th className="pb-3 text-right font-medium">Saldo Cliente</th>
+              <tr className="border-b border-slate-100">
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Cliente</th>
+                <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Unid. Consumidora</th>
+                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Rateio %</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">kW Alocado/Mês</th>
+                <th className="pb-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo Médio</th>
+                <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Saldo Cliente</th>
                 {editing && <th></th>}
               </tr>
             </thead>
@@ -245,44 +245,44 @@ function Controle() {
                 const alloc = totalGen * (Number(r.pct) / 100);
                 const saldoCli = alloc - Number(r.avg);
                 return (
-                  <tr key={r.client_id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
-                    <td className="py-3 font-medium uppercase">
+                  <tr key={r.client_id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/50">
+                    <td className="py-4 font-semibold text-slate-800 uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
                         {r.name}
                       </span>
                     </td>
-                    <td className="py-3 text-muted-foreground">{r.uc || "—"}</td>
-                    <td className="py-3 text-center">
+                    <td className="py-4 text-slate-500">{r.uc || "—"}</td>
+                    <td className="py-4 text-center">
                       {editing
-                        ? <Input className="mx-auto w-24 text-center" type="number" step="0.01" value={r.pct}
+                        ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" step="0.01" value={r.pct}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, pct: Number(e.target.value) } : x))} />
-                        : `${Number(r.pct).toFixed(2)}%`}
+                        : <span className="font-medium text-slate-700">{Number(r.pct).toFixed(2)}%</span>}
                     </td>
-                    <td className="py-3 text-right">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                    <td className="py-3 text-center">
+                    <td className="py-4 text-right text-slate-700 font-medium">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                    <td className="py-4 text-center">
                       {editing
-                        ? <Input className="mx-auto w-24 text-center" type="number" value={r.avg}
+                        ? <Input className="mx-auto w-24 text-center border-slate-200" type="number" value={r.avg}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
-                        : `${Number(r.avg).toLocaleString("pt-BR")} kW`}
+                        : <span className="font-medium text-slate-700">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={`py-3 text-right font-semibold ${saldoCli < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
+                    <td className={`py-4 text-right font-bold ${saldoCli < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
-                      <td className="py-3 pl-2 text-right">
+                      <td className="py-4 pl-4 text-right">
                         <div className="flex items-center justify-end gap-3">
                           <button
                             title="Remover do rateio (mantém o cadastro)"
                             onClick={() => deleteRow(r.client_id)}
-                            className="text-muted-foreground hover:text-amber-600"
+                            className="text-slate-400 hover:text-amber-600"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
                           <button
                             title="Excluir cliente definitivamente (apaga todos os dados)"
                             onClick={() => deleteClientForever(r.client_id, r.name)}
-                            className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-destructive hover:bg-slate-50"
+                            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-[#DC2626] hover:bg-slate-50"
                           >
                             <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
                           </button>
@@ -293,21 +293,21 @@ function Controle() {
                 );
               })}
             </tbody>
-            <tfoot className="border-t-2 border-slate-100 font-bold bg-slate-50">
+            <tfoot className="border-t-2 border-slate-200 bg-slate-50/50">
               <tr>
-                <td className="py-3 px-2">TOTAIS</td>
-                <td className="py-3"></td>
-                <td className="py-3 text-center">{totalPct.toFixed(2)}%</td>
-                <td className="py-3 text-right">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                <td className="py-3 text-center">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
+                <td className="py-4 px-4 font-bold text-slate-800">TOTAIS</td>
+                <td className="py-4"></td>
+                <td className="py-4 text-center font-bold text-slate-800">{totalPct.toFixed(2)}%</td>
+                <td className="py-4 text-right font-bold text-slate-800">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-4 text-center font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className={`py-4 text-right font-bold ${totalSaldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}
               </tr>
             </tfoot>
           </table>
-          {rows.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">Nenhum cliente ativo.</p>}
+          {rows.length === 0 && <p className="py-8 text-center text-sm text-slate-500">Nenhum cliente ativo.</p>}
         </div>
       </Card>
 
