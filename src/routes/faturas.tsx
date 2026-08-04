@@ -112,14 +112,14 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Faturas e Clientes</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight sm:text-3xl">Lançamento de Faturas</h1>
           <p className="text-sm text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)}>
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -168,7 +168,7 @@ function Faturas() {
                 </span>
               )}
             </div>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="flex flex-col gap-2">
               <Button
                 variant="outline"
                 className="gap-2"
@@ -180,8 +180,9 @@ function Faturas() {
                 className="gap-2"
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
+                className="gap-2 bg-rose-500 hover:bg-rose-600"
               >
-                <Plus className="h-4 w-4" /> Lançar
+                <Plus className="h-4 w-4" /> Lançar Fatura do Mês
               </Button>
             </div>
             {!c.active && (
