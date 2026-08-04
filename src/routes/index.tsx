@@ -1,21 +1,27 @@
 /**
- * Execute esta instrucao no projeto: Ajuste o visual do meu app para um estilo claro e profissional:
+ * Execute esta instrucao no projeto: Instrução:
+ * Mantenha os 4 cartões de totais (Receita, Despesas, Lucro, Receita 2026) e o gráfico de barras abaixo deles. Não altere os dados numéricos.
  * 
- * Cores: fundo #f4f6f9, cards brancos com sombra suave, verde esmeralda (#059669) para números positivos e azul (#2563eb) para destaques. Fonte Inter.
+ * Altere APENAS o estilo:
  * 
- * Organização: cards lado a lado, tabelas com cabeçalho cinza claro e linhas zebradas, botões com fundo escuro e cantos arredondados.
+ * Cartões de Total: Adicione bg-white rounded-xl border border-slate-200 shadow-sm p-6 a cada um deles.
  * 
- * Aplique isso em todas as telas mantendo todas as funcionalidades e dados existentes.
+ * Valores dos Cartões: Mude a cor dos números:
+ * 
+ * Números de Receita/Lucro: text-emerald-600 font-bold text-2xl.
+ * 
+ * Números de Despesas: text-red-600 font-bold text-2xl.
  */
+import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
-import { Suspense } from "react";
 
 type Invoice = {
   id: string;
