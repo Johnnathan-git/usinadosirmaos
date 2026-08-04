@@ -81,8 +81,8 @@ function AuthPage() {
       
       <Card className="relative w-full max-w-md border-none bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-10">
         <div className="mb-8 flex flex-col items-center gap-6">
-          <div className="flex items-center justify-center p-2 transition-transform hover:scale-105 duration-300">
-            <BrandMark className="h-32 w-32 drop-shadow-xl" />
+          <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white p-2 shadow-sm ring-1 ring-[#E4E7EC]">
+            <BrandMark className="h-16 w-16" />
           </div>
           <div className="text-center">
             <div className="font-display text-2xl font-bold tracking-tight text-[#151B2E]">
