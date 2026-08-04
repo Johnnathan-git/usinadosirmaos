@@ -112,8 +112,10 @@ function Relatorio() {
   );
 
   useEffect(() => {
-    setMonths(monthOptions.slice(0, 1));
-  }, [monthOptions.join(",")]);
+    if (months.length === 0 && monthOptions.length > 0) {
+      setMonths([monthOptions[0]]);
+    }
+  }, [monthOptions]);
 
   const selected = useMemo(
     () => clientInvoices.filter((i) => months.includes(i.reference_date.slice(0, 7))),
