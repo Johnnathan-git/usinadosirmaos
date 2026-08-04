@@ -145,78 +145,78 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Controle da Usina</h1>
-          <p className="text-sm text-muted-foreground">Geração × consumo e rateio por cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Controle da Usina</h1>
+          <p className="text-sm text-slate-500">Geração × consumo e rateio por cliente</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 hover:bg-slate-800">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border-slate-200 text-slate-700 hover:bg-slate-50">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border-slate-200 text-destructive hover:bg-slate-50">
+              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border border-slate-200 text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2">
                 <X className="h-4 w-4" /> Cancelar
               </Button>
-              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 hover:bg-slate-800">
+              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
                 <Save className="h-4 w-4" /> Salvar
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2">
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
               <Pencil className="h-4 w-4" /> Editar
             </Button>
           )}
         </div>
       </div>
 
-      <Card className="border shadow-sm bg-white p-6">
-        <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-900">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-xs text-muted-foreground">Nº de placas</Label>
+            <Label className="text-xs text-slate-500">Nº de placas</Label>
             {editing ? (
-              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} />
-            ) : <div className="text-2xl font-bold">{config.panels_count}</div>}
+              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
+            ) : <div className="text-2xl font-bold text-slate-800">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">kW por placa/mês</Label>
+            <Label className="text-xs text-slate-500">kW por placa/mês</Label>
             {editing ? (
-              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} />
-            ) : <div className="text-2xl font-bold">{config.kw_per_panel} kW</div>}
+              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
+            ) : <div className="text-2xl font-bold text-slate-800">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-slate-900">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-xs text-slate-500">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-slate-800">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">Consumo total clientes</Label>
-            <div className="text-2xl font-bold">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-xs text-slate-500">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
           <div className={`text-2xl font-bold ${saldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-xs text-muted-foreground">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-slate-900">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-xs text-muted-foreground">Do total gerado utilizado</div>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-slate-800">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-xs text-slate-500 font-medium">Do total gerado utilizado</div>
         </Card>
-        <Card className="border shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><Zap className="h-4 w-4" /> Rateio total alocado</div>
           <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-[#059669]" : "text-[#DC2626]"}`}>
             {totalPct.toFixed(2)}%
           </div>
-          <div className="mt-1 text-xs text-muted-foreground">
+          <div className="mt-1 text-xs text-slate-500 font-medium">
             {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
