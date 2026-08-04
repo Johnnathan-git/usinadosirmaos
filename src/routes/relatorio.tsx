@@ -228,7 +228,7 @@ function Relatorio() {
                               
                               const a = document.createElement('a');
                               a.href = data.signedUrl;
-                              a.target = '_blank';
+                              a.target = '_blank'; a.download = path.split('/').pop();
                               a.rel = 'noopener noreferrer';
                               a.click();
                             } catch (err: any) {

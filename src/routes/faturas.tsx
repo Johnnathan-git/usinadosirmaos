@@ -489,7 +489,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                         
                         const a = document.createElement('a');
                         a.href = data.signedUrl;
-                        a.target = '_blank';
+                        a.target = '_blank'; a.download = path.split('/').pop();
                         a.rel = 'noopener noreferrer';
                         a.click();
                       } catch (err: any) {
@@ -642,7 +642,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                 if (error) throw error;
                                 const a = document.createElement('a');
                                 a.href = data.signedUrl;
-                                a.target = '_blank';
+                                a.target = '_blank'; a.download = path.split('/').pop();
                                 a.rel = 'noopener noreferrer';
                                 a.click();
                               } catch (err: any) {
