@@ -153,7 +153,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    on ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:bg-muted"
+                    on ? "border-primary bg-primary text-primary-foreground" : "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -165,9 +165,9 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 elev-2">
-        <div className="bg-solar px-4 py-3 text-center">
-          <div className="font-display text-lg font-extrabold uppercase tracking-wide text-ink">
+      <Card className="overflow-hidden p-0 elev-2 border-primary/20">
+        <div className="bg-primary/10 px-4 py-3 text-center border-b border-primary/20">
+          <div className="font-display text-lg font-bold uppercase tracking-wide text-primary">
             {client?.name ?? "—"}
           </div>
         </div>

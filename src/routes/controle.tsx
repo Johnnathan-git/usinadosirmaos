@@ -85,6 +85,9 @@ function Controle() {
 
   const totalGen = Number(config.panels_count) * Number(config.kw_per_panel);
   const totalConsumo = rows.reduce((s, r) => s + Number(r.avg), 0);
+  const totalRateioKw = rows.reduce((s, r) => s + (totalGen * (Number(r.pct) / 100)), 0);
+  const totalSaldo = rows.reduce((s, r) => s + (totalGen * (Number(r.pct) / 100) - Number(r.avg)), 0);
+
   const saldo = totalGen - totalConsumo;
   const aproveitamento = totalGen > 0 ? (totalConsumo / totalGen) * 100 : 0;
   const totalPct = rows.reduce((s, r) => s + Number(r.pct), 0);
@@ -290,6 +293,19 @@ function Controle() {
                 );
               })}
             </tbody>
+            <tfoot className="border-t-2 border-muted-foreground/20 font-bold bg-muted/50">
+              <tr>
+                <td className="py-3 px-2">TOTAIS</td>
+                <td className="py-3"></td>
+                <td className="py-3 text-center">{totalPct.toFixed(2)}%</td>
+                <td className="py-3 text-right">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-3 text-center">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className={`py-3 text-right ${totalSaldo < 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                  {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
+                </td>
+                {editing && <td></td>}
+              </tr>
+            </tfoot>
           </table>
           {rows.length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">Nenhum cliente ativo.</p>}
         </div>

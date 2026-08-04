@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert } from "lucide-react";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ type Client = {
   id: string; name: string; phone: string | null; email: string | null;
   color: string; uc_number: string; notes: string | null; active: boolean;
 };
-type InvoiceRow = { id: string; client_id: string; reference_date: string };
+type InvoiceRow = { id: string; client_id: string; reference_date: string; attachment_url: string | null; notes: string | null };
 
 type Invoice = {
   id: string;
@@ -32,6 +32,8 @@ type Invoice = {
   value_without_plant: number;
   client_pays: number;
   distributor_invoice: number;
+  notes: string | null;
+  attachment_url: string | null;
 };
 
 const faturasQ = queryOptions({
@@ -39,7 +41,7 @@ const faturasQ = queryOptions({
   queryFn: async () => {
     const [c, i] = await Promise.all([
       supabase.from("clients").select("*").order("created_at", { ascending: true }),
-      supabase.from("invoices").select("id,client_id,reference_date"),
+      supabase.from("invoices").select("id,client_id,reference_date,attachment_url,notes"),
     ]);
     if (c.error) throw c.error;
     if (i.error) throw i.error;
@@ -156,7 +158,15 @@ function Faturas() {
             </div>
             <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-primary" /> 1 UC</span>
-              <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}</span>
+              <span className="flex items-center gap-1">
+                <FileText className="h-4 w-4" /> 
+                {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
+              </span>
+              {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
+                <span className="flex items-center gap-1 text-primary">
+                  <Paperclip className="h-3.5 w-3.5" /> Anexos
+                </span>
+              )}
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
               <Button
@@ -308,7 +318,10 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     value_without_plant: invoice ? String(invoice.value_without_plant) : "0",
     client_pays: invoice ? String(invoice.client_pays) : "",
     distributor_invoice: invoice ? String(invoice.distributor_invoice) : "0",
+    notes: invoice?.notes ?? "",
+    attachment_url: invoice?.attachment_url ?? "",
   });
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
   async function submit() {
@@ -332,6 +345,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
       value_without_plant: Number(f.value_without_plant || 0),
       client_pays: Number(f.client_pays),
       distributor_invoice: Number(f.distributor_invoice || 0),
+      notes: f.notes || null,
+      attachment_url: f.attachment_url || null,
     };
     const { error } = invoice
       ? await supabase.from("invoices").update(payload).eq("id", invoice.id)
@@ -343,9 +358,38 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     onClose();
   }
 
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploading(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${client.id}/${Date.now()}.${fileExt}`;
+      const filePath = `invoices/${fileName}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from('attachments')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('attachments')
+        .getPublicUrl(filePath);
+
+      setF(prev => ({ ...prev, attachment_url: publicUrl }));
+      toast.success("Arquivo anexado!");
+    } catch (err: any) {
+      toast.error("Erro ao subir arquivo: " + err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
@@ -355,42 +399,84 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Input value={client.uc_number} disabled />
           </div>
           <div>
-            <Label>Mês de Referência *</Label>
-            <Input type="month" value={f.reference_month} onChange={e => setF({ ...f, reference_month: e.target.value })} />
+            <Label>Data de Referência *</Label>
+            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => setF({ ...f, consumption_kw: e.target.value })} placeholder="Ex: 1390" />
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => setF(prev => ({ ...prev, consumption_kw: e.target.value }))} placeholder="Ex: 537" />
           </div>
           <div>
             <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.0001" value={f.price_kw} onChange={e => setF({ ...f, price_kw: e.target.value })} placeholder="Ex: 1.1205" />
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => setF(prev => ({ ...prev, price_kw: e.target.value }))} placeholder="Ex: 1,185396" />
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => setF({ ...f, public_lighting: e.target.value })} />
+            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => setF(prev => ({ ...prev, public_lighting: e.target.value }))} placeholder="Ex: 26,36" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => setF({ ...f, interest_fine: e.target.value })} />
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => setF(prev => ({ ...prev, interest_fine: e.target.value }))} placeholder="0" />
           </div>
           <div>
             <Label>Valor S/ Usina (R$) *</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} onChange={e => setF({ ...f, value_without_plant: e.target.value })} />
+            <Input type="number" step="0.01" value={f.value_without_plant} onChange={e => setF(prev => ({ ...prev, value_without_plant: e.target.value }))} placeholder="676,37" />
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$) *</Label>
-            <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF({ ...f, client_pays: e.target.value })} placeholder="Ex: 1158.97" />
+            <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF(prev => ({ ...prev, client_pays: e.target.value }))} placeholder="676,37" />
           </div>
         </div>
-        <Card className="mt-2 border-blue-200 bg-blue-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-blue-700">Fatura do Cliente — distribuidora (R$)</div>
-          <div className="mb-2 text-xs text-blue-600">Valor que você paga à distribuidora</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF({ ...f, distributor_invoice: e.target.value })} className="bg-white" />
+        <Card className="mt-2 border-emerald-100 bg-emerald-50/50 p-4">
+          <div className="mb-1 text-sm font-medium text-emerald-800">Fatura do Cliente — concessionária (R$)</div>
+          <div className="mb-2 text-xs text-emerald-700/70">Valor que você paga à concessionária por este cliente</div>
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
-        <DialogFooter>
+        
+        <div className="space-y-4 mt-4">
+          <div>
+            <Label>Observações</Label>
+            <Textarea 
+              value={f.notes} 
+              onChange={e => setF(prev => ({ ...prev, notes: e.target.value }))} 
+              placeholder="Opcional"
+              className="mt-1"
+            />
+          </div>
+          
+          <div>
+            <Label>Anexar Fatura / Comprovante</Label>
+            <div className="mt-2 flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                type="button" 
+                className="gap-2 relative" 
+                disabled={uploading}
+                asChild
+              >
+                <label className="cursor-pointer">
+                  <Paperclip className="h-4 w-4" /> 
+                  {uploading ? "Enviando..." : f.attachment_url ? "Trocar arquivo" : "Selecionar arquivo"}
+                  <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*,application/pdf" />
+                </label>
+              </Button>
+              {f.attachment_url && (
+                <a 
+                  href={f.attachment_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs text-primary hover:underline flex items-center gap-1"
+                >
+                  <Eye className="h-3 w-3" /> Ver anexo
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} style={{ backgroundColor: client.color }}>{invoice ? "Salvar" : "Lançar"}</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-emerald-600 hover:bg-emerald-700">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -486,6 +572,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   <th className="py-2 text-right font-medium">Cliente Pagou</th>
                   <th className="py-2 text-right font-medium">Fat. Distribuidora</th>
                   <th className="py-2 text-right font-medium">Lucro</th>
+                  <th className="py-2 text-center font-medium">Anexo</th>
                   <th></th>
                 </tr>
               </thead>
@@ -500,6 +587,19 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
+                      <td className="py-3 text-center">
+                        {inv.attachment_url ? (
+                          <a 
+                            href={inv.attachment_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20"
+                            title="Ver anexo"
+                          >
+                            <Paperclip className="h-4 w-4" />
+                          </a>
+                        ) : "—"}
+                      </td>
                       <td className="py-3 pl-2 text-right">
                         <div className="flex justify-end gap-1">
                           <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
