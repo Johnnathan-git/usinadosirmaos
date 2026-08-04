@@ -58,10 +58,11 @@ export const getClientSoftColor = (color: string) => {
   return 'text-white';
 };
 
-/** Retorna a classe do botão baseada na cor do cliente. */
-export const getClientButtonColor = (color: string) => {
-  // Cor fixa para botões de ação (Âmbar)
-  return 'bg-[#C98A3E] hover:bg-[#B67A35]';
+/** Retorna o estilo do botão baseada na cor do cliente. */
+export const getClientButtonStyles = (color: string) => {
+  return {
+    backgroundColor: color,
+  };
 };
 
 export const EXPENSE_CATEGORIES = [
