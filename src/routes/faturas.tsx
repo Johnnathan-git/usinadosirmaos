@@ -115,10 +115,10 @@ function Faturas() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
+      <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Faturas</h1>
-          <p className="text-sm font-medium text-[#4B5563]">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-[#374151]">Faturas</h1>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#4B5563]">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg">
@@ -138,18 +138,18 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md" style={{ borderLeft: `3px solid ${c.color}` }}>
+          <Card key={c.id} className="relative overflow-hidden rounded-xl border border-[#E4E7EC] bg-white p-4 shadow-none transition-all hover:shadow-md" style={{ borderLeft: `3px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <div
-                  className="flex h-11 w-11 items-center justify-center rounded-full text-base font-bold text-white shadow-sm"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
                   style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
                 </div>
-                <div>
-                  <div className="font-bold text-[#374151]">{c.name}</div>
-                  <div className="text-xs font-medium text-[#4B5563]">UC {c.uc_number}</div>
+                <div className="min-w-0">
+                  <div className="truncate font-bold text-sm text-[#374151]">{c.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
@@ -161,35 +161,36 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex gap-4 text-sm text-slate-400">
-              <span className="flex items-center gap-1 font-medium"><Zap className="h-4 w-4" /> 1 UC</span>
-              <span className="flex items-center gap-1 font-medium">
-                <FileText className="h-4 w-4" /> 
+            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
+              <span className="flex items-center gap-1">
+                <FileText className="h-3 w-3" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
                 <span className="flex items-center gap-1 text-[#4B5563]">
-                  <Paperclip className="h-3.5 w-3.5" /> Anexos
+                  <Paperclip className="h-3 w-3" /> Anexos
                 </span>
               )}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
-                className="w-full gap-2 transition-all hover:opacity-90 text-white font-bold rounded-lg px-4 py-2 border-0"
+                size="sm"
+                className="w-full gap-2 transition-all hover:opacity-90 text-white font-bold rounded-lg px-3 py-1.5 border-0 text-[11px] uppercase tracking-wider"
                 style={getClientButtonStyles(c.color)}
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
-                <Plus className="h-4 w-4 text-white" /> 
-                <span>Lançar Fatura</span>
+                <Plus className="h-3 w-3 text-white" /> 
+                <span>Lançar</span>
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2 font-medium"
+                className="w-full gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold text-[11px] uppercase tracking-wider"
                 onClick={() => setHistoryFor(c)}
               >
-                <Eye className="h-4 w-4 text-slate-400" /> Ver histórico
+                <Eye className="h-3 w-3 text-slate-400" /> Histórico
               </Button>
             </div>
             {!c.active && (
