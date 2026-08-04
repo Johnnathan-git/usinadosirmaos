@@ -145,11 +145,11 @@ function Fluxo() {
             Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: `3px solid ${lucro < 0 ? "#D64545" : "#2563EB"}` }}>
+        <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #2E5C8A" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
-            <DollarSign className="h-4 w-4" style={{ color: lucro < 0 ? "#D64545" : "#2E5C8A" }} /> Lucro do Mês
+            <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
           </div>
-          <div className="text-2xl font-bold num-lg" style={{ color: lucro < 0 ? "#D64545" : "#2E5C8A" }}>{brl(lucro)}</div>
+          <div className="text-2xl font-bold num-lg text-[#2E5C8A]">{brl(lucro)}</div>
           <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
