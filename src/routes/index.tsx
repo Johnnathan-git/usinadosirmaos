@@ -154,7 +154,7 @@ function Dashboard() {
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="leaf" delta={delta(lucroMes, lucroPrev)} />
         <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
       </div>
 
@@ -162,7 +162,7 @@ function Dashboard() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#1C2333]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">
-            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#C98A3E"]].map(([k, c]) => (
+            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2F6F62"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: c }} />
                 {k}
@@ -186,7 +186,7 @@ function Dashboard() {
                 <Tooltip cursor={{ fill: "#F5F6F8" }} content={<ChartTooltip />} />
                 <Bar dataKey="Receita" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="#D64545" radius={[2, 2, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#C98A3E" radius={[2, 2, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2F6F62" radius={[2, 2, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -248,7 +248,7 @@ function Dashboard() {
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
                   <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
-                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#C98A3E]"}`}>{brl(row.Lucro)}</td>
+                  <td className={`num py-4 text-right font-bold ${row.Lucro < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
