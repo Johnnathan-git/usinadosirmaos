@@ -1,6 +1,7 @@
 /**
- * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
+ * Execute esta instrucao no projeto: Identidade visual "Professional Financial"
  */
+
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
