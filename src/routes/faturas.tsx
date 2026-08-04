@@ -384,7 +384,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
       const filePath = `invoices/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('faturas_private')
+        .from('faturas_v3_privado')
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false
@@ -611,10 +611,11 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   window.open(path, '_blank');
                                   return;
                                 }
-                                const { data } = supabase.storage
-                                  .from('faturas_private')
-                                  .getPublicUrl(path);
-                                window.open(data.publicUrl, '_blank');
+                                const { data, error } = await supabase.storage
+                                  .from('faturas_v3_privado')
+                                  .createSignedUrl(path, 3600);
+                                if (error) throw error;
+                                window.open(data.signedUrl, '_blank');
                               } catch (err: any) {
                                 toast.error("Erro ao abrir arquivo: " + err.message);
                               }

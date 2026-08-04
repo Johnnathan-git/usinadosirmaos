@@ -226,10 +226,11 @@ function Relatorio() {
                                 return;
                               }
                               // We use the public URL since we made the bucket public for troubleshooting
-                              const { data } = supabase.storage
-                                .from('faturas_private')
-                                .getPublicUrl(path);
-                              window.open(data.publicUrl, '_blank');
+                              const { data, error } = await supabase.storage
+                                .from('faturas_v3_privado')
+                                .createSignedUrl(path, 3600);
+                              if (error) throw error;
+                              window.open(data.signedUrl, '_blank');
                             } catch (err: any) {
                               console.error(err);
                               alert("Erro ao abrir arquivo: " + err.message);
