@@ -72,6 +72,7 @@
   --color-clay: var(--clay);
   --color-clay-soft: var(--clay-soft);
   --color-ink: var(--ink);
+  --color-solar-foreground: var(--solar-foreground);
 }
 
 :root {
@@ -79,8 +80,8 @@
   --background: oklch(0.981 0.004 240);
   --foreground: oklch(0.19 0.03 250);
   /* Solar Deep: azul profundo de energia + âmbar solar saturado */
-  --solar: oklch(0.79 0.17 72);
-  --solar-soft: oklch(0.93 0.09 82);
+  --solar: oklch(0.75 0.18 78);
+  --solar-soft: oklch(0.94 0.1 82);
   --leaf: oklch(0.55 0.15 162);
   --leaf-soft: oklch(0.93 0.07 162);
   --sky: oklch(0.55 0.16 245);
@@ -88,6 +89,7 @@
   --clay: oklch(0.58 0.18 28);
   --clay-soft: oklch(0.93 0.07 30);
   --ink: oklch(0.21 0.05 250);
+  --solar-foreground: oklch(0.25 0.1 70);
   --shadow-1: 0 1px 2px oklch(0.21 0.05 250 / 9%);
   --shadow-2: 0 1px 2px oklch(0.21 0.05 250 / 8%), 0 10px 24px -14px oklch(0.21 0.05 250 / 26%);
   --shadow-3: 0 2px 4px oklch(0.21 0.05 250 / 8%), 0 28px 56px -28px oklch(0.21 0.05 250 / 34%);

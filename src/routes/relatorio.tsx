@@ -153,7 +153,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    on ? "border-primary bg-primary text-primary-foreground" : "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                    on ? "border-solar bg-solar text-solar-foreground shadow-sm" : "border-solar/20 text-solar/80 hover:bg-solar/5"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -165,9 +165,9 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 elev-2 border-primary/20">
-        <div className="bg-primary/10 px-4 py-3 text-center border-b border-primary/20">
-          <div className="font-display text-lg font-bold uppercase tracking-wide text-primary">
+      <Card className="overflow-hidden p-0 elev-2 border-solar/30">
+        <div className="bg-solar/10 px-4 py-3 text-center border-b border-solar/20">
+          <div className="font-display text-lg font-bold uppercase tracking-wide text-solar">
             {client?.name ?? "—"}
           </div>
         </div>
@@ -194,7 +194,7 @@ function Relatorio() {
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 ${
-                          f === "comDesconto" ? "font-bold text-clay" : ""
+                          f === "comDesconto" ? "font-bold text-solar" : ""
                         }`}
                       />
                     </td>
