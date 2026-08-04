@@ -596,7 +596,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   return (
                     <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                      <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                      <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-positive">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
