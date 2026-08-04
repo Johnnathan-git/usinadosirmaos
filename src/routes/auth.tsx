@@ -74,55 +74,72 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md p-8 elev-3">
-        <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-1 border border-[#E4E7EC] shadow-sm">
+    <div className="flex min-h-screen items-center justify-center bg-[#F5F6F8] p-4 relative overflow-hidden">
+      {/* Elementos decorativos de fundo */}
+      <div className="absolute -top-[10%] -right-[5%] h-64 w-64 rounded-full bg-indigo-500/5 blur-3xl" />
+      <div className="absolute -bottom-[10%] -left-[5%] h-80 w-80 rounded-full bg-[#C98A3E]/10 blur-3xl" />
+      
+      <Card className="relative w-full max-w-md border-none bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-10">
+        <div className="mb-8 flex flex-col items-center gap-4">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[#F5F6F8] p-2 ring-1 ring-[#E4E7EC]">
             <BrandMark className="h-12 w-12" />
           </div>
-          <div className="text-center leading-none">
-            <div className="font-display text-2xl font-bold tracking-tight text-[#374151]">
+          <div className="text-center">
+            <div className="font-display text-2xl font-bold tracking-tight text-[#151B2E]">
               Usina dos Irmãos
             </div>
-            <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#C98A3E]">
               Gestão de energia
             </div>
           </div>
         </div>
-        <h1 className="mb-1 text-center text-xl font-bold text-[#374151]">Entrar no sistema</h1>
-        <p className="mb-6 text-center text-sm font-medium text-[#4B5563]">Acesso restrito a usuários cadastrados</p>
-        <form onSubmit={submit} method="post" action="#" className="space-y-4">
-          <div>
-            <Label htmlFor="email">Usuário (e-mail)</Label>
+
+        <div className="mb-8 space-y-1 text-center">
+          <h1 className="text-xl font-bold text-[#151B2E]">Boas-vindas</h1>
+          <p className="text-sm font-medium text-muted-foreground">Acesse sua conta para continuar</p>
+        </div>
+
+        <form onSubmit={submit} method="post" action="#" className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
+              className="h-11 border-[#E4E7EC] bg-[#F9FAFB] focus:bg-white focus:ring-[#C98A3E]"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
           </div>
-          <div>
-            <Label htmlFor="password">Senha</Label>
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Senha</Label>
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
-                autoComplete="current-password" className="pr-10"
+                autoComplete="current-password" 
+                className="h-11 pr-10 border-[#E4E7EC] bg-[#F9FAFB] focus:bg-white focus:ring-[#C98A3E]"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground">
+                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground hover:text-[#151B2E]">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
           </div>
+          
           {error && (
-            <div role="alert" className="rounded-lg border border-[#DC2626]/30 bg-rose-50 px-3 py-2 text-sm text-[#DC2626]">
+            <div role="alert" className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-100 bg-red-50 p-3 text-sm font-medium text-[#D64545]">
               {error}
             </div>
           )}
-          <Button type="submit" disabled={loading || !hydrated} className="w-full bg-[#151B2E] text-white hover:bg-[#1F2A45] font-bold rounded-lg shadow-sm">
-            {loading ? "Aguarde..." : hydrated ? "Entrar" : "Carregando..."}
+
+          <Button type="submit" disabled={loading || !hydrated} 
+            className="h-11 w-full bg-[#151B2E] text-white hover:bg-[#1e2741] font-bold rounded-lg shadow-lg transition-all active:scale-[0.98]">
+            {loading ? "Autenticando..." : "Entrar no Sistema"}
           </Button>
         </form>
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          Novos usuarios são cadastrados exclusivamente pelo administrador
-        </p>
+
+        <div className="mt-8 border-t border-[#F1F5F9] pt-6">
+          <p className="text-center text-[11px] font-medium leading-relaxed text-muted-foreground">
+            Novos usuarios são cadastrados <br/> 
+            <span className="font-bold text-[#4B5563]">exclusivamente pelo administrador</span>
+          </p>
+        </div>
       </Card>
     </div>
   );
