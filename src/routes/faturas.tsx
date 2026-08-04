@@ -441,9 +441,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF(prev => ({ ...prev, client_pays: e.target.value }))} placeholder="676,37" />
           </div>
         </div>
-        <Card className="mt-2 border-emerald-100 bg-emerald-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-emerald-800">Fatura do Cliente — concessionária (R$)</div>
-          <div className="mb-2 text-xs text-emerald-700/70">Valor que você paga à concessionária por este cliente</div>
+        <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
+          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — concessionária (R$)</div>
+          <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
           <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
         
