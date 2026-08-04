@@ -186,27 +186,27 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <h2 className="mb-4 text-lg font-bold text-slate-800">Despesas lançadas — {monthLabel(monthDate)}</h2>
-        {monthExpenses.length === 0 && <p className="text-sm text-slate-500">Nenhuma despesa neste mês.</p>}
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <h2 className="mb-6 text-lg font-bold text-[#1C2333]">Despesas lançadas — {monthLabel(monthDate)}</h2>
+        {monthExpenses.length === 0 && <p className="text-sm text-[#6B7280]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border border-slate-100 p-4">
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors">
               <div className="min-w-0">
-                <div className="truncate font-semibold text-slate-800">{e.description}</div>
-                <div className="mt-1 flex flex-wrap gap-1">
-                  <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">{e.category}</span>
+                <div className="truncate font-bold text-[#1C2333]">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  <span className="inline-block rounded-md bg-[#2F6F62]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]">{e.category}</span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                    <span className="inline-block rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-bold text-[#DC2626]">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-bold text-[#B5533E] num-lg">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#1C2333] transition-colors"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#B5533E] transition-colors"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
