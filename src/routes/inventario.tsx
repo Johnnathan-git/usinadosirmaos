@@ -152,27 +152,27 @@ function Inventario() {
                 </thead>
                 <tbody>
                   {filteredAssets.map(a => (
-                    <tr key={a.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                    <tr key={a.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
                       <td className="py-4">
-                        <div className="font-semibold text-slate-800">{a.item}</div>
-                        {a.location && <div className="text-xs text-slate-500">{a.location}</div>}
+                        <div className="font-bold text-[#1C2333]">{a.item}</div>
+                        {a.location && <div className="text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">{a.location}</div>}
                       </td>
-                      <td className="py-4"><span className="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">{a.category}</span></td>
-                      <td className="py-4 text-slate-500">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
-                      <td className="py-4 text-center text-slate-700 font-medium">{a.quantity}</td>
-                      <td className="py-4 text-right text-slate-700">{brl(Number(a.unit_value))}</td>
-                      <td className="py-4 text-right font-bold text-[#059669]">{brl(Number(a.unit_value) * a.quantity)}</td>
+                      <td className="py-4"><span className="rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">{a.category}</span></td>
+                      <td className="py-4 text-[#6B7280] font-medium">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
+                      <td className="py-4 text-center text-[#1C2333] font-bold num">{a.quantity}</td>
+                      <td className="py-4 text-right text-[#1C2333] font-medium num">{brl(Number(a.unit_value))}</td>
+                      <td className="py-4 text-right font-bold text-[#2F6F62] num">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-4 pl-4 text-right">
-                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-slate-400 hover:text-slate-800"><Pencil className="h-4 w-4" /></button>
-                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-slate-400 hover:text-[#DC2626]"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-[#9CA3AF] hover:text-[#1C2333]"><Pencil className="h-4 w-4" /></button>
+                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-[#9CA3AF] hover:text-[#B5533E]"><Trash2 className="h-4 w-4" /></button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-slate-200">
-                    <td colSpan={5} className="py-4 font-bold text-slate-800">Total Patrimônio</td>
-                    <td className="py-4 text-right font-bold text-[#059669]">{brl(totalAtivos)}</td>
+                  <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
+                    <td colSpan={5} className="py-4 font-bold text-[#1C2333] uppercase text-[10px] tracking-wider px-4">Total Patrimônio</td>
+                    <td className="py-4 text-right font-bold text-[#2F6F62] num px-4">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -182,15 +182,15 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+          <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Descrição</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Data</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Responsável</th>
-                  <th className="pb-3 text-left font-semibold text-slate-500 uppercase text-xs">Observações</th>
-                  <th className="pb-3 text-right font-semibold text-slate-500 uppercase text-xs">Valor</th>
+                <tr className="border-b border-[#E4E7EC]">
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Descrição</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Data</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Responsável</th>
+                  <th className="pb-3 text-left font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Observações</th>
+                  <th className="pb-3 text-right font-semibold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor</th>
                   <th></th>
                 </tr>
               </thead>
