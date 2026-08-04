@@ -143,10 +143,10 @@ function Fluxo() {
           </div>
         </Card>
         <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-800">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{brl(lucro)}</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-[#DC2626]" : "text-[#16A34A]"}`}>{brl(lucro)}</div>
           <div className="mt-1 text-xs text-slate-500 font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
