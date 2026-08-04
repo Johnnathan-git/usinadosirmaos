@@ -267,7 +267,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : <span className="font-bold text-[#1C2333] num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>
+                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-[#D64545]" : "text-[#2563EB]"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
