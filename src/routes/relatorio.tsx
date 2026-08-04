@@ -225,9 +225,9 @@ function Relatorio() {
                                 window.open(path, '_blank');
                                 return;
                               }
-                              // We use the public URL since we made the bucket public for troubleshooting
+                              // We use the new bucket faturas_v3_privado_v2
                               const { data, error } = await supabase.storage
-                                .from('faturas_v3_privado')
+                                .from('faturas_v3_privado_v2')
                                 .createSignedUrl(path, 3600);
                               if (error) throw error;
                               window.open(data.signedUrl, '_blank');
