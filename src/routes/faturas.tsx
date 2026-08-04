@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Não consegui nem trocar a fatura que já estava em anexo. Olha o print
+ * Execute esta instrucao no projeto: Mesmo erro. Erro ao subir arquivo
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
