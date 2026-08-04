@@ -275,32 +275,28 @@ function Controle() {
         </div>
       </Card>
 
-      {newOpen && <NewClientDialog onClose={() => setNewOpen(false)} />}
+      {newOpen && (
+        <NewSimClientDialog 
+          onClose={() => setNewOpen(false)} 
+          onAdd={addTempClient}
+        />
+      )}
     </div>
   );
 }
 
-function NewClientDialog({ onClose }: { onClose: () => void }) {
+function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n: string, u: string, a: number, p: number) => void }) {
   const [f, setF] = useState({ name: "", uc_number: "", avg: "", pct: "", color: CLIENT_COLORS[0] });
-  const [saving, setSaving] = useState(false);
-  async function submit() {
+
+  function submit() {
     if (!f.name.trim()) return toast.error("Nome é obrigatório");
     const avgNum = Number(f.avg);
     const pctNum = Number(f.pct);
     if (!Number.isFinite(avgNum) || avgNum <= 0) return toast.error("Consumo médio é obrigatório");
     if (!Number.isFinite(pctNum) || pctNum < 0) return toast.error("Rateio % é obrigatório");
-    setSaving(true);
-    const { data: created, error } = await supabase.from("clients").insert({
-      name: f.name.trim(), uc_number: f.uc_number.trim(), color: f.color, active: true,
-    }).select("id").single();
-    if (error || !created) { setSaving(false); return toast.error(error?.message ?? "Erro ao criar cliente"); }
-    const { error: aerr } = await supabase.from("client_allocations").insert({
-      client_id: created.id, allocation_pct: pctNum, avg_consumption: avgNum,
-    });
-    setSaving(false);
-    if (aerr) return toast.error(aerr.message);
-    toast.success("Cliente cadastrado");
-    location.reload();
+    
+    onAdd(f.name.trim(), f.uc_number.trim(), avgNum, pctNum);
+    toast.success("Adicionado à simulação");
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
