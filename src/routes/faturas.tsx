@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Que doidera, tu nao vai conseguir resolver. Agora esta anexando mas continua abrindo uma pagina do chrome com erro. E pra melhorar nao esta aparecendo no relatorio do cliente
+ * Execute esta instrucao no projeto: Anexou mas acusou o mesmo erro ao abrir. Print em anexo
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
@@ -639,7 +639,11 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   .from('faturas_v3_privado_v2')
                                   .createSignedUrl(path, 3600);
                                 if (error) throw error;
-                                window.open(data.signedUrl, '_blank');
+                                const a = document.createElement('a');
+                                a.href = data.signedUrl;
+                                a.target = '_blank';
+                                a.rel = 'noopener noreferrer';
+                                a.click();
                               } catch (err: any) {
                                 toast.error("Erro ao abrir arquivo: " + err.message);
                               }

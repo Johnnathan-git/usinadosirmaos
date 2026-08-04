@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Que doidera, tu nao vai conseguir resolver. Agora esta anexando mas continua abrindo uma pagina do chrome com erro. E pra melhorar nao esta aparecendo no relatorio do cliente
+ * Execute esta instrucao no projeto: Anexou mas acusou o mesmo erro ao abrir. Print em anexo
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
