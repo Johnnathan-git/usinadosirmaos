@@ -41,7 +41,7 @@ const faturasQ = queryOptions({
   queryFn: async () => {
     const [c, i] = await Promise.all([
       supabase.from("clients").select("*").order("created_at", { ascending: true }),
-      supabase.from("invoices").select("id,client_id,reference_date"),
+      supabase.from("invoices").select("id,client_id,reference_date,attachment_url,notes"),
     ]);
     if (c.error) throw c.error;
     if (i.error) throw i.error;
@@ -158,7 +158,15 @@ function Faturas() {
             </div>
             <div className="mb-4 flex gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Zap className="h-4 w-4 text-primary" /> 1 UC</span>
-              <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}</span>
+              <span className="flex items-center gap-1">
+                <FileText className="h-4 w-4" /> 
+                {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
+              </span>
+              {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
+                <span className="flex items-center gap-1 text-primary">
+                  <Paperclip className="h-3.5 w-3.5" /> Anexos
+                </span>
+              )}
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
               <Button
