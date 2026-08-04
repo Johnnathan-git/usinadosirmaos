@@ -244,22 +244,13 @@ function Controle() {
                     </td>
                     {editing && (
                       <td className="py-4 pl-4 text-right">
-                        <div className="flex items-center justify-end gap-3">
-                          <button
-                            title="Remover do rateio (mantém o cadastro)"
-                            onClick={() => deleteRow(r.client_id)}
-                            className="text-slate-400 hover:text-amber-600"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                          <button
-                            title="Excluir cliente definitivamente (apaga todos os dados)"
-                            onClick={() => deleteClientForever(r.client_id, r.name)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-[#DC2626] hover:bg-slate-50"
-                          >
-                            <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
-                          </button>
-                        </div>
+                        <button
+                          title="Remover da simulação"
+                          onClick={() => deleteRow(r.client_id)}
+                          className="text-slate-400 hover:text-amber-600"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </td>
                     )}
                   </tr>
