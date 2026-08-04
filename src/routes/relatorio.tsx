@@ -127,7 +127,7 @@ function Relatorio() {
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-[#1C2333]">Relatório do Cliente</h1>
-          <p className="text-sm text-[#6B7280]">
+          <p className="text-sm font-medium text-[#6B7280]">
             Planilha mensal de economia pronta para enviar ao cliente.
           </p>
         </div>
@@ -194,7 +194,7 @@ function Relatorio() {
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-12 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-[#E4E7EC] ${
-                          f === "comDesconto" ? "font-bold text-[#1C2333]" : "text-[#6B7280] font-medium"
+                          f === "comDesconto" ? "font-bold text-[#1C2333]" : "text-[#1C2333] font-bold"
                         }`}
                       />
                     </td>
