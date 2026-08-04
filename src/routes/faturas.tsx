@@ -552,7 +552,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
-            <div className="mt-1 text-xl font-bold text-blue-600">{brl(netProfit)}</div>
+            <div className="mt-1 text-xl font-bold text-[#2563EB]">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
           </Card>
         </div>
