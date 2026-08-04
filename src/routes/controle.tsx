@@ -149,24 +149,24 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Simulação de Controle</h1>
-          <p className="text-sm text-slate-500">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Controle</h1>
+          <p className="text-sm text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button onClick={() => setEditing(false)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold">
                 <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
               <Pencil className="h-4 w-4" /> Editar Simulação
             </Button>
           )}
