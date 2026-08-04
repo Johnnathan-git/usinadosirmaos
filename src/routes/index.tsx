@@ -1,21 +1,27 @@
 /**
- * Execute esta instrucao no projeto: Ajuste o visual do meu app para um estilo claro e profissional:
+ * Execute esta instrucao no projeto: Instrução:
+ * Mantenha os 4 cartões de totais (Receita, Despesas, Lucro, Receita 2026) e o gráfico de barras abaixo deles. Não altere os dados numéricos.
  * 
- * Cores: fundo #f4f6f9, cards brancos com sombra suave, verde esmeralda (#059669) para números positivos e azul (#2563eb) para destaques. Fonte Inter.
+ * Altere APENAS o estilo:
  * 
- * Organização: cards lado a lado, tabelas com cabeçalho cinza claro e linhas zebradas, botões com fundo escuro e cantos arredondados.
+ * Cartões de Total: Adicione bg-white rounded-xl border border-slate-200 shadow-sm p-6 a cada um deles.
  * 
- * Aplique isso em todas as telas mantendo todas as funcionalidades e dados existentes.
+ * Valores dos Cartões: Mude a cor dos números:
+ * 
+ * Números de Receita/Lucro: text-emerald-600 font-bold text-2xl.
+ * 
+ * Números de Despesas: text-red-600 font-bold text-2xl.
  */
+import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
-import { Suspense } from "react";
 
 type Invoice = {
   id: string;
@@ -149,25 +155,25 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={brl(receitaMes)} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label={`Receita ${monthLabel(now)}`} value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label={`Despesas ${monthLabel(now)}`}
-          value={brl(despesasMes)}
+          value={despesasMes}
           tint="clay"
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={brl(lucroMes)} tint="solar" featured delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="sky" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label={`Lucro ${monthLabel(now)}`} value={lucroMes} tint="leaf" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={receitaAno} tint="leaf" />
       </div>
 
       <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-slate-800">Receita, Despesas e Lucro</h2>
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500 uppercase">
-            {[["Receita", "var(--leaf)"], ["Despesas", "var(--destructive)"], ["Lucro", "var(--solar)"]].map(([k, c]) => (
+            {[["Receita", "#059669"], ["Despesas", "#DC2626"], ["Lucro", "#2563EB"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
                 {k}
@@ -179,19 +185,19 @@ function Dashboard() {
           <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barGap={4}>
-                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeOpacity={0.7} />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B" }} />
+                <CartesianGrid vertical={false} stroke="#E2E8F0" strokeDasharray="3 3" />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748B", fontWeight: 500 }} dy={10} />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   width={54}
-                  tick={{ fontSize: 11, fill: "#64748B" }}
+                  tick={{ fontSize: 11, fill: "#64748B", fontWeight: 500 }}
                   tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${Math.round(v / 1000)}k` : String(v))}
                 />
-                <Tooltip cursor={{ fill: "#F1F5F9", opacity: 0.5 }} content={<ChartTooltip />} />
-                <Bar dataKey="Receita" fill="var(--leaf)" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="var(--destructive)" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="var(--solar)" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Tooltip cursor={{ fill: "#F8FAFC", opacity: 0.5 }} content={<ChartTooltip />} />
+                <Bar dataKey="Receita" fill="#059669" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#DC2626" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2563EB" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -295,36 +301,44 @@ function ChartTooltip({ active, payload, label }: any) {
 }
 
 function StatCard({
-  icon, label, value, tint, featured, hint, delta, invertDelta,
+  icon, label, value, tint, hint, delta, invertDelta,
 }: {
-  icon: React.ReactNode; label: string; value: string; tint: "leaf" | "clay" | "solar" | "sky";
-  featured?: boolean; hint?: string; delta?: number | null; invertDelta?: boolean;
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay";
+  hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
-  const iconBg: Record<string, string> = {
-    leaf: "bg-[#059669] text-white",
-    clay: "bg-[#DC2626] text-white",
-    solar: "bg-[#0F172A] text-white",
-    sky: "bg-[#0F172A] text-white",
-  };
+  const isEmerald = tint === "leaf";
+  const iconColor = isEmerald ? "text-emerald-600" : "text-red-600";
+  const textColor = isEmerald ? "text-emerald-600" : "text-red-600";
+  
+  const styledIcon = React.cloneElement(icon, {
+    className: cn(icon.props.className, iconColor)
+  });
+
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
+  
   return (
-    <Card className={`bg-card p-5 border shadow-sm transition-shadow hover:shadow-md ${featured ? "ring-1 ring-slate-900/20" : ""}`}>
+    <Card className="bg-white p-6 border border-slate-200 rounded-xl shadow-sm transition-all hover:shadow-md">
       <div className="mb-4 flex items-start justify-between gap-2">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${iconBg[tint]}`}>{icon}</div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 border border-slate-100">
+          {styledIcon}
+        </div>
         {delta != null && Number.isFinite(delta) && (
           <span
-            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-              good ? "bg-[#D1FAE5] text-[#059669]" : "bg-[#FEE2E2] text-[#DC2626]"
-            }`}
+            className={cn(
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold",
+              good ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+            )}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
             {Math.abs(delta).toFixed(0)}%
           </span>
         )}
       </div>
-      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
-      <div className="num-lg mt-1.5 text-[26px] font-extrabold leading-none text-foreground">{value}</div>
-      {hint && <div className="mt-2 text-xs text-muted-foreground">{hint}</div>}
+      <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</div>
+      <div className={cn("mt-2 text-2xl font-bold leading-none tabular-nums", textColor)}>
+        {brl(value)}
+      </div>
+      {hint && <div className="mt-3 text-[10px] leading-relaxed text-slate-400 font-medium">{hint}</div>}
     </Card>
   );
 }
