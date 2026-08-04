@@ -77,59 +77,62 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #f4f6f9;
-  --foreground: oklch(0.25 0.02 255);
-  /* Estilo Profissional: Esmeralda (#059669) e Azul (#2563eb) */
-  --solar: #2563eb;
-  --solar-soft: #dbeafe;
+  --radius: 0.5rem;
+  --background: #F1F5F9;
+  --foreground: #1E293B;
+  
+  /* Cores Profissionais: Esmeralda (#059669) e Vermelho (#DC2626) */
+  --solar: #0F172A; /* Azul marinho escuro para destaques/primário */
+  --solar-soft: #E2E8F0;
   --leaf: #059669;
-  --leaf-soft: #d1fae5;
-  --sky: #2563eb;
-  --sky-soft: #dbeafe;
-  --clay: #dc2626;
-  --clay-soft: #fee2e2;
-  --ink: #1e293b;
-  --solar-foreground: #ffffff;
+  --leaf-soft: #D1FAE5;
+  --sky: #2563EB;
+  --sky-soft: #DBEAFE;
+  --clay: #DC2626;
+  --clay-soft: #FEE2E2;
+  --ink: #0F172A;
+  --solar-foreground: #FFFFFF;
   
-  --shadow-1: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-3: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-3: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
   
-  --card: #ffffff;
-  --card-foreground: oklch(0.25 0.02 255);
-  --popover: #ffffff;
-  --popover-foreground: oklch(0.25 0.02 255);
-  --primary: #1e293b;
-  --primary-foreground: #ffffff;
-  --primary-glow: #334155;
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --card: #FFFFFF;
+  --card-foreground: #1E293B;
+  --popover: #FFFFFF;
+  --popover-foreground: #1E293B;
+  --primary: #0F172A;
+  --primary-foreground: #FFFFFF;
+  --primary-glow: #1E293B;
+  --gradient-primary: none;
   --gradient-surface: none;
-  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
-  --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --secondary: #f1f5f9;
+  --shadow-soft: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+  
+  --secondary: #FFFFFF;
   --secondary-foreground: #475569;
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #1e293b;
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #94a3b8;
-  --chart-1: oklch(0.48 0.15 245);
-  --chart-2: oklch(0.79 0.17 72);
-  --chart-3: oklch(0.55 0.15 162);
-  --chart-4: oklch(0.58 0.18 28);
-  --chart-5: oklch(0.5 0.12 300);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --muted: #F8FAFC;
+  --muted-foreground: #64748B;
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #0F172A;
+  
+  --chart-1: #059669;
+  --chart-2: #DC2626;
+  --chart-3: #0F172A;
+  --chart-4: #2563EB;
+  --chart-5: #64748B;
+  
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1E293B;
+  --sidebar-border: #E2E8F0;
+  --sidebar-accent: #F1F5F9;
+  --sidebar-accent-foreground: #0F172A;
+}
 }
 
 .dark {
@@ -184,6 +187,32 @@
   h3 {
     font-family: var(--font-display);
     letter-spacing: -0.015em;
+    font-weight: 700;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    text-transform: uppercase;
+    color: #475569;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 600;
+    text-align: left;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  td {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
   }
 }
 

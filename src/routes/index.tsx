@@ -163,7 +163,7 @@ function Dashboard() {
         <StatCard icon={<Receipt className="h-5 w-5" />} label={`Receita ${now.getFullYear()}`} value={brl(receitaAno)} tint="sky" />
       </div>
 
-      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
+      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Receita, Despesas e Lucro</h2>
           <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-muted-foreground">
@@ -199,7 +199,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
+      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
         <div className="mb-4 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-lg font-semibold">Ranking — Clientes Mais Lucrativos</h2>
@@ -232,12 +232,12 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
+      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
         <h2 className="mb-4 text-lg font-semibold">Resumo mês a mês</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
+              <tr className="bg-slate-50">
                 <th className="pb-3 text-left font-medium">Mês</th>
                 <th className="pb-3 text-right font-medium">Receita</th>
                 <th className="pb-3 text-right font-medium">Desp. Operacionais</th>
@@ -262,7 +262,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-card p-4 sm:p-6 border-none shadow-sm">
+      <Card className="bg-card p-4 sm:p-6 border shadow-sm">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
             <Users className="h-6 w-6 text-muted-foreground" />
