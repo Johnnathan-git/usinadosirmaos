@@ -252,10 +252,10 @@ function Dashboard() {
               {summary.map(row => (
                 <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors">
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                  <td className="num py-4 text-right font-semibold text-[#2F6F62]">{brl(row.Receita)}</td>
+                  <td className="num py-4 text-right font-medium text-[#6B7280]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Operacionais)}</td>
                   <td className="num py-4 text-right text-[#6B7280]">{brl(row.Distribuidora)}</td>
-                  <td className="num py-4 text-right font-semibold text-[#D64545]">{brl(row.Despesas)}</td>
+                  <td className="num py-4 text-right font-medium text-[#6B7280]">{brl(row.Despesas)}</td>
                   <td className="num py-4 text-right font-bold text-[#2E5C8A]">{brl(row.Lucro)}</td>
                 </tr>
               ))}
