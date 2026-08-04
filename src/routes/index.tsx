@@ -194,7 +194,7 @@ function Dashboard() {
                 />
                 <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
                 <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#2563EB" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
