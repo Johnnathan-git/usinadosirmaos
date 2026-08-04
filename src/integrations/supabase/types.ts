@@ -48,6 +48,7 @@ export type Database = {
           active: boolean
           color: string
           created_at: string
+          discount_pct: number | null
           email: string | null
           id: string
           name: string
@@ -60,6 +61,7 @@ export type Database = {
           active?: boolean
           color?: string
           created_at?: string
+          discount_pct?: number | null
           email?: string | null
           id?: string
           name: string
@@ -72,6 +74,7 @@ export type Database = {
           active?: boolean
           color?: string
           created_at?: string
+          discount_pct?: number | null
           email?: string | null
           id?: string
           name?: string

@@ -22,6 +22,7 @@ import { toast } from "sonner";
 type Client = {
   id: string; name: string; phone: string | null; email: string | null;
   color: string; uc_number: string; notes: string | null; active: boolean;
+  discount_pct: number;
 };
 type InvoiceRow = { id: string; client_id: string; reference_date: string; attachment_url: string | null; notes: string | null };
 
@@ -233,6 +234,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     color: client?.color ?? CLIENT_COLORS[0],
     uc_number: client?.uc_number ?? "",
     notes: client?.notes ?? "",
+    discount_pct: client?.discount_pct ?? 30,
   });
   const [saving, setSaving] = useState(false);
 
@@ -249,6 +251,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
       color: f.color,
       uc_number: f.uc_number.trim(),
       notes: f.notes || null,
+      discount_pct: Number(f.discount_pct),
     };
     const res = client
       ? await supabase.from("clients").update(payload).eq("id", client.id)
@@ -302,6 +305,10 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
           <div>
             <Label>Observações</Label>
             <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" />
+          </div>
+          <div>
+            <Label>Desconto (%) *</Label>
+            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" />
           </div>
         </div>
         <DialogFooter>
