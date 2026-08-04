@@ -108,8 +108,8 @@ function Inventario() {
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(totalAtivos)}</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-[#2563EB] num-lg">{brl(totalAtivos)}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
