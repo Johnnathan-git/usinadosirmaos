@@ -126,7 +126,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   to={item.to}
                   className={cn(
                     "flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-2 text-[10px] font-semibold transition-colors",
-                    active ? "text-primary" : "text-muted-foreground",
+                    active ? "text-slate-900" : "text-slate-500",
                   )}
                 >
                   <span className={cn("grid h-8 w-8 place-items-center rounded-lg transition-colors", active && "bg-slate-100")}>

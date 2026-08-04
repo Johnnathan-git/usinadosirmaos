@@ -179,9 +179,9 @@ function Faturas() {
                 <span className="text-white font-semibold">Lançar Fatura do Mês</span>
               </Button>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                className="w-full gap-2 border-slate-200 text-slate-600 hover:bg-slate-50"
                 onClick={() => setHistoryFor(c)}
               >
                 <Eye className="h-4 w-4" /> Ver histórico
