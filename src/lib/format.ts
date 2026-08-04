@@ -39,16 +39,14 @@ export const parseMonthKey = (key: string) => {
 export const initial = (s: string) => (s?.trim()?.[0] ?? "?").toUpperCase();
 
 export const CLIENT_COLORS = [
-  "#0E6BA8",
-  "#E08A1E",
-  "#1E8E6A",
-  "#8E4EC6",
-  "#C2405A",
-  "#0D7A8C",
-  "#B4611A",
-  "#3E5CB8",
-  "#177A55",
-  "#9A2F6B",
+  "#C97B5E",
+  "#5B7C99",
+  "#8B7355",
+  "#6B8A6E",
+  "#9B6B8C",
+  "#4A8B8C",
+  "#B08968",
+  "#7B6D8D",
 ];
 
 /** Fundo suave a partir da cor do cliente (visual mais sóbrio). */
@@ -56,24 +54,14 @@ export const softBg = (hex: string) => `${hex}20`;
 
 /** Converte a cor principal para um tom pastel claro. */
 export const getClientSoftColor = (color: string) => {
-  const c = color.toLowerCase();
-  if (c.includes('#0e6ba8') || c.includes('#3e5cb8') || c.includes('#0d7a8c')) return 'bg-blue-100 text-blue-800';
-  if (c.includes('#e08a1e') || c.includes('#b4611a')) return 'bg-amber-100 text-amber-800';
-  if (c.includes('#1e8e6a') || c.includes('#177a55')) return 'bg-emerald-100 text-emerald-800';
-  if (c.includes('#8e4ec6')) return 'bg-purple-100 text-purple-800';
-  if (c.includes('#c2405a') || c.includes('#9a2f6b')) return 'bg-rose-100 text-rose-800';
-  return 'bg-slate-100 text-slate-800';
+  // Retorna apenas a cor de texto branca, pois o fundo agora é sempre o sólido do cliente no avatar
+  return 'text-white';
 };
 
 /** Retorna a classe do botão baseada na cor do cliente. */
 export const getClientButtonColor = (color: string) => {
-  const c = color.toLowerCase();
-  if (c.includes('#0e6ba8') || c.includes('#3e5cb8') || c.includes('#0d7a8c')) return 'bg-blue-600 hover:bg-blue-700';
-  if (c.includes('#e08a1e') || c.includes('#b4611a')) return 'bg-amber-600 hover:bg-amber-700';
-  if (c.includes('#1e8e6a') || c.includes('#177a55')) return 'bg-emerald-600 hover:bg-emerald-700';
-  if (c.includes('#8e4ec6')) return 'bg-purple-600 hover:bg-purple-700';
-  if (c.includes('#c2405a') || c.includes('#9a2f6b')) return 'bg-rose-600 hover:bg-rose-700';
-  return 'bg-slate-900 hover:bg-slate-800';
+  // Cor fixa para botões de ação (Âmbar)
+  return 'bg-[#C98A3E] hover:bg-[#B67A35]';
 };
 
 export const EXPENSE_CATEGORIES = [
