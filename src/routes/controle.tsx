@@ -173,51 +173,51 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]">
           <Zap className="h-4 w-4" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-xs text-slate-500">Nº de placas</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Nº de placas</Label>
             {editing ? (
               <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-slate-800">{config.panels_count}</div>}
+            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-xs text-slate-500">kW por placa/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">kW por placa/mês</Label>
             {editing ? (
               <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-slate-800">{config.kw_per_panel} kW</div>}
+            ) : <div className="text-2xl font-bold text-[#1C2333] num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-xs text-slate-500">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-slate-800">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-xs text-slate-500">Consumo total clientes</Label>
-            <div className="text-2xl font-bold text-slate-800">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-[#1C2333] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#059669]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold ${saldo < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-slate-800">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">Do total gerado utilizado</div>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-[#1C2333] num-lg">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
-        <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-800"><Zap className="h-4 w-4" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold ${Math.abs(totalPct - 100) < 0.5 ? "text-[#059669]" : "text-[#DC2626]"}`}>
+        <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#B5533E]"}`}>
             {totalPct.toFixed(2)}%
           </div>
-          <div className="mt-1 text-xs text-slate-500 font-medium">
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">
             {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
