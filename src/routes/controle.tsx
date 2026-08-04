@@ -150,7 +150,7 @@ function Controle() {
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
           <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Controle</h1>
-          <p className="text-sm text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
+          <p className="text-sm font-medium text-[#6B7280]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button onClick={() => setNewOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
@@ -174,8 +174,8 @@ function Controle() {
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
-        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]">
-          <Zap className="h-4 w-4" /> Geração da Usina
+        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">
+          <Zap className="h-4 w-4 text-[#C98A3E]" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
@@ -203,21 +203,21 @@ function Controle() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2F6F62]"><TrendingUp className="h-4 w-4" /> Saldo de Energia</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Saldo de Energia</div>
           <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#B5533E]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
-          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><BarChart3 className="h-4 w-4" /> Aproveitamento</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><BarChart3 className="h-4 w-4 text-[#1C2333]" /> Aproveitamento</div>
           <div className="text-2xl font-bold text-[#1C2333] num-lg">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Do total gerado utilizado</div>
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#1C2333]"><Zap className="h-4 w-4" /> Rateio total alocado</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
           <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2F6F62]" : "text-[#B5533E]"}`}>
             {totalPct.toFixed(2)}%
           </div>
-          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">
+          <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
             {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
@@ -249,7 +249,7 @@ function Controle() {
                   <tr key={r.client_id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
                     <td className="py-4 font-bold text-[#1C2333] uppercase">
                       <span className="inline-flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.color }} />
+                        <span className="h-2 w-2 rounded-full shadow-sm" style={{ backgroundColor: r.color }} />
                         {r.name}
                       </span>
                     </td>

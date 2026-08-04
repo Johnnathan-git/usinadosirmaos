@@ -117,7 +117,7 @@ function Faturas() {
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
           <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Faturas</h1>
-          <p className="text-sm text-[#6B7280]">{active.length} ativos · {inactive.length} inativos</p>
+          <p className="text-sm font-medium text-[#6B7280]">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg">
@@ -137,20 +137,18 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md">
+          <Card key={c.id} className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md" style={{ borderLeft: `3px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
-                  className={cn(
-                    "flex h-11 w-11 items-center justify-center rounded-lg text-base font-bold transition-colors",
-                    getClientSoftColor(c.color)
-                  )}
+                  className="flex h-11 w-11 items-center justify-center rounded-full text-base font-bold text-white shadow-sm"
+                  style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
                 </div>
                 <div>
                   <div className="font-bold text-[#1C2333]">{c.name}</div>
-                  <div className="text-xs text-[#6B7280]">UC {c.uc_number}</div>
+                  <div className="text-xs font-medium text-[#6B7280]">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
@@ -169,7 +167,7 @@ function Faturas() {
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-slate-400">
+                <span className="flex items-center gap-1 text-[#6B7280]">
                   <Paperclip className="h-3.5 w-3.5" /> Anexos
                 </span>
               )}
@@ -310,7 +308,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-slate-900 hover:bg-slate-800">{client ? "Salvar" : "Criar"}</Button>
+          <Button onClick={submit} disabled={saving} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

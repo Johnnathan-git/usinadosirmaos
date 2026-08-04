@@ -93,7 +93,7 @@ function Inventario() {
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
           <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Inventário</h1>
-          <p className="text-sm text-[#6B7280]">Patrimônio, equipamentos e gastos de instalação</p>
+          <p className="text-sm font-medium text-[#6B7280]">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
           ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>

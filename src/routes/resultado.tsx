@@ -103,8 +103,8 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Resultado</h1>
-          <p className="text-sm text-slate-500">Economia gerada por mês e cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-[#1C2333] sm:text-3xl">Resultado</h1>
+          <p className="text-sm font-medium text-[#6B7280]">Economia gerada por mês e cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
@@ -147,18 +147,18 @@ function Resultado() {
         return (
           <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
             <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-              <h2 className="text-base font-bold text-slate-800">{monthLabelLong(d)}</h2>
+              <h2 className="text-base font-bold text-[#1C2333]">{monthLabelLong(d)}</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 bg-slate-50/30">
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Mês</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Consumo (kW)</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">c/ 30% Desconto</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Cliente Pagou</th>
-                    <th className="px-4 py-3 text-center font-semibold text-slate-500 uppercase text-xs">Economia Gerada</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Mês</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">c/ 30% Desconto</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-bold text-[#6B7280] uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -168,12 +168,12 @@ function Resultado() {
                     const eco = semUsina * 0.3;
                     return (
                       <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-                        <td className="whitespace-nowrap px-4 py-4 text-center text-slate-500 font-medium">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700 font-medium">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(semUsina)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-slate-700">{brl(desc)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#059669]">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-slate-800">{brl(eco)}</td>
+                        <td className="whitespace-nowrap px-4 py-4 text-center text-[#6B7280] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{brl(semUsina)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#1C2333] font-bold">{brl(desc)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2F6F62]">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#1C2333]">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -188,10 +188,10 @@ function Resultado() {
         <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center shadow-none">
-        <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Economia total gerada para o cliente</div>
-        <div className="num-lg mt-3 text-4xl font-bold text-[#059669] sm:text-5xl">{brl(totalEconomia)}</div>
-        <div className="mt-4 text-sm text-slate-400 font-semibold">
+      <Card className="rounded-[10px] border border-[#E4E7EC] bg-[#1F4A40] p-10 text-center shadow-sm">
+        <div className="text-xs font-bold uppercase tracking-widest text-white/70">Economia total gerada para o cliente</div>
+        <div className="num-lg mt-3 text-4xl font-bold text-white sm:text-5xl">{brl(totalEconomia)}</div>
+        <div className="mt-4 text-sm text-white/50 font-bold">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
       </Card>

@@ -4,24 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-numeric: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-numeric: "Space Mono", ui-monospace, monospace;
+  
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -29,6 +16,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -48,64 +36,28 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  /* Paleta "Solar Amber" — identidade de energia solar */
-  --color-solar: var(--solar);
-  --color-solar-soft: var(--solar-soft);
-  --color-leaf: var(--leaf);
-  --color-leaf-soft: var(--leaf-soft);
-  --color-sky: var(--sky);
-  --color-sky-soft: var(--sky-soft);
-  --color-clay: var(--clay);
-  --color-clay-soft: var(--clay-soft);
-  --color-ink: var(--ink);
-  --color-solar-foreground: var(--solar-foreground);
+  
+  /* Cores Semânticas Financeiras */
+  --color-positive: #2F6F62;
+  --color-negative: #B5533E;
+  --color-amber: #C98A3E;
+  --color-navy: #151B2E;
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 10px;
   --background: #F5F6F8;
   --foreground: #1C2333;
-  
-  --solar: #151B2E; 
-  --solar-soft: #F5F6F8;
-  --leaf: #2F6F62; 
-  --leaf-soft: #F1F7F6;
-  --sky: #C98A3E;
-  --sky-soft: #FDF9F3;
-  --clay: #B5533E; 
-  --clay-soft: #FDF3F1;
-  --ink: #1C2333;
-  --solar-foreground: #FFFFFF;
-  
-  --shadow-1: 0 1px 3px 0 rgba(0,0,0,0.06);
-  --shadow-2: 0 4px 6px -1px rgba(0,0,0,0.06);
-  --shadow-3: 0 10px 15px -3px rgba(0,0,0,0.06);
   
   --card: #FFFFFF;
   --card-foreground: #1C2333;
   --popover: #FFFFFF;
   --popover-foreground: #1C2333;
-  --primary: #151B2E;
+  --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
-  --primary-glow: #151B2E;
-  --gradient-primary: none;
-  --gradient-surface: none;
-  --shadow-soft: 0 1px 3px 0 rgba(0,0,0,0.06);
-  --shadow-elevated: 0 4px 6px -1px rgba(0,0,0,0.06);
   
   --secondary: #FFFFFF;
   --secondary-foreground: #6B7280;
@@ -117,54 +69,10 @@
   --destructive-foreground: #FFFFFF;
   --border: #E4E7EC;
   --input: #E4E7EC;
-  --ring: #151B2E;
-  
-  --chart-1: #2F6F62;
-  --chart-2: #B5533E;
-  --chart-3: #C98A3E;
-  --chart-4: #6B7280;
-  --chart-5: #151B2E;
+  --ring: #C98A3E;
   
   --sidebar: #151B2E;
   --sidebar-foreground: #9CA3AF;
-  --sidebar-border: #1F2A45;
-  --sidebar-accent: #1F2A45;
-  --sidebar-accent-foreground: #FFFFFF;
-}
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
 @layer base {
@@ -179,12 +87,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1,
-  h2,
-  h3 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
-    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-weight: 600;
   }
 
   table {
@@ -194,18 +100,18 @@
 
   th {
     text-transform: uppercase;
-    color: var(--color-muted-foreground);
-    font-size: 0.75rem; /* text-xs */
+    color: #6B7280;
+    font-size: 10px;
     font-weight: 600;
     text-align: left;
-    padding-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--color-border);
     letter-spacing: 0.05em;
+    font-family: var(--font-sans);
   }
 
   td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
     border-bottom: 1px solid var(--color-border);
     font-family: var(--font-numeric);
     font-variant-numeric: tabular-nums;
@@ -216,41 +122,17 @@
   }
 }
 
-@utility surface-card {
-  background-image: var(--gradient-surface);
-  box-shadow: var(--shadow-soft);
-}
-
-@utility gradient-primary {
-  background-image: var(--gradient-primary);
-}
-
-@utility elev-1 {
-  box-shadow: var(--shadow-1);
-}
-
-@utility elev-2 {
-  box-shadow: var(--shadow-2);
-}
-
-@utility elev-3 {
-  box-shadow: var(--shadow-3);
-}
-
-/* Números monetários alinhados em colunas */
 @utility num {
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
-  letter-spacing: -0.01em;
 }
 
 @utility num-lg {
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 @media print {
@@ -262,6 +144,7 @@
   }
 }
 
+/* Hide platform branding */
 a[href*="lovable.dev"], 
 iframe[src*="lovable.dev"],
 div[style*="Edit with Lovable"],
