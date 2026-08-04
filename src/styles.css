@@ -157,17 +157,17 @@ div[style*="Edit with Lovable"],
   position: absolute !important;
   z-index: -9999 !important;
 }
-169: 
-170: @utility zebra-stripe {
-171:   &:nth-child(even) {
-172:     background-color: rgba(245, 246, 248, 0.5);
-173:   }
-174: }
-160: 
-161: @utility scrollbar-hide {
-162:   -ms-overflow-style: none;
-163:   scrollbar-width: none;
-164:   &::-webkit-scrollbar {
-165:     display: none;
-166:   }
-167: }
+
+@utility zebra-stripe {
+  &:nth-child(even) {
+    background-color: rgba(245, 246, 248, 0.5);
+  }
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
