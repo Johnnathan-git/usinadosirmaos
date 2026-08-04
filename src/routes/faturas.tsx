@@ -588,7 +588,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                       <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
-                      <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
+                      <td className="py-3 text-right text-destructive">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
@@ -596,7 +596,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                             href={inv.attachment_url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
                             title="Ver anexo"
                           >
                             <Paperclip className="h-4 w-4" />
