@@ -292,7 +292,7 @@ function Controle() {
                 <td className="py-4 text-center font-bold text-[#1C2333] num">{totalPct.toFixed(2)}%</td>
                 <td className="py-4 text-right font-bold text-[#1C2333] num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-4 text-center font-bold text-[#1C2333] num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
-                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>
+                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-[#D64545]" : "text-[#2563EB]"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}
