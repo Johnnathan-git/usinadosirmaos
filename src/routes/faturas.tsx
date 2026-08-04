@@ -567,15 +567,15 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
           ) : (
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-background">
-                <tr className="text-xs uppercase tracking-wide text-muted-foreground">
-                  <th className="py-2 text-left font-medium">Mês</th>
-                  <th className="py-2 text-right font-medium">Consumo (kW)</th>
-                  <th className="py-2 text-right font-medium">S/ Usina</th>
-                  <th className="py-2 text-right font-medium">Cliente Pagou</th>
-                  <th className="py-2 text-right font-medium">Fat. Distribuidora</th>
-                  <th className="py-2 text-right font-medium">Lucro</th>
-                  <th className="py-2 text-center font-medium">Anexo</th>
+              <thead className="sticky top-0 bg-slate-50">
+                <tr className="text-[10px] uppercase tracking-wider text-slate-500">
+                  <th className="px-2 py-2 text-left font-semibold">Mês</th>
+                  <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
+                  <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
+                  <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
+                  <th className="px-2 py-2 text-right font-semibold">Fat. Distribuidora</th>
+                  <th className="px-2 py-2 text-right font-semibold">Lucro</th>
+                  <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                   <th></th>
                 </tr>
               </thead>
@@ -583,7 +583,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                 {invoices.map((inv) => {
                   const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                   return (
-                    <tr key={inv.id} className="border-t">
+                    <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
                       <td className="py-3 text-right text-blue-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
