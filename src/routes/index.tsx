@@ -127,7 +127,7 @@ function Dashboard() {
   const ranking = data.clients
     .map(c => ({ ...c, profit: profitByClient.get(c.id) ?? 0 }))
     .sort((a, b) => b.profit - a.profit);
-  const maxProfit = Math.max(1, ...ranking.map(r => r.profit));
+  const maxProfit = Math.max(0.1, ...ranking.map(r => r.profit));
 
   // monthly summary (last 6)
   const summary = [...chartData].reverse();
@@ -158,7 +158,7 @@ function Dashboard() {
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Receita, Despesas e Lucro</h2>
           <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-muted-foreground">
-            {[["Receita", "var(--leaf)"], ["Despesas", "var(--clay)"], ["Lucro", "var(--solar)"]].map(([k, c]) => (
+            {[["Receita", "var(--leaf)"], ["Despesas", "var(--destructive)"], ["Lucro", "var(--solar)"]].map(([k, c]) => (
               <span key={k} className="inline-flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-sm" style={{ background: c }} />
                 {k}
@@ -182,7 +182,7 @@ function Dashboard() {
                 />
                 <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.5 }} content={<ChartTooltip />} />
                 <Bar dataKey="Receita" fill="var(--leaf)" radius={[6, 6, 0, 0]} maxBarSize={34} />
-                <Bar dataKey="Despesas" fill="var(--clay)" radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="Despesas" fill="var(--destructive)" radius={[6, 6, 0, 0]} maxBarSize={34} />
                 <Bar dataKey="Lucro" fill="var(--solar)" radius={[6, 6, 0, 0]} maxBarSize={34} />
               </BarChart>
             </ResponsiveContainer>
@@ -244,8 +244,8 @@ function Dashboard() {
                   <td className="num py-3 text-right font-medium text-leaf">{brl(row.Receita)}</td>
                   <td className="num py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
                   <td className="num py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
-                  <td className="num py-3 text-right font-medium text-clay">{brl(row.Despesas)}</td>
-                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-clay" : "text-foreground"}`}>{brl(row.Lucro)}</td>
+                  <td className="num py-3 text-right font-medium text-destructive">{brl(row.Despesas)}</td>
+                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-destructive" : "text-solar"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -294,7 +294,7 @@ function StatCard({
 }) {
   const iconBg: Record<string, string> = {
     leaf: "bg-leaf text-white",
-    clay: "bg-clay text-white",
+    clay: "bg-destructive text-white",
     solar: "bg-solar text-ink",
     sky: "bg-sky text-white",
   };
@@ -306,7 +306,7 @@ function StatCard({
         {delta != null && Number.isFinite(delta) && (
           <span
             className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-              good ? "bg-leaf-soft text-leaf" : "bg-clay-soft text-clay"
+              good ? "bg-leaf-soft text-leaf" : "bg-destructive/10 text-destructive"
             }`}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
