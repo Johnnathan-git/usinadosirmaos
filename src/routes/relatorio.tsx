@@ -217,15 +217,29 @@ function Relatorio() {
                     ))}
                     <td className="border border-[#F1F5F9] p-0 text-center align-middle">
                       {r.attachment_url ? (
-                        <a 
-                          href={r.attachment_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const path = r.attachment_url!;
+                              if (path.startsWith('http')) {
+                                window.open(path, '_blank');
+                                return;
+                              }
+                              const { data, error } = await supabase.storage
+                                .from('faturas_private')
+                                .createSignedUrl(path, 60);
+                              if (error) throw error;
+                              window.open(data.signedUrl, '_blank');
+                            } catch (err: any) {
+                              console.error(err);
+                              alert("Erro ao abrir arquivo: " + err.message);
+                            }
+                          }}
                           className="flex h-14 w-full items-center justify-center text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors"
                           title="Baixar Fatura"
                         >
                           <Paperclip className="h-4 w-4" />
-                        </a>
+                        </button>
                       ) : (
                         <div className="flex h-14 w-full items-center justify-center text-slate-300">
                           <Paperclip className="h-4 w-4 opacity-30" />
