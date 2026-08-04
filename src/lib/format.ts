@@ -39,14 +39,26 @@ export const parseMonthKey = (key: string) => {
 export const initial = (s: string) => (s?.trim()?.[0] ?? "?").toUpperCase();
 
 export const CLIENT_COLORS = [
-  "#C97B5E",
-  "#5B7C99",
-  "#8B7355",
-  "#6B8A6E",
-  "#9B6B8C",
-  "#4A8B8C",
-  "#B08968",
-  "#7B6D8D",
+  "#C97B5E", // Terracotta
+  "#5B7C99", // Blue Grey
+  "#8B7355", // Sage Brown
+  "#6B8A6E", // Muted Green
+  "#9B6B8C", // Muted Purple
+  "#4A8B8C", // Teal
+  "#B08968", // Sand
+  "#7B6D8D", // Lavender Grey
+  "#2F6F62", // Petrol Green
+  "#151B2E", // Navy
+  "#C98A3E", // Amber
+  "#B5533E", // Dark Terracotta
+  "#4F46E5", // Indigo
+  "#0891B2", // Cyan
+  "#059669", // Emerald
+  "#DC2626", // Red
+  "#EA580C", // Orange
+  "#7C3AED", // Violet
+  "#DB2777", // Pink
+  "#2563EB", // Blue
 ];
 
 /** Fundo suave a partir da cor do cliente (visual mais sóbrio). */
