@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Mesmo erro. Erro ao subir arquivo
+ * Execute esta instrucao no projeto: auditar fluxo, sem alterar nada
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
