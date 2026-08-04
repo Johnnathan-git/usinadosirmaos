@@ -142,12 +142,12 @@ function Fluxo() {
             Operacionais {brl(despesasOperacionais)} + Faturas distribuidora {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="border-solar/20 bg-solar p-5 elev-2">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-solar-foreground">
+        <Card className="border-solar border-2 bg-solar p-5 elev-3">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink">
             <DollarSign className="h-4 w-4" /> Lucro do Mês
           </div>
-          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-solar-foreground"}`}>{brl(lucro)}</div>
-          <div className="mt-1 text-xs text-solar-foreground/80 font-medium">Receitas − (operacionais + distribuidora)</div>
+          <div className={`text-2xl font-bold ${lucro < 0 ? "text-destructive" : "text-ink"}`}>{brl(lucro)}</div>
+          <div className="mt-1 text-xs text-ink/80 font-medium">Receitas − (operacionais + distribuidora)</div>
         </Card>
       </div>
 

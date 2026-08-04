@@ -102,18 +102,18 @@ function Inventario() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-amber-200 bg-amber-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-amber-700"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-amber-700">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-xs text-amber-700/70">Ativos + Gastos</div>
+        <Card className="border-sky-200 bg-sky-50/60 p-5 elev-1">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-sky-700"><TrendingUp className="h-4 w-4" /> Total Investido</div>
+          <div className="text-2xl font-bold text-sky-700">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-xs text-sky-700/70">Ativos + Gastos</div>
         </Card>
-        <Card className="p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold">{brl(totalAtivos)}</div>
+        <Card className="border-leaf-200 bg-leaf-50/60 p-5 elev-1">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-leaf-700"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-leaf-700">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="border-orange-200 bg-orange-50/60 p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-orange-700"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-orange-700">{brl(totalGastos)}</div>
+        <Card className="border-solar border-2 bg-solar p-5 elev-2">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-ink">{brl(totalGastos)}</div>
         </Card>
       </div>
 
