@@ -77,11 +77,11 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md p-8 elev-3">
         <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="grid h-20 w-20 place-items-center rounded-2xl bg-white p-1 elev-2">
-            <BrandMark />
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-1 border border-[#E4E7EC] shadow-sm">
+            <BrandMark className="h-12 w-12" />
           </div>
           <div className="text-center leading-none">
-            <div className="font-display text-2xl font-bold tracking-tight text-slate-900">
+            <div className="font-display text-2xl font-bold tracking-tight text-[#1C2333]">
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -89,8 +89,8 @@ function AuthPage() {
             </div>
           </div>
         </div>
-        <h1 className="mb-1 text-center text-xl font-semibold">Entrar no sistema</h1>
-        <p className="mb-6 text-center text-sm text-muted-foreground">Acesso restrito a usuários cadastrados</p>
+        <h1 className="mb-1 text-center text-xl font-bold text-[#1C2333]">Entrar no sistema</h1>
+        <p className="mb-6 text-center text-sm font-medium text-[#6B7280]">Acesso restrito a usuários cadastrados</p>
         <form onSubmit={submit} method="post" action="#" className="space-y-4">
           <div>
             <Label htmlFor="email">Usuário (e-mail)</Label>
@@ -116,7 +116,7 @@ function AuthPage() {
               {error}
             </div>
           )}
-          <Button type="submit" disabled={loading || !hydrated} className="w-full">
+          <Button type="submit" disabled={loading || !hydrated} className="w-full bg-[#151B2E] text-white hover:bg-[#1F2A45] font-bold rounded-lg shadow-sm">
             {loading ? "Aguarde..." : hydrated ? "Entrar" : "Carregando..."}
           </Button>
         </form>
