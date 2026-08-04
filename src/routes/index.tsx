@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Anexou mas acusou o mesmo erro ao abrir. Print em anexo
+ * Execute esta instrucao no projeto: O mesmo erro.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Anexou mas acusou o mesmo erro ao abrir. Print em anexo
+ * Execute esta instrucao no projeto: O mesmo erro.
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
@@ -387,7 +387,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         .from('faturas_v3_privado_v2')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: true
+          upsert: true,
+          contentType: file.type || 'application/pdf'
         });
 
       if (uploadError) throw uploadError;
@@ -488,7 +489,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                         
                         const a = document.createElement('a');
                         a.href = data.signedUrl;
-                        a.target = '_blank';
+                        a.target = '_blank'; a.download = path.split('/').pop();
                         a.rel = 'noopener noreferrer';
                         a.click();
                       } catch (err: any) {
@@ -641,7 +642,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                 if (error) throw error;
                                 const a = document.createElement('a');
                                 a.href = data.signedUrl;
-                                a.target = '_blank';
+                                a.target = '_blank'; a.download = path.split('/').pop();
                                 a.rel = 'noopener noreferrer';
                                 a.click();
                               } catch (err: any) {
