@@ -19,7 +19,7 @@ type Client = {
   id: string; name: string; phone: string | null; email: string | null;
   color: string; uc_number: string; notes: string | null; active: boolean;
 };
-type InvoiceRow = { id: string; client_id: string; reference_date: string };
+type InvoiceRow = { id: string; client_id: string; reference_date: string; attachment_url: string | null; notes: string | null };
 
 type Invoice = {
   id: string;
