@@ -69,9 +69,10 @@ function Controle() {
   const [config, setConfig] = useState<Config>(data.config);
   const [rows, setRows] = useState<Row[]>([]);
   const [newOpen, setNewOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    // We still load initial data from DB for convenience, 
+    // but we will only update LOCAL state.
     setRows(data.clients.map(c => {
       const a = data.allocs.find(x => x.client_id === c.id);
       return {
@@ -95,58 +96,33 @@ function Controle() {
   function recalcRateio() {
     if (totalConsumo <= 0) return toast.error("Cadastre consumo médio para recalcular");
     setRows(rs => rs.map(r => ({ ...r, pct: +(Number(r.avg) / totalConsumo * 100).toFixed(2) })));
-    toast.success("Rateio recalculado");
+    toast.success("Rateio recalculado localmente");
   }
 
-  async function saveAll() {
-    setSaving(true);
-    const cfgRes = await supabase.from("plant_config").update({
-      panels_count: Number(config.panels_count),
-      kw_per_panel: Number(config.kw_per_panel),
-    }).eq("id", 1);
-    if (cfgRes.error) { setSaving(false); return toast.error(cfgRes.error.message); }
-    const payload = rows.map(r => ({
-      client_id: r.client_id,
-      allocation_pct: Number(r.pct),
-      avg_consumption: Number(r.avg),
-    }));
-    const upsert = await supabase.from("client_allocations").upsert(payload);
-    setSaving(false);
-    if (upsert.error) return toast.error(upsert.error.message);
-    toast.success("Alterações salvas");
-    setEditing(false);
-    location.reload();
+  function addTempClient(name: string, uc: string, avg: number, pct: number) {
+    const newRow: Row = {
+      client_id: crypto.randomUUID(),
+      name,
+      uc,
+      color: CLIENT_COLORS[rows.length % CLIENT_COLORS.length],
+      avg,
+      pct
+    };
+    setRows([...rows, newRow]);
+    setNewOpen(false);
   }
 
-  async function deleteRow(client_id: string) {
-    if (!confirm("Remover este cliente do rateio? O cadastro do cliente é mantido.")) return;
-    await supabase.from("client_allocations").delete().eq("client_id", client_id);
+  function deleteRow(client_id: string) {
     setRows(rs => rs.filter(r => r.client_id !== client_id));
-    toast.success("Cliente removido do rateio");
-  }
-
-  async function deleteClientForever(client_id: string, name: string) {
-    const typed = prompt(
-      `EXCLUSÃO DEFINITIVA de "${name}".\n\nIsso apaga o cliente e TODOS os dados lançados (faturas, rateio e vínculos de acesso). Essa ação não pode ser desfeita.\n\nDigite EXCLUIR para confirmar:`,
-    );
-    if (typed?.trim().toUpperCase() !== "EXCLUIR") return;
-    const inv = await supabase.from("invoices").delete().eq("client_id", client_id);
-    if (inv.error) return toast.error(inv.error.message);
-    const alloc = await supabase.from("client_allocations").delete().eq("client_id", client_id);
-    if (alloc.error) return toast.error(alloc.error.message);
-    await supabase.from("user_clients").delete().eq("client_id", client_id);
-    const cli = await supabase.from("clients").delete().eq("id", client_id);
-    if (cli.error) return toast.error(cli.error.message);
-    setRows(rs => rs.filter(r => r.client_id !== client_id));
-    toast.success(`Cliente ${name} excluído definitivamente`);
+    toast.success("Removido da simulação");
   }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Controle da Usina</h1>
-          <p className="text-sm text-slate-500">Geração × consumo e rateio por cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">Simulação de Controle</h1>
+          <p className="text-sm text-slate-500">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button onClick={() => setNewOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
@@ -157,16 +133,13 @@ function Controle() {
               <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button variant="outline" onClick={() => setEditing(false)} className="gap-2 border border-slate-200 text-[#DC2626] hover:bg-slate-50 rounded-lg px-4 py-2">
-                <X className="h-4 w-4" /> Cancelar
-              </Button>
-              <Button onClick={saveAll} disabled={saving} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
-                <Save className="h-4 w-4" /> Salvar
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2">
+                <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
             <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2">
-              <Pencil className="h-4 w-4" /> Editar
+              <Pencil className="h-4 w-4" /> Editar Simulação
             </Button>
           )}
         </div>
@@ -271,22 +244,13 @@ function Controle() {
                     </td>
                     {editing && (
                       <td className="py-4 pl-4 text-right">
-                        <div className="flex items-center justify-end gap-3">
-                          <button
-                            title="Remover do rateio (mantém o cadastro)"
-                            onClick={() => deleteRow(r.client_id)}
-                            className="text-slate-400 hover:text-amber-600"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                          <button
-                            title="Excluir cliente definitivamente (apaga todos os dados)"
-                            onClick={() => deleteClientForever(r.client_id, r.name)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-[#DC2626] hover:bg-slate-50"
-                          >
-                            <ShieldAlert className="h-3.5 w-3.5" /> Excluir definitivo
-                          </button>
-                        </div>
+                        <button
+                          title="Remover da simulação"
+                          onClick={() => deleteRow(r.client_id)}
+                          className="text-slate-400 hover:text-amber-600"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </td>
                     )}
                   </tr>
@@ -311,32 +275,28 @@ function Controle() {
         </div>
       </Card>
 
-      {newOpen && <NewClientDialog onClose={() => setNewOpen(false)} />}
+      {newOpen && (
+        <NewSimClientDialog 
+          onClose={() => setNewOpen(false)} 
+          onAdd={addTempClient}
+        />
+      )}
     </div>
   );
 }
 
-function NewClientDialog({ onClose }: { onClose: () => void }) {
+function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n: string, u: string, a: number, p: number) => void }) {
   const [f, setF] = useState({ name: "", uc_number: "", avg: "", pct: "", color: CLIENT_COLORS[0] });
-  const [saving, setSaving] = useState(false);
-  async function submit() {
+
+  function submit() {
     if (!f.name.trim()) return toast.error("Nome é obrigatório");
     const avgNum = Number(f.avg);
     const pctNum = Number(f.pct);
     if (!Number.isFinite(avgNum) || avgNum <= 0) return toast.error("Consumo médio é obrigatório");
     if (!Number.isFinite(pctNum) || pctNum < 0) return toast.error("Rateio % é obrigatório");
-    setSaving(true);
-    const { data: created, error } = await supabase.from("clients").insert({
-      name: f.name.trim(), uc_number: f.uc_number.trim(), color: f.color, active: true,
-    }).select("id").single();
-    if (error || !created) { setSaving(false); return toast.error(error?.message ?? "Erro ao criar cliente"); }
-    const { error: aerr } = await supabase.from("client_allocations").insert({
-      client_id: created.id, allocation_pct: pctNum, avg_consumption: avgNum,
-    });
-    setSaving(false);
-    if (aerr) return toast.error(aerr.message);
-    toast.success("Cliente cadastrado");
-    location.reload();
+    
+    onAdd(f.name.trim(), f.uc_number.trim(), avgNum, pctNum);
+    toast.success("Adicionado à simulação");
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -360,7 +320,7 @@ function NewClientDialog({ onClose }: { onClose: () => void }) {
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-emerald-500 hover:bg-emerald-600">Adicionar</Button>
+          <Button onClick={submit} className="bg-slate-900 text-white hover:bg-slate-800">Adicionar à Simulação</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
