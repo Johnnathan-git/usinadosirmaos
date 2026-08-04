@@ -116,14 +116,14 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Faturas</h1>
-          <p className="text-sm text-slate-500">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-[#1C2333]">Faturas</h1>
+          <p className="text-sm text-[#6B7280]">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 rounded-lg">
+          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-[#E4E7EC] bg-white text-[#6B7280] hover:bg-slate-50 rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-slate-900 text-white hover:bg-slate-800 rounded-lg px-4 py-2 font-bold shadow-sm">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -137,7 +137,7 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-none transition-all hover:shadow-sm">
+          <Card key={c.id} className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md">
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
@@ -149,8 +149,8 @@ function Faturas() {
                   {initial(c.name)}
                 </div>
                 <div>
-                  <div className="font-bold text-slate-800">{c.name}</div>
-                  <div className="text-xs text-slate-500">UC {c.uc_number}</div>
+                  <div className="font-bold text-[#1C2333]">{c.name}</div>
+                  <div className="text-xs text-[#6B7280]">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
