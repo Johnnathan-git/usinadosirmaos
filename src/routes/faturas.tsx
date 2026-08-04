@@ -313,7 +313,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold">{client ? "Salvar" : "Criar"}</Button>
+          <Button onClick={submit} disabled={saving} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -490,7 +490,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6">
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-bold">Salvar</Button>
+          <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
