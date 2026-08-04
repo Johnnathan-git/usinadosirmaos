@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Cara, deixe o sistema mais leve com menos black, e outra onde é despesa deve ser na cor vermelho e onde é receita e lucro na cor verde. Nada de cores vibrantes.
+ * Execute esta instrucao no projeto: Nas faturas dos clientes volte as cores de antes
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
