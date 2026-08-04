@@ -90,26 +90,26 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-50">
       <header className="no-print sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
           <div className="flex min-w-0 items-center gap-3">
             <BrandLockup />
             {current && (
-              <div className="hidden min-w-0 items-center gap-2 border-l border-border/70 pl-3 md:flex">
-                <span className="text-xs text-muted-foreground">Painel</span>
-                <span className="text-xs text-muted-foreground/60">/</span>
-                <span className="truncate text-sm font-semibold text-foreground">{current.label}</span>
+              <div className="hidden min-w-0 items-center gap-2 border-l border-slate-200 pl-3 md:flex">
+                <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Painel</span>
+                <span className="text-xs text-slate-300">/</span>
+                <span className="truncate text-sm font-bold text-slate-800">{current.label}</span>
               </div>
             )}
           </div>
-          <div className="flex shrink-0 items-center gap-1 rounded-full border border-border/70 bg-background/60 p-1">
-            <span className="hidden px-2 text-xs font-medium text-muted-foreground sm:inline">
+          <div className="flex shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-slate-50/50 p-1">
+            <span className="hidden px-3 text-xs font-bold text-slate-500 uppercase tracking-wide sm:inline">
               {acc?.effective_admin ? "Administrador" : "Usuário"}
             </span>
-            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-full">
+            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-full hover:bg-white hover:shadow-sm">
               <LogOut className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">Sair</span>
+              <span className="hidden font-bold sm:inline">Sair</span>
             </Button>
           </div>
         </div>
@@ -125,24 +125,24 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-2 text-[10px] font-semibold transition-colors",
-                    active ? "text-slate-900" : "text-slate-500",
+                    "flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-bold transition-all",
+                    active ? "text-slate-900" : "text-slate-400",
                   )}
                 >
-                  <span className={cn("grid h-8 w-8 place-items-center rounded-lg transition-colors", active && "bg-slate-100")}>
-                    <Icon className="h-[18px] w-[18px]" />
+                  <span className={cn("grid h-9 w-9 place-items-center rounded-xl transition-all", active ? "bg-slate-900 text-white shadow-md" : "hover:bg-slate-50")}>
+                    <Icon className="h-5 w-5" />
                   </span>
-                  <span className="w-full truncate text-center">{item.label}</span>
+                  <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
                 </Link>
               );
             })}
           </div>
         )}
-        <aside className="no-print sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-slate-200 bg-white px-4 py-6 md:block">
-          <div className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <aside className="no-print sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-slate-200 bg-white px-6 py-8 md:block">
+          <div className="mb-6 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
             Módulos
           </div>
-          <nav className="space-y-1.5">
+          <nav className="space-y-2">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -151,25 +151,25 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold outline-none transition-all focus-visible:ring-2 focus-visible:ring-slate-900",
                     active
-                      ? "bg-slate-900 text-white shadow-sm"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                      ? "bg-slate-900 text-white shadow-lg shadow-slate-900/20 translate-x-1"
+                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-900 hover:translate-x-1",
                   )}
                 >
-                  <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} />
+                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2.5} />
                   <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
         </aside>
-        <main className="min-w-0 flex-1 px-4 py-5 pb-28 sm:px-6 sm:py-6 md:pb-8">
+        <main className="min-w-0 flex-1 px-4 py-6 pb-28 sm:px-8 sm:py-8 md:pb-8">
           {blocked ? (
-            <div className="mx-auto mt-16 max-w-md rounded-xl border bg-card p-8 text-center shadow-sm">
-              <ShieldCheck className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-              <h2 className="text-lg font-semibold">Acesso restrito</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Você não tem permissão para acessar este módulo. Peça ao administrador para liberar em Acessos.</p>
+            <div className="mx-auto mt-20 max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-none">
+              <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-slate-300" />
+              <h2 className="text-xl font-bold text-slate-800">Acesso restrito</h2>
+              <p className="mt-2 text-sm text-slate-500 font-medium">Você não tem permissão para acessar este módulo. Peça ao administrador para liberar em Acessos.</p>
             </div>
           ) : children}
         </main>
