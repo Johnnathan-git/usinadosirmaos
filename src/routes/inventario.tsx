@@ -102,18 +102,18 @@ function Inventario() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-blue-600">{brl(totalInvestido)}</div>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><TrendingUp className="h-4 w-4" /> Total Investido</div>
+          <div className="text-2xl font-bold text-slate-900">{brl(totalInvestido)}</div>
           <div className="mt-1 text-xs text-muted-foreground">Ativos + Gastos</div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-600"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-emerald-600">{brl(totalAtivos)}</div>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#059669]"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-[#059669]">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="border-none shadow-sm bg-white p-5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-blue-600"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-blue-600">{brl(totalGastos)}</div>
+        <Card className="border shadow-sm bg-white p-5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-900"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-slate-900">{brl(totalGastos)}</div>
         </Card>
       </div>
 
@@ -124,7 +124,7 @@ function Inventario() {
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
-          <Card className="p-6 border-none shadow-sm bg-white">
+          <Card className="p-6 border shadow-sm bg-white">
             <div className="mb-4 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
                 className={`rounded-full px-3 py-1 text-sm ${category === "all" ? "bg-slate-900 text-white" : "bg-muted"}`}>
@@ -140,7 +140,7 @@ function Inventario() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
+                  <tr className="bg-slate-50">
                     <th className="pb-3 text-left font-medium">Item</th>
                     <th className="pb-3 text-left font-medium">Categoria</th>
                     <th className="pb-3 text-left font-medium">Marca / Modelo</th>
@@ -161,7 +161,7 @@ function Inventario() {
                       <td className="py-3 text-muted-foreground">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
                       <td className="py-3 text-center">{a.quantity}</td>
                       <td className="py-3 text-right">{brl(Number(a.unit_value))}</td>
-                      <td className="py-3 text-right font-semibold text-blue-600">{brl(Number(a.unit_value) * a.quantity)}</td>
+                      <td className="py-3 text-right font-semibold text-[#059669]">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-3 pl-2 text-right">
                         <button onClick={() => setAssetOpen(a)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
                         <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
@@ -172,7 +172,7 @@ function Inventario() {
                 <tfoot>
                   <tr className="border-t bg-slate-50/80">
                     <td colSpan={5} className="py-3 font-semibold">Total Patrimônio</td>
-                    <td className="py-3 text-right font-bold text-blue-600">{brl(totalAtivos)}</td>
+                    <td className="py-3 text-right font-bold text-[#059669]">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
                 </tfoot>
@@ -182,10 +182,10 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="p-6 border-none shadow-sm bg-white">
+          <Card className="p-6 border shadow-sm bg-white">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-xs uppercase tracking-wide text-muted-foreground bg-slate-50">
+                <tr className="bg-slate-50">
                   <th className="pb-3 text-left font-medium">Descrição</th>
                   <th className="pb-3 text-left font-medium">Data</th>
                   <th className="pb-3 text-left font-medium">Responsável</th>
@@ -201,7 +201,7 @@ function Inventario() {
                     <td className="py-3 text-muted-foreground">{formatDateBR(e.spent_on)}</td>
                     <td className="py-3 text-muted-foreground">{e.responsible || "—"}</td>
                     <td className="py-3 text-muted-foreground">{e.notes || "—"}</td>
-                    <td className="py-3 text-right font-semibold text-blue-600">{brl(Number(e.amount))}</td>
+                    <td className="py-3 text-right font-semibold text-slate-900">{brl(Number(e.amount))}</td>
                     <td className="py-3 pl-2 text-right">
                       <button onClick={() => setExpenseOpen(e)} className="mr-2 text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
                       <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-muted-foreground hover:text-rose-600"><Trash2 className="h-4 w-4" /></button>
@@ -212,7 +212,7 @@ function Inventario() {
               <tfoot>
                 <tr className="border-t bg-slate-50/80">
                   <td colSpan={4} className="py-3 font-semibold">Total Gastos</td>
-                  <td className="py-3 text-right font-bold text-blue-600">{brl(totalGastos)}</td>
+                  <td className="py-3 text-right font-bold text-slate-900">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>
