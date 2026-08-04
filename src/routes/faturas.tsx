@@ -564,6 +564,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   <th className="py-2 text-right font-medium">Cliente Pagou</th>
                   <th className="py-2 text-right font-medium">Fat. Distribuidora</th>
                   <th className="py-2 text-right font-medium">Lucro</th>
+                  <th className="py-2 text-center font-medium">Anexo</th>
                   <th></th>
                 </tr>
               </thead>
@@ -578,6 +579,19 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3 text-right text-emerald-600">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-rose-500">{brl(Number(inv.distributor_invoice))}</td>
                       <td className="py-3 text-right font-semibold text-blue-600">{brl(lucro)}</td>
+                      <td className="py-3 text-center">
+                        {inv.attachment_url ? (
+                          <a 
+                            href={inv.attachment_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20"
+                            title="Ver anexo"
+                          >
+                            <Paperclip className="h-4 w-4" />
+                          </a>
+                        ) : "—"}
+                      </td>
                       <td className="py-3 pl-2 text-right">
                         <div className="flex justify-end gap-1">
                           <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
