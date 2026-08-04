@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
-import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg } from "@/lib/format";
+import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonColor } from "@/lib/format";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
@@ -137,8 +137,10 @@ function Faturas() {
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-11 w-11 items-center justify-center rounded-lg text-base font-bold"
-                  style={{ backgroundColor: softBg(c.color), color: c.color }}
+                  className={cn(
+                    "flex h-11 w-11 items-center justify-center rounded-lg text-base font-bold transition-colors",
+                    getClientSoftColor(c.color)
+                  )}
                 >
                   {initial(c.name)}
                 </div>
@@ -148,10 +150,10 @@ function Faturas() {
                 </div>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-slate-400 hover:text-slate-600" aria-label={`Editar ${c.name}`}>
+                <button onClick={() => setEditClient(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" aria-label={`Editar ${c.name}`}>
                   <Settings className="h-4 w-4" />
                 </button>
-                <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-600" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
+                <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
                   {c.active ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
                 </button>
               </div>
@@ -170,10 +172,12 @@ function Faturas() {
             </div>
             <div className="flex flex-col gap-2">
               <Button
-                className="w-full gap-2 transition-all hover:shadow-md text-white font-bold rounded-lg px-4 py-2"
+                className={cn(
+                  "w-full gap-2 transition-all hover:shadow-md text-white font-bold rounded-lg px-4 py-2",
+                  getClientButtonColor(c.color)
+                )}
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
-                style={{ backgroundColor: c.color }}
               >
                 <Plus className="h-4 w-4 text-white" /> 
                 <span>Lançar Fatura</span>
