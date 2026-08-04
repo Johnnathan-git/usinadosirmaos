@@ -180,7 +180,7 @@ function Relatorio() {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[980px] border-collapse text-sm">
+          <table className="w-full min-w-[750px] border-collapse text-sm">
             <thead>
               <tr className="bg-[#F8FAFC]">
                 {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor SEM Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (

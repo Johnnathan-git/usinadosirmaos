@@ -143,7 +143,7 @@ function Dashboard() {
         <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
@@ -315,11 +315,11 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm transition-all hover:shadow-md"
+      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-4 sm:p-5 shadow-sm transition-all hover:shadow-md"
       style={{ borderTop: `3px solid ${semanticColor}` }}
     >
-      <div className="mb-4 flex items-start justify-between gap-2">
-        <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+      <div className="mb-2 sm:mb-4 flex items-start justify-between gap-2">
+        <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
         </div>
         {delta != null && Number.isFinite(delta) && (
@@ -335,7 +335,7 @@ function StatCard({
         )}
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
-      <div className="mt-1.5 text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+      <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
         {brl(value)}
       </div>
       {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
