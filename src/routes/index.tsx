@@ -254,7 +254,7 @@ function Dashboard() {
                   <td className="num py-3 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
                   <td className="num py-3 text-right text-muted-foreground">{brl(row.Distribuidora)}</td>
                   <td className="num py-3 text-right font-medium text-destructive">{brl(row.Despesas)}</td>
-                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-destructive" : "text-solar"}`}>{brl(row.Lucro)}</td>
+                  <td className={`num py-3 text-right font-semibold ${row.Lucro < 0 ? "text-[#DC2626]" : "text-[#059669]"}`}>{brl(row.Lucro)}</td>
                 </tr>
               ))}
             </tbody>
@@ -302,10 +302,10 @@ function StatCard({
   featured?: boolean; hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const iconBg: Record<string, string> = {
-    leaf: "bg-emerald-600 text-white",
-    clay: "bg-destructive text-white",
-    solar: "bg-slate-900 text-white",
-    sky: "bg-slate-900 text-white",
+    leaf: "bg-[#059669] text-white",
+    clay: "bg-[#DC2626] text-white",
+    solar: "bg-[#0F172A] text-white",
+    sky: "bg-[#0F172A] text-white",
   };
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   return (
@@ -315,7 +315,7 @@ function StatCard({
         {delta != null && Number.isFinite(delta) && (
           <span
             className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-              good ? "bg-leaf-soft text-leaf" : "bg-destructive/10 text-destructive"
+              good ? "bg-[#D1FAE5] text-[#059669]" : "bg-[#FEE2E2] text-[#DC2626]"
             }`}
           >
             {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
