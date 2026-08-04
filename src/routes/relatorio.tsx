@@ -153,7 +153,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    on ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:bg-muted"
+                    on ? "border-primary bg-primary text-primary-foreground" : "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
