@@ -91,7 +91,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="no-print sticky top-0 z-50 border-b border-border/70 bg-card/85 backdrop-blur supports-[backdrop-filter]:bg-card/70">
+      <header className="no-print sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
           <div className="flex min-w-0 items-center gap-3">
             <BrandLockup />
@@ -116,7 +116,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-border/70 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] md:hidden">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -129,7 +129,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     active ? "text-primary" : "text-muted-foreground",
                   )}
                 >
-                  <span className={cn("grid h-8 w-8 place-items-center rounded-xl transition-colors", active && "bg-primary/10")}>
+                  <span className={cn("grid h-8 w-8 place-items-center rounded-lg transition-colors", active && "bg-slate-100")}>
                     <Icon className="h-[18px] w-[18px]" />
                   </span>
                   <span className="w-full truncate text-center">{item.label}</span>
@@ -138,7 +138,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             })}
           </div>
         )}
-        <aside className="no-print sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-border/70 bg-card/60 px-4 py-6 md:block">
+        <aside className="no-print sticky top-[61px] hidden h-[calc(100vh-61px)] w-64 shrink-0 border-r border-slate-200 bg-white px-4 py-6 md:block">
           <div className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Módulos
           </div>
@@ -151,10 +151,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
-                      ? "bg-primary text-primary-foreground elev-2"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      ? "bg-slate-900 text-white shadow-sm"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                   )}
                 >
                   <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} />
