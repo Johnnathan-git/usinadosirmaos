@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Nas faturas dos clientes volte as cores de antes
+ * Execute esta instrucao no projeto: ajudar no layout, deixar mais profissional com um pouco mais de vida
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
