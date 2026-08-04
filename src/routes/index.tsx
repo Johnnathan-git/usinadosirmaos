@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
+ * Execute esta instrucao no projeto: No dashboard substitui a informação de Receita anual por Lucro anual. Observação, tem que extrair de fato os lucros no sistema.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -82,8 +82,13 @@ function Dashboard() {
     .reduce((a, e) => a + Number(e.amount), 0);
   const despesasMes = despesasOperMes + faturasDistMes;
   const lucroMes = receitaMes - despesasMes;
-  const receitaAno = data.invoices.filter(i => i.reference_date.startsWith(String(now.getFullYear())))
-    .reduce((a, i) => a + Number(i.client_pays), 0);
+  const lucroAno = data.invoices
+    .filter(i => i.reference_date.startsWith(String(now.getFullYear())))
+    .reduce((a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)), 0);
+  const despesasOperAno = data.expenses
+    .filter(e => e.reference_date.startsWith(String(now.getFullYear())))
+    .reduce((a, e) => a + Number(e.amount), 0);
+  const lucroAnualReal = lucroAno - despesasOperAno;
 
   const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const prevKey = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, "0")}`;
@@ -155,7 +160,7 @@ function Dashboard() {
           hint={`Operacionais ${brl(despesasOperMes)} + Distribuidora ${brl(faturasDistMes)}`}
         />
         <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Receipt className="h-5 w-5" />} label="Receita Anual" value={receitaAno} tint="leaf" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro Anual" value={lucroAnualReal} tint="sky" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
