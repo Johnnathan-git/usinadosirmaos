@@ -335,7 +335,7 @@ function StatCard({
         )}
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">{label}</div>
-      <div className="mt-2 text-2xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+      <div className="mt-1.5 text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
         {brl(value)}
       </div>
       {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
