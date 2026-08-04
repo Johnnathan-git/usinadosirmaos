@@ -203,8 +203,8 @@ function Controle() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#D64545]" : "text-[#2F6F62]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#6B7280]"><TrendingUp className="h-4 w-4 text-[#2563EB]" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#D64545]" : "text-[#2563EB]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-5 shadow-sm">
