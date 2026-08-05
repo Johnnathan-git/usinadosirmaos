@@ -102,23 +102,25 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-6">
             <BrandLockup />
           </div>
-          <div className="absolute left-1/2 hidden -translate-x-1/2 flex-col items-center sm:flex">
-            <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
-              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
-            <div className="flex flex-col items-end pr-2 mr-1.5 border-r border-[#E4E7EC]">
-              <span className="text-[9px] font-bold text-[#4B5563] uppercase tracking-wider leading-none">
-                {acc?.effective_admin ? "Administrador" : "Usuário"}
-              </span>
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex items-center gap-1.5 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
+              <div className="flex flex-col items-end pr-2 mr-1.5 border-r border-[#E4E7EC]">
+                <span className="text-[9px] font-bold text-[#4B5563] uppercase tracking-wider leading-none">
+                  {acc?.effective_admin ? "Administrador" : "Usuário"}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <ChangeOwnPasswordDialog />
+                <Button size="sm" variant="ghost" onClick={signOut} className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
+                  <LogOut className="h-3.5 w-3.5 sm:mr-1.5" />
+                  <span className="hidden text-[10px] font-bold uppercase sm:inline">Sair</span>
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <ChangeOwnPasswordDialog />
-              <Button size="sm" variant="ghost" onClick={signOut} className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-                <LogOut className="h-3.5 w-3.5 sm:mr-1.5" />
-                <span className="hidden text-[10px] font-bold uppercase sm:inline">Sair</span>
-              </Button>
+            <div className="hidden sm:block">
+              <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
+                Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+              </span>
             </div>
           </div>
         </div>
