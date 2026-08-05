@@ -100,8 +100,8 @@ export const createManagedUser = createServerFn({ method: "POST" })
     if (data.client_id) {
       await supabaseAdmin.from("user_clients").insert({ user_id: uid, client_id: data.client_id });
     }
-    if (data.display_name) {
-      await supabaseAdmin.from("user_profiles").insert({ user_id: uid, display_name: data.display_name });
+    if (data.display_name?.trim()) {
+      await supabaseAdmin.from("user_profiles").insert({ user_id: uid, display_name: data.display_name.trim() });
     }
     return { id: uid };
   });
@@ -139,8 +139,12 @@ export const updateManagedUser = createServerFn({ method: "POST" })
       await supabaseAdmin.from("user_clients").insert({ user_id: data.user_id, client_id: data.client_id });
     }
     
-    if (data.display_name) {
-      await supabaseAdmin.from("user_profiles").upsert({ user_id: data.user_id, display_name: data.display_name }, { onConflict: "user_id" });
+    if (data.display_name !== undefined) {
+      if (data.display_name.trim()) {
+        await supabaseAdmin.from("user_profiles").upsert({ user_id: data.user_id, display_name: data.display_name.trim() }, { onConflict: "user_id" });
+      } else {
+        await supabaseAdmin.from("user_profiles").delete().eq("user_id", data.user_id);
+      }
     }
 
     return { ok: true };
