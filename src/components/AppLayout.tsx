@@ -165,7 +165,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
-          <div className="mt-6 border-t border-white/10 px-4 pt-4">
+          <div className="mt-16 border-t border-white/10 px-4 pt-6">
             <span className="font-serif text-[15px] italic leading-tight text-white/80">
               Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
             </span>
