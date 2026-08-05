@@ -99,8 +99,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#F5F6F8]">
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex flex-col items-start gap-1">
-            <div className="hidden pl-1 sm:block">
+          <div className="flex flex-col items-center gap-1">
+            <div className="hidden sm:block">
               <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
                 Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
               </span>
