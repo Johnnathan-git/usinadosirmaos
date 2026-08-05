@@ -103,7 +103,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <BrandLockup />
             <div className="hidden flex-col sm:flex">
               <span className="font-display text-xl font-bold tracking-tight text-[#151B2E]">
-                Seja Bem Vindo, <span className="text-[#C98A3E]">{acc?.user_email?.split('@')[0] || 'Usuário'}</span>
+                Seja Bem Vindo, <span className="text-[#C98A3E]">{(acc as any)?.user_email?.split('@')[0] || 'Usuário'}</span>
               </span>
             </div>
           </div>
