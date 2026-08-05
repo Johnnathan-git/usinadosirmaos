@@ -99,7 +99,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#F5F6F8]">
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col items-start gap-1">
+            <div className="hidden pl-1 sm:block">
+              <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
+                Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+              </span>
+            </div>
             <BrandLockup />
           </div>
           <div className="flex flex-col items-end gap-1">
@@ -114,11 +119,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   <span className="hidden text-[9px] font-bold uppercase sm:inline">Sair</span>
                 </Button>
               </div>
-            </div>
-            <div className="hidden sm:block pr-1">
-              <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
-                Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-              </span>
             </div>
           </div>
         </div>
