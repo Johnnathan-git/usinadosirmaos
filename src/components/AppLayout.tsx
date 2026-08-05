@@ -100,11 +100,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="relative flex items-center justify-between px-6 py-4">
           <BrandLockup />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
-            <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
-              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-            </span>
-          </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
               <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
@@ -170,6 +165,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
+          <div className="mt-6 border-t border-white/10 px-4 pt-4">
+            <span className="font-serif text-[15px] italic leading-tight text-white/80">
+              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+            </span>
+          </div>
         </aside>
         <main className="min-w-0 flex-1 px-4 py-8 pb-28 sm:px-8 md:pb-8">
           {blocked ? (
