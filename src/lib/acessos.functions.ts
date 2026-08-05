@@ -169,11 +169,13 @@ export const getMyAccess = createServerFn({ method: "GET" })
     ]);
     const is_admin = (rolesRes.data ?? []).some((r: any) => r.role === "admin");
     const bootstrap = bootstrapMode;
+    const userEmail = (await context.supabase.auth.getUser()).data.user?.email ?? null;
     return {
       is_admin,
       bootstrap,
       effective_admin: is_admin || bootstrap,
       permissions: (permsRes.data ?? []).map((p: any) => p.module as string),
       client_id: (linkRes.data as any)?.client_id ?? null,
+      user_email: userEmail,
     };
   });

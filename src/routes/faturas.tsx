@@ -20,7 +20,7 @@ import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
 type Client = {
-  id: string; name: string; phone: string | null; email: string | null;
+  id: string; name: string; first_name: string | null; phone: string | null; email: string | null;
   color: string; uc_number: string; notes: string | null; active: boolean;
   discount_pct: number;
 };
@@ -230,6 +230,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
   const qc = useQueryClient();
   const [f, setF] = useState({
     name: client?.name ?? "",
+    first_name: client?.first_name ?? "",
     phone: client?.phone ?? "",
     email: client?.email ?? "",
     color: client?.color ?? CLIENT_COLORS[0],
@@ -247,6 +248,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     setSaving(true);
     const payload = {
       name: f.name.trim(),
+      first_name: f.first_name.trim() || null,
       phone: f.phone || null,
       email: f.email || null,
       color: f.color,
@@ -271,9 +273,15 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
           <DialogTitle>{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <div>
-            <Label>Nome *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Nome Completo *</Label>
+              <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" />
+            </div>
+            <div>
+              <Label>Primeiro Nome</Label>
+              <Input value={f.first_name} onChange={e => setF({ ...f, first_name: e.target.value })} placeholder="Ex: João" />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>

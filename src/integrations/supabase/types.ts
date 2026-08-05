@@ -50,6 +50,7 @@ export type Database = {
           created_at: string
           discount_pct: number | null
           email: string | null
+          first_name: string | null
           id: string
           name: string
           notes: string | null
@@ -63,6 +64,7 @@ export type Database = {
           created_at?: string
           discount_pct?: number | null
           email?: string | null
+          first_name?: string | null
           id?: string
           name: string
           notes?: string | null
@@ -76,6 +78,7 @@ export type Database = {
           created_at?: string
           discount_pct?: number | null
           email?: string | null
+          first_name?: string | null
           id?: string
           name?: string
           notes?: string | null
