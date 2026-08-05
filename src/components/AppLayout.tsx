@@ -205,9 +205,9 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-          <KeyRound className="h-3.5 w-3.5 sm:mr-1.5" />
-          <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
+        <Button size="sm" variant="ghost" className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
+          <KeyRound className="h-3 w-3 sm:mr-1" />
+          <span className="hidden text-[9px] font-bold uppercase sm:inline">Senha</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
