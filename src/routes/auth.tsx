@@ -95,7 +95,7 @@ function AuthPage() {
         </div>
 
         <div className="mb-8 space-y-1 text-center">
-          <h1 className="text-xl font-bold text-[#151B2E]">Boas-vindas</h1>
+          <h1 className="text-xl font-bold text-[#151B2E]">Seja bem vindo</h1>
           <p className="text-sm font-medium text-muted-foreground">Acesse sua conta para continuar</p>
         </div>
 

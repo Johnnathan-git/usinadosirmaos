@@ -99,8 +99,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#F5F6F8]">
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <BrandLockup />
+            <div className="hidden flex-col sm:flex">
+              <span className="font-display text-xl font-bold tracking-tight text-[#151B2E]">
+                Seja Bem Vindo, <span className="text-[#C98A3E]">{acc?.user_email?.split('@')[0] || 'Usuário'}</span>
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
             <span className="hidden px-3 text-xs font-semibold text-[#4B5563] uppercase tracking-wide sm:inline">
