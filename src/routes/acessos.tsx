@@ -89,6 +89,7 @@ function AcessosContent() {
             <thead>
               <tr className="bg-[#F5F6F8]">
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Nome</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Papel</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Permissões</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente</th>
@@ -100,6 +101,7 @@ function AcessosContent() {
               {(q.data?.users ?? []).map((u) => (
                 <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
                   <td className="px-6 py-4 font-bold text-[#374151]">{u.email}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">{u.display_name || <span className="text-[#9CA3AF]">—</span>}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
