@@ -107,15 +107,19 @@ export function AppLayout({ children }: { children: ReactNode }) {
               Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
             </span>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
-            <span className="hidden px-3 text-xs font-semibold text-[#4B5563] uppercase tracking-wide sm:inline">
-              {acc?.effective_admin ? "Administrador" : "Usuário"}
-            </span>
-            <ChangeOwnPasswordDialog />
-            <Button size="sm" variant="ghost" onClick={signOut} className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-              <LogOut className="h-4 w-4 sm:mr-2" />
-              <span className="hidden font-semibold sm:inline">Sair</span>
-            </Button>
+          <div className="flex items-center gap-1.5 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
+            <div className="flex flex-col items-end pr-2 mr-1.5 border-r border-[#E4E7EC]">
+              <span className="text-[9px] font-bold text-[#4B5563] uppercase tracking-wider leading-none">
+                {acc?.effective_admin ? "Administrador" : "Usuário"}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ChangeOwnPasswordDialog />
+              <Button size="sm" variant="ghost" onClick={signOut} className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
+                <LogOut className="h-3.5 w-3.5 sm:mr-1.5" />
+                <span className="hidden text-[10px] font-bold uppercase sm:inline">Sair</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -201,9 +205,9 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-8 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-          <KeyRound className="h-4 w-4 sm:mr-2" />
-          <span className="hidden font-semibold sm:inline">Senha</span>
+        <Button size="sm" variant="ghost" className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
+          <KeyRound className="h-3.5 w-3.5 sm:mr-1.5" />
+          <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
