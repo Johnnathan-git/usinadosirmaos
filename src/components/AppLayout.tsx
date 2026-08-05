@@ -102,7 +102,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-6">
             <BrandLockup />
             <div className="hidden flex-col sm:flex">
-              <span className="font-serif text-[26px] italic leading-tight text-[#151B2E] opacity-90">
+              <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
                 Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
               </span>
             </div>
