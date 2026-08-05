@@ -102,22 +102,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-6">
             <BrandLockup />
           </div>
-          <div className="flex flex-col items-end gap-1.5">
-            <div className="flex items-center gap-1.5 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
-              <div className="flex flex-col items-end pr-2 mr-1.5 border-r border-[#E4E7EC]">
-                <span className="text-[9px] font-bold text-[#4B5563] uppercase tracking-wider leading-none">
-                  {acc?.effective_admin ? "Administrador" : "Usuário"}
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
+              <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
+                {acc?.effective_admin ? "Admin" : "User"}
+              </span>
+              <div className="flex items-center gap-0.5">
                 <ChangeOwnPasswordDialog />
-                <Button size="sm" variant="ghost" onClick={signOut} className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-                  <LogOut className="h-3.5 w-3.5 sm:mr-1.5" />
-                  <span className="hidden text-[10px] font-bold uppercase sm:inline">Sair</span>
+                <Button size="sm" variant="ghost" onClick={signOut} className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
+                  <LogOut className="h-3 w-3 sm:mr-1" />
+                  <span className="hidden text-[9px] font-bold uppercase sm:inline">Sair</span>
                 </Button>
               </div>
             </div>
-            <div className="hidden sm:block">
+            <div className="hidden sm:block pr-1">
               <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
                 Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
               </span>
@@ -207,9 +205,9 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-7 px-2 rounded-md hover:bg-white hover:shadow-sm text-[#374151]">
-          <KeyRound className="h-3.5 w-3.5 sm:mr-1.5" />
-          <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
+        <Button size="sm" variant="ghost" className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
+          <KeyRound className="h-3 w-3 sm:mr-1" />
+          <span className="hidden text-[9px] font-bold uppercase sm:inline">Senha</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
