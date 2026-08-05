@@ -101,11 +101,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-6">
             <BrandLockup />
-            <div className="hidden flex-col sm:flex">
-              <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
-                Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-              </span>
-            </div>
+          </div>
+          <div className="absolute left-1/2 hidden -translate-x-1/2 flex-col items-center sm:flex">
+            <span className="font-serif text-[15px] italic leading-tight text-[#151B2E] opacity-90">
+              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+            </span>
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-[#E4E7EC] bg-[#F5F6F8] p-1">
             <span className="hidden px-3 text-xs font-semibold text-[#4B5563] uppercase tracking-wide sm:inline">
