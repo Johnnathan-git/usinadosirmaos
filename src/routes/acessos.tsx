@@ -89,6 +89,7 @@ function AcessosContent() {
             <thead>
               <tr className="bg-[#F5F6F8]">
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Nome</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Papel</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Permissões</th>
                 <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente</th>
@@ -100,6 +101,7 @@ function AcessosContent() {
               {(q.data?.users ?? []).map((u) => (
                 <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
                   <td className="px-6 py-4 font-bold text-[#374151]">{u.email}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">{u.display_name || <span className="text-[#9CA3AF]">—</span>}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
@@ -148,7 +150,7 @@ function AcessosContent() {
   );
 }
 
-type UserRow = { id: string; email: string; is_admin: boolean; permissions: string[]; client_id: string | null };
+type UserRow = { id: string; email: string; is_admin: boolean; permissions: string[]; client_id: string | null; display_name: string | null };
 
 function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user?: UserRow; clients: { id: string; name: string }[] }) {
   const qc = useQueryClient();
@@ -160,6 +162,7 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
   const [isAdmin, setIsAdmin] = useState(user?.is_admin ?? false);
   const [perms, setPerms] = useState<string[]>(user?.permissions ?? []);
   const [clientId, setClientId] = useState<string>(user?.client_id ?? "none");
+  const [displayName, setDisplayName] = useState(user?.display_name ?? "");
 
   const m = useMutation({
     mutationFn: async () => {
@@ -168,10 +171,10 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
         const mail = email.trim();
         if (!mail || !/^\S+@\S+\.\S+$/.test(mail)) throw new Error("Informe um e-mail válido.");
         if (password.length < 6) throw new Error("A senha deve ter no mínimo 6 caracteres.");
-        return createFn({ data: { email: mail, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms, client_id } });
+        return createFn({ data: { email: mail, password, is_admin: isAdmin, permissions: isAdmin ? [] : perms, client_id, display_name: displayName } });
       }
       if (password && password.length < 6) throw new Error("A senha deve ter no mínimo 6 caracteres.");
-      return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined, client_id } });
+      return updateFn({ data: { user_id: user!.id, is_admin: isAdmin, permissions: isAdmin ? [] : perms, password: password || undefined, client_id, display_name: displayName } });
     },
     onSuccess: () => {
       toast.success(mode === "create" ? "Usuário criado." : "Usuário atualizado.");
@@ -196,12 +199,23 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
           <DialogTitle>{mode === "create" ? "Novo usuário" : `Editar ${user?.email}`}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          {mode === "create" && (
+          <div className="grid grid-cols-2 gap-3">
+            {mode === "create" ? (
+              <div>
+                <Label>E-mail</Label>
+                <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="usuario@exemplo.com" />
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center">
+                <Label className="text-muted-foreground">E-mail</Label>
+                <div className="text-sm font-semibold">{user?.email}</div>
+              </div>
+            )}
             <div>
-              <Label>E-mail</Label>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="usuario@exemplo.com" />
+              <Label>Nome de Boas-vindas</Label>
+              <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Ex: João Silva" />
             </div>
-          )}
+          </div>
           <div>
             <Label>{mode === "create" ? "Senha" : "Nova senha (opcional)"}</Label>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres" />
@@ -342,7 +356,7 @@ function ResetPasswordDialog({ user }: { user: UserRow }) {
   const qc = useQueryClient();
   
   const m = useMutation({
-    mutationFn: () => updateFn({ data: { user_id: user.id, password, is_admin: user.is_admin, permissions: user.permissions, client_id: user.client_id } }),
+    mutationFn: () => updateFn({ data: { user_id: user.id, password, is_admin: user.is_admin, permissions: user.permissions, client_id: user.client_id, display_name: user.display_name || undefined } }),
     onSuccess: () => {
       toast.success(`Senha de ${user.email} resetada.`);
       setOpen(false);
