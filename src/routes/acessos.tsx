@@ -69,8 +69,8 @@ function AcessosContent() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Acessos</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Gerencie usuários e permissões do sistema.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-white text-glow">Acessos</h1>
+          <p className="text-sm font-medium text-white/40">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <UserFormDialog mode="create" clients={clients} />
@@ -78,37 +78,37 @@ function AcessosContent() {
       </div>
 
       {q.data?.bootstrap && (
-        <div className="rounded-lg border border-[#C98A3E]/20 bg-[#C98A3E]/10 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
+        <div className="rounded-lg border border-primary/20 bg-primary/10 px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-primary">
           Nenhum administrador cadastrado ainda — todos os usuários autenticados têm acesso total até o primeiro admin ser marcado.
         </div>
       )}
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-0 shadow-none overflow-hidden">
+      <Card className="glass-card p-0 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#F5F6F8]">
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">E-mail</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Nome</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Papel</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Permissões</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente</th>
-                <th className="px-6 py-4 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Criado em</th>
-                <th className="px-6 py-4 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Ações</th>
+              <tr className="bg-white/5">
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">E-mail</th>
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Nome</th>
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Papel</th>
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Permissões</th>
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="px-6 py-4 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Criado em</th>
+                <th className="px-6 py-4 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody>
               {(q.data?.users ?? []).map((u) => (
-                <tr key={u.id} className="border-t border-[#F5F6F8] hover:bg-[#F5F6F8] transition-colors">
-                  <td className="px-6 py-4 font-bold text-[#374151]">{u.email}</td>
-                  <td className="px-6 py-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">{u.display_name || <span className="text-[#9CA3AF]">—</span>}</td>
+                <tr key={u.id} className="border-t border-white/5 hover:bg-white/5 transition-colors zebra-stripe">
+                  <td className="px-6 py-4 font-bold text-white">{u.email}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-white/70 uppercase tracking-wider">{u.display_name || <span className="text-white/20">—</span>}</td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#151B2E] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-lg shadow-primary/20">
                         <ShieldCheck className="h-3 w-3" /> Administrador
                       </span>
                     ) : (
-                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Usuário</span>
+                      <span className="text-[10px] font-bold text-white/30 uppercase tracking-wider">Usuário</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
