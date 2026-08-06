@@ -123,7 +123,7 @@ function Dashboard() {
       Receita: receita,
       Despesas: despesas,
       Operacionais: operacionais,
-      Distribuidora: distribuidora,
+      Concessionária: distribuidora,
       Lucro: receita - despesas,
     };
   });
@@ -259,7 +259,7 @@ function Dashboard() {
                   <td className="py-4 text-[#374151] font-bold">{row.month}</td>
                   <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
                   <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
-                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Distribuidora)}</td>
+                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Concessionária)}</td>
                   <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
                   <td className="num py-4 text-right font-bold text-[#2E5C8A]">{brl(row.Lucro)}</td>
                 </tr>

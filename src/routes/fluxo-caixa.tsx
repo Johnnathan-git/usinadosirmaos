@@ -142,7 +142,7 @@ function Fluxo() {
           </div>
           <div className="text-2xl font-bold text-[#D64545] num-lg">{brl(despesas)}</div>
           <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
-            Operacionais {brl(despesasOperacionais)} + Distribuidora {brl(faturasDistribuidora)}
+            Operacionais {brl(despesasOperacionais)} + Concessionária {brl(faturasDistribuidora)}
           </div>
         </Card>
         <Card className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm" style={{ borderTop: "3px solid #2E5C8A" }}>
@@ -150,7 +150,7 @@ function Fluxo() {
             <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
           </div>
           <div className="text-2xl font-bold num-lg text-[#2E5C8A]">{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + distribuidora)</div>
+          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + concessionária)</div>
         </Card>
       </div>
 
@@ -178,7 +178,7 @@ function Fluxo() {
                 <div className="text-right text-sm">
                   <div className="text-[#4B5563] font-bold">Lucro bruto: <span className="font-bold text-[#2E5C8A] num">{brl(profit)}</span></div>
                   <div className="text-[#9CA3AF] text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
-                  <div className="text-[#9CA3AF] text-xs">Fat. distribuidora: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
+                  <div className="text-[#9CA3AF] text-xs">Fat. concessionária: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
                 </div>
               </div>
             );
