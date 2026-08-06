@@ -139,22 +139,68 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
+                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all duration-200",
                     active ? "text-[#151B2E]" : "text-[#9CA3AF]",
                   )}
                 >
+                  {active && <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#C98A3E]" />}
                   <Icon className="h-5 w-5" />
                   <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
                 </Link>
               );
             })}
             <button
-              onClick={() => {}}
-              className="flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold text-[#9CA3AF]"
+              onClick={() => setShowMobileDrawer(true)}
+              className="flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold text-[#9CA3AF] transition-all hover:bg-slate-50"
             >
               <MoreHorizontal className="h-5 w-5" />
               <span className="w-full truncate text-center uppercase tracking-tighter">Mais</span>
             </button>
+          </div>
+        )}
+
+        {/* Mobile Drawer */}
+        {showMobileDrawer && (
+          <div className="fixed inset-0 z-[60] md:hidden">
+            <div 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in"
+              onClick={() => setShowMobileDrawer(false)}
+            />
+            <div 
+              className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-[#151B2E] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300"
+            >
+              <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
+                  Todos os Módulos
+                </div>
+                <button 
+                  onClick={() => setShowMobileDrawer(false)}
+                  className="rounded-full bg-white/5 p-2 text-white/50 hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {visibleNav.map((item) => {
+                  const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setShowMobileDrawer(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-xl p-4 text-xs font-bold transition-all",
+                        active ? "bg-white/10 text-white shadow-lg" : "bg-white/5 text-[#9CA3AF] hover:bg-white/10"
+                      )}
+                    >
+                      <Icon className="h-5 w-5 shrink-0" />
+                      <span className="truncate uppercase tracking-tighter">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
         <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-[#E4E7EC] bg-[#151B2E] px-4 py-8 md:block">
