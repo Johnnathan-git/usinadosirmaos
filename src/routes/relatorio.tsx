@@ -177,7 +177,7 @@ function Relatorio() {
         <div 
           className="px-8 py-5 text-center border-b border-white/10 bg-primary/10"
         >
-          <div className="text-xl font-medium uppercase tracking-[0.25em] text-white">
+          <div className="text-2xl font-black uppercase tracking-[0.3em] text-primary drop-shadow-[0_0_15px_rgba(201,138,62,0.4)] sm:text-4xl">
             {client?.name ?? "—"}
           </div>
         </div>
