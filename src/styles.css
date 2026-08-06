@@ -51,32 +51,32 @@
 
 :root {
   --radius: 12px;
-  --background: #0D0D10; /* Dark background similar to Linear */
-  --foreground: #E2E2E6;
+  --background: #000000;
+  --foreground: #FFFFFF;
   
-  --card: #151518;
-  --card-foreground: #E2E2E6;
-  --popover: #151518;
-  --popover-foreground: #E2E2E6;
+  --card: rgba(13, 13, 16, 0.7);
+  --card-foreground: #FFFFFF;
+  --popover: #0D0D10;
+  --popover-foreground: #FFFFFF;
   --primary: #C98A3E;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #000000;
   
-  --secondary: #1F1F23;
+  --secondary: #161618;
   --secondary-foreground: #A1A1AA;
-  --muted: #1F1F23;
-  --muted-foreground: #A1A1AA;
-  --accent: #2A2A2F;
-  --accent-foreground: #F4F4F5;
+  --muted: #161618;
+  --muted-foreground: #71717A;
+  --accent: rgba(255, 255, 255, 0.05);
+  --accent-foreground: #FFFFFF;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: #27272A;
-  --input: #1F1F23;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: #0D0D10;
   --ring: #C98A3E;
   
-  --sidebar: #0D0D10;
+  --sidebar: #000000;
   --sidebar-foreground: #A1A1AA;
   
-  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px -4px rgba(0, 0, 0, 0.5);
 }
 
 @layer base {
