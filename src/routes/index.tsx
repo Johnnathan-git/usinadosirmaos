@@ -168,7 +168,15 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard 
+          icon={<TrendingUp className="h-5 w-5" />} 
+          label="Receita Mensal" 
+          value={receitaMes} 
+          tint="leaf" 
+          delta={delta(receitaMes, receitaPrev)} 
+          sparkData={chartData.map(d => ({ value: d.Receita }))}
+          delay={0}
+        />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -177,9 +185,25 @@ function Dashboard() {
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Concessionária ${brl(faturasDistMes)}`}
+          sparkData={chartData.map(d => ({ value: d.Despesas }))}
+          delay={60}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
+        <StatCard 
+          icon={<DollarSign className="h-5 w-5" />} 
+          label="Lucro do Mês" 
+          value={lucroMes} 
+          tint="sky" 
+          delta={delta(lucroMes, lucroPrev)} 
+          sparkData={chartData.map(d => ({ value: d.Lucro }))}
+          delay={120}
+        />
+        <StatCard 
+          icon={<Briefcase className="h-5 w-5" />} 
+          label="Lucro Acumulado (Ano)" 
+          value={lucroAnualReal} 
+          tint="amber" 
+          delay={180}
+        />
       </div>
 
       <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
