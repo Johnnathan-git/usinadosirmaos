@@ -99,20 +99,22 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
-      {/* Background Aurora */}
+      {/* Background Minimalista e Tecnológico */}
       <div className="aurora-container pointer-events-none">
-        {/* Giant Solar Core */}
-        <div className="solar-core" />
-        <div className="solar-flare" />
+        {/* Campo de Estrelas */}
+        <div className="star-field" />
         
-        {/* Aurora Atmosphere */}
+        {/* Feixes de Luz Sutis */}
+        <div className="light-beam" />
+        <div className="light-beam light-beam-2" />
+
+        {/* Atmosfera Aurora Minimalista */}
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
-        <div className="aurora-blob aurora-blob-3" />
         
-        {/* Subtle noise and scanline effect for depth */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/[0.01] to-transparent pointer-events-none" />
+        {/* Ruído sutil e profundidade */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
       </div>
 
       {/* Mobile Top Header */}
