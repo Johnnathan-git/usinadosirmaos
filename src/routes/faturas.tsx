@@ -275,8 +275,8 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label className="text-white/40">Nome Completo *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-foreground/40">Nome Completo *</Label>
+            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
