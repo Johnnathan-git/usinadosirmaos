@@ -97,8 +97,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="no-print sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#C98A3E]/30 to-transparent" />
+      <header className="no-print sticky top-0 z-50 bg-white shadow-sm">
+        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
         <div className="relative flex items-center justify-between px-6 py-4">
           <BrandLockup />
           <div className="flex flex-col items-end gap-1">
@@ -160,10 +160,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all rounded-lg mx-1",
+                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
                     active
-                      ? "text-white bg-white/5 shadow-sm"
-                      : "text-[#9CA3AF] hover:text-white hover:bg-white/5",
+                      ? "text-white"
+                      : "text-[#9CA3AF] hover:text-white",
                   )}
                 >
                   {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
