@@ -335,7 +335,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     reference_month: invoice?.reference_date?.slice(0, 7) ?? currentMonth,
     consumption_kw: invoice ? String(invoice.consumption_kw) : "",
     price_kw: invoice ? String(invoice.price_kw) : "",
-    public_lighting: invoice ? String(invoice.public_lighting) : String(client.public_lighting_value || 0),
+    public_lighting: String(client.public_lighting_value || 0),
     interest_fine: invoice ? String(invoice.interest_fine) : "0",
     value_without_plant: invoice ? String(invoice.value_without_plant) : "0",
     client_pays: invoice ? String(invoice.client_pays) : "",
