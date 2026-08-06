@@ -104,6 +104,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
         <div className="aurora-blob aurora-blob-3" />
+        {/* Subtle noise texture for depth */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
       {/* Mobile Top Header */}
