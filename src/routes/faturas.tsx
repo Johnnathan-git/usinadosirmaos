@@ -534,7 +534,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           
           <div>
-            <Label>Anexar Fatura / Comprovante</Label>
+            <Label className="text-foreground/40">Anexar Fatura / Comprovante</Label>
             <div className="mt-2 flex items-center gap-3">
               <Button 
                 variant="outline" 
