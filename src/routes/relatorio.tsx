@@ -136,7 +136,7 @@ function Relatorio() {
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Relatório do Cliente</h1>
           <p className="text-sm font-medium text-[#4B5563]">
-            Planilha mensal de economia pronta para enviar ao cliente.
+            Controle Mensal.
           </p>
         </div>
       </div>
@@ -175,8 +175,7 @@ function Relatorio() {
 
       <Card className="overflow-hidden rounded-[16px] border border-[#E4E7EC] bg-white p-0 shadow-lg">
         <div 
-          className="px-8 py-5 text-center border-b border-[#E4E7EC]"
-          style={{ backgroundColor: client?.color ?? "#C97B5E" }}
+          className="px-8 py-5 text-center border-b border-[#E4E7EC] bg-[#2E5C8A]"
         >
           <div className="text-xl font-medium uppercase tracking-[0.25em] text-white/95">
             {client?.name ?? "—"}
@@ -186,10 +185,10 @@ function Relatorio() {
           <table className="w-full min-w-[750px] border-collapse text-sm">
             <thead>
               <tr className="bg-[#F8FAFC]">
-                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor SEM Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
+                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
                     <th
                       key={h}
-                      className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""}`}
+                      className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""} ${h.includes("Consumo") || h.includes("SEM Usina") || h.includes("DESC") ? "max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap" : ""}`}
                     >
                       {h}
                     </th>
@@ -209,7 +208,8 @@ function Relatorio() {
                           onChange={(e) => edit(r.id, f, e.target.value)}
                           className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
                             f === "comDesconto" 
-                              ? "font-bold text-[#2E5C8A] bg-[#2E5C8A]/5 text-base" 
+                              ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-base" 
+
 
                               : f === "semUsina"
                               ? "text-[#D64545] font-bold"
