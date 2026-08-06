@@ -131,11 +131,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile Top Header */}
-      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-white/10 bg-black/50 px-4 backdrop-blur-xl md:hidden">
-        <BrandLockup compact />
+      <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-white/10 bg-black/40 px-4 backdrop-blur-xl md:hidden">
+        <BrandLockup />
         <div className="flex items-center gap-2">
           <ChangeOwnPasswordDialog />
-          <Button size="icon" variant="ghost" onClick={signOut} className="h-8 w-8 text-muted-foreground hover:text-foreground">
+          <Button size="icon" variant="ghost" onClick={signOut} className="h-9 w-9 text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" />
           </Button>
         </div>
@@ -229,8 +229,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-white/10 bg-black/50 px-2 backdrop-blur-xl md:hidden shadow-2xl">
-          {visibleNav.slice(0, 4).map((item) => {
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-white/10 bg-black/60 px-2 backdrop-blur-2xl md:hidden shadow-2xl">
+          {visibleNav.slice(0, 5).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
@@ -238,19 +238,29 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "relative flex flex-col items-center gap-1 px-3 py-1 transition-all",
-                  active ? "text-primary" : "text-muted-foreground",
+                  "relative flex flex-col items-center gap-1.5 px-3 py-1 transition-all",
+                  active ? "text-primary" : "text-white/40",
                 )}
               >
-                <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
-                <span className="text-[8px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
+                <div className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-lg transition-all",
+                  active ? "bg-primary/10" : "bg-transparent"
+                )}>
+                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
+                {active && <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-primary shadow-[0_0_8px_rgba(245,158,11,0.6)]" />}
               </Link>
             );
           })}
-          <button className="flex flex-col items-center gap-1 px-3 py-1 text-muted-foreground">
-            <MoreHorizontal className="h-5 w-5" />
-            <span className="text-[8px] font-bold uppercase tracking-wider">Mais</span>
-          </button>
+          {visibleNav.length > 5 && (
+            <button className="flex flex-col items-center gap-1.5 px-3 py-1 text-white/40">
+              <div className="flex h-8 w-8 items-center justify-center">
+                <MoreHorizontal className="h-5 w-5" />
+              </div>
+              <span className="text-[9px] font-bold uppercase tracking-wider">Mais</span>
+            </button>
+          )}
         </nav>
       </div>
     </div>
