@@ -188,7 +188,7 @@ function Fluxo() {
 
       <Card className="glass-card p-6">
         <h2 className="mb-6 text-lg font-bold text-foreground">Despesas lançadas — {monthLabel(monthDate)}</h2>
-        {monthExpenses.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma despesa neste mês.</p>}
+        {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
             <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-border p-4 hover:bg-accent transition-colors zebra-stripe">
