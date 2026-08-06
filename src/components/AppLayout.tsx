@@ -1,13 +1,15 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound } from "lucide-react";
+import { 
+  LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, 
+  FileSpreadsheet, KeyRound, LogOut, MoreHorizontal, X, Menu, ChevronRight
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyAccess } from "@/lib/acessos.functions";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import { BrandLockup } from "@/components/BrandMark";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
