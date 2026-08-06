@@ -336,7 +336,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-foreground/40 hover:text-foreground hover:bg-white/5">Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
