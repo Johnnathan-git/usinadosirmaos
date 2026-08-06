@@ -516,10 +516,10 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 border-emerald-500/20 text-emerald-400 font-bold" />
           </div>
         </div>
-        <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — Concessionária (R$)</div>
-          <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
+        <Card className="mt-2 border-red-500/20 bg-red-500/5 p-4">
+          <div className="mb-1 text-sm font-medium text-red-400">Fatura do Cliente — Concessionária (R$)</div>
+          <div className="mb-2 text-xs text-red-400/50">Valor que você paga à concessionária por este cliente</div>
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white/5 border-white/10 text-foreground" placeholder="676,37" />
         </Card>
         
         <div className="space-y-4 mt-4">
