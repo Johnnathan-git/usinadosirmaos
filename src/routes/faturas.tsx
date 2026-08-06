@@ -162,14 +162,14 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-white/30">
               <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
               <span className="flex items-center gap-1">
                 <FileText className="h-3 w-3" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-[#4B5563]">
+                <span className="flex items-center gap-1 text-white/60">
                   <Paperclip className="h-3 w-3" /> Anexos
                 </span>
               )}
@@ -188,16 +188,16 @@ function Faturas() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 rounded-lg px-3 py-1.5 font-bold text-[11px] uppercase tracking-wider"
+                className="w-full gap-2 border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 rounded-lg px-3 py-1.5 font-bold text-[11px] uppercase tracking-wider transition-all"
                 onClick={() => setHistoryFor(c)}
               >
-                <Eye className="h-3 w-3 text-slate-400" /> Histórico
+                <Eye className="h-3 w-3 text-white/40" /> Histórico
               </Button>
             </div>
             {!c.active && (
               <Button
                 variant="outline"
-                className="mt-2 w-full gap-2 border border-slate-200 bg-white text-[#D64545] hover:bg-slate-50 rounded-lg px-4 py-2"
+                className="mt-2 w-full gap-2 border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg px-4 py-2 transition-all"
                 onClick={() => deleteClientForever(c)}
               >
                 <ShieldAlert className="h-4 w-4" /> Excluir definitivo
