@@ -149,24 +149,24 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Controle</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Controle</h1>
+          <p className="text-sm font-medium text-white/40">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
             <>
-              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
+              <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-white/10 bg-white/5 text-white/70 hover:text-white rounded-lg px-4 py-2 font-bold">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button onClick={() => setEditing(false)} className="gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold">
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold">
                 <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg px-4 py-2 font-bold">
+            <Button variant="outline" onClick={() => setEditing(true)} className="gap-2 border border-white/10 bg-white/5 text-white/70 hover:text-white rounded-lg px-4 py-2 font-bold">
               <Pencil className="h-4 w-4" /> Editar
             </Button>
           )}
