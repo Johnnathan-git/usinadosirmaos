@@ -100,21 +100,15 @@ function AuthPage() {
       </div>
       
       <Card className="glass-card relative w-full max-w-md border-white/10 p-8 shadow-2xl sm:p-10">
-        <div className="mb-10 flex flex-col items-center gap-6">
-          <div className="relative group flex flex-col items-center">
-            {/* Glow orgânico no fundo */}
-            <div className="absolute -inset-10 bg-white/5 rounded-full blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-            
-            {/* Logo sem container sólido/quadrado */}
-            <div className="relative flex h-36 w-36 items-center justify-center p-2 transition-all duration-700">
-              <BrandMark className="h-32 w-32 object-contain drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] transition-transform duration-700 group-hover:scale-110" />
-            </div>
+        <div className="mb-8 flex flex-col items-center gap-6">
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/5 p-2 shadow-[0_0_30px_rgba(255,255,255,0.05)] ring-1 ring-white/20 backdrop-blur-2xl transition-transform hover:scale-105 duration-500">
+            <BrandMark className="h-16 w-16 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
           </div>
-          <div className="text-center relative">
-            <div className="font-display text-3xl font-bold tracking-tight text-white text-glow">
+          <div className="text-center">
+            <div className="font-display text-2xl font-bold tracking-tight text-white">
               Usina dos Irmãos
             </div>
-            <div className="mt-2 text-[11px] font-bold uppercase tracking-[0.3em] text-primary/80">
+            <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
               Gestão de energia
             </div>
           </div>
