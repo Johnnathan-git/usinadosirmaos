@@ -523,7 +523,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$)</Label>
-            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-50 text-[#2F6F62] font-bold" />
+            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 text-emerald-500 font-bold" />
           </div>
         </div>
         <Card className="mt-2 border-red-500/20 bg-red-500/10 p-4">
