@@ -280,34 +280,37 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
-        <DialogHeader><DialogTitle>{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
+      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-white text-glow">{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="sm:col-span-2"><Label>Nome do Item *</Label><Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} /></div>
+          <div className="sm:col-span-2">
+            <Label className="text-white/40">Nome do Item *</Label>
+            <Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} className="bg-white/5 border-white/10 text-white" />
+          </div>
           <div>
-            <Label>Categoria *</Label>
+            <Label className="text-white/40">Categoria *</Label>
             {addingCat ? (
               <div className="flex gap-2">
-                <Input autoFocus value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nova categoria" />
+                <Input autoFocus value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nova categoria" className="bg-white/5 border-white/10 text-white" />
                 <Button type="button" variant="outline" onClick={() => {
                   const v = newCat.trim();
                   if (!v) return setAddingCat(false);
                   setCustomCats(c => [...c, v]);
                   setF({ ...f, category: v });
                   setNewCat(""); setAddingCat(false);
-                }}>OK</Button>
+                }} className="border-white/10 text-white hover:bg-white/10">OK</Button>
               </div>
             ) : (
               <select
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="flex h-9 w-full rounded-md border border-white/10 bg-white/5 px-3 py-1 text-sm text-white shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
                 value={f.category}
                 onChange={e => {
                   if (e.target.value === "__new") { setAddingCat(true); return; }
                   setF({ ...f, category: e.target.value });
                 }}
               >
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                <option value="__new">+ Cadastrar nova categoria…</option>
+                {categories.map(c => <option key={c} value={c} className="bg-navy text-white">{c}</option>)}
+                <option value="__new" className="bg-navy text-primary">+ Cadastrar nova categoria…</option>
               </select>
             )}
           </div>
