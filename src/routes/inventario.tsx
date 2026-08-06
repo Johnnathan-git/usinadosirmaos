@@ -363,28 +363,28 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
-        <DialogHeader><DialogTitle>{expense ? "Editar Gasto" : "Novo Gasto de Investimento"}</DialogTitle></DialogHeader>
+      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-white text-glow">{expense ? "Editar Gasto" : "Novo Gasto de Investimento"}</DialogTitle></DialogHeader>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="sm:col-span-2"><Label>Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." /></div>
-          <div><Label>Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} /></div>
-          <div><Label>Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} /></div>
+          <div className="sm:col-span-2"><Label className="text-white/40">Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
           <div className="sm:col-span-2">
-            <Label>Responsável</Label>
+            <Label className="text-white/40">Responsável</Label>
             <select
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="flex h-9 w-full rounded-md border border-white/10 bg-white/5 px-3 py-1 text-sm text-white shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
               value={f.responsible}
               onChange={e => setF({ ...f, responsible: e.target.value })}
             >
-              <option value="">Selecione…</option>
-              {RESPONSIBLES.map(r => <option key={r} value={r}>{r}</option>)}
+              <option value="" className="bg-navy text-white">Selecione…</option>
+              {RESPONSIBLES.map(r => <option key={r} value={r} className="bg-navy text-white">{r}</option>)}
             </select>
           </div>
-          <div className="sm:col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
+          <div className="sm:col-span-2"><Label className="text-white/40">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-orange-500 hover:bg-orange-600">Cadastrar</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{expense ? "Salvar" : "Cadastrar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
