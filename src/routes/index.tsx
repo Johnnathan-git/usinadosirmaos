@@ -236,8 +236,8 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
-            <h2 className="mb-6 text-base font-bold text-foreground">Resumo de Lançamentos</h2>
+          <Card className="glass-card rounded-2xl p-6">
+            <h2 className="mb-6 text-base font-bold text-foreground text-glow">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
