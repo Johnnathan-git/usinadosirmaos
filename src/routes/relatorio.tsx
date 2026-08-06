@@ -273,7 +273,7 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-white/5 bg-white/5 px-8 py-6 flex justify-between items-center">
+          <div className="border-t border-white/5 bg-white/5 px-8 py-3 flex justify-between items-center">
             <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
