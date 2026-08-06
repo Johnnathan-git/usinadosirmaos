@@ -145,7 +145,7 @@ function Relatorio() {
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-white font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-foreground font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
               {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#374151]">{c.name}</SelectItem>)}
             </SelectContent>
