@@ -1,5 +1,24 @@
 /**
- * Execute esta instrucao no projeto: Não estou gostando desse menu lateral, esta distorcendo do resto do sistema, esta muito chapado. Melhore isso ai, pode usar a sua imaginação. (Não mexer nos outros modulos do sistema, apenas do menu lateral e dashboard e não mexer nos dados, fluxos etc, ajustes apenas de design)
+ * Execute esta instrucao no projeto: Quero redesenhar APENAS a página/componente do Dashboard (não mexer em nenhum outro módulo). NÃO altere nenhum dado, cálculo, lógica de negócio, nomes de variáveis, chamadas de API ou fluxo existente — é uma mudança 100% visual/estrutural (JSX/CSS), mantendo o app funcionando exatamente igual.
+ * 
+ * 1) CARDS DE KPI (topo)
+ * - Adicione uma mini sparkline (linha de tendência simples, sem eixos nem labels) atrás do valor principal de cada card, usando os últimos meses já disponíveis nos dados de "Resumo de Lançamentos" que já existem na página.
+ * - Adicione animação de entrada leve (fade + slide-up, 300ms, delay de 60ms entre cards).
+ * 
+ * 2) GRÁFICO "PERFORMANCE FINANCEIRA"
+ * - Arredonde o topo das barras (border-radius só no topo, tipo 4px).
+ * - Adicione tooltip ao passar o mouse sobre uma barra, mostrando o valor exato do mês.
+ * 
+ * 3) LAYOUT GERAL DA PÁGINA — reorganizar em grid
+ * - Coloque a seção "Ranking — Clientes Mais Lucrativos" e um novo bloco compacto de "Total de Clientes" lado a lado (ranking ocupando ~70%, total ~30%).
+ * - Reduza o espaçamento vertical entre as seções.
+ * 
+ * 4) RANKING — CLIENTES MAIS LUCRATIVOS
+ * - Destaque visualmente o 1º colocado: fundo levemente dourado/âmbar.
+ * 
+ * 5) TABELA "RESUMO DE LANÇAMENTOS"
+ * - Colora o valor da coluna LUCRO: verde (+) / vermelho (-).
+ * - Adicione hover discreto nas linhas.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -143,12 +162,9 @@ function Dashboard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-extrabold tracking-tight text-[#151B2E]">Dashboard</h1>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#C98A3E] animate-pulse" />
-          <p className="text-xs font-bold uppercase tracking-widest text-[#9CA3AF]">Visão geral — {monthLabelLong(now)}</p>
-        </div>
+      <div>
+        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
+        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
@@ -192,7 +208,7 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-2xl border-none bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
               <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
@@ -235,7 +251,7 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="bg-white border-none rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100">
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
             <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -272,7 +288,7 @@ function Dashboard() {
         </div>
 
         <div className="space-y-6">
-          <Card className="bg-white border-none rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100">
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
             <div className="mb-4 flex items-center gap-2">
               <Trophy className="h-5 w-5 text-slate-400" />
               <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
@@ -311,7 +327,7 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-2xl border-none bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
                 <Users className="h-6 w-6" />

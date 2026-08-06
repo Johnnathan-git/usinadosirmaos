@@ -149,15 +149,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 overflow-y-auto bg-[#151B2E] px-4 py-8 md:block">
-          <div className="relative mb-8 px-4">
-            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]/60">
-              Sistema
-            </div>
-            <div className="mt-1 h-[1px] w-8 bg-[#C98A3E]/30" />
+        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
+          <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
+            Módulos
           </div>
-          
-          <nav className="space-y-1.5">
+          <nav className="space-y-1">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -166,36 +162,23 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     key={item.to}
                     to={item.to}
                     className={cn(
-                      "group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium outline-none transition-all duration-200",
+                      "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
                       active
-                        ? "bg-gradient-to-r from-[#C98A3E] to-[#E5A95E] text-white shadow-[0_4px_12px_rgba(201,138,62,0.25)]"
-                        : "text-[#9CA3AF] hover:bg-white/5 hover:text-white",
+                        ? "text-white"
+                        : "text-[#9CA3AF] hover:text-white",
                     )}
                   >
-                  <Icon className={cn("h-5 w-5 shrink-0 transition-transform duration-200", active ? "scale-110" : "group-hover:scale-110")} strokeWidth={active ? 2.5 : 2} />
-                  <span className={cn("truncate tracking-tight", active ? "font-bold" : "font-medium")}>{item.label}</span>
-                  {active && (
-                    <div className="absolute -right-4 h-8 w-1 rounded-l-full bg-[#C98A3E] shadow-[0_0_12px_#C98A3E]" />
-                  )}
+                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
+                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
+                  <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
-
-          <div className="mt-12 space-y-4 px-2">
-            <div className="rounded-2xl bg-white/5 p-4 backdrop-blur-sm border border-white/5">
-              <div className="mb-2 text-[9px] font-bold uppercase tracking-wider text-[#9CA3AF]/60">
-                Sessão atual
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="truncate font-sans text-xs font-semibold text-white">
-                  {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-                </span>
-                <span className="text-[10px] text-[#9CA3AF]">
-                  {acc?.effective_admin ? "Administrador" : "Operador"}
-                </span>
-              </div>
-            </div>
+          <div className="mt-16 border-t border-white/10 px-4 pt-6">
+            <span className="font-serif text-[15px] italic leading-tight text-white/80">
+              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+            </span>
           </div>
         </aside>
         <main className="min-w-0 flex-1 px-4 py-8 pb-28 sm:px-8 md:pb-8">
