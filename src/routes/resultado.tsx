@@ -149,7 +149,7 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
+          <Card key={mk} className="overflow-hidden bg-white border border-white/50 rounded-xl p-0 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
             <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
               <h2 className="text-base font-bold text-[#374151]">{monthLabelLong(d)}</h2>
             </div>
@@ -198,10 +198,10 @@ function Resultado() {
       })}
 
       {sortedMonths.length === 0 && (
-        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
+        <Card className="bg-white border border-white/50 rounded-xl p-10 text-center text-slate-500 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="rounded-xl border border-slate-200 bg-[#2E5C8A] p-6 text-center shadow-none">
+      <Card className="rounded-xl border border-white/10 bg-[#2E5C8A] p-6 text-center shadow-[0_8px_30px_rgba(46,92,138,0.2)]">
         <div className="text-[10px] font-bold uppercase tracking-widest text-white/70">Economia total gerada</div>
         <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl">{brl(totalEconomia)}</div>
         <div className="mt-2 text-[10px] text-white/50 font-bold uppercase tracking-wider">
