@@ -1,13 +1,15 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound } from "lucide-react";
+import { 
+  LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, 
+  FileSpreadsheet, KeyRound, LogOut, MoreHorizontal, X, Menu, ChevronRight
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyAccess } from "@/lib/acessos.functions";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import { BrandLockup } from "@/components/BrandMark";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -33,6 +35,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [ready, setReady] = useState(false);
+  const [showMobileDrawer, setShowMobileDrawer] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -99,7 +102,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#F5F6F8]">
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="relative flex items-center justify-between px-6 py-4">
-          <BrandLockup />
+          <div className="flex items-center gap-3">
+            <BrandLockup />
+            <div className="hidden h-5 w-px bg-slate-200 md:block" />
+            <div className="hidden text-xs font-bold text-[#374151] uppercase tracking-wider md:block">
+              {current?.label || "Usina dos Irmãos"}
+            </div>
+            <div className="text-[10px] font-bold text-[#374151] uppercase tracking-wider md:hidden">
+              {current?.label}
+            </div>
+          </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
               <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
@@ -118,8 +130,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-white pb-[env(safe-area-inset-bottom)] md:hidden scrollbar-hide">
-            {visibleNav.map((item) => {
+          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-white pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+            {visibleNav.slice(0, 3).map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
               return (
@@ -127,7 +139,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
+                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all duration-200",
                     active ? "text-[#151B2E]" : "text-[#9CA3AF]",
                   )}
                 >
@@ -137,6 +149,58 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 </Link>
               );
             })}
+            <button
+              onClick={() => setShowMobileDrawer(true)}
+              className="flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold text-[#9CA3AF] transition-all hover:bg-slate-50"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+              <span className="w-full truncate text-center uppercase tracking-tighter">Mais</span>
+            </button>
+          </div>
+        )}
+
+        {/* Mobile Drawer */}
+        {showMobileDrawer && (
+          <div className="fixed inset-0 z-[60] md:hidden">
+            <div 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in"
+              onClick={() => setShowMobileDrawer(false)}
+            />
+            <div 
+              className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-[#151B2E] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300"
+            >
+              <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
+                  Todos os Módulos
+                </div>
+                <button 
+                  onClick={() => setShowMobileDrawer(false)}
+                  className="rounded-full bg-white/5 p-2 text-white/50 hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {visibleNav.map((item) => {
+                  const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setShowMobileDrawer(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-xl p-4 text-xs font-bold transition-all",
+                        active ? "bg-white/10 text-white shadow-lg" : "bg-white/5 text-[#9CA3AF] hover:bg-white/10"
+                      )}
+                    >
+                      <Icon className="h-5 w-5 shrink-0" />
+                      <span className="truncate uppercase tracking-tighter">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
         <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-[#E4E7EC] bg-[#151B2E] px-4 py-8 md:block">
@@ -152,14 +216,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
+                    "group relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all duration-200",
                     active
-                      ? "text-white"
-                      : "text-[#9CA3AF] hover:text-white",
+                      ? "text-white bg-white/5"
+                      : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.02]",
                   )}
                 >
-                  {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
+                  <div className={cn(
+                    "absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E] transition-all duration-250",
+                    active ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+                  )} />
+                  <Icon className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
               );
