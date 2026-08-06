@@ -141,7 +141,7 @@ function Relatorio() {
         </div>
       </div>
 
-      <Card className="no-print rounded-[10px] border border-[#E4E7EC] bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-sm">
+      <Card className="no-print rounded-[14px] border border-white/50 bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
@@ -173,9 +173,9 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden rounded-[16px] border border-[#E4E7EC] bg-white p-0 shadow-lg">
+      <Card className="overflow-hidden rounded-[16px] border border-white/50 bg-white p-0 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
         <div 
-          className="px-8 py-5 text-center border-b border-[#E4E7EC] bg-[#2E5C8A]"
+          className="px-8 py-5 text-center border-b border-white/10 bg-[#2E5C8A]"
         >
           <div className="text-xl font-medium uppercase tracking-[0.25em] text-white/95">
             {client?.name ?? "—"}
