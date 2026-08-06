@@ -232,12 +232,12 @@ function Controle() {
           <table className="w-full text-sm min-w-[700px]">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Cliente</th>
-                <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Unid. Consumidora</th>
-                <th className="pb-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Rateio %</th>
-                <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">kW Alocado/Mês</th>
-                <th className="pb-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Consumo Médio</th>
-                <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Saldo Cliente</th>
+                <th className="pb-3 text-left font-bold text-foreground/40 uppercase text-[10px] tracking-wider">Cliente</th>
+                <th className="pb-3 text-left font-bold text-foreground/40 uppercase text-[10px] tracking-wider">Unid. Consumidora</th>
+                <th className="pb-3 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-wider">Rateio %</th>
+                <th className="pb-3 text-right font-bold text-foreground/40 uppercase text-[10px] tracking-wider">kW Alocado/Mês</th>
+                <th className="pb-3 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-wider">Consumo Médio</th>
+                <th className="pb-3 text-right font-bold text-foreground/40 uppercase text-[10px] tracking-wider">Saldo Cliente</th>
                 {editing && <th></th>}
               </tr>
             </thead>
