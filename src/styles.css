@@ -81,9 +81,8 @@
 
 @layer base {
   body {
-    background: var(--background);
-    background-attachment: fixed;
-    min-height: 100vh;
+    background: #FFFFFF;
+    color: var(--color-foreground);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
