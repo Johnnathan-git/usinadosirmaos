@@ -169,7 +169,7 @@ function Faturas() {
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-white/60">
+                <span className="flex items-center gap-1 text-foreground/60">
                   <Paperclip className="h-3 w-3" /> Anexos
                 </span>
               )}
