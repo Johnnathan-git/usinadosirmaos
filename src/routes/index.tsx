@@ -165,7 +165,7 @@ function Dashboard() {
         <p className="text-sm font-medium text-white/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 [&>*]:glass-card-interactive">
         <StatCard 
           icon={<TrendingUp className="h-4 w-4" />} 
           label="Receita Mensal" 
