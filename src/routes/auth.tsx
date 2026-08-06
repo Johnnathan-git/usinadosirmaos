@@ -101,8 +101,14 @@ function AuthPage() {
       
       <Card className="glass-card relative w-full max-w-md border-white/10 p-8 shadow-2xl sm:p-10">
         <div className="mb-8 flex flex-col items-center gap-6">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/5 p-2 shadow-[0_0_30px_rgba(255,255,255,0.05)] ring-1 ring-white/20 backdrop-blur-2xl transition-transform hover:scale-105 duration-500">
-            <BrandMark className="h-16 w-16 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+          <div className="relative group">
+            {/* Sombra de profundidade externa */}
+            <div className="absolute inset-0 bg-white/10 rounded-full blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+            
+            {/* Container da Logo - Menos "quadrado", mais orgânico */}
+            <div className="relative flex h-24 w-24 items-center justify-center rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent p-4 shadow-2xl ring-1 ring-white/20 backdrop-blur-3xl transition-all duration-700 group-hover:rounded-full group-hover:rotate-6">
+              <BrandMark className="h-14 w-14 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] transition-transform duration-700 group-hover:scale-110" />
+            </div>
           </div>
           <div className="text-center">
             <div className="font-display text-2xl font-bold tracking-tight text-white">
