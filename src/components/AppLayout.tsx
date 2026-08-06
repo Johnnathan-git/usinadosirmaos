@@ -181,7 +181,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </span>
           </div>
         </aside>
-        <main className="min-w-0 flex-1 px-4 py-8 pb-28 sm:px-8 md:pb-8">
+        <main className="min-w-0 flex-1 px-4 py-6 pb-28 sm:px-8 md:pb-8 bg-slate-50/50">
           {blocked ? (
             <div className="mx-auto mt-20 max-w-md rounded-xl border border-[#E4E7EC] bg-white p-10 text-center shadow-sm">
               <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#9CA3AF]" />
