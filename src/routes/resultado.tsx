@@ -186,7 +186,7 @@ function Resultado() {
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{brl(desc)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-white">{brl(Number(inv.client_pays))}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-white">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-primary">{brl(eco)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-emerald-400">{brl(eco)}</td>
                       </tr>
                     );
                   })}
