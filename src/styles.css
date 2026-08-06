@@ -50,33 +50,33 @@
 }
 
 :root {
-  --radius: 14px;
-  --background: #FFFFFF;
-  --foreground: #374151;
+  --radius: 12px;
+  --background: #0D0D10; /* Dark background similar to Linear */
+  --foreground: #E2E2E6;
   
-  --card: #FFFFFF;
-  --card-foreground: #374151;
-  --popover: #FFFFFF;
-  --popover-foreground: #374151;
+  --card: #151518;
+  --card-foreground: #E2E2E6;
+  --popover: #151518;
+  --popover-foreground: #E2E2E6;
   --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
   
-  --secondary: #FFFFFF;
-  --secondary-foreground: #6B7280;
-  --muted: #F8FAFC;
-  --muted-foreground: #6B7280;
-  --accent: #E2E8F0;
-  --accent-foreground: #374151;
-  --destructive: #D64545;
+  --secondary: #1F1F23;
+  --secondary-foreground: #A1A1AA;
+  --muted: #1F1F23;
+  --muted-foreground: #A1A1AA;
+  --accent: #2A2A2F;
+  --accent-foreground: #F4F4F5;
+  --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: #E2E8F0;
-  --input: #E2E8F0;
+  --border: #27272A;
+  --input: #1F1F23;
   --ring: #C98A3E;
   
-  --sidebar: #151B2E;
-  --sidebar-foreground: #9CA3AF;
+  --sidebar: #0D0D10;
+  --sidebar-foreground: #A1A1AA;
   
-  --card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
 @layer base {
@@ -163,7 +163,7 @@ div[style*="Edit with Lovable"],
 
 @utility zebra-stripe {
   &:nth-child(even) {
-    background-color: rgba(245, 246, 248, 0.5);
+    background-color: rgba(255, 255, 255, 0.02);
   }
 }
 

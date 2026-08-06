@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: É o seguinte. Não estou gostando desse menu lateral e dessa barra branca em cima onde tem o nome da Usina etc. Dê uma reinventada nisso ai, pode ser radical. Não mexa nos dados, ou fluxo dos sistema.
+ * Execute esta instrucao no projeto: Vamos tentar um tema mais escuro, tipo o do link: https://linear.app/coding-sessions
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -145,15 +145,15 @@ function Dashboard() {
   const summary = [...chartData].reverse();
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="mx-auto max-w-7xl space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
-        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+        <p className="text-sm font-medium text-muted-foreground mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard 
-          icon={<TrendingUp className="h-5 w-5" />} 
+          icon={<TrendingUp className="h-4 w-4" />} 
           label="Receita Mensal" 
           value={receitaMes} 
           tint="leaf" 
@@ -162,7 +162,7 @@ function Dashboard() {
           delay={0}
         />
         <StatCard
-          icon={<TrendingDown className="h-5 w-5" />}
+          icon={<TrendingDown className="h-4 w-4" />}
           label="Despesas Mensais"
           value={despesasMes}
           tint="clay"
@@ -173,7 +173,7 @@ function Dashboard() {
           delay={60}
         />
         <StatCard 
-          icon={<DollarSign className="h-5 w-5" />} 
+          icon={<DollarSign className="h-4 w-4" />} 
           label="Lucro do Mês" 
           value={lucroMes} 
           tint="sky" 
@@ -182,7 +182,7 @@ function Dashboard() {
           delay={120}
         />
         <StatCard 
-          icon={<Briefcase className="h-5 w-5" />} 
+          icon={<Briefcase className="h-4 w-4" />} 
           label="Lucro Acumulado (Ano)" 
           value={lucroAnualReal} 
           tint="amber" 
@@ -193,73 +193,73 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
-              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
+          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-base font-bold text-foreground">Performance Financeira</h2>
+              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                 {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
                   <span key={k} className="inline-flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: c }} />
                     {k}
                   </span>
                 ))}
               </div>
             </div>
             <div className="-mx-2 overflow-x-auto px-2">
-              <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
+              <div className="h-72 min-w-[520px] sm:min-w-0">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid vertical={false} stroke="#F1F5F9" strokeDasharray="3 3" />
+                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" opacity={0.5} />
                     <XAxis 
                       dataKey="month" 
                       tickLine={false} 
                       axisLine={false} 
-                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }} 
+                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }} 
                       dy={10} 
                     />
                     <YAxis
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }}
                       tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
                     />
                     <Tooltip 
-                      cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
+                      cursor={{ fill: "var(--accent)", opacity: 0.1 }} 
                       content={<ChartTooltip />} 
                     />
-                    <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                    <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                    <Bar dataKey="Receita" fill="#2F6F62" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                    <Bar dataKey="Despesas" fill="#D64545" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[3, 3, 0, 0]} maxBarSize={24} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-            <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
+          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+            <h2 className="mb-6 text-base font-bold text-foreground">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-[#E4E7EC]">
-                    <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Receita</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Despesas</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Lucro</th>
+                  <tr className="border-b border-border">
+                    <th className="pb-4 text-left font-bold text-muted-foreground uppercase tracking-widest">Mês</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Receita</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Desp. Operacionais</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Concessionária</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Despesas</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Lucro</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F5F6F8]">
+                <tbody className="divide-y divide-border/50">
                   {summary.map(row => (
-                    <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors zebra-stripe">
-                      <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
-                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
-                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Concessionária)}</td>
-                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
+                    <tr key={row.month} className="hover:bg-accent/30 transition-colors">
+                      <td className="py-4 text-foreground font-semibold">{row.month}</td>
+                      <td className="num py-4 text-right font-medium text-foreground">{brl(row.Receita)}</td>
+                      <td className="num py-4 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
+                      <td className="num py-4 text-right text-muted-foreground">{brl(row.Concessionária)}</td>
+                      <td className="num py-4 text-right font-medium text-foreground">{brl(row.Despesas)}</td>
                       <td className={cn(
-                        "num py-4 text-right font-bold transition-colors",
+                        "num py-4 text-right font-bold",
                         row.Lucro >= 0 ? "text-[#2F6F62]" : "text-[#D64545]"
                       )}>
                         {brl(row.Lucro)}
@@ -272,11 +272,12 @@ function Dashboard() {
           </Card>
         </div>
 
+
         <div className="space-y-6">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-            <div className="mb-4 flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-slate-400" />
-              <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
+          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+            <div className="mb-6 flex items-center gap-2">
+              <Trophy className="h-4 w-4 text-primary" />
+              <h2 className="text-base font-bold text-foreground tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
             </div>
             <div className="space-y-4">
               {ranking.map((c, idx) => (
@@ -284,22 +285,22 @@ function Dashboard() {
                   key={c.id} 
                   className={cn(
                     "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                    idx === 0 && "bg-[#C98A3E]/5 border border-[#C98A3E]/10"
+                    idx === 0 && "bg-primary/5 border border-primary/10"
                   )}
                 >
-                  <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
+                  <span className="w-5 text-right text-xs text-muted-foreground font-medium">{idx + 1}</span>
                   <div
-                    className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
                     style={{ backgroundColor: c.color }}
                   >
                     {initial(c.name)}
                   </div>
                   <div className="flex-1">
-                    <div className="mb-1 flex items-center justify-between">
-                      <span className="text-sm font-bold text-[#374151]">{c.name}</span>
-                      <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
+                    <div className="mb-1.5 flex items-center justify-between">
+                      <span className="text-xs font-bold text-foreground">{c.name}</span>
+                      <span className="num text-xs font-bold text-foreground">{brl(c.profit)}</span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-accent/50">
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
@@ -308,22 +309,23 @@ function Dashboard() {
                   </div>
                 </div>
               ))}
-              {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
+              {ranking.length === 0 && <p className="text-xs text-muted-foreground">Nenhum cliente cadastrado.</p>}
             </div>
           </Card>
 
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
-                <Users className="h-6 w-6" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/30 text-muted-foreground">
+                <Users className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
-                <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total de Clientes</div>
+                <div className="text-xl font-bold text-foreground">{data.clients.length}</div>
               </div>
             </div>
           </Card>
         </div>
+
       </div>
     </div>
   );
@@ -376,14 +378,14 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="relative overflow-hidden rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:bg-accent/10 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
-        borderTop: `3px solid ${semanticColor}`,
+        borderTop: `2px solid ${semanticColor}`,
         animationDelay: `${delay}ms`
       }}
     >
       {sparkData && (
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
               <Area 
@@ -391,7 +393,7 @@ function StatCard({
                 dataKey="value" 
                 stroke={semanticColor} 
                 fill={semanticColor} 
-                strokeWidth={2} 
+                strokeWidth={1.5} 
                 isAnimationActive={false}
               />
             </AreaChart>
@@ -400,27 +402,27 @@ function StatCard({
       )}
 
       <div className="relative z-10">
-        <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
-          <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg shadow-sm border border-border/50", iconBg)}>
             {styledIcon}
           </div>
           {delta != null && Number.isFinite(delta) && (
             <span
               className={cn(
-                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-                good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+                "inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold border",
+                good ? "bg-[#2F6F62]/10 text-[#2F6F62] border-[#2F6F62]/20" : "bg-[#D64545]/10 text-[#D64545] border-[#D64545]/20"
               )}
             >
-              {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              {delta >= 0 ? <ArrowUpRight className="h-2.5 w-2.5" /> : <ArrowDownRight className="h-2.5 w-2.5" />}
               {Math.abs(delta).toFixed(0)}%
             </span>
           )}
         </div>
-        <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
-        <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
+        <div className="mt-1 text-lg font-bold leading-none num-lg text-foreground">
           {brl(value)}
         </div>
-        {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
+        {hint && <div className="mt-3 text-[9px] leading-relaxed text-muted-foreground font-medium line-clamp-1">{hint}</div>}
       </div>
     </Card>
   );
