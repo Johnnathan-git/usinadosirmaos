@@ -193,7 +193,7 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-base font-bold text-foreground">Performance Financeira</h2>
               <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
