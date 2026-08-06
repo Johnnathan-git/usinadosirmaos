@@ -182,42 +182,42 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+          <Card className="glass-card p-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#E4E7EC]">
-                  <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Descrição</th>
-                  <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Data</th>
-                  <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Responsável</th>
-                  <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Observações</th>
-                  <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Valor</th>
+                <tr className="border-b border-white/5">
+                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Descrição</th>
+                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Data</th>
+                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Responsável</th>
+                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Observações</th>
+                  <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Valor</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {data.expenses.map(e => (
-                  <tr key={e.id} className="border-b border-[#F5F6F8] last:border-0 hover:bg-[#F5F6F8]">
-                    <td className="py-4 font-bold text-[#374151]">{e.description}</td>
-                    <td className="py-4 text-[#4B5563] font-medium num">{formatDateBR(e.spent_on)}</td>
-                    <td className="py-4 text-[#374151] font-bold"><span className="rounded-md bg-[#2563EB]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">{e.responsible || "—"}</span></td>
-                    <td className="py-4 text-[#4B5563] italic">{e.notes || "—"}</td>
-                    <td className="py-4 text-right font-bold text-[#374151] num">{brl(Number(e.amount))}</td>
+                  <tr key={e.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors zebra-stripe">
+                    <td className="py-4 font-bold text-white">{e.description}</td>
+                    <td className="py-4 text-white/70 font-medium num">{formatDateBR(e.spent_on)}</td>
+                    <td className="py-4 text-white font-bold"><span className="rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">{e.responsible || "—"}</span></td>
+                    <td className="py-4 text-white/40 italic">{e.notes || "—"}</td>
+                    <td className="py-4 text-right font-bold text-white num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
-                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-[#9CA3AF] hover:text-[#374151]"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-[#9CA3AF] hover:text-[#D64545]"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-white/30 hover:text-white transition-colors"><Pencil className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-white/30 hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-[#E4E7EC] bg-[#F5F6F8]">
-                  <td colSpan={4} className="py-4 font-bold text-[#374151] uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
-                  <td className="py-4 text-right font-bold text-[#374151] num px-4">{brl(totalGastos)}</td>
+                <tr className="border-t border-white/10 bg-white/5">
+                  <td colSpan={4} className="py-4 font-bold text-white uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
+                  <td className="py-4 text-right font-bold text-white num px-4">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>
             </table>
-            {data.expenses.length === 0 && <p className="py-8 text-center text-sm text-slate-500">Nenhum gasto lançado.</p>}
+            {data.expenses.length === 0 && <p className="py-8 text-center text-sm text-white/40">Nenhum gasto lançado.</p>}
           </Card>
         </TabsContent>
       </Tabs>
