@@ -30,6 +30,14 @@ function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    const saved = localStorage.getItem("theme") as "dark" | "light";
+    if (saved) {
+      document.documentElement.classList.toggle("light", saved === "light");
+    }
+  }, []);
+
+  useEffect(() => {
+
     setHydrated(true);
     (async () => {
       const { data } = await supabase.auth.getSession();
@@ -74,7 +82,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex h-[100dvh] w-screen items-center justify-center bg-black p-4 relative overflow-hidden overscroll-none">
+    <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
       {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
       <div className="aurora-container pointer-events-none">
         <div className="energy-wave" />
@@ -99,7 +107,7 @@ function AuthPage() {
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
       
-      <Card className="glass-card relative w-full max-w-md border-white/10 p-8 shadow-2xl sm:p-10">
+      <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card">
         <div className="mb-8 flex flex-col items-center gap-6">
           <div className="relative flex h-32 w-32 items-center justify-center">
             {/* Brilho atmosférico sutil sem forma rígida */}
@@ -110,7 +118,7 @@ function AuthPage() {
             </div>
           </div>
           <div className="text-center">
-            <div className="font-display text-2xl font-bold tracking-tight text-white">
+            <div className="font-display text-2xl font-bold tracking-tight text-foreground dark:text-glow">
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
@@ -120,28 +128,31 @@ function AuthPage() {
         </div>
 
         <div className="mb-8 space-y-1 text-center">
-          <h1 className="text-xl font-bold text-white">Seja bem vindo</h1>
-          <p className="text-sm font-medium text-white/40">Acesse sua conta para continuar</p>
+          <h1 className="text-xl font-bold text-foreground">Seja bem vindo</h1>
+          <p className="text-sm font-medium text-muted-foreground">Acesse sua conta para continuar</p>
+
         </div>
 
         <form onSubmit={submit} method="post" action="#" className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-white/40">E-mail</Label>
+            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:white] [-webkit-text-fill-color:white]"
+              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_var(--input)_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)]"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
+
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-white/40">Senha</Label>
+            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Senha</Label>
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:white] [-webkit-text-fill-color:white]"
+                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_var(--input)_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)]"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
+
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-white/40 hover:text-white">
+                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground hover:text-foreground">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
