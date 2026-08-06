@@ -79,6 +79,36 @@
   --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px -4px rgba(0, 0, 0, 0.5);
 }
 
+:root.light {
+  --background: #F3F4F6;
+  --foreground: #111827;
+  
+  --card: rgba(255, 255, 255, 0.8);
+  --card-foreground: #111827;
+  --popover: #FFFFFF;
+  --popover-foreground: #111827;
+  --primary: #C98A3E;
+  --primary-foreground: #FFFFFF;
+  
+  --secondary: #F3F4F6;
+  --secondary-foreground: #4B5563;
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+  --accent: rgba(0, 0, 0, 0.05);
+  --accent-foreground: #111827;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: #FFFFFF;
+  --ring: #C98A3E;
+  
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #4B5563;
+  
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+
 @layer base {
   body {
     background: var(--background);
@@ -132,27 +162,30 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: transparent;
     border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border);
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(201, 138, 62, 0.5);
+    background: var(--primary);
+    opacity: 0.5;
     background-clip: padding-box;
   }
+
 
   /* Para Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.3);
+    scrollbar-color: var(--border) transparent;
   }
+
 }
 
 @utility num {
@@ -213,7 +246,7 @@ div[style*="Edit with Lovable"],
     bottom: 0;
     z-index: 0;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 50%, #0d0d10 0%, #000000 100%);
+    background: radial-gradient(circle at 50% 50%, var(--card) 0%, var(--background) 100%);
     pointer-events: none;
   }
 
@@ -239,9 +272,10 @@ div[style*="Edit with Lovable"],
     position: absolute;
     width: 2px;
     height: 2px;
-    background: white;
+    background: var(--foreground);
     border-radius: 50%;
-    opacity: 0.3;
+    opacity: 0.1;
+
     filter: blur(1px);
     animation: particle-float var(--duration) ease-in-out infinite alternate;
   }
