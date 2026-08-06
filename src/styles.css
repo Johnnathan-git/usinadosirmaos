@@ -52,12 +52,12 @@
 :root {
   --radius: 12px;
   --background: #000000;
-  --foreground: #F1F1F1;
+  --foreground: #D4D4D8;
   
   --card: rgba(13, 13, 16, 0.7);
-  --card-foreground: #F1F1F1;
+  --card-foreground: #D4D4D8;
   --popover: #0D0D10;
-  --popover-foreground: #F1F1F1;
+  --popover-foreground: #D4D4D8;
   --primary: #C98A3E;
   --primary-foreground: #000000;
   
