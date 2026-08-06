@@ -120,8 +120,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-white pb-[env(safe-area-inset-bottom)] md:hidden scrollbar-hide">
-            {visibleNav.map((item) => {
+          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-white pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+            {visibleNav.slice(0, 3).map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
               return (
@@ -133,12 +133,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     active ? "text-[#151B2E]" : "text-[#9CA3AF]",
                   )}
                 >
-                  {active && <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#C98A3E]" />}
                   <Icon className="h-5 w-5" />
                   <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
                 </Link>
               );
             })}
+            <button
+              onClick={() => {}}
+              className="flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold text-[#9CA3AF]"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+              <span className="w-full truncate text-center uppercase tracking-tighter">Mais</span>
+            </button>
           </div>
         )}
         <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-[#E4E7EC] bg-[#151B2E] px-4 py-8 md:block">
