@@ -137,7 +137,7 @@ function Faturas() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 [&>*]:glass-card-interactive">
+      <div className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3 [&>*]:glass-card-interactive">
         {shown.map(c => (
           <Card key={c.id} className="glass-card relative overflow-hidden p-5" style={{ borderLeft: `4px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
