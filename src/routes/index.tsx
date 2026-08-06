@@ -1,7 +1,7 @@
 /**
  * Execute esta instrucao no projeto: Não precisa dessa opçao de alterar minha senha ao lado de + Novo Usuario. Preciso que tenha essa opçao para os usuários que logarem no sistema.
  */
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
