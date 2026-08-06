@@ -96,102 +96,137 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen">
-      <header className="no-print sticky top-0 z-50 bg-white shadow-sm h-[56px]">
-        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
-        <div className="relative flex items-center justify-between px-6 py-2">
-          <div className="flex items-center gap-0">
-            <BrandLockup />
-          </div>
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
-              <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
-                {acc?.effective_admin ? "Admin" : "User"}
-              </span>
-              <div className="flex items-center gap-0.5">
-                <ChangeOwnPasswordDialog />
-                <Button size="sm" variant="ghost" onClick={signOut} className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
-                  <LogOut className="h-3 w-3 sm:mr-1" />
-                  <span className="hidden text-[9px] font-bold uppercase sm:inline text-[#374151]">Sair</span>
-                </Button>
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#F8FAFC]">
+      {/* Mobile Top Header */}
+      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md md:hidden">
+        <BrandLockup compact />
+        <div className="flex items-center gap-2">
+          <ChangeOwnPasswordDialog />
+          <Button size="icon" variant="ghost" onClick={signOut} className="h-8 w-8 text-slate-500">
+            <LogOut className="h-4 w-4" />
+          </Button>
         </div>
       </header>
+
       <div className="flex">
-        {visibleNav.length > 0 && (
-          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-[#151B2E] pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
-            {visibleNav.slice(0, 3).map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
-                    active ? "text-white" : "text-[#9CA3AF]",
-                  )}
-                >
-                  {active && <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-8 bg-[#C98A3E] rounded-b-full" />}
-                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
-                  <span className="w-full truncate text-center uppercase tracking-tighter text-[9px]">{item.label}</span>
-                </Link>
-              );
-            })}
-            <button
-              onClick={() => {}}
-              className="flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold text-[#9CA3AF]"
-            >
-              <MoreHorizontal className="h-5 w-5" />
-              <span className="w-full truncate text-center uppercase tracking-tighter">Mais</span>
-            </button>
+        {/* Desktop Sidebar - Radical redesign */}
+        <aside className="no-print sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-slate-200 bg-white md:flex shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+          <div className="p-6">
+            <BrandLockup />
           </div>
-        )}
-        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
-          <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
-            Módulos
-          </div>
-          <nav className="space-y-1">
-            {visibleNav.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
-              const Icon = item.icon;
-              return (
+          
+          <div className="flex-1 overflow-y-auto px-4 py-2">
+            <div className="mb-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Menu Principal
+            </div>
+            <nav className="space-y-1.5">
+              {visibleNav.map((item) => {
+                const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                const Icon = item.icon;
+                return (
                   <Link
                     key={item.to}
                     to={item.to}
                     className={cn(
-                      "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
+                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
                       active
-                        ? "text-white"
-                        : "text-[#9CA3AF] hover:text-white",
+                        ? "bg-[#151B2E] text-white shadow-lg shadow-[#151B2E]/20"
+                        : "text-slate-500 hover:bg-slate-50 hover:text-[#151B2E]"
                     )}
                   >
-                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
-                  <span className="truncate">{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-          <div className="mt-16 border-t border-white/10 px-4 pt-6">
-            <span className="font-serif text-[15px] italic leading-tight text-white/80">
-              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-            </span>
+                    <Icon className={cn(
+                      "h-5 w-5 shrink-0 transition-colors",
+                      active ? "text-[#C98A3E]" : "text-slate-400 group-hover:text-slate-600"
+                    )} strokeWidth={active ? 2.5 : 2} />
+                    <span className="truncate">{item.label}</span>
+                    {active && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#C98A3E]" />}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+
+          <div className="border-t border-slate-100 p-6 bg-slate-50/50">
+            <div className="mb-4 flex items-center gap-3 rounded-lg bg-white p-3 shadow-sm border border-slate-200/50">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#151B2E] to-[#0A0E1A] text-xs font-bold text-white uppercase ring-4 ring-white">
+                {initial((acc as any)?.display_name || 'U')}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-xs font-bold text-[#151B2E]">
+                  {(acc as any)?.display_name || 'Usuário'}
+                </div>
+                <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
+                  {acc?.effective_admin ? "Administrador" : "Cliente"}
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <ChangeOwnPasswordDialog />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={signOut} 
+                className="flex-1 h-8 gap-2 rounded-lg border-slate-200 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-colors"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                <span className="text-[10px] font-bold uppercase">Sair</span>
+              </Button>
+            </div>
           </div>
         </aside>
-        <main className="min-w-0 flex-1 px-4 py-8 pb-28 sm:px-8 md:pb-8">
-          {blocked ? (
-            <div className="mx-auto mt-20 max-w-md rounded-xl border border-[#E4E7EC] bg-white p-10 text-center shadow-sm">
-              <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#9CA3AF]" />
-              <h2 className="text-xl font-bold text-[#374151]">Acesso restrito</h2>
-              <p className="mt-2 text-sm text-[#4B5563] font-medium">Você não tem permissão para acessar este módulo.</p>
-            </div>
-          ) : children}
+
+        {/* Main Content Area */}
+        <main className="min-h-screen min-w-0 flex-1">
+          <div className="mx-auto max-w-7xl px-4 py-8 pb-28 sm:px-8 md:pb-8">
+            {blocked ? (
+              <div className="mx-auto mt-20 max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-xl">
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 text-slate-300">
+                  <ShieldCheck className="h-10 w-10" />
+                </div>
+                <h2 className="text-xl font-bold text-[#151B2E]">Acesso Restrito</h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  Sua conta não possui permissões para visualizar este módulo.
+                </p>
+                <Button 
+                  onClick={() => navigate({ to: "/", replace: true })}
+                  className="mt-8 w-full bg-[#151B2E] text-white hover:bg-[#151B2E]/90"
+                >
+                  Voltar ao Início
+                </Button>
+              </div>
+            ) : children}
+          </div>
         </main>
+
+        {/* Mobile Bottom Navigation */}
+        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex h-20 items-center justify-around border-t border-slate-200 bg-white px-2 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+          {visibleNav.slice(0, 4).map((item) => {
+            const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "relative flex flex-col items-center gap-1.5 px-3 py-2 transition-all",
+                  active ? "text-[#151B2E]" : "text-slate-400",
+                )}
+              >
+                {active && <div className="absolute -top-[1px] h-[3px] w-8 rounded-full bg-[#C98A3E]" />}
+                <Icon className={cn("h-6 w-6 transition-transform", active && "scale-110")} />
+                <span className="text-[9px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
+              </Link>
+            );
+          })}
+          <button className="flex flex-col items-center gap-1.5 px-3 py-2 text-slate-400">
+            <MoreHorizontal className="h-6 w-6" />
+            <span className="text-[9px] font-bold uppercase tracking-wider">Mais</span>
+          </button>
+        </nav>
       </div>
     </div>
+  );
+}
   );
 }
 
