@@ -134,8 +134,8 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-foreground/40">
+          <h1 className="text-4xl font-bold tracking-tight text-white">Relatório do Cliente</h1>
+          <p className="text-sm font-medium text-white/40">
             Controle Mensal.
           </p>
         </div>
@@ -145,7 +145,7 @@ function Relatorio() {
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-foreground font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-white font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
               {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#374151]">{c.name}</SelectItem>)}
             </SelectContent>
@@ -161,7 +161,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-[#151B2E] border-[#151B2E] text-foreground shadow-sm" : "bg-white border-[#E4E7EC] text-[#4B5563] hover:bg-slate-50"
+                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#4B5563] hover:bg-slate-50"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -179,7 +179,7 @@ function Relatorio() {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none" />
           <div className="relative z-10">
-            <div className="text-xl font-black uppercase tracking-[0.4em] text-foreground drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-2xl">
+            <div className="text-xl font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-2xl">
               {client?.name ?? "—"}
             </div>
           </div>
@@ -200,12 +200,12 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-white/5 px-3 py-4 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
                 ))}
-                <th className="border border-white/5 px-3 py-4 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-widest w-[100px]">
+                <th className="border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
               </tr>
@@ -223,7 +223,7 @@ function Relatorio() {
                             ? "font-bold text-primary text-sm sm:text-base"
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
-                            : "text-foreground font-medium"
+                            : "text-white font-medium"
                         }`}
                       />
                     </td>
@@ -274,7 +274,7 @@ function Relatorio() {
         </div>
         {rows.length > 0 && (
           <div className="border-t border-white/5 bg-white/5 px-8 py-3 flex justify-between items-center">
-            <div className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest">
+            <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-widest">

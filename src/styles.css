@@ -52,12 +52,12 @@
 :root {
   --radius: 12px;
   --background: #000000;
-  --foreground: #D4D4D8;
+  --foreground: #F1F1F1;
   
   --card: rgba(13, 13, 16, 0.7);
-  --card-foreground: #D4D4D8;
+  --card-foreground: #F1F1F1;
   --popover: #0D0D10;
-  --popover-foreground: #D4D4D8;
+  --popover-foreground: #F1F1F1;
   --primary: #C98A3E;
   --primary-foreground: #000000;
   
@@ -66,9 +66,9 @@
   --muted: #161618;
   --muted-foreground: #71717A;
   --accent: rgba(255, 255, 255, 0.05);
-  --accent-foreground: #D4D4D8;
+  --accent-foreground: #F1F1F1;
   --destructive: #EF4444;
-  --destructive-foreground: #D4D4D8;
+  --destructive-foreground: #F1F1F1;
   --border: rgba(255, 255, 255, 0.1);
   --input: #0D0D10;
   --ring: #C98A3E;

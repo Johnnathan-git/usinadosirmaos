@@ -118,8 +118,8 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-foreground/40">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-white">Faturas</h1>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-white/40">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-white/5 bg-white/5 text-white/70 hover:text-white rounded-lg">
@@ -143,14 +143,14 @@ function Faturas() {
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-2.5">
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
                   style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
                 </div>
                 <div className="min-w-0">
-                  <div className="truncate font-bold text-sm text-foreground">{c.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">UC {c.uc_number}</div>
+                  <div className="truncate font-bold text-sm text-white">{c.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-white/40">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
@@ -162,14 +162,14 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-foreground/30">
+            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-white/30">
               <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
               <span className="flex items-center gap-1">
                 <FileText className="h-3 w-3" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-foreground/60">
+                <span className="flex items-center gap-1 text-white/60">
                   <Paperclip className="h-3 w-3" /> Anexos
                 </span>
               )}
@@ -182,7 +182,7 @@ function Faturas() {
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
-                <Plus className="h-3 w-3 text-foreground" /> 
+                <Plus className="h-3 w-3 text-white" /> 
                 <span>Lançar</span>
               </Button>
               <Button
@@ -271,25 +271,25 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
+          <DialogTitle className="text-white text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label className="text-foreground/40">Nome Completo *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-foreground" />
+            <Label className="text-white/40">Nome Completo *</Label>
+            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label className="text-foreground/40">Telefone</Label>
-              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-foreground" />
+              <Label className="text-white/40">Telefone</Label>
+              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-white" />
             </div>
             <div>
-              <Label className="text-foreground/40">E-mail</Label>
-              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-foreground" />
+              <Label className="text-white/40">E-mail</Label>
+              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-white" />
             </div>
           </div>
           <div>
-            <Label className="text-foreground/40">Cor do Cliente</Label>
+            <Label className="text-white/40">Cor do Cliente</Label>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {CLIENT_COLORS.map(col => (
                 <button
@@ -319,24 +319,24 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             </div>
           </div>
           <div>
-            <Label className="text-foreground/40">Número da UC *</Label>
-            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-foreground" />
+            <Label className="text-white/40">Número da UC *</Label>
+            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label className="text-foreground/40">Observações</Label>
-            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-foreground" />
+            <Label className="text-white/40">Observações</Label>
+            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label className="text-foreground/40">Desconto (%) *</Label>
-            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-white/5 border-white/10 text-foreground" />
+            <Label className="text-white/40">Desconto (%) *</Label>
+            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label className="text-foreground/40">Iluminação Pública (Valor Fixo) *</Label>
-            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-foreground" />
+            <Label className="text-white/40">Iluminação Pública (Valor Fixo) *</Label>
+            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-white" />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-white/10 text-foreground/40 hover:text-foreground hover:bg-white/5">Cancelar</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
@@ -474,67 +474,67 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="glass-card border-white/10 text-foreground max-h-[95vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-glow">{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
+          <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
-        <div className="bg-white/5 p-3 rounded-lg border border-white/5 mb-4 text-[10px] font-bold text-foreground/40 uppercase tracking-wider flex justify-between">
+        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
           <span>Desconto: {client.discount_pct}%</span>
           <span>Ilum. Fixa: {brl(client.public_lighting_value)}</span>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <Label className="text-foreground/40">Unidade Consumidora *</Label>
-            <Input value={client.uc_number} disabled className="bg-white/5 border-white/10 text-foreground/60" />
+            <Label>Unidade Consumidora *</Label>
+            <Input value={client.uc_number} disabled />
           </div>
           <div>
-            <Label className="text-foreground/40">Mês de Referência *</Label>
-            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} className="bg-white/5 border-white/10 text-foreground" />
+            <Label>Mês de Referência *</Label>
+            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
           </div>
           <div>
-            <Label className="text-foreground/40">Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" className="bg-white/5 border-white/10 text-foreground" />
+            <Label>Consumo (kW) *</Label>
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" />
           </div>
           <div>
-            <Label className="text-foreground/40">Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" className="bg-white/5 border-white/10 text-foreground" />
+            <Label>Preço kW (R$) *</Label>
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" />
           </div>
           <div>
-            <Label className="text-foreground/40">Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-white/5 border-white/10 text-foreground/60" />
+            <Label>Ilum. Pública (R$)</Label>
+            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-slate-50" />
           </div>
           <div>
-            <Label className="text-foreground/40">Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" className="bg-white/5 border-white/10 text-foreground" />
+            <Label>Juros/Multa (R$)</Label>
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" />
           </div>
           <div>
-            <Label className="text-foreground/40">Valor S/ Usina (R$)</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-white/5 border-white/10 text-foreground font-bold" />
+            <Label>Valor S/ Usina (R$)</Label>
+            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-slate-50 font-bold" />
           </div>
           <div>
-            <Label className="text-foreground/40">Valor que o Cliente Paga (R$)</Label>
-            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 border-emerald-500/20 text-emerald-400 font-bold" />
+            <Label>Valor que o Cliente Paga (R$)</Label>
+            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-50 text-[#2F6F62] font-bold" />
           </div>
         </div>
-        <Card className="mt-2 border-red-500/20 bg-red-500/5 p-4">
-          <div className="mb-1 text-sm font-medium text-red-400">Fatura do Cliente — Concessionária (R$)</div>
-          <div className="mb-2 text-xs text-red-400/50">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white/5 border-white/10 text-foreground" placeholder="676,37" />
+        <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
+          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — Concessionária (R$)</div>
+          <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
         
         <div className="space-y-4 mt-4">
           <div>
-            <Label className="text-foreground/40">Observações</Label>
+            <Label>Observações</Label>
             <Textarea 
               value={f.notes} 
               onChange={e => setF(prev => ({ ...prev, notes: e.target.value }))} 
               placeholder="Opcional"
-              className="mt-1 bg-white/5 border-white/10 text-foreground"
+              className="mt-1"
             />
           </div>
           
           <div>
-            <Label className="text-foreground/40">Anexar Fatura / Comprovante</Label>
+            <Label>Anexar Fatura / Comprovante</Label>
             <div className="mt-2 flex items-center gap-3">
               <Button 
                 variant="outline" 
@@ -613,8 +613,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             </Button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose} className="border-white/10 text-foreground/40 hover:text-foreground hover:bg-white/5">Cancelar</Button>
-            <Button onClick={submit} disabled={saving || uploading} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">Salvar</Button>
+            <Button variant="outline" onClick={onClose}>Cancelar</Button>
+            <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
           </div>
         </DialogFooter>
       </DialogContent>
@@ -654,40 +654,40 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="glass-card border-white/10 text-foreground max-h-[90vh] max-w-5xl overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-foreground text-glow">
+          <DialogTitle className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: client.color }} />
             {client.name} — UC {client.uc_number}
           </DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-3 md:grid-cols-4">
-          <Card className="p-4 border border-white/5 bg-white/5">
-            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Total S/ Usina</div>
-            <div className="mt-1 text-xl font-bold text-foreground num-lg">{brl(totalWithoutPlant)}</div>
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
+            <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
+            <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
-          <Card className="p-4 border border-white/5 bg-white/5">
-            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Cliente Pagou</div>
-            <div className="mt-1 text-xl font-bold text-emerald-400 num-lg">{brl(totalClientPays)}</div>
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
+            <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
+            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(totalClientPays)}</div>
           </Card>
-          <Card className="p-4 border border-white/5 bg-white/5">
-            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Fat. Concessionária</div>
-            <div className="mt-1 text-xl font-bold text-red-400 num-lg">{brl(totalDistributor)}</div>
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
+            <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
+            <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
           </Card>
-          <Card className="p-4 border border-white/5 bg-white/5">
-            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Lucro Bruto</div>
-            <div className="mt-1 text-xl font-bold text-emerald-400 num-lg">{brl(netProfit)}</div>
-            <div className="mt-1 text-[10px] text-foreground/30">Sem despesas operacionais</div>
+          <Card className="p-4 border-none shadow-sm bg-slate-50">
+            <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
+            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(netProfit)}</div>
+            <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
           </Card>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
+          <div className="flex items-center gap-2 text-sm font-semibold text-positive">
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
-            className="gap-2 text-foreground font-bold"
+            className="gap-2 text-white"
             style={{ backgroundColor: client.color }}
             onClick={() => setLaunching(true)}
             disabled={!client.active}
@@ -704,14 +704,14 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           ) : (
             <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full text-sm min-w-[800px]">
-                <thead className="sticky top-0 bg-black">
-                  <tr className="text-[10px] uppercase tracking-wider text-foreground/40">
+                <thead className="sticky top-0 bg-slate-50">
+                  <tr className="text-[10px] uppercase tracking-wider text-slate-500">
                     <th className="px-2 py-2 text-left font-semibold">Mês</th>
                     <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                     <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
                     <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                    <th className="px-2 py-2 text-right font-semibold">Fat. Concessionária</th>
-                    <th className="px-2 py-2 text-right font-semibold">Lucro</th>
+                    <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
+                    <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
                     <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                     <th></th>
                   </tr>
@@ -720,13 +720,13 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   {invoices.map((inv) => {
                     const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                     return (
-                      <tr key={inv.id} className="border-t border-white/5 hover:bg-white/5 even:bg-white/5">
-                        <td className="py-3 text-foreground font-medium">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right text-foreground/60">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="py-3 text-right text-foreground">{brl(Number(inv.value_without_plant))}</td>
-                        <td className="py-3 text-right text-emerald-400">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right text-red-400">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="py-3 text-right font-semibold text-emerald-400">{brl(lucro)}</td>
+                      <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
+                        <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
+                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
                         <td className="py-3 text-center">
                           {inv.attachment_url ? (
                             <button 
@@ -747,7 +747,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   toast.error("Erro ao abrir arquivo: " + err.message);
                                 }
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-foreground/60 hover:bg-white/10"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
                               title="Ver anexo"
                             >
                               <Paperclip className="h-4 w-4" />
