@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
+ * Execute esta instrucao no projeto: Vamos tentar um tema mais escuro, tipo o do link: https://linear.app/coding-sessions
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
