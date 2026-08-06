@@ -375,27 +375,28 @@ function ResetPasswordDialog({ user }: { user: UserRow }) {
           <KeyRound className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="glass-card border-white/10 text-white">
         <DialogHeader>
-          <DialogTitle>Resetar Senha: {user.email}</DialogTitle>
+          <DialogTitle className="text-white text-glow">Resetar Senha: {user.email}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div>
-            <Label>Nova Senha Temporária</Label>
+            <Label className="text-white/40">Nova Senha Temporária</Label>
             <Input 
               type="password" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               placeholder="Mínimo 6 caracteres" 
+              className="bg-white/5 border-white/10 text-white"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button variant="ghost" onClick={() => setOpen(false)} className="text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
           <Button 
             onClick={() => m.mutate()} 
             disabled={m.isPending || password.length < 6}
-            className="bg-[#2E5C8A] hover:bg-[#254A6E] text-white font-medium"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
           >
             {m.isPending ? "Resetando..." : "Confirmar Novo Acesso"}
           </Button>
