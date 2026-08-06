@@ -687,7 +687,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
-            className="gap-2 text-white"
+            className="gap-2 text-foreground font-bold"
             style={{ backgroundColor: client.color }}
             onClick={() => setLaunching(true)}
             disabled={!client.active}
