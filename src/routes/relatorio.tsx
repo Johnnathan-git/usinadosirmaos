@@ -124,7 +124,7 @@ function Relatorio() {
 
   useEffect(() => {
     setRows(selected.map(s => toRow(s, client)));
-  }, [selected.map((s) => s.id).join(","), client?.discount_pct]);
+  }, [selected, client?.discount_pct]);
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
@@ -226,7 +226,7 @@ function Relatorio() {
                               const path = r.attachment_url!;
                               const { data, error } = await supabase.storage
                                 .from('faturas_v3_privado_v2')
-                                .createSignedUrl(path, 60);
+                                .createSignedUrl(path, 3600);
                               if (error) throw error;
                               
                               const a = document.createElement('a');
