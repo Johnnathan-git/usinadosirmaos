@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, MoreHorizontal } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, MoreHorizontal, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,6 +35,23 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [ready, setReady] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme") as "dark" | "light";
+    if (saved) {
+      setTheme(saved);
+      document.documentElement.classList.toggle("light", saved === "light");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+    document.documentElement.classList.toggle("light", next === "light");
+  };
+
 
   useEffect(() => {
     let mounted = true;
@@ -98,7 +115,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
         {/* Fluxo de Energia Rotacional */}
@@ -131,10 +148,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile Top Header */}
-      <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-white/10 bg-black/40 px-4 backdrop-blur-xl md:hidden">
+      <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-border bg-background/40 px-4 backdrop-blur-xl md:hidden">
         <BrandLockup />
         <div className="flex items-center gap-2">
+          <Button size="icon" variant="ghost" onClick={toggleTheme} className="h-9 w-9 text-muted-foreground hover:text-foreground">
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
           <ChangeOwnPasswordDialog />
+
           <Button size="icon" variant="ghost" onClick={signOut} className="h-9 w-9 text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" />
           </Button>
@@ -143,7 +164,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-white/5 bg-black/40 backdrop-blur-xl md:flex">
+        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar/40 backdrop-blur-xl md:flex">
           <div className="p-6">
             <BrandLockup />
           </div>
@@ -160,8 +181,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     className={cn(
                       "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
-                        ? "bg-white/5 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-                        : "text-white/40 hover:bg-white/5 hover:text-white"
+                        ? "bg-primary/10 text-primary shadow-[0_0_20px_rgba(201,138,62,0.1)]"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
+
                     )}
                   >
                     <Icon className={cn(
@@ -176,32 +198,44 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
 
-          <div className="mt-auto border-t border-white/5 p-4">
-            <div className="mb-4 flex items-center gap-3 rounded-xl bg-white/5 p-2.5 border border-white/5 shadow-sm">
+          <div className="mt-auto border-t border-border p-4">
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-accent p-2.5 border border-border shadow-sm">
+
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-bold text-white leading-tight">
+                <div className="truncate text-xs font-bold text-foreground leading-tight">
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
-                <div className="text-[10px] font-medium text-white/40 uppercase tracking-wider">
+                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
               </div>
             </div>
             <div className="flex gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleTheme} 
+                className="h-8 w-8 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground"
+                title={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
+              >
+                {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+              </Button>
               <ChangeOwnPasswordDialog />
               <Button 
                 variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg bg-white/5 text-white/60 hover:bg-destructive/20 hover:text-white hover:border-destructive/30 border-white/5 border transition-all"
+                className="flex-1 h-8 gap-2 rounded-lg bg-accent text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 border-border border transition-all"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>
               </Button>
             </div>
+
           </div>
         </aside>
 
@@ -229,7 +263,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-white/10 bg-black/60 px-2 backdrop-blur-2xl md:hidden shadow-2xl">
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-background/60 px-2 backdrop-blur-2xl md:hidden shadow-2xl">
           {visibleNav.slice(0, 5).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
@@ -239,7 +273,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 to={item.to}
                 className={cn(
                   "relative flex flex-col items-center gap-1.5 px-3 py-1 transition-all",
-                  active ? "text-primary" : "text-white/40",
+                  active ? "text-primary" : "text-muted-foreground",
                 )}
               >
                 <div className={cn(
@@ -254,7 +288,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             );
           })}
           {visibleNav.length > 5 && (
-            <button className="flex flex-col items-center gap-1.5 px-3 py-1 text-white/40">
+            <button className="flex flex-col items-center gap-1.5 px-3 py-1 text-muted-foreground">
               <div className="flex h-8 w-8 items-center justify-center">
                 <MoreHorizontal className="h-5 w-5" />
               </div>

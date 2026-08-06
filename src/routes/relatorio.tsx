@@ -134,8 +134,9 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-white/40">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
+          <p className="text-sm font-medium text-muted-foreground">
+
             Controle Mensal.
           </p>
         </div>
@@ -143,16 +144,16 @@ function Relatorio() {
 
       <Card className="no-print glass-card grid gap-4 p-6 sm:grid-cols-2">
         <div>
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-white font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-accent border-border rounded-lg text-foreground font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
-              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#374151]">{c.name}</SelectItem>)}
+              {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-foreground">{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
         <div>
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Meses</div>
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Meses</div>
           <div className="flex flex-wrap gap-2">
             {monthOptions.map((m) => {
               const on = months.includes(m);
@@ -161,14 +162,14 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-[#151B2E] border-[#151B2E] text-white shadow-sm" : "bg-white border-[#E4E7EC] text-[#4B5563] hover:bg-slate-50"
+                    on ? "bg-primary border-primary text-primary-foreground shadow-sm" : "bg-card border-border text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
                 </button>
               );
             })}
-            {monthOptions.length === 0 && <p className="text-sm text-slate-500">Sem faturas para este cliente.</p>}
+            {monthOptions.length === 0 && <p className="text-sm text-muted-foreground">Sem faturas para este cliente.</p>}
           </div>
         </div>
       </Card>
@@ -180,6 +181,7 @@ function Relatorio() {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none" />
           <div className="relative z-10">
             <div className="text-xl font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-2xl">
+
               {client?.name ?? "—"}
             </div>
           </div>
@@ -200,21 +202,21 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
                 ))}
-                <th className="border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest w-[100px]">
+                <th className="border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-white/5 p-0">
+                    <td key={f} className="border border-border p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
@@ -223,12 +225,12 @@ function Relatorio() {
                             ? "font-bold text-primary text-sm sm:text-base"
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
-                            : "text-white font-medium"
+                            : "text-foreground font-medium"
                         }`}
                       />
                     </td>
                   ))}
-                  <td className="border border-white/5 p-0 text-center align-middle">
+                  <td className="border border-border p-0 text-center align-middle">
                     {r.attachment_url ? (
                       <button
                         onClick={async () => {
@@ -255,7 +257,7 @@ function Relatorio() {
                         <span className="hidden sm:inline">Baixar</span>
                       </button>
                     ) : (
-                      <div className="flex h-14 w-full items-center justify-center text-slate-300">
+                      <div className="flex h-14 w-full items-center justify-center text-muted-foreground">
                         <Paperclip className="h-4 w-4 opacity-30" />
                       </div>
                     )}
@@ -264,7 +266,7 @@ function Relatorio() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-20 text-center text-slate-400 font-medium italic">
+                  <td colSpan={9} className="py-20 text-center text-muted-foreground font-medium italic">
                     Selecione os meses acima para gerar o relatório.
                   </td>
                 </tr>
@@ -273,8 +275,9 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-white/5 bg-white/5 px-8 py-3 flex justify-between items-center">
-            <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+          <div className="border-t border-border bg-accent px-8 py-3 flex justify-between items-center">
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
             <div className="text-[10px] font-bold text-primary uppercase tracking-widest">
