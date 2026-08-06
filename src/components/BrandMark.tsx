@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logoSolarAsset from "@/assets/logo-solar.png.asset.json";
+import logoSolarAsset from "@/assets/logo-solar-v2.png.asset.json";
 
 /** Logotipo da Usina dos Irmãos. */
 export function BrandMark({ className }: { className?: string }) {
