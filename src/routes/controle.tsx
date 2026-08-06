@@ -149,7 +149,7 @@ function Controle() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Controle</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white">Controle</h1>
           <p className="text-sm font-medium text-white/40">Geração × consumo e rateio (uso exclusivo para cálculos)</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
