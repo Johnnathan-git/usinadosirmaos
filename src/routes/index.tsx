@@ -378,14 +378,14 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="relative overflow-hidden rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:bg-accent/10 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
-        borderTop: `3px solid ${semanticColor}`,
+        borderTop: `2px solid ${semanticColor}`,
         animationDelay: `${delay}ms`
       }}
     >
       {sparkData && (
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
               <Area 
@@ -393,7 +393,7 @@ function StatCard({
                 dataKey="value" 
                 stroke={semanticColor} 
                 fill={semanticColor} 
-                strokeWidth={2} 
+                strokeWidth={1.5} 
                 isAnimationActive={false}
               />
             </AreaChart>
@@ -402,27 +402,27 @@ function StatCard({
       )}
 
       <div className="relative z-10">
-        <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
-          <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+        <div className="mb-3 flex items-start justify-between gap-2">
+          <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg shadow-sm border border-border/50", iconBg)}>
             {styledIcon}
           </div>
           {delta != null && Number.isFinite(delta) && (
             <span
               className={cn(
-                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-                good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+                "inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold border",
+                good ? "bg-[#2F6F62]/10 text-[#2F6F62] border-[#2F6F62]/20" : "bg-[#D64545]/10 text-[#D64545] border-[#D64545]/20"
               )}
             >
-              {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              {delta >= 0 ? <ArrowUpRight className="h-2.5 w-2.5" /> : <ArrowDownRight className="h-2.5 w-2.5" />}
               {Math.abs(delta).toFixed(0)}%
             </span>
           )}
         </div>
-        <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
-        <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
+        <div className="mt-1 text-lg font-bold leading-none num-lg text-foreground">
           {brl(value)}
         </div>
-        {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
+        {hint && <div className="mt-3 text-[9px] leading-relaxed text-muted-foreground font-medium line-clamp-1">{hint}</div>}
       </div>
     </Card>
   );
