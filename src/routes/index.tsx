@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: O lucro acumulado no dashboard está em zero sendo que tive lucro em janeiro, fevereiro março abril etc.
+ * Execute esta instrucao no projeto: Mude a logo para essa em anexo. Ajusta ela para ficar homogeneo
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
