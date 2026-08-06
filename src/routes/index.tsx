@@ -313,7 +313,7 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/30 text-muted-foreground">
                 <Users className="h-5 w-5" />
