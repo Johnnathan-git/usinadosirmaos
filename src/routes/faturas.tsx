@@ -149,8 +149,8 @@ function Faturas() {
                   {initial(c.name)}
                 </div>
                 <div className="min-w-0">
-                  <div className="truncate font-bold text-sm text-white">{c.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-white/40">UC {c.uc_number}</div>
+                  <div className="truncate font-bold text-sm text-foreground">{c.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
