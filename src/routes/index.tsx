@@ -29,7 +29,7 @@ import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip, AreaChart, Area } from "recharts";
 
 type Invoice = {
   id: string;
