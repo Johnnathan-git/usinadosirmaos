@@ -119,9 +119,9 @@ function Dashboard() {
   const lucroPrev = receitaPrev - despesasPrev;
   const delta = (cur: number, old: number) => (old === 0 ? null : ((cur - old) / Math.abs(old)) * 100);
 
-  // last 6 months
+  // last 12 months for historical context
   const months: { key: string; label: string; date: Date }[] = [];
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     months.push({
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
@@ -129,7 +129,7 @@ function Dashboard() {
       date: d,
     });
   }
-  const chartData = months.map(m => {
+  const allChartData = months.map(m => {
     const receita = data.invoices.filter(i => inMonth(i.reference_date, m.key))
       .reduce((a, i) => a + Number(i.client_pays), 0);
     const distribuidora = data.invoices.filter(i => inMonth(i.reference_date, m.key))
@@ -146,6 +146,9 @@ function Dashboard() {
       Lucro: receita - despesas,
     };
   });
+
+  // performance chart usually shows last 6
+  const chartData = allChartData.slice(-6);
 
   // ranking
   const profitByClient = new Map<string, number>();
