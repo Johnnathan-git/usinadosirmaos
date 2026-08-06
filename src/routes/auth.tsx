@@ -105,7 +105,7 @@ function AuthPage() {
             {/* Brilho atmosférico maior e mais suave */}
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-[50px] opacity-30 animate-pulse" />
             
-            <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-3xl bg-black/60 p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-md">
+            <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg bg-black/60 p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-md">
               <BrandMark className="h-full w-full object-contain" />
             </div>
           </div>
