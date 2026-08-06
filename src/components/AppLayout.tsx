@@ -136,8 +136,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     className={cn(
                       "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
-                        ? "bg-accent text-foreground shadow-sm"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-white/5 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                        : "text-white/40 hover:bg-white/5 hover:text-white"
                     )}
                   >
                     <Icon className={cn(
