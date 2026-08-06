@@ -205,6 +205,7 @@ function Dashboard() {
           label="Lucro Acumulado (Ano)" 
           value={lucroAnualReal} 
           tint="amber" 
+          sparkData={allChartData.map(d => ({ value: d.Lucro }))}
           delay={180}
         />
       </div>
