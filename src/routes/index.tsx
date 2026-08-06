@@ -1,7 +1,7 @@
 /**
  * Execute esta instrucao no projeto: Não precisa dessa opçao de alterar minha senha ao lado de + Novo Usuario. Preciso que tenha essa opçao para os usuários que logarem no sistema.
  */
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -148,8 +148,8 @@ function Dashboard() {
         <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 scrollbar-hide lg:grid lg:grid-cols-4 lg:pb-0 lg:snap-none">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} delay={0} />
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -158,16 +158,9 @@ function Dashboard() {
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Concessionária ${brl(faturasDistMes)}`}
-          delay={80}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} delay={160} />
-        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" delay={240} />
-      </div>
-
-      <div className="flex items-center justify-center gap-1.5 pb-2 lg:hidden">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="h-1.5 w-1.5 rounded-full bg-slate-300" />
-        ))}
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
+        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
@@ -204,9 +197,9 @@ function Dashboard() {
                   cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
                   content={<ChartTooltip />} 
                 />
-                <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} animationDuration={500} animationEasing="ease-out" />
-                <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} animationDuration={500} animationEasing="ease-out" />
-                <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} animationDuration={500} animationEasing="ease-out" />
+                <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -310,10 +303,10 @@ function ChartTooltip({ active, payload, label }: any) {
 }
 
 function StatCard({
-  icon, label, value, tint, hint, delta, invertDelta, delay = 0,
+  icon, label, value, tint, hint, delta, invertDelta,
 }: {
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber";
-  hint?: string; delta?: number | null; invertDelta?: boolean; delay?: number;
+  hint?: string; delta?: number | null; invertDelta?: boolean;
 }) {
   const semanticColor = 
     tint === "leaf" ? "#2F6F62" : 
@@ -336,38 +329,10 @@ function StatCard({
 
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    const duration = 600;
-    const startTime = performance.now();
-
-    const animate = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function (easeOutQuad)
-      const easeProgress = progress * (2 - progress);
-      
-      setDisplayValue(start + (value - start) * easeProgress);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [value]);
-
   return (
     <Card 
-      className="relative min-w-[260px] flex-shrink-0 snap-center overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-4 sm:p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md lg:min-w-0 lg:snap-align-none animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
-      style={{ 
-        borderTop: `3px solid ${semanticColor}`,
-        animationDelay: `${delay}ms`,
-        animationDuration: '400ms'
-      }}
+      className="relative overflow-hidden rounded-[10px] border border-[#E4E7EC] bg-white p-4 sm:p-5 shadow-sm transition-all hover:shadow-md"
+      style={{ borderTop: `3px solid ${semanticColor}` }}
     >
       <div className="mb-2 sm:mb-4 flex items-start justify-between gap-2">
         <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
@@ -387,7 +352,7 @@ function StatCard({
       </div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
       <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
-        {brl(displayValue)}
+        {brl(value)}
       </div>
       {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
     </Card>
