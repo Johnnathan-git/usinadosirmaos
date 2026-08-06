@@ -9,7 +9,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase, FileSpreadsheet } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 type Invoice = {
@@ -213,7 +213,7 @@ function Dashboard() {
         </div>
         <div className="space-y-4">
           {ranking.map((c, idx) => (
-            <div key={c.id} className="flex items-center gap-3 group/item">
+            <div key={c.id} className="flex items-center gap-3">
               <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
               <div
                 className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
@@ -226,10 +226,10 @@ function Dashboard() {
                   <span className="text-sm font-bold text-[#374151]">{c.name}</span>
                   <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100/80">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
-                    className="h-full rounded-full transition-all duration-1000 group-hover/item:opacity-100"
-                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: c.color, opacity: 0.8 }}
+                    className="h-full rounded-full"
+                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
                   />
                 </div>
               </div>
@@ -239,11 +239,8 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-slate-200/60 rounded-2xl p-6 shadow-none hover:shadow-md transition-shadow">
-        <h2 className="mb-6 text-lg font-bold text-[#374151] flex items-center gap-2">
-          <FileSpreadsheet className="h-5 w-5 text-slate-400" />
-          Resumo de Lançamentos
-        </h2>
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+        <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -334,13 +331,9 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-4 sm:p-5 shadow-none transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group"
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-4 sm:p-5 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
+      style={{ borderTop: `3px solid ${semanticColor}` }}
     >
-      <div 
-        className="absolute top-0 right-0 h-1 w-full opacity-80" 
-        style={{ background: semanticColor }} 
-      />
-      <div className="absolute top-0 right-0 -mr-6 -mt-6 h-20 w-20 rounded-full opacity-5 transition-transform duration-500 group-hover:scale-150" style={{ background: semanticColor }} />
       <div className="mb-2 sm:mb-4 flex items-start justify-between gap-2">
         <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
