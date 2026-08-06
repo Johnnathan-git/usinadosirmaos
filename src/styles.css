@@ -182,9 +182,10 @@ div[style*="Edit with Lovable"],
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
     background: radial-gradient(circle at 50% 50%, #0a0a0c 0%, #000 100%);
+    pointer-events: none;
   }
 
   .solar-core {
@@ -196,20 +197,20 @@ div[style*="Edit with Lovable"],
     margin-left: -450px;
     margin-top: -450px;
     background: radial-gradient(circle at center, 
-      rgba(255, 255, 255, 0.9) 0%, 
-      rgba(255, 230, 0, 0.6) 15%, 
-      rgba(255, 180, 0, 0.3) 40%, 
-      rgba(255, 100, 0, 0.1) 60%,
-      transparent 85%
+      rgba(255, 255, 255, 0.95) 0%, 
+      rgba(255, 230, 0, 0.7) 15%, 
+      rgba(255, 180, 0, 0.4) 35%, 
+      rgba(255, 100, 0, 0.2) 55%,
+      transparent 80%
     );
     border-radius: 50%;
-    filter: blur(60px);
+    filter: blur(40px);
     animation: solar-pulse 10s infinite alternate ease-in-out;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     box-shadow: 
-      0 0 100px rgba(255, 220, 0, 0.4),
-      0 0 200px rgba(255, 150, 0, 0.2);
+      0 0 120px rgba(255, 220, 0, 0.5),
+      0 0 240px rgba(255, 150, 0, 0.3);
   }
 
   .solar-flare {
