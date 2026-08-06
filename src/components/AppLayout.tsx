@@ -16,16 +16,16 @@ import { useMutation } from "@tanstack/react-query";
 import { changeMyPassword } from "@/lib/acessos.functions";
 import { toast } from "sonner";
 
-type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
+type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean; color: string };
 const nav: NavItem[] = [
-  { to: "/", label: "Dashboard", icon: LayoutGrid, module: "dashboard" },
-  { to: "/faturas", label: "Faturas e Clientes", icon: Users, module: "faturas" },
-  { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
-  { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado" },
-  { to: "/relatorio", label: "Relatório do Cliente", icon: FileSpreadsheet, module: "relatorio" },
-  { to: "/controle", label: "Controle", icon: Gauge, module: "controle" },
-  { to: "/inventario", label: "Inventário", icon: Package, module: "inventario" },
-  { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
+  { to: "/", label: "Dashboard", icon: LayoutGrid, module: "dashboard", color: "rgba(59, 130, 246, 0.15)" }, // Blue
+  { to: "/faturas", label: "Faturas e Clientes", icon: Users, module: "faturas", color: "rgba(34, 197, 94, 0.15)" }, // Green
+  { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa", color: "rgba(168, 85, 247, 0.15)" }, // Purple
+  { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado", color: "rgba(249, 115, 22, 0.15)" }, // Orange
+  { to: "/relatorio", label: "Relatório do Cliente", icon: FileSpreadsheet, module: "relatorio", color: "rgba(14, 165, 233, 0.15)" }, // Sky
+  { to: "/controle", label: "Controle", icon: Gauge, module: "controle", color: "rgba(234, 179, 8, 0.15)" }, // Yellow
+  { to: "/inventario", label: "Inventário", icon: Package, module: "inventario", color: "rgba(107, 114, 128, 0.15)" }, // Gray
+  { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true, color: "rgba(239, 68, 68, 0.15)" }, // Red
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -149,36 +149,66 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
-          <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
-            Módulos
-          </div>
-          <nav className="space-y-1">
-            {visibleNav.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
-              const Icon = item.icon;
-              return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={cn(
-                      "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
-                      active
-                        ? "text-white"
-                        : "text-[#9CA3AF] hover:text-white",
-                    )}
-                  >
-                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
-                  <span className="truncate">{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-          <div className="mt-16 border-t border-white/10 px-4 pt-6">
-            <span className="font-serif text-[15px] italic leading-tight text-white/80">
-              Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
-            </span>
+        <aside className="no-print sticky top-0 hidden h-[calc(100vh-24px)] w-56 shrink-0 md:block ml-3 mt-3 mb-3 bg-gradient-to-br from-[#1A1D2E] to-[#0F1119] rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.35)] z-50 overflow-hidden border border-white/5">
+          <div className="flex flex-col h-full">
+            <div className="p-5 pb-4">
+              <BrandLockup />
+            </div>
+            
+            <div className="px-5 mb-4">
+              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+            </div>
+
+            <div className="mb-4 px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+              Módulos
+            </div>
+            
+            <nav className="flex-1 space-y-1.5 px-3">
+              {visibleNav.map((item) => {
+                const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                const Icon = item.icon;
+                return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={cn(
+                        "group relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all duration-150 rounded-[12px]",
+                        active
+                          ? "bg-gradient-to-r from-[#D4A017] to-[#B8860B] text-white shadow-[0_0_20px_rgba(212,160,23,0.3)]"
+                          : "text-white/60 hover:text-white hover:bg-white/5 hover:scale-[1.02]",
+                      )}
+                    >
+                    <div 
+                      className={cn(
+                        "flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] transition-colors",
+                        active ? "bg-transparent" : ""
+                      )}
+                      style={!active ? { backgroundColor: item.color } : {}}
+                    >
+                      <Icon 
+                        className={cn("h-4.5 w-4.5 shrink-0 transition-colors", active ? "text-white" : "")} 
+                        strokeWidth={active ? 2.5 : 2} 
+                      />
+                    </div>
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="p-4 mt-auto">
+              <div className="flex items-center gap-3 rounded-[10px] bg-white/5 p-3 border border-white/5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4A017] to-[#B8860B] text-sm font-bold text-white shadow-sm">
+                  {((acc as any)?.display_name || 'U').charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-medium text-white/40 leading-none mb-1">Seja Bem Vindo</p>
+                  <p className="truncate font-display text-[13px] font-bold text-white/90 leading-tight">
+                    {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </aside>
         <main className="min-w-0 flex-1 px-4 py-8 pb-28 sm:px-8 md:pb-8">
