@@ -185,7 +185,7 @@ function Relatorio() {
           <table className="w-full min-w-[750px] border-collapse text-sm">
             <thead>
               <tr className="bg-[#F8FAFC]">
-                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor SEM Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
+                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
                     <th
                       key={h}
                       className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""} ${h.includes("Consumo") || h.includes("SEM Usina") || h.includes("DESC") ? "max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap" : ""}`}
