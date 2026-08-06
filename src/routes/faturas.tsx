@@ -289,7 +289,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             </div>
           </div>
           <div>
-            <Label className="text-white/40">Cor do Cliente</Label>
+            <Label className="text-foreground/40">Cor do Cliente</Label>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {CLIENT_COLORS.map(col => (
                 <button
