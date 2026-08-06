@@ -223,12 +223,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <span className="text-[9px] font-bold uppercase tracking-wider">Mais</span>
           </button>
         </nav>
-      </div>
     </div>
   );
 }
-  );
-}
+
+
 
 function ChangeOwnPasswordDialog() {
   const [open, setOpen] = useState(false);
