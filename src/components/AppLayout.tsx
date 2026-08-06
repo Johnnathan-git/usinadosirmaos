@@ -147,7 +147,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-white/5 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-[4px_0_15px_rgba(201,138,62,0.08)]">
+        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-white/5 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
           <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
             Módulos
           </div>
