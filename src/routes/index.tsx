@@ -165,7 +165,7 @@ function Dashboard() {
         <p className="text-sm font-medium text-white/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 [&>*]:glass-card-interactive">
         <StatCard 
           icon={<TrendingUp className="h-4 w-4" />} 
           label="Receita Mensal" 
@@ -392,7 +392,7 @@ function StatCard({
   
   return (
     <Card 
-      className="glass-card relative overflow-hidden rounded-2xl p-4 transition-all hover:bg-white/5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="glass-card relative overflow-hidden rounded-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
         animationDelay: `${delay}ms`
       }}
