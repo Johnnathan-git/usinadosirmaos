@@ -168,7 +168,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                         : "text-[#9CA3AF] hover:text-white",
                     )}
                   >
-                    {active && <div className="absolute left-[-16px] top-1/2 h-5 w-1.5 -translate-y-1/2 bg-[#C98A3E] rounded-r-full shadow-[2px_0_8px_rgba(201,138,62,0.4)]" />}
+                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
