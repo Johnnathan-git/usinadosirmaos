@@ -102,11 +102,11 @@ function AuthPage() {
       <Card className="glass-card relative w-full max-w-md border-white/10 p-8 shadow-2xl sm:p-10">
         <div className="mb-8 flex flex-col items-center gap-6">
           <div className="relative flex h-32 w-32 items-center justify-center">
-            {/* Brilho atmosférico maior e mais suave */}
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-[50px] opacity-30 animate-pulse" />
+            {/* Brilho atmosférico sutil sem forma rígida */}
+            <div className="absolute inset-0 bg-primary/10 rounded-full blur-[40px] opacity-20" />
             
-            <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg bg-black/60 p-2 shadow-2xl ring-1 ring-white/10 backdrop-blur-md">
-              <BrandMark className="h-full w-full object-contain" />
+            <div className="relative flex h-24 w-24 items-center justify-center bg-transparent">
+              <BrandMark className="h-full w-full object-contain rounded-xl" />
             </div>
           </div>
           <div className="text-center">
