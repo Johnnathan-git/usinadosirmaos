@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ajustar pagina de login para ficar enquadrada no celular. Quando acesso pelo celular o tamanho está grande e eu consigo movimentar para cima e para baixo
+ * Execute esta instrucao no projeto: No celular o sistema ficou igual o print. Dê uma melhorada para que fique mais intuitiva. Mesmo eu liberando nas permissões apenas 2 modulos o usuario fica com uma opção de 3 pontinhos/Mais. Só tem a logo no canto sem o nome da usina, enfim ficou tudo muito escuro, dificil de navegar.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
