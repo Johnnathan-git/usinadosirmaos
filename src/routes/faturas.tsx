@@ -143,7 +143,7 @@ function Faturas() {
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-2.5">
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
                   style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
