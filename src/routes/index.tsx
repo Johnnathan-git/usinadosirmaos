@@ -304,7 +304,7 @@ function Dashboard() {
                 >
                   <span className="w-5 text-right text-xs text-muted-foreground font-medium">{idx + 1}</span>
                   <div
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-foreground shadow-sm"
                     style={{ backgroundColor: c.color }}
                   >
                     {initial(c.name)}
