@@ -291,6 +291,26 @@ div[style*="Edit with Lovable"],
     100% { transform: translate(15%, -10%) rotate(360deg) scale(1.2); }
   }
 
+  .floating-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, transparent 70%);
+    filter: blur(100px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -2;
+    animation: orb-float 18s infinite ease-in-out;
+    opacity: 0.15;
+  }
+
+  @keyframes orb-float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(60px, 40px) scale(1.15); }
+    66% { transform: translate(-40px, 60px) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+
   .glass-card {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(16px);
