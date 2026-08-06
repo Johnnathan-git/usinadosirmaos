@@ -771,7 +771,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                 </tbody>
               </table>
             </div>
-        </div>
+          </div>
 
         {launching && <InvoiceDialog client={client} onClose={() => setLaunching(false)} />}
         {editing && <InvoiceDialog client={client} invoice={editing} onClose={() => setEditing(null)} />}
