@@ -363,10 +363,10 @@ function ChartTooltip({ active, payload, label }: any) {
 }
 
 function StatCard({
-  icon, label, value, tint, hint, delta, invertDelta,
+  icon, label, value, tint, hint, delta, invertDelta, sparkData, delay
 }: {
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber";
-  hint?: string; delta?: number | null; invertDelta?: boolean;
+  hint?: string; delta?: number | null; invertDelta?: boolean; sparkData?: { value: number }[]; delay?: number;
 }) {
   const semanticColor = 
     tint === "leaf" ? "#2F6F62" : 
@@ -391,30 +391,52 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
-      style={{ borderTop: `3px solid ${semanticColor}` }}
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      style={{ 
+        borderTop: `3px solid ${semanticColor}`,
+        animationDelay: `${delay}ms`
+      }}
     >
-      <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
-        <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
-          {styledIcon}
+      {sparkData && (
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke={semanticColor} 
+                fill={semanticColor} 
+                strokeWidth={2} 
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
-        {delta != null && Number.isFinite(delta) && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
-            )}
-          >
-            {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-            {Math.abs(delta).toFixed(0)}%
-          </span>
-        )}
+      )}
+
+      <div className="relative z-10">
+        <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
+          <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+            {styledIcon}
+          </div>
+          {delta != null && Number.isFinite(delta) && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+                good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+              )}
+            >
+              {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              {Math.abs(delta).toFixed(0)}%
+            </span>
+          )}
+        </div>
+        <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
+        <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+          {brl(value)}
+        </div>
+        {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
-      <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
-        {brl(value)}
-      </div>
-      {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
     </Card>
   );
 }
