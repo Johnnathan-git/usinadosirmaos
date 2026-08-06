@@ -110,10 +110,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="aurora-blob aurora-blob-2" />
         <div className="aurora-blob aurora-blob-3" />
         
-        {/* Floating Orb for Dashboard Background */}
-        <div className="floating-orb top-20 right-[10%]" />
-        <div className="floating-orb bottom-[10%] left-[5%] opacity-[0.08]" />
-        
         {/* Subtle noise and scanline effect for depth */}
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/[0.01] to-transparent pointer-events-none" />
