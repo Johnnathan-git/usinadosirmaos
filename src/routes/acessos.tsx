@@ -113,23 +113,23 @@ function AcessosContent() {
                   </td>
                   <td className="px-6 py-4">
                     {u.is_admin ? (
-                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider">Todos os módulos</span>
+                      <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">Todos os módulos</span>
                     ) : u.permissions.length === 0 ? (
-                      <span className="text-[10px] text-[#9CA3AF]">—</span>
+                      <span className="text-[10px] text-white/20">—</span>
                     ) : (
                       <div className="flex flex-wrap gap-1">
                         {u.permissions.map((p) => (
-                          <span key={p} className="rounded-md bg-[#151B2E]/10 px-2 py-0.5 text-[10px] font-bold text-[#151B2E] uppercase tracking-wider">
+                          <span key={p} className="rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-bold text-white/70 uppercase tracking-wider">
                             {MODULE_OPTIONS.find((m) => m.key === p)?.label ?? p}
                           </span>
                         ))}
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
-                    {clientName(u.client_id) ?? <span className="text-[#9CA3AF]">—</span>}
+                  <td className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-wider">
+                    {clientName(u.client_id) ?? <span className="text-white/20">—</span>}
                   </td>
-                  <td className="px-6 py-4 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wider num">{formatDateBR(u.created_at)}</td>
+                  <td className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-wider num">{formatDateBR(u.created_at)}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="inline-flex gap-2">
                       <UserFormDialog mode="edit" user={u} clients={clients} />
