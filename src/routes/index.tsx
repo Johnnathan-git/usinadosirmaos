@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Vamos tentar um tema mais escuro, tipo o do link: https://linear.app/coding-sessions
+ * Execute esta instrucao no projeto: Ajustar pagina de login para ficar enquadrada no celular. Quando acesso pelo celular o tamanho está grande e eu consigo movimentar para cima e para baixo
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
