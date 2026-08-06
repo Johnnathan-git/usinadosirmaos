@@ -181,78 +181,90 @@ function Relatorio() {
             {client?.name ?? "—"}
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[750px] border-collapse text-sm">
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+          <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
               <tr className="bg-[#F8FAFC]">
-                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
-                    <th
-                      key={h}
-                      className={`border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h === "Unidade Consumidora" ? "min-w-[180px]" : ""} ${h.includes("Consumo") || h.includes("SEM Usina") || h.includes("DESC") ? "max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap" : ""}`}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                  <th className="border border-[#E2E8F0] px-4 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest min-w-[120px]">
-                    Baixar Fatura
+                {[
+                  { label: "Mês referência", width: "w-[120px]" },
+                  { label: "Unidade Consumidora", width: "w-[160px]" },
+                  { label: "Consumo (kW)", width: "w-[110px]" },
+                  { label: "Preço kW", width: "w-[100px]" },
+                  { label: "Ilum. pública", width: "w-[120px]" },
+                  { label: "Juros/Multa", width: "w-[120px]" },
+                  { label: "Valor S/ Usina", width: "w-[120px]" },
+                  { label: `Valor COM ${client?.discount_pct ?? 30}% DESC`, width: "w-[150px]" },
+                ].map((h) => (
+                  <th
+                    key={h.label}
+                    className={`border border-[#E2E8F0] px-3 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h.width}`}
+                  >
+                    {h.label}
                   </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
-                    {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                      <td key={f} className="border border-[#F1F5F9] p-0">
-                        <Input
-                          value={r[f]}
-                          onChange={(e) => edit(r.id, f, e.target.value)}
-                          className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 ${
-                            f === "comDesconto" 
-                              ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-base" 
-
-
-                              : f === "semUsina"
-                              ? "text-[#D64545] font-bold"
-                              : "text-[#374151] font-medium"
-                          }`}
-                        />
-                      </td>
-                    ))}
-                    <td className="border border-[#F1F5F9] p-0 text-center align-middle">
-                      {r.attachment_url ? (
-                        <button 
-                          onClick={async () => {
-                            try {
-                              const path = r.attachment_url!;
-                              const { data, error } = await supabase.storage
-                                .from('faturas_v3_privado_v2')
-                                .createSignedUrl(path, 3600);
-                              if (error) throw error;
-                              
-                              const a = document.createElement('a');
-                              const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
-                              window.location.href = downloadUrl;
-                            } catch (err: any) {
-                              console.error(err);
-                              alert("Erro ao abrir arquivo: " + err.message);
-                            }
-                          }}
-                          className="flex h-14 w-full items-center justify-center gap-2 text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
-                          title="Baixar Fatura"
-                        >
-                          <Paperclip className="h-3 w-3" />
-                          <span>Baixar</span>
-                        </button>
-                      ) : (
-                        <div className="flex h-14 w-full items-center justify-center text-slate-300">
-                          <Paperclip className="h-4 w-4 opacity-30" />
-                        </div>
-                      )}
-                    </td>
-                  </tr>
                 ))}
+                <th className="border border-[#E2E8F0] px-3 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest w-[100px]">
+                  Baixar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
+                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
+                    <td key={f} className="border border-[#F1F5F9] p-0">
+                      <Input
+                        value={r[f]}
+                        onChange={(e) => edit(r.id, f, e.target.value)}
+                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 w-full px-2 ${
+                          f === "comDesconto"
+                            ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-sm sm:text-base"
+                            : f === "semUsina"
+                            ? "text-[#D64545] font-bold"
+                            : "text-[#374151] font-medium"
+                        }`}
+                      />
+                    </td>
+                  ))}
+                  <td className="border border-[#F1F5F9] p-0 text-center align-middle">
+                    {r.attachment_url ? (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const path = r.attachment_url!;
+                            const { data, error } = await supabase.storage
+                              .from("faturas_v3_privado_v2")
+                              .createSignedUrl(path, 3600);
+                            if (error) throw error;
+
+                            const downloadUrl = `/api/public/download?token=${encodeURIComponent(
+                              data.signedUrl,
+                            )}&name=${encodeURIComponent(path.split("/").pop() || "fatura.pdf")}`;
+                            window.location.href = downloadUrl;
+                          } catch (err: any) {
+                            console.error(err);
+                            alert("Erro ao abrir arquivo: " + err.message);
+                          }
+                        }}
+                        className="flex h-14 w-full items-center justify-center gap-2 text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
+                        title="Baixar Fatura"
+                      >
+                        <Paperclip className="h-3 w-3" />
+                        <span className="hidden sm:inline">Baixar</span>
+                      </button>
+                    ) : (
+                      <div className="flex h-14 w-full items-center justify-center text-slate-300">
+                        <Paperclip className="h-4 w-4 opacity-30" />
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
               {rows.length === 0 && (
-                <tr><td colSpan={8} className="py-20 text-center text-slate-400 font-medium italic">Selecione os meses acima para gerar o relatório.</td></tr>
+                <tr>
+                  <td colSpan={9} className="py-20 text-center text-slate-400 font-medium italic">
+                    Selecione os meses acima para gerar o relatório.
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
