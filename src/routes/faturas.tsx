@@ -747,7 +747,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   toast.error("Erro ao abrir arquivo: " + err.message);
                                 }
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-foreground/60 hover:bg-white/10"
                               title="Ver anexo"
                             >
                               <Paperclip className="h-4 w-4" />
