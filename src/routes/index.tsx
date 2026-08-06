@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No Dashboard o Lucro acumulado ficou sem essas linhas internas coloridas.
+ * Execute esta instrucao no projeto: É o seguinte. Não estou gostando desse menu lateral e dessa barra branca em cima onde tem o nome da Usina etc. Dê uma reinventada nisso ai, pode ser radical. Não mexa nos dados, ou fluxo dos sistema.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
