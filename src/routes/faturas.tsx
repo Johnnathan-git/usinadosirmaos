@@ -271,7 +271,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
+          <DialogTitle className="text-foreground text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
