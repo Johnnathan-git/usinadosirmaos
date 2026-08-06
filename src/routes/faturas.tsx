@@ -319,8 +319,8 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             </div>
           </div>
           <div>
-            <Label className="text-white/40">Número da UC *</Label>
-            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-foreground/40">Número da UC *</Label>
+            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
             <Label className="text-white/40">Observações</Label>
