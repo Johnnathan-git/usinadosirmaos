@@ -101,12 +101,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
         <div className="relative flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-0">
-            <div className="hidden md:flex w-64 -ml-6 mr-6 items-center px-6 py-4 h-[73px] bg-[#151B2E]">
-              <BrandLockup dark />
-            </div>
-            <div className="md:hidden">
-              <BrandLockup />
-            </div>
+            <BrandLockup />
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
@@ -173,7 +168,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                         : "text-[#9CA3AF] hover:text-white",
                     )}
                   >
-                    {active && <div className="absolute left-[-16px] top-1/2 h-5 w-1.5 -translate-y-1/2 bg-[#C98A3E] rounded-r-full shadow-[2px_0_8px_rgba(201,138,62,0.4)]" />}
+                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
