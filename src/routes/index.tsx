@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Onde vou cadastrar o numero de whatsapp do cliente?
+ * Execute esta instrucao no projeto: Não achei essa opção no sistema não. Esse cadastro tem que ser feito no modulo Faturas e Clientes no cadastro do Cliente
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
