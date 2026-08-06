@@ -1,5 +1,24 @@
 /**
- * Execute esta instrucao no projeto: No modulo Relatorio de Cliente tem coluna cortando numeros ainda, pelo notebook está cortando inclusive, imagino pelo celular. Ajustar isso
+ * Execute esta instrucao no projeto: Quero redesenhar APENAS a página/componente do Dashboard (não mexer em nenhum outro módulo). NÃO altere nenhum dado, cálculo, lógica de negócio, nomes de variáveis, chamadas de API ou fluxo existente — é uma mudança 100% visual/estrutural (JSX/CSS), mantendo o app funcionando exatamente igual.
+ * 
+ * 1) CARDS DE KPI (topo)
+ * - Adicione uma mini sparkline (linha de tendência simples, sem eixos nem labels) atrás do valor principal de cada card, usando os últimos meses já disponíveis nos dados de "Resumo de Lançamentos" que já existem na página.
+ * - Adicione animação de entrada leve (fade + slide-up, 300ms, delay de 60ms entre cards).
+ * 
+ * 2) GRÁFICO "PERFORMANCE FINANCEIRA"
+ * - Arredonde o topo das barras (border-radius só no topo, tipo 4px).
+ * - Adicione tooltip ao passar o mouse sobre uma barra, mostrando o valor exato do mês.
+ * 
+ * 3) LAYOUT GERAL DA PÁGINA — reorganizar em grid
+ * - Coloque a seção "Ranking — Clientes Mais Lucrativos" e um novo bloco compacto de "Total de Clientes" lado a lado (ranking ocupando ~70%, total ~30%).
+ * - Reduza o espaçamento vertical entre as seções.
+ * 
+ * 4) RANKING — CLIENTES MAIS LUCRATIVOS
+ * - Destaque visualmente o 1º colocado: fundo levemente dourado/âmbar.
+ * 
+ * 5) TABELA "RESUMO DE LANÇAMENTOS"
+ * - Colora o valor da coluna LUCRO: verde (+) / vermelho (-).
+ * - Adicione hover discreto nas linhas.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -10,7 +29,7 @@ import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip, AreaChart, Area } from "recharts";
 
 type Invoice = {
   id: string;
@@ -149,7 +168,15 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+        <StatCard 
+          icon={<TrendingUp className="h-5 w-5" />} 
+          label="Receita Mensal" 
+          value={receitaMes} 
+          tint="leaf" 
+          delta={delta(receitaMes, receitaPrev)} 
+          sparkData={chartData.map(d => ({ value: d.Receita }))}
+          delay={0}
+        />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -158,128 +185,161 @@ function Dashboard() {
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Concessionária ${brl(faturasDistMes)}`}
+          sparkData={chartData.map(d => ({ value: d.Despesas }))}
+          delay={60}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
+        <StatCard 
+          icon={<DollarSign className="h-5 w-5" />} 
+          label="Lucro do Mês" 
+          value={lucroMes} 
+          tint="sky" 
+          delta={delta(lucroMes, lucroPrev)} 
+          sparkData={chartData.map(d => ({ value: d.Lucro }))}
+          delay={120}
+        />
+        <StatCard 
+          icon={<Briefcase className="h-5 w-5" />} 
+          label="Lucro Acumulado (Ano)" 
+          value={lucroAnualReal} 
+          tint="amber" 
+          delay={180}
+        />
       </div>
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
-          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
-            {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
-              <span key={k} className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full" style={{ background: c }} />
-                {k}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="-mx-2 overflow-x-auto px-2">
-          <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid vertical={false} stroke="#F1F5F9" strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="month" 
-                  tickLine={false} 
-                  axisLine={false} 
-                  tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }} 
-                  dy={10} 
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
-                  tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
-                />
-                <Tooltip 
-                  cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
-                  content={<ChartTooltip />} 
-                />
-                <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </Card>
-
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <div className="mb-4 flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-slate-400" />
-          <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
-        </div>
-        <div className="space-y-4">
-          {ranking.map((c, idx) => (
-            <div key={c.id} className="flex items-center gap-3">
-              <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
-              <div
-                className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
-                style={{ backgroundColor: c.color }}
-              >
-                {initial(c.name)}
-              </div>
-              <div className="flex-1">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-sm font-bold text-[#374151]">{c.name}</span>
-                  <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
-                </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
-                  />
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
+              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
+                {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
+                  <span key={k} className="inline-flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+                    {k}
+                  </span>
+                ))}
               </div>
             </div>
-          ))}
-          {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
-        </div>
-      </Card>
+            <div className="-mx-2 overflow-x-auto px-2">
+              <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <CartesianGrid vertical={false} stroke="#F1F5F9" strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="month" 
+                      tickLine={false} 
+                      axisLine={false} 
+                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }} 
+                      dy={10} 
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+                      tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
+                    />
+                    <Tooltip 
+                      cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
+                      content={<ChartTooltip />} 
+                    />
+                    <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                    <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </Card>
 
-      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-        <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-[#E4E7EC]">
-                <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
-                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Receita</th>
-                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
-                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
-                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Despesas</th>
-                <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Lucro</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#F5F6F8]">
-              {summary.map(row => (
-                <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors zebra-stripe">
-                  <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                  <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
-                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
-                  <td className="num py-4 text-right text-[#4B5563]">{brl(row.Concessionária)}</td>
-                  <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
-                  <td className="num py-4 text-right font-bold text-[#2E5C8A]">{brl(row.Lucro)}</td>
-                </tr>
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+            <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#E4E7EC]">
+                    <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
+                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Receita</th>
+                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
+                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
+                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Despesas</th>
+                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Lucro</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F5F6F8]">
+                  {summary.map(row => (
+                    <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors zebra-stripe">
+                      <td className="py-4 text-[#374151] font-bold">{row.month}</td>
+                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
+                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
+                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Concessionária)}</td>
+                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
+                      <td className={cn(
+                        "num py-4 text-right font-bold transition-colors",
+                        row.Lucro >= 0 ? "text-[#2F6F62]" : "text-[#D64545]"
+                      )}>
+                        {brl(row.Lucro)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+            <div className="mb-4 flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-slate-400" />
+              <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
+            </div>
+            <div className="space-y-4">
+              {ranking.map((c, idx) => (
+                <div 
+                  key={c.id} 
+                  className={cn(
+                    "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                    idx === 0 && "bg-[#C98A3E]/5 border border-[#C98A3E]/10"
+                  )}
+                >
+                  <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
+                  <div
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                    style={{ backgroundColor: c.color }}
+                  >
+                    {initial(c.name)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="mb-1 flex items-center justify-between">
+                      <span className="text-sm font-bold text-[#374151]">{c.name}</span>
+                      <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
+                    </div>
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
+                      />
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+              {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
+            </div>
+          </Card>
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
-            <Users className="h-6 w-6" />
-          </div>
-          <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
-            <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
-          </div>
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
+                <Users className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
+                <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
+              </div>
+            </div>
+          </Card>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
@@ -303,10 +363,10 @@ function ChartTooltip({ active, payload, label }: any) {
 }
 
 function StatCard({
-  icon, label, value, tint, hint, delta, invertDelta,
+  icon, label, value, tint, hint, delta, invertDelta, sparkData, delay
 }: {
   icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber";
-  hint?: string; delta?: number | null; invertDelta?: boolean;
+  hint?: string; delta?: number | null; invertDelta?: boolean; sparkData?: { value: number }[]; delay?: number;
 }) {
   const semanticColor = 
     tint === "leaf" ? "#2F6F62" : 
@@ -331,30 +391,52 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
-      style={{ borderTop: `3px solid ${semanticColor}` }}
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      style={{ 
+        borderTop: `3px solid ${semanticColor}`,
+        animationDelay: `${delay}ms`
+      }}
     >
-      <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
-        <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
-          {styledIcon}
+      {sparkData && (
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke={semanticColor} 
+                fill={semanticColor} 
+                strokeWidth={2} 
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
-        {delta != null && Number.isFinite(delta) && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
-              good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
-            )}
-          >
-            {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-            {Math.abs(delta).toFixed(0)}%
-          </span>
-        )}
+      )}
+
+      <div className="relative z-10">
+        <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
+          <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+            {styledIcon}
+          </div>
+          {delta != null && Number.isFinite(delta) && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+                good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
+              )}
+            >
+              {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+              {Math.abs(delta).toFixed(0)}%
+            </span>
+          )}
+        </div>
+        <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
+        <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+          {brl(value)}
+        </div>
+        {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
-      <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
-        {brl(value)}
-      </div>
-      {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
     </Card>
   );
 }
