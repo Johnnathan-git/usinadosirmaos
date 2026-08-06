@@ -331,8 +331,8 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
-            <Label className="text-white/40">Iluminação Pública (Valor Fixo) *</Label>
-            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-foreground/40">Iluminação Pública (Valor Fixo) *</Label>
+            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-foreground" />
           </div>
         </div>
         <DialogFooter>
