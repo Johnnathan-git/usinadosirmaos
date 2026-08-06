@@ -683,7 +683,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-positive">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
             <TrendingUp className="h-4 w-4" /> Histórico de Faturas
           </div>
           <Button
