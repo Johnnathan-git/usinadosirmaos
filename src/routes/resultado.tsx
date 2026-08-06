@@ -151,14 +151,14 @@ function Resultado() {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
           <Card key={mk} className="glass-card overflow-hidden">
-            <div className="border-b border-border bg-accent px-4 sm:px-6 py-4 light:border-blue-200 light:bg-blue-600 light:shadow-sm">
+            <div className="border-b border-border bg-accent px-4 sm:px-6 py-4 light:border-emerald-200 light:bg-emerald-600 light:shadow-sm">
               <h2 className="text-base font-bold text-foreground light:text-white light:tracking-wide">{monthLabelLong(d)}</h2>
 
             </div>
             <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-border bg-accent light:border-blue-200 light:bg-blue-50">
+                  <tr className="border-b border-border bg-accent light:border-emerald-200 light:bg-emerald-50">
                     <th className="px-4 py-3 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Mês</th>
                     <th className="px-4 py-3 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Consumo (kW)</th>
 
@@ -208,8 +208,8 @@ function Resultado() {
         <Card className="glass-card p-10 text-center text-muted-foreground">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="glass-card border-emerald-500/40 bg-emerald-500/20 p-6 text-center shadow-lg relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/40 via-emerald-500/20 to-transparent opacity-80 pointer-events-none" />
+      <Card className="glass-card border-emerald-500/40 bg-emerald-500/20 p-6 text-center shadow-lg relative overflow-hidden group light:border-emerald-600 light:bg-emerald-600">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/40 via-emerald-500/20 to-transparent opacity-80 pointer-events-none light:from-emerald-500 light:via-emerald-600 light:to-emerald-700 light:opacity-100" />
         <div className="relative z-10">
         <div className="text-[10px] font-bold uppercase tracking-widest text-white">Economia total gerada</div>
         <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">{brl(totalEconomia)}</div>
