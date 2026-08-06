@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Não precisa dessa opçao de alterar minha senha ao lado de + Novo Usuario. Preciso que tenha essa opçao para os usuários que logarem no sistema.
+ * Execute esta instrucao no projeto: Onde vou cadastrar o numero de whatsapp do cliente?
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
