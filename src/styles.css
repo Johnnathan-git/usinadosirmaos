@@ -51,7 +51,7 @@
 
 :root {
   --radius: 14px;
-  --background: #EEF2F7;
+  --background: #F3F5F8;
   --foreground: #374151;
   
   --card: #FFFFFF;
@@ -81,38 +81,13 @@
 
 @layer base {
   body {
-    background: linear-gradient(to bottom, #EEF2F7, #E3E9F2);
+    background: var(--background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
-  }
-
-  body::before,
-  body::after {
-    content: '';
-    position: fixed;
-    width: 60vw;
-    height: 60vw;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: -1;
-    opacity: 0.22;
-    pointer-events: none;
-  }
-
-  body::before {
-    top: -20%;
-    right: -10%;
-    background: radial-gradient(circle, rgba(201, 138, 62, 0.4) 0%, transparent 70%);
-  }
-
-  body::after {
-    bottom: -20%;
-    left: -10%;
-    background: radial-gradient(circle, rgba(21, 27, 46, 0.2) 0%, transparent 70%);
   }
 
 
