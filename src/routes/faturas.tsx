@@ -723,10 +723,10 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <tr key={inv.id} className="border-t border-white/5 hover:bg-white/5 even:bg-white/5">
                         <td className="py-3 text-foreground font-medium">{monthLabelFromISO(inv.reference_date)}</td>
                         <td className="py-3 text-right text-foreground/60">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
+                        <td className="py-3 text-right text-foreground">{brl(Number(inv.value_without_plant))}</td>
+                        <td className="py-3 text-right text-emerald-400">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-3 text-right text-red-400">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-3 text-right font-semibold text-emerald-400">{brl(lucro)}</td>
                         <td className="py-3 text-center">
                           {inv.attachment_url ? (
                             <button 
