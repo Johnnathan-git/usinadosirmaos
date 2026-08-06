@@ -185,10 +185,10 @@ function Controle() {
             ) : <div className="text-2xl font-bold text-foreground num-lg">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">kW por placa/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">kW por placa/mês</Label>
             {editing ? (
-              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-white" />
-            ) : <div className="text-2xl font-bold text-white num-lg">{config.kw_per_panel} kW</div>}
+              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-foreground" />
+            ) : <div className="text-2xl font-bold text-foreground num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Geração total/mês</Label>
