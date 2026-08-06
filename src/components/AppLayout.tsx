@@ -149,33 +149,34 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
-          <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
-            Módulos
+        <aside className="no-print sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 bg-gradient-to-b from-[#16192B] via-[#16192B] to-[#0D101E] px-4 py-8 md:block shadow-[2px_0_12px_rgba(0,0,0,0.15)] border-r border-white/5">
+          <div className="mb-6 border-b border-white/8 pb-4">
+            <div className="px-4 text-[10px] font-bold uppercase tracking-[0.25em] text-[#9CA3AF]">
+              Módulos
+            </div>
           </div>
-          <nav className="space-y-1">
+          <nav className="space-y-4">
             {visibleNav.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
               return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={cn(
-                      "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
-                      active
-                        ? "text-white"
-                        : "text-[#9CA3AF] hover:text-white",
-                    )}
-                  >
-                    {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
+                    "group relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all duration-200 rounded-[10px]",
+                    active
+                      ? "bg-[#C98A3E]/15 text-[#C98A3E]"
+                      : "text-[#9CA3AF] hover:bg-white/5 hover:text-white",
+                  )}
+                >
+                  <Icon className={cn("h-5 w-5 shrink-0 transition-colors", active ? "text-[#C98A3E]" : "group-hover:text-white")} strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
-          <div className="mt-16 border-t border-white/10 px-4 pt-6">
+          <div className="mt-16 border-t border-white/8 px-4 pt-6">
             <span className="font-serif text-[15px] italic leading-tight text-white/80">
               Seja Bem Vindo, {(acc as any)?.display_name || (acc as any)?.user_email?.split('@')[0] || 'Usuário'}
             </span>
