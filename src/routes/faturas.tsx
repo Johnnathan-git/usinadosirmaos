@@ -702,7 +702,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           ) : invoices.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
           ) : (
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
+              <table className="w-full text-sm min-w-[800px]">
               <thead className="sticky top-0 bg-slate-50">
                 <tr className="text-[10px] uppercase tracking-wider text-slate-500">
                   <th className="px-2 py-2 text-left font-semibold">Mês</th>
@@ -756,6 +757,13 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       </td>
                       <td className="py-3 pl-2 text-right">
                         <div className="flex justify-end gap-1">
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
                           <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
                             <Pencil className="h-4 w-4" />
                           </button>

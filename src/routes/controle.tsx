@@ -177,7 +177,7 @@ function Controle() {
         <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40">
           <Zap className="h-4 w-4 text-primary" /> Geração da Usina
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-4">
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Nº de placas</Label>
             {editing ? (
@@ -228,8 +228,8 @@ function Controle() {
           <h2 className="text-lg font-bold text-white">Rateio por Cliente</h2>
           <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{rows.length} cliente(s)</span>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
+          <table className="w-full text-sm min-w-[700px]">
             <thead>
               <tr className="border-b border-white/5">
                 <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Cliente</th>
