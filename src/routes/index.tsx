@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No celular o sistema ficou igual o print. Dê uma melhorada para que fique mais intuitiva. Mesmo eu liberando nas permissões apenas 2 modulos o usuario fica com uma opção de 3 pontinhos/Mais. Só tem a logo no canto sem o nome da usina, enfim ficou tudo muito escuro, dificil de navegar.
+ * Execute esta instrucao no projeto: O lucro acumulado no dashboard está em zero sendo que tive lucro em janeiro, fevereiro março abril etc.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
