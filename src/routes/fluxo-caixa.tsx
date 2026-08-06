@@ -110,7 +110,7 @@ function Fluxo() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Fluxo de Caixa</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white">Fluxo de Caixa</h1>
           <p className="text-sm font-medium text-white/40">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
