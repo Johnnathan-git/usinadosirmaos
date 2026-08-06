@@ -85,19 +85,21 @@ function Dashboard() {
   const lucroAno = data.invoices
     .filter(i => {
       const isThisYear = i.reference_date.startsWith(String(now.getFullYear()));
-      const refDate = new Date(i.reference_date + "-01T00:00:00");
-      // Considera apenas meses anteriores ou iguais ao mês atual
-      const isPastOrCurrent = refDate <= now;
-      return isThisYear && isPastOrCurrent;
+      const [year, month] = i.reference_date.split("-").map(Number);
+      const refDate = new Date(year, month - 1, 1);
+      const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      // Considera meses anteriores ou iguais ao mês atual
+      return isThisYear && refDate <= currentMonthStart;
     })
     .reduce((a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)), 0);
 
   const despesasOperAno = data.expenses
     .filter(e => {
       const isThisYear = e.reference_date.startsWith(String(now.getFullYear()));
-      const refDate = new Date(e.reference_date + "-01T00:00:00");
-      const isPastOrCurrent = refDate <= now;
-      return isThisYear && isPastOrCurrent;
+      const [year, month] = e.reference_date.split("-").map(Number);
+      const refDate = new Date(year, month - 1, 1);
+      const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      return isThisYear && refDate <= currentMonthStart;
     })
     .reduce((a, e) => a + Number(e.amount), 0);
   const lucroAnualReal = lucroAno - despesasOperAno;
