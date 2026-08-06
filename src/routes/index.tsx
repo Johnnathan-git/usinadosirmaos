@@ -161,8 +161,8 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
-        <p className="text-sm font-medium text-white/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+        <p className="text-sm font-medium text-foreground/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 [&>*]:glass-card-interactive">
@@ -256,12 +256,12 @@ function Dashboard() {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="pb-4 text-left font-bold text-white/50 uppercase tracking-widest">Mês</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Receita</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Desp. Operacionais</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Concessionária</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Despesas</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Lucro</th>
+                    <th className="pb-4 text-left font-bold text-foreground/40 uppercase tracking-widest">Mês</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Receita</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Desp. Operacionais</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Concessionária</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Despesas</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Lucro</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/50">
@@ -304,7 +304,7 @@ function Dashboard() {
                 >
                   <span className="w-5 text-right text-xs text-muted-foreground font-medium">{idx + 1}</span>
                   <div
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-foreground shadow-sm"
                     style={{ backgroundColor: c.color }}
                   >
                     {initial(c.name)}
