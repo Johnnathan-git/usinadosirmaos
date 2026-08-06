@@ -253,7 +253,7 @@ function Controle() {
                         {r.name}
                       </span>
                     </td>
-                    <td className="py-4 text-white/60">{r.uc || "—"}</td>
+                    <td className="py-4 text-foreground/60">{r.uc || "—"}</td>
                     <td className="py-4 text-center">
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-white/10 bg-white/5 text-white" type="number" step="0.01" value={r.pct}
