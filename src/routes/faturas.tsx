@@ -182,7 +182,7 @@ function Faturas() {
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
-                <Plus className="h-3 w-3 text-white" /> 
+                <Plus className="h-3 w-3 text-foreground" /> 
                 <span>Lançar</span>
               </Button>
               <Button
