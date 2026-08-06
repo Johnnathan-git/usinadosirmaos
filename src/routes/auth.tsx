@@ -74,7 +74,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black p-4 relative overflow-hidden">
+    <div className="flex h-[100dvh] w-screen items-center justify-center bg-black p-4 relative overflow-hidden overscroll-none">
       {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
       <div className="aurora-container pointer-events-none">
         <div className="energy-wave" />
