@@ -198,7 +198,7 @@ function Resultado() {
       })}
 
       {sortedMonths.length === 0 && (
-        <Card className="bg-white border border-white/50 rounded-xl p-10 text-center text-slate-500 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">Selecione ao menos um mês com faturas.</Card>
+        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
       )}
 
       <Card className="rounded-xl border border-white/10 bg-[#2E5C8A] p-6 text-center shadow-[0_8px_30px_rgba(46,92,138,0.2)]">
