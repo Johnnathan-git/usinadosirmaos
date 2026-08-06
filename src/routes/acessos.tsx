@@ -318,7 +318,7 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-white border-slate-200 text-muted-foreground hover:bg-slate-50 font-bold rounded-lg">Alterar Minha Senha</Button>
+        <Button variant="outline" className="bg-card border-border text-muted-foreground hover:bg-accent font-bold rounded-lg">Alterar Minha Senha</Button>
       </DialogTrigger>
       <DialogContent className="glass-card border-border text-foreground">
         <DialogHeader>
