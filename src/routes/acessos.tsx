@@ -69,7 +69,7 @@ function AcessosContent() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white text-glow">Acessos</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white">Acessos</h1>
           <p className="text-sm font-medium text-white/40">Gerencie usuários e permissões do sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">

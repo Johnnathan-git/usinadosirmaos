@@ -107,7 +107,7 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-white text-glow sm:text-3xl">Resultado</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-white sm:text-3xl">Resultado</h1>
           <p className="text-sm font-medium text-white/40">Economia gerada por mês para o Cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">

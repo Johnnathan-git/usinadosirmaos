@@ -118,7 +118,7 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-bold tracking-tight text-white text-glow">Faturas</h1>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-white">Faturas</h1>
           <p className="text-[11px] font-bold uppercase tracking-wider text-white/40">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
