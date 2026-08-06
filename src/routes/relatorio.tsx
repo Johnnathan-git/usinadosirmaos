@@ -181,7 +181,7 @@ function Relatorio() {
             {client?.name ?? "—"}
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-hide">
+        <div className="overflow-x-auto">
           <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
               <tr className="bg-white/5">
