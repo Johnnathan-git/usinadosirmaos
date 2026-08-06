@@ -274,10 +274,10 @@ function Dashboard() {
 
 
         <div className="space-y-6">
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-            <div className="mb-4 flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-slate-400" />
-              <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
+          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+            <div className="mb-6 flex items-center gap-2">
+              <Trophy className="h-4 w-4 text-primary" />
+              <h2 className="text-base font-bold text-foreground tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
             </div>
             <div className="space-y-4">
               {ranking.map((c, idx) => (
@@ -285,22 +285,22 @@ function Dashboard() {
                   key={c.id} 
                   className={cn(
                     "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                    idx === 0 && "bg-[#C98A3E]/5 border border-[#C98A3E]/10"
+                    idx === 0 && "bg-primary/5 border border-primary/10"
                   )}
                 >
-                  <span className="w-5 text-right text-sm text-slate-500 font-medium">{idx + 1}</span>
+                  <span className="w-5 text-right text-xs text-muted-foreground font-medium">{idx + 1}</span>
                   <div
-                    className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
                     style={{ backgroundColor: c.color }}
                   >
                     {initial(c.name)}
                   </div>
                   <div className="flex-1">
-                    <div className="mb-1 flex items-center justify-between">
-                      <span className="text-sm font-bold text-[#374151]">{c.name}</span>
-                      <span className="num text-sm font-bold text-[#374151]">{brl(c.profit)}</span>
+                    <div className="mb-1.5 flex items-center justify-between">
+                      <span className="text-xs font-bold text-foreground">{c.name}</span>
+                      <span className="num text-xs font-bold text-foreground">{brl(c.profit)}</span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-accent/50">
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${Math.max(0, (c.profit / maxProfit) * 100)}%`, backgroundColor: `${c.color}B3` }}
@@ -309,22 +309,23 @@ function Dashboard() {
                   </div>
                 </div>
               ))}
-              {ranking.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
+              {ranking.length === 0 && <p className="text-xs text-muted-foreground">Nenhum cliente cadastrado.</p>}
             </div>
           </Card>
 
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
-                <Users className="h-6 w-6" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/30 text-muted-foreground">
+                <Users className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
-                <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total de Clientes</div>
+                <div className="text-xl font-bold text-foreground">{data.clients.length}</div>
               </div>
             </div>
           </Card>
         </div>
+
       </div>
     </div>
   );
