@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip, Send } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonStyles } from "@/lib/format";
 import { Suspense, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -585,9 +585,37 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
         </div>
 
-        <DialogFooter className="mt-6">
-          <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
+        <DialogFooter className="mt-6 flex flex-col sm:flex-row gap-2">
+          <div className="flex-1 flex justify-start">
+            <Button 
+              type="button"
+              variant="outline" 
+              className="gap-2 text-[#25D366] border-[#25D366] hover:bg-[#25D366]/5"
+              onClick={() => {
+                const text = `*Fechamento de Fatura - Usina dos Irmãos*\n\n` +
+                  `*Cliente:* ${client.name}\n` +
+                  `*Mês:* ${monthLabelFromISO(`${f.reference_month}-01`)}\n` +
+                  `*UC:* ${client.uc_number}\n\n` +
+                  `*Consumo:* ${f.consumption_kw} kW\n` +
+                  `*Preço kW:* ${brl(Number(f.price_kw))}\n` +
+                  `*Ilum. Pública:* ${brl(Number(f.public_lighting))}\n` +
+                  `*Juros/Multa:* ${brl(Number(f.interest_fine))}\n\n` +
+                  `*Valor S/ Usina:* ${brl(Number(f.value_without_plant))}\n` +
+                  `*VALOR A PAGAR:* ${brl(Number(f.client_pays))}\n\n` +
+                  `_Enviando anexo em seguida..._`;
+                
+                const phone = client.phone?.replace(/\D/g, '');
+                const url = `https://wa.me/${phone ? (phone.startsWith('55') ? phone : '55' + phone) : ''}?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+              }}
+            >
+              <Send className="h-4 w-4" /> Enviar p/ WhatsApp
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={onClose}>Cancelar</Button>
+            <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
