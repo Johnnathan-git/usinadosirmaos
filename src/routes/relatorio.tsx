@@ -173,7 +173,7 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden rounded-[16px] border border-white/50 bg-white p-0 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+      <Card className="overflow-hidden rounded-[16px] border border-slate-200 bg-white p-0 shadow-none">
         <div 
           className="px-8 py-5 text-center border-b border-white/10 bg-[#2E5C8A]"
         >
