@@ -83,7 +83,6 @@
   body {
     background: #FFFFFF;
     color: var(--color-foreground);
-    color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     position: relative;
