@@ -191,22 +191,22 @@ function Fluxo() {
         {monthExpenses.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors zebra-stripe">
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-white/5 p-4 hover:bg-white/5 transition-colors zebra-stripe">
               <div className="min-w-0">
-                <div className="truncate font-bold text-[#374151]">{e.description}</div>
+                <div className="truncate font-bold text-white">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
-                  <span className="inline-block rounded-md bg-[#4B5563]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{e.category}</span>
+                  <span className="inline-block rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/60">{e.category}</span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
+                    <span className="inline-block rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-bold text-[#D64545] num-lg">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#374151] transition-colors"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#D64545] transition-colors"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-bold text-red-400 num-lg">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-white/30 hover:text-white transition-colors"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-white/30 hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
