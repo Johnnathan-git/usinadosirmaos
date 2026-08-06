@@ -741,7 +741,6 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                     .from('faturas_v3_privado_v2')
                                     .createSignedUrl(path, 3600);
                                   if (error) throw error;
-                                  const a = document.createElement('a');
                                   const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
                                   window.location.href = downloadUrl;
                                 } catch (err: any) {
@@ -771,7 +770,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                 </tbody>
               </table>
             </div>
-          </div>
+          )
+        }
 
         {launching && <InvoiceDialog client={client} onClose={() => setLaunching(false)} />}
         {editing && <InvoiceDialog client={client} invoice={editing} onClose={() => setEditing(null)} />}
