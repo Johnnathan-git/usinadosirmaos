@@ -98,30 +98,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Mobile Top Header */}
-      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md md:hidden">
+      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md md:hidden">
         <BrandLockup compact />
         <div className="flex items-center gap-2">
           <ChangeOwnPasswordDialog />
-          <Button size="icon" variant="ghost" onClick={signOut} className="h-8 w-8 text-slate-500">
+          <Button size="icon" variant="ghost" onClick={signOut} className="h-8 w-8 text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" />
           </Button>
         </div>
       </header>
 
       <div className="flex">
-        {/* Desktop Sidebar - Radical redesign */}
-        <aside className="no-print sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-slate-200 bg-white md:flex shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        {/* Desktop Sidebar - Linear Style */}
+        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-background md:flex">
           <div className="p-6">
             <BrandLockup />
           </div>
           
-          <div className="flex-1 overflow-y-auto px-4 py-2">
-            <div className="mb-4 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-              Menu Principal
-            </div>
-            <nav className="space-y-1.5">
+          <div className="flex-1 overflow-y-auto px-3 py-2">
+            <nav className="space-y-0.5">
               {visibleNav.map((item) => {
                 const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
                 const Icon = item.icon;
@@ -130,34 +127,34 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     key={item.to}
                     to={item.to}
                     className={cn(
-                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
+                      "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
-                        ? "bg-[#151B2E] text-white shadow-lg shadow-[#151B2E]/20"
-                        : "text-slate-500 hover:bg-slate-50 hover:text-[#151B2E]"
+                        ? "bg-accent text-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
                     )}
                   >
                     <Icon className={cn(
-                      "h-5 w-5 shrink-0 transition-colors",
-                      active ? "text-[#C98A3E]" : "text-slate-400 group-hover:text-slate-600"
-                    )} strokeWidth={active ? 2.5 : 2} />
+                      "h-4 w-4 shrink-0",
+                      active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                    )} strokeWidth={2} />
                     <span className="truncate">{item.label}</span>
-                    {active && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#C98A3E]" />}
+                    {active && <div className="ml-auto h-1 w-1 rounded-full bg-primary" />}
                   </Link>
                 );
               })}
             </nav>
           </div>
 
-          <div className="border-t border-slate-100 p-6 bg-slate-50/50">
-            <div className="mb-4 flex items-center gap-3 rounded-lg bg-white p-3 shadow-sm border border-slate-200/50">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#151B2E] to-[#0A0E1A] text-xs font-bold text-white uppercase ring-4 ring-white">
+          <div className="mt-auto border-t border-border p-4">
+            <div className="mb-4 flex items-center gap-3 rounded-lg bg-card p-2.5 border border-border shadow-sm">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-bold text-[#151B2E]">
+                <div className="truncate text-xs font-bold text-foreground leading-tight">
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
-                <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
+                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
               </div>
@@ -165,10 +162,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <div className="flex gap-2">
               <ChangeOwnPasswordDialog />
               <Button 
-                variant="outline" 
+                variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg border-slate-200 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-colors"
+                className="flex-1 h-8 gap-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 border-transparent border transition-all"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>
@@ -178,20 +175,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </aside>
 
         {/* Main Content Area */}
-        <main className="min-h-screen min-w-0 flex-1">
+        <main className="min-h-screen min-w-0 flex-1 bg-[#0D0D10]">
           <div className="mx-auto max-w-7xl px-4 py-8 pb-28 sm:px-8 md:pb-8">
             {blocked ? (
-              <div className="mx-auto mt-20 max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-xl">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 text-slate-300">
+              <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
                   <ShieldCheck className="h-10 w-10" />
                 </div>
-                <h2 className="text-xl font-bold text-[#151B2E]">Acesso Restrito</h2>
-                <p className="mt-2 text-sm text-slate-500">
+                <h2 className="text-xl font-bold text-foreground">Acesso Restrito</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
                   Sua conta não possui permissões para visualizar este módulo.
                 </p>
                 <Button 
                   onClick={() => navigate({ to: "/", replace: true })}
-                  className="mt-8 w-full bg-[#151B2E] text-white hover:bg-[#151B2E]/90"
+                  className="mt-8 w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Voltar ao Início
                 </Button>
@@ -201,7 +198,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex h-20 items-center justify-around border-t border-slate-200 bg-white px-2 pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-8px_30px_rgb(0,0,0,0.04)]">
+        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex h-16 items-center justify-around border-t border-border bg-background px-2 pb-[env(safe-area-inset-bottom)] md:hidden shadow-2xl">
           {visibleNav.slice(0, 4).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
@@ -210,19 +207,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "relative flex flex-col items-center gap-1.5 px-3 py-2 transition-all",
-                  active ? "text-[#151B2E]" : "text-slate-400",
+                  "relative flex flex-col items-center gap-1 px-3 py-1 transition-all",
+                  active ? "text-primary" : "text-muted-foreground",
                 )}
               >
-                {active && <div className="absolute -top-[1px] h-[3px] w-8 rounded-full bg-[#C98A3E]" />}
-                <Icon className={cn("h-6 w-6 transition-transform", active && "scale-110")} />
-                <span className="text-[9px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
+                <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
+                <span className="text-[8px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
               </Link>
             );
           })}
-          <button className="flex flex-col items-center gap-1.5 px-3 py-2 text-slate-400">
-            <MoreHorizontal className="h-6 w-6" />
-            <span className="text-[9px] font-bold uppercase tracking-wider">Mais</span>
+          <button className="flex flex-col items-center gap-1 px-3 py-1 text-muted-foreground">
+            <MoreHorizontal className="h-5 w-5" />
+            <span className="text-[8px] font-bold uppercase tracking-wider">Mais</span>
           </button>
         </nav>
       </div>
