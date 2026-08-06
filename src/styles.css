@@ -313,7 +313,7 @@ div[style*="Edit with Lovable"],
     transform: translateZ(0);
   }
 
-  .glass-card:hover {
+  .glass-card-interactive:hover {
     background: rgba(255, 255, 255, 0.03);
     border-color: rgba(201, 138, 62, 0.15);
     transform: translateY(-6px) translateZ(0);
