@@ -202,8 +202,8 @@ function Resultado() {
       )}
 
       <Card className="glass-card border-primary/20 bg-primary/10 p-6 text-center shadow-[0_8px_30px_rgba(201,138,62,0.1)]">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-white/70">Economia total gerada</div>
-        <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl">{brl(totalEconomia)}</div>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-primary/80">Economia total gerada</div>
+        <div className="num-lg mt-1 text-3xl font-bold text-primary sm:text-4xl drop-shadow-[0_0_15px_rgba(201,138,62,0.3)]">{brl(totalEconomia)}</div>
         <div className="mt-2 text-[10px] text-white/50 font-bold uppercase tracking-wider">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>
