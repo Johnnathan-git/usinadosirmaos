@@ -263,9 +263,9 @@ function Controle() {
                     <td className="py-4 text-right text-foreground font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                     <td className="py-4 text-center">
                       {editing
-                        ? <Input className="mx-auto w-24 text-center border-white/10 bg-white/5 text-white" type="number" value={r.avg}
+                        ? <Input className="mx-auto w-24 text-center border-white/10 bg-white/5 text-foreground" type="number" value={r.avg}
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
-                        : <span className="font-bold text-white num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
+                        : <span className="font-bold text-foreground num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
                     <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-red-400" : "text-emerald-400"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
