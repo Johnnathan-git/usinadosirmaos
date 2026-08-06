@@ -710,8 +710,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                     <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                     <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
                     <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                    <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
-                    <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
+                    <th className="px-2 py-2 text-right font-semibold">Fat. Concessionária</th>
+                    <th className="px-2 py-2 text-right font-semibold">Lucro</th>
                     <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                     <th></th>
                   </tr>
