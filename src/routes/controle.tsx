@@ -191,12 +191,12 @@ function Controle() {
             ) : <div className="text-2xl font-bold text-foreground num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-white num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-foreground num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Consumo total clientes</Label>
-            <div className="text-2xl font-bold text-white num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-foreground num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
