@@ -97,8 +97,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="no-print sticky top-0 z-50 bg-white shadow-sm">
-        <div className="absolute bottom-0 left-0 h-[1px] w-full bg-[#E4E7EC]" />
+      <header className="no-print sticky top-0 z-50 bg-gradient-to-r from-white to-[#F8F5EE] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <div className="absolute bottom-0 left-0 h-[1px] w-full bg-[#E4E7EC]/50" />
         <div className="relative flex items-center justify-between px-6 py-4">
           <BrandLockup />
           <div className="flex flex-col items-end gap-1">
@@ -146,7 +146,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-white/5 bg-linear-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block">
+        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-white/5 bg-gradient-to-b from-[#151B2E] via-[#101524] to-[#080B14] px-4 py-8 md:block">
           <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
             Módulos
           </div>
