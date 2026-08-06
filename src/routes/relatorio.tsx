@@ -175,11 +175,11 @@ function Relatorio() {
 
       <Card className="overflow-hidden glass-card p-0">
         <div 
-          className="px-8 py-5 text-center border-b border-white/10 bg-primary/20 relative overflow-hidden"
+          className="px-8 py-5 text-center border-b border-white/10 bg-blue-600/20 relative overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-50 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-transparent opacity-50 pointer-events-none" />
           <div className="relative z-10">
-          <div className="text-2xl font-black uppercase tracking-[0.3em] text-primary drop-shadow-[0_0_15px_rgba(201,138,62,0.4)] sm:text-4xl">
+          <div className="text-2xl font-black uppercase tracking-[0.3em] text-blue-400 drop-shadow-[0_0_15px_rgba(37,99,235,0.4)] sm:text-4xl">
             {client?.name ?? "—"}
           </div>
           </div>
