@@ -320,27 +320,28 @@ function ChangeOwnPasswordDialog() {
       <DialogTrigger asChild>
         <Button variant="outline" className="bg-white border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg">Alterar Minha Senha</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="glass-card border-white/10 text-white">
         <DialogHeader>
-          <DialogTitle>Alterar Minha Senha</DialogTitle>
+          <DialogTitle className="text-white text-glow">Alterar Minha Senha</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div>
-            <Label>Nova Senha</Label>
+            <Label className="text-white/40">Nova Senha</Label>
             <Input 
               type="password" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               placeholder="Mínimo 6 caracteres" 
+              className="bg-white/5 border-white/10 text-white"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button variant="ghost" onClick={() => setOpen(false)} className="text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
           <Button 
             onClick={() => m.mutate()} 
             disabled={m.isPending || password.length < 6}
-            className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
           >
             {m.isPending ? "Alterando..." : "Confirmar Alteração"}
           </Button>
