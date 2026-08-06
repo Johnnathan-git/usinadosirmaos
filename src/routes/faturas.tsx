@@ -478,7 +478,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         <DialogHeader>
           <DialogTitle className="text-foreground text-glow">{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
-        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
+        <div className="bg-white/5 p-3 rounded-lg border border-white/5 mb-4 text-[10px] font-bold text-foreground/40 uppercase tracking-wider flex justify-between">
           <span>Desconto: {client.discount_pct}%</span>
           <span>Ilum. Fixa: {brl(client.public_lighting_value)}</span>
         </div>
