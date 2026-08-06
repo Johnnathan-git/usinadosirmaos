@@ -467,7 +467,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => handleCalcChange('public_lighting', e.target.value)} placeholder="Ex: 26,36" />
+            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-slate-50" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
