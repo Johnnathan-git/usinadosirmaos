@@ -92,8 +92,8 @@ function Inventario() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-white">Inventário</h1>
-          <p className="text-sm font-medium text-white/40">Patrimônio, equipamentos e gastos de instalação</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-foreground">Inventário</h1>
+          <p className="text-sm font-medium text-muted-foreground">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
           ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
@@ -103,36 +103,36 @@ function Inventario() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><TrendingUp className="h-4 w-4 text-primary" /> Total Investido</div>
-          <div className="text-2xl font-bold text-white num-lg">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-[10px] text-white/20 font-medium uppercase tracking-tight">Ativos + Gastos</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><TrendingUp className="h-4 w-4 text-primary" /> Total Investido</div>
+          <div className="text-2xl font-bold text-foreground num-lg">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-[10px] text-muted-foreground font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
         <Card className="glass-card p-5">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-primary"><Box className="h-4 w-4" /> Valor em Ativos</div>
           <div className="text-2xl font-bold text-primary num-lg">{brl(totalAtivos)}</div>
         </Card>
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><Hammer className="h-4 w-4 text-white/60" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-white num-lg">{brl(totalGastos)}</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Hammer className="h-4 w-4 text-muted-foreground" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-foreground num-lg">{brl(totalGastos)}</div>
         </Card>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="w-full justify-start overflow-x-auto bg-white/5 p-1 rounded-lg border border-white/5">
-          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white font-bold text-white/40"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
-          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white font-bold text-white/40"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
+        <TabsList className="w-full justify-start overflow-x-auto bg-accent p-1 rounded-lg border border-border">
+          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-background data-[state=active]:text-foreground font-bold text-muted-foreground"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
+          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-background data-[state=active]:text-foreground font-bold text-muted-foreground"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
           <Card className="glass-card p-6">
             <div className="mb-6 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
-                className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === "all" ? "bg-primary text-primary-foreground" : "bg-white/5 text-white/40 hover:bg-white/10"}`}>
+                className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === "all" ? "bg-primary text-primary-foreground" : "bg-accent text-muted-foreground hover:bg-accent"}`}>
                 Todos
               </button>
               {categories.map(([cat, count]) => (
                 <button key={cat} onClick={() => setCategory(cat)}
-                  className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === cat ? "bg-primary text-primary-foreground" : "bg-white/5 text-white/40 hover:bg-white/10"}`}>
+                  className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === cat ? "bg-primary text-primary-foreground" : "bg-accent text-muted-foreground hover:bg-accent"}`}>
                   {cat} ({count})
                 </button>
               ))}
@@ -140,38 +140,38 @@ function Inventario() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/5">
-                    <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Item</th>
-                    <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Categoria</th>
-                    <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Marca / Modelo</th>
-                    <th className="pb-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Qtd</th>
-                    <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Valor Unit.</th>
-                    <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Total</th>
+                  <tr className="border-b border-border">
+                    <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Item</th>
+                    <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Categoria</th>
+                    <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Marca / Modelo</th>
+                    <th className="pb-3 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Qtd</th>
+                    <th className="pb-3 text-right font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Valor Unit.</th>
+                    <th className="pb-3 text-right font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Total</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredAssets.map(a => (
-                    <tr key={a.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors zebra-stripe">
+                    <tr key={a.id} className="border-b border-border last:border-0 hover:bg-accent transition-colors zebra-stripe">
                       <td className="py-4">
-                        <div className="font-bold text-white">{a.item}</div>
-                        {a.location && <div className="text-[10px] text-white/30 font-medium uppercase tracking-tight">{a.location}</div>}
+                        <div className="font-bold text-foreground">{a.item}</div>
+                        {a.location && <div className="text-[10px] text-muted-foreground font-medium uppercase tracking-tight">{a.location}</div>}
                       </td>
                       <td className="py-4"><span className="rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">{a.category}</span></td>
-                      <td className="py-4 text-white/70 font-medium">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
-                      <td className="py-4 text-center text-white font-bold num">{a.quantity}</td>
-                      <td className="py-4 text-right text-white font-medium num">{brl(Number(a.unit_value))}</td>
+                      <td className="py-4 text-muted-foreground font-medium">{[a.brand, a.model].filter(Boolean).join(" / ") || "—"}</td>
+                      <td className="py-4 text-center text-foreground font-bold num">{a.quantity}</td>
+                      <td className="py-4 text-right text-foreground font-medium num">{brl(Number(a.unit_value))}</td>
                       <td className="py-4 text-right font-bold text-primary num">{brl(Number(a.unit_value) * a.quantity)}</td>
                       <td className="py-4 pl-4 text-right">
-                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-white/30 hover:text-white transition-colors"><Pencil className="h-4 w-4" /></button>
-                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-white/30 hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
+                        <button onClick={() => setAssetOpen(a)} className="mr-3 text-muted-foreground hover:text-foreground transition-colors"><Pencil className="h-4 w-4" /></button>
+                        <button onClick={() => delRow("inventory_assets", a.id, refresh)} className="text-muted-foreground hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-white/10 bg-white/5">
-                    <td colSpan={5} className="py-4 font-bold text-white uppercase text-[10px] tracking-wider px-4">Total Patrimônio</td>
+                  <tr className="border-t border-border bg-accent">
+                    <td colSpan={5} className="py-4 font-bold text-foreground uppercase text-[10px] tracking-wider px-4">Total Patrimônio</td>
                     <td className="py-4 text-right font-bold text-primary num px-4">{brl(totalAtivos)}</td>
                     <td></td>
                   </tr>
@@ -185,39 +185,39 @@ function Inventario() {
           <Card className="glass-card p-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/5">
-                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Descrição</th>
-                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Data</th>
-                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Responsável</th>
-                  <th className="pb-3 text-left font-bold text-white/40 uppercase text-[10px] tracking-wider">Observações</th>
-                  <th className="pb-3 text-right font-bold text-white/40 uppercase text-[10px] tracking-wider">Valor</th>
+                <tr className="border-b border-border">
+                  <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Descrição</th>
+                  <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Data</th>
+                  <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Responsável</th>
+                  <th className="pb-3 text-left font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Observações</th>
+                  <th className="pb-3 text-right font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Valor</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {data.expenses.map(e => (
-                  <tr key={e.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors zebra-stripe">
-                    <td className="py-4 font-bold text-white">{e.description}</td>
-                    <td className="py-4 text-white/70 font-medium num">{formatDateBR(e.spent_on)}</td>
-                    <td className="py-4 text-white font-bold"><span className="rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">{e.responsible || "—"}</span></td>
-                    <td className="py-4 text-white/40 italic">{e.notes || "—"}</td>
-                    <td className="py-4 text-right font-bold text-white num">{brl(Number(e.amount))}</td>
+                  <tr key={e.id} className="border-b border-border last:border-0 hover:bg-accent transition-colors zebra-stripe">
+                    <td className="py-4 font-bold text-foreground">{e.description}</td>
+                    <td className="py-4 text-muted-foreground font-medium num">{formatDateBR(e.spent_on)}</td>
+                    <td className="py-4 text-foreground font-bold"><span className="rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">{e.responsible || "—"}</span></td>
+                    <td className="py-4 text-muted-foreground italic">{e.notes || "—"}</td>
+                    <td className="py-4 text-right font-bold text-foreground num">{brl(Number(e.amount))}</td>
                     <td className="py-4 pl-4 text-right">
-                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-white/30 hover:text-white transition-colors"><Pencil className="h-4 w-4" /></button>
-                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-white/30 hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => setExpenseOpen(e)} className="mr-3 text-muted-foreground hover:text-foreground transition-colors"><Pencil className="h-4 w-4" /></button>
+                      <button onClick={() => delRow("investment_expenses", e.id, refresh)} className="text-muted-foreground hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-white/10 bg-white/5">
-                  <td colSpan={4} className="py-4 font-bold text-white uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
-                  <td className="py-4 text-right font-bold text-white num px-4">{brl(totalGastos)}</td>
+                <tr className="border-t border-border bg-accent">
+                  <td colSpan={4} className="py-4 font-bold text-foreground uppercase text-[10px] tracking-wider px-4">Total Gastos</td>
+                  <td className="py-4 text-right font-bold text-foreground num px-4">{brl(totalGastos)}</td>
                   <td></td>
                 </tr>
               </tfoot>
             </table>
-            {data.expenses.length === 0 && <p className="py-8 text-center text-sm text-white/40">Nenhum gasto lançado.</p>}
+            {data.expenses.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">Nenhum gasto lançado.</p>}
           </Card>
         </TabsContent>
       </Tabs>
@@ -280,51 +280,51 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
-        <DialogHeader><DialogTitle className="text-white text-glow">{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
+      <DialogContent className="glass-card border-border text-foreground max-h-[90vh] max-w-lg overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-foreground text-glow">{asset ? "Editar Item" : "Novo Item"}</DialogTitle></DialogHeader>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Label className="text-white/40">Nome do Item *</Label>
-            <Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Nome do Item *</Label>
+            <Input value={f.item} onChange={e => setF({ ...f, item: e.target.value })} className="bg-accent border-border text-foreground" />
           </div>
           <div>
-            <Label className="text-white/40">Categoria *</Label>
+            <Label className="text-muted-foreground">Categoria *</Label>
             {addingCat ? (
               <div className="flex gap-2">
-                <Input autoFocus value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nova categoria" className="bg-white/5 border-white/10 text-white" />
+                <Input autoFocus value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nova categoria" className="bg-accent border-border text-foreground" />
                 <Button type="button" variant="outline" onClick={() => {
                   const v = newCat.trim();
                   if (!v) return setAddingCat(false);
                   setCustomCats(c => [...c, v]);
                   setF({ ...f, category: v });
                   setNewCat(""); setAddingCat(false);
-                }} className="border-white/10 text-white hover:bg-white/10">OK</Button>
+                }} className="border-border text-foreground hover:bg-accent">OK</Button>
               </div>
             ) : (
               <select
-                className="flex h-9 w-full rounded-md border border-white/10 bg-white/5 px-3 py-1 text-sm text-white shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
+                className="flex h-9 w-full rounded-md border border-border bg-accent px-3 py-1 text-sm text-foreground shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
                 value={f.category}
                 onChange={e => {
                   if (e.target.value === "__new") { setAddingCat(true); return; }
                   setF({ ...f, category: e.target.value });
                 }}
               >
-                {categories.map(c => <option key={c} value={c} className="bg-navy text-white">{c}</option>)}
-                <option value="__new" className="bg-navy text-primary">+ Cadastrar nova categoria…</option>
+                {categories.map(c => <option key={c} value={c} className="bg-popover text-foreground">{c}</option>)}
+                <option value="__new" className="bg-popover text-primary">+ Cadastrar nova categoria…</option>
               </select>
             )}
           </div>
-          <div><Label className="text-white/40">Localização</Label><Input value={f.location} onChange={e => setF({ ...f, location: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Marca</Label><Input value={f.brand} onChange={e => setF({ ...f, brand: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Modelo</Label><Input value={f.model} onChange={e => setF({ ...f, model: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Quantidade *</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
-          <div className="sm:col-span-2"><Label className="text-white/40">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-muted-foreground">Localização</Label><Input value={f.location} onChange={e => setF({ ...f, location: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Marca</Label><Input value={f.brand} onChange={e => setF({ ...f, brand: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Modelo</Label><Input value={f.model} onChange={e => setF({ ...f, model: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Quantidade *</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" className="bg-accent border-border text-foreground" /></div>
+          <div className="sm:col-span-2"><Label className="text-muted-foreground">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-accent border-border text-foreground" /></div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button variant="outline" onClick={onClose} className="border-border text-muted-foreground hover:text-foreground hover:bg-accent">Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{asset ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
@@ -363,27 +363,27 @@ function InvExpenseDialog({ expense, onClose, onSaved }: { expense: InvExpense |
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
-        <DialogHeader><DialogTitle className="text-white text-glow">{expense ? "Editar Gasto" : "Novo Gasto de Investimento"}</DialogTitle></DialogHeader>
+      <DialogContent className="glass-card border-border text-foreground max-h-[90vh] max-w-lg overflow-y-auto">
+        <DialogHeader><DialogTitle className="text-foreground text-glow">{expense ? "Editar Gasto" : "Novo Gasto de Investimento"}</DialogTitle></DialogHeader>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="sm:col-span-2"><Label className="text-white/40">Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
-          <div><Label className="text-white/40">Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div className="sm:col-span-2"><Label className="text-muted-foreground">Descrição *</Label><Input value={f.description} onChange={e => setF({ ...f, description: e.target.value })} placeholder="Ex: Cimento, Arame, Mão de obra..." className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Valor (R$) *</Label><Input type="number" step="0.01" value={f.amount} onChange={e => setF({ ...f, amount: e.target.value })} className="bg-accent border-border text-foreground" /></div>
+          <div><Label className="text-muted-foreground">Data *</Label><Input type="date" value={f.spent_on} onChange={e => setF({ ...f, spent_on: e.target.value })} className="bg-accent border-border text-foreground" /></div>
           <div className="sm:col-span-2">
-            <Label className="text-white/40">Responsável</Label>
+            <Label className="text-muted-foreground">Responsável</Label>
             <select
-              className="flex h-9 w-full rounded-md border border-white/10 bg-white/5 px-3 py-1 text-sm text-white shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
+              className="flex h-9 w-full rounded-md border border-border bg-accent px-3 py-1 text-sm text-foreground shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-primary/50"
               value={f.responsible}
               onChange={e => setF({ ...f, responsible: e.target.value })}
             >
-              <option value="" className="bg-navy text-white">Selecione…</option>
-              {RESPONSIBLES.map(r => <option key={r} value={r} className="bg-navy text-white">{r}</option>)}
+              <option value="" className="bg-popover text-foreground">Selecione…</option>
+              {RESPONSIBLES.map(r => <option key={r} value={r} className="bg-popover text-foreground">{r}</option>)}
             </select>
           </div>
-          <div className="sm:col-span-2"><Label className="text-white/40">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
+          <div className="sm:col-span-2"><Label className="text-muted-foreground">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-accent border-border text-foreground" /></div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button variant="outline" onClick={onClose} className="border-border text-muted-foreground hover:text-foreground hover:bg-accent">Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{expense ? "Salvar" : "Cadastrar"}</Button>
         </DialogFooter>
       </DialogContent>
