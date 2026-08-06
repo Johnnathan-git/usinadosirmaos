@@ -371,7 +371,7 @@ function ResetPasswordDialog({ user }: { user: UserRow }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#2E5C8A]">
+        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-primary">
           <KeyRound className="h-4 w-4" />
         </Button>
       </DialogTrigger>
