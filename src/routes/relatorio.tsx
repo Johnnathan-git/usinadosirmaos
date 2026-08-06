@@ -134,8 +134,8 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-white/40">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
+          <p className="text-sm font-medium text-foreground/40">
             Controle Mensal.
           </p>
         </div>
