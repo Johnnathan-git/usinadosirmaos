@@ -148,8 +148,8 @@ function Dashboard() {
         <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} />
+      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 scrollbar-hide lg:grid lg:grid-cols-4 lg:pb-0 lg:snap-none">
+        <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Receita Mensal" value={receitaMes} tint="leaf" delta={delta(receitaMes, receitaPrev)} delay={0} />
         <StatCard
           icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
@@ -158,9 +158,16 @@ function Dashboard() {
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Concessionária ${brl(faturasDistMes)}`}
+          delay={80}
         />
-        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} />
-        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
+        <StatCard icon={<DollarSign className="h-5 w-5" />} label="Lucro do Mês" value={lucroMes} tint="sky" delta={delta(lucroMes, lucroPrev)} delay={160} />
+        <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" delay={240} />
+      </div>
+
+      <div className="flex items-center justify-center gap-1.5 pb-2 lg:hidden">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+        ))}
       </div>
 
       <Card className="rounded-[10px] border border-[#E4E7EC] bg-white p-6 shadow-sm">
