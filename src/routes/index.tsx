@@ -331,10 +331,10 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-4 sm:p-5 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
       style={{ borderTop: `3px solid ${semanticColor}` }}
     >
-      <div className="mb-2 sm:mb-4 flex items-start justify-between gap-2">
+      <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
         <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
           {styledIcon}
         </div>
