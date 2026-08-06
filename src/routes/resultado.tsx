@@ -149,7 +149,7 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden bg-white border border-white/50 rounded-xl p-0 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
             <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
               <h2 className="text-base font-bold text-[#374151]">{monthLabelLong(d)}</h2>
             </div>
