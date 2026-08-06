@@ -110,12 +110,12 @@ function Fluxo() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Fluxo de Caixa</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Gestão de receitas e despesas operacionais</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Fluxo de Caixa</h1>
+          <p className="text-sm font-medium text-white/40">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-36 sm:w-40"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-36 sm:w-40 bg-white/5 border-white/10 text-white"><SelectValue /></SelectTrigger>
             <SelectContent>
               {months.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
@@ -123,41 +123,41 @@ function Fluxo() {
               })}
             </SelectContent>
           </Select>
-          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-[#151B2E] hover:bg-[#1F2A45] sm:flex-none font-bold">
+          <Button onClick={() => setNewOpen(true)} className="flex-1 gap-2 bg-primary hover:bg-primary/90 text-primary-foreground sm:flex-none font-bold">
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #2F6F62" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
+        <Card className="glass-card p-6" style={{ borderTop: "3px solid #2F6F62" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40">
             <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Total de Receitas
           </div>
-          <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-white num-lg">{brl(receitas)}</div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #D64545" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
+        <Card className="glass-card p-6" style={{ borderTop: "3px solid #D64545" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40">
             <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total de Despesas
           </div>
-          <div className="text-2xl font-bold text-[#D64545] num-lg">{brl(despesas)}</div>
-          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">
+          <div className="text-2xl font-bold text-white num-lg">{brl(despesas)}</div>
+          <div className="mt-2 text-[10px] text-white/30 font-bold uppercase tracking-tight">
             Operacionais {brl(despesasOperacionais)} + Concessionária {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #2E5C8A" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
+        <Card className="glass-card p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40">
             <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
           </div>
-          <div className="text-2xl font-bold num-lg text-[#2E5C8A]">{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Receitas − (operacionais + concessionária)</div>
+          <div className="text-2xl font-bold num-lg text-white">{brl(lucro)}</div>
+          <div className="mt-2 text-[10px] text-white/30 font-bold uppercase tracking-tight">Receitas − (operacionais + concessionária)</div>
         </Card>
       </div>
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-        <h2 className="mb-6 text-lg font-bold text-[#374151]">Faturas dos clientes</h2>
-        {monthInvoices.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma fatura neste mês.</p>}
-        <div className="divide-y divide-[#F5F6F8]">
+      <Card className="glass-card p-6">
+        <h2 className="mb-6 text-lg font-bold text-white">Faturas dos clientes</h2>
+        {monthInvoices.length === 0 && <p className="text-sm text-white/40">Nenhuma fatura neste mês.</p>}
+        <div className="divide-y divide-white/5">
           {monthInvoices.map(inv => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             const client = data.clients.find(c => c.id === inv.client_id);
@@ -171,14 +171,14 @@ function Fluxo() {
                     {initial(client?.name ?? "?")}
                   </div>
                   <div>
-                    <div className="font-bold text-[#374151]">{client?.name ?? "—"}</div>
-                    <div className="text-xs font-medium text-[#4B5563]">{monthLabel(monthDate)}</div>
+                    <div className="font-bold text-white">{client?.name ?? "—"}</div>
+                    <div className="text-xs font-medium text-white/40">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
                 <div className="text-right text-sm">
-                  <div className="text-[#4B5563] font-bold">Lucro bruto: <span className="font-bold text-[#2E5C8A] num">{brl(profit)}</span></div>
-                  <div className="text-[#9CA3AF] text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
-                  <div className="text-[#9CA3AF] text-xs">Fat. concessionária: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
+                  <div className="text-white/60 font-bold">Lucro bruto: <span className="font-bold text-primary num">{brl(profit)}</span></div>
+                  <div className="text-white/30 text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
+                  <div className="text-white/30 text-xs">Fat. concessionária: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
                 </div>
               </div>
             );
@@ -186,27 +186,27 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-        <h2 className="mb-6 text-lg font-bold text-[#374151]">Despesas lançadas — {monthLabel(monthDate)}</h2>
+      <Card className="glass-card p-6">
+        <h2 className="mb-6 text-lg font-bold text-white">Despesas lançadas — {monthLabel(monthDate)}</h2>
         {monthExpenses.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-[#F5F6F8] p-4 hover:bg-[#F5F6F8] transition-colors zebra-stripe">
+            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-white/5 p-4 hover:bg-white/5 transition-colors zebra-stripe">
               <div className="min-w-0">
-                <div className="truncate font-bold text-[#374151]">{e.description}</div>
+                <div className="truncate font-bold text-white">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
-                  <span className="inline-block rounded-md bg-[#4B5563]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{e.category}</span>
+                  <span className="inline-block rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/60">{e.category}</span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-md bg-[#C98A3E]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C98A3E]">
+                    <span className="inline-block rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="whitespace-nowrap font-bold text-[#D64545] num-lg">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-[#9CA3AF] hover:text-[#374151] transition-colors"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-[#9CA3AF] hover:text-[#D64545] transition-colors"><Trash2 className="h-4 w-4" /></button>
+                <span className="whitespace-nowrap font-bold text-red-400 num-lg">{brl(Number(e.amount))}</span>
+                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-white/30 hover:text-white transition-colors"><Pencil className="h-4 w-4" /></button>
+                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-white/30 hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}

@@ -107,12 +107,12 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-[#374151] sm:text-3xl">Resultado</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Economia gerada por mês para o Cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-white text-glow sm:text-3xl">Resultado</h1>
+          <p className="text-sm font-medium text-white/40">Economia gerada por mês para o Cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white border border-slate-200 rounded-lg shadow-none"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white/5 border-white/10 rounded-lg text-white"><SelectValue /></SelectTrigger>
             <SelectContent>
               {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
               {data.clients
@@ -122,7 +122,7 @@ function Resultado() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg">
+              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white/5 border-white/10 text-white/70 hover:text-white rounded-lg">
                 {selectedMonths.length} {selectedMonths.length === 1 ? "mês selecionado" : "meses selecionados"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -149,25 +149,25 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
-            <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-              <h2 className="text-base font-bold text-[#374151]">{monthLabelLong(d)}</h2>
+          <Card key={mk} className="glass-card overflow-hidden">
+            <div className="border-b border-white/5 bg-white/5 px-6 py-4">
+              <h2 className="text-base font-bold text-white">{monthLabelLong(d)}</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/30">
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Consumo (kW)</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">
+                  <tr className="border-b border-white/5 bg-white/5">
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Mês</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Consumo (kW)</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Valor s/ Usina</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">
                       {clientId !== "all" 
                         ? `Valor c/ ${data.clients.find(c => c.id === clientId)?.discount_pct}% desconto` 
                         : "Valor c/ desconto"}
                     </th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Cliente Pagou</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
-                    <th className="px-4 py-3 text-center font-bold text-[#4B5563] uppercase text-[10px] tracking-wider">Economia Gerada</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Cliente Pagou</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
+                    <th className="px-4 py-3 text-center font-bold text-white/40 uppercase text-[10px] tracking-wider">Economia Gerada</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -179,14 +179,14 @@ function Resultado() {
                     const desc = semUsina * (1 - discountFactor);
                     const eco = semUsina * discountFactor;
                     return (
-                      <tr key={inv.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors zebra-stripe">
-                        <td className="whitespace-nowrap px-4 py-4 text-center text-[#4B5563] font-bold">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{brl(semUsina)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center text-[#374151] font-bold">{brl(desc)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2F6F62]">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#D64545]">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-[#2F6F62]">{brl(eco)}</td>
+                      <tr key={inv.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors zebra-stripe">
+                        <td className="whitespace-nowrap px-4 py-4 text-center text-white/70 font-bold">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{brl(semUsina)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{brl(desc)}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-primary">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-red-400">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-primary">{brl(eco)}</td>
                       </tr>
                     );
                   })}
@@ -198,10 +198,10 @@ function Resultado() {
       })}
 
       {sortedMonths.length === 0 && (
-        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">Selecione ao menos um mês com faturas.</Card>
+        <Card className="glass-card p-10 text-center text-white/40">Selecione ao menos um mês com faturas.</Card>
       )}
 
-      <Card className="rounded-xl border border-white/10 bg-[#2E5C8A] p-6 text-center shadow-[0_8px_30px_rgba(46,92,138,0.2)]">
+      <Card className="glass-card border-primary/20 bg-primary/10 p-6 text-center shadow-[0_8px_30px_rgba(201,138,62,0.1)]">
         <div className="text-[10px] font-bold uppercase tracking-widest text-white/70">Economia total gerada</div>
         <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl">{brl(totalEconomia)}</div>
         <div className="mt-2 text-[10px] text-white/50 font-bold uppercase tracking-wider">

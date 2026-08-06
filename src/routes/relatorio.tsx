@@ -134,18 +134,18 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-[#4B5563]">
+          <h1 className="text-4xl font-bold tracking-tight text-white text-glow">Relatório do Cliente</h1>
+          <p className="text-sm font-medium text-white/40">
             Controle Mensal.
           </p>
         </div>
       </div>
 
-      <Card className="no-print rounded-[14px] border border-slate-200 bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-none">
+      <Card className="no-print glass-card grid gap-4 p-6 sm:grid-cols-2">
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="bg-white border-[#E4E7EC] rounded-lg text-[#374151] font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
+            <SelectTrigger className="bg-white/5 border-white/10 rounded-lg text-white font-semibold"><SelectValue placeholder="Selecione" /></SelectTrigger>
             <SelectContent>
               {clients.map((c) => <SelectItem key={c.id} value={c.id} className="font-semibold text-[#374151]">{c.name}</SelectItem>)}
             </SelectContent>
@@ -173,18 +173,18 @@ function Relatorio() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden rounded-[16px] border border-slate-200 bg-white p-0 shadow-none">
+      <Card className="overflow-hidden glass-card p-0">
         <div 
-          className="px-8 py-5 text-center border-b border-white/10 bg-[#2E5C8A]"
+          className="px-8 py-5 text-center border-b border-white/10 bg-primary/10"
         >
-          <div className="text-xl font-medium uppercase tracking-[0.25em] text-white/95">
+          <div className="text-xl font-medium uppercase tracking-[0.25em] text-white">
             {client?.name ?? "—"}
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+        <div className="overflow-x-auto scrollbar-hide">
           <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
-              <tr className="bg-[#F8FAFC]">
+              <tr className="bg-white/5">
                 {[
                   { label: "Mês referência", width: "w-[120px]" },
                   { label: "Unidade Consumidora", width: "w-[160px]" },
@@ -197,35 +197,35 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-[#E2E8F0] px-3 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
                 ))}
-                <th className="border border-[#E2E8F0] px-3 py-4 text-center font-bold text-[#475569] uppercase text-[10px] tracking-widest w-[100px]">
+                <th className="border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]/50 transition-colors">
+                <tr key={r.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-[#F1F5F9] p-0">
+                    <td key={f} className="border border-white/5 p-0">
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-[#C97B5E]/30 w-full px-2 ${
+                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
                           f === "comDesconto"
-                            ? "font-bold text-[#2F6F62] bg-[#2F6F62]/5 text-sm sm:text-base"
+                            ? "font-bold text-primary text-sm sm:text-base"
                             : f === "semUsina"
-                            ? "text-[#D64545] font-bold"
-                            : "text-[#374151] font-medium"
+                            ? "text-red-400 font-bold"
+                            : "text-white font-medium"
                         }`}
                       />
                     </td>
                   ))}
-                  <td className="border border-[#F1F5F9] p-0 text-center align-middle">
+                  <td className="border border-white/5 p-0 text-center align-middle">
                     {r.attachment_url ? (
                       <button
                         onClick={async () => {
@@ -245,7 +245,7 @@ function Relatorio() {
                             alert("Erro ao abrir arquivo: " + err.message);
                           }
                         }}
-                        className="flex h-14 w-full items-center justify-center gap-2 text-[#C97B5E] hover:bg-[#C97B5E]/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
+                        className="flex h-14 w-full items-center justify-center gap-2 text-primary hover:bg-primary/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
                         title="Baixar Fatura"
                       >
                         <Paperclip className="h-3 w-3" />
@@ -270,11 +270,11 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-[#F1F5F9] bg-[#F8FAFC] px-8 py-6 flex justify-between items-center">
-            <div className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">
+          <div className="border-t border-white/5 bg-white/5 px-8 py-6 flex justify-between items-center">
+            <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
-            <div className="text-[10px] font-bold text-[#C97B5E] uppercase tracking-widest">
+            <div className="text-[10px] font-bold text-primary uppercase tracking-widest">
               Usina dos Irmãos • Energia Inteligente
             </div>
           </div>
