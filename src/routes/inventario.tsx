@@ -314,18 +314,18 @@ function AssetDialog({ asset, onClose, onSaved }: { asset: Asset | null; onClose
               </select>
             )}
           </div>
-          <div><Label>Localização</Label><Input value={f.location} onChange={e => setF({ ...f, location: e.target.value })} /></div>
-          <div><Label>Marca</Label><Input value={f.brand} onChange={e => setF({ ...f, brand: e.target.value })} /></div>
-          <div><Label>Modelo</Label><Input value={f.model} onChange={e => setF({ ...f, model: e.target.value })} /></div>
-          <div><Label>Quantidade *</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} /></div>
-          <div><Label>Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} /></div>
-          <div><Label>Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} /></div>
-          <div><Label>Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" /></div>
-          <div className="sm:col-span-2"><Label>Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" /></div>
+          <div><Label className="text-white/40">Localização</Label><Input value={f.location} onChange={e => setF({ ...f, location: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Marca</Label><Input value={f.brand} onChange={e => setF({ ...f, brand: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Modelo</Label><Input value={f.model} onChange={e => setF({ ...f, model: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Quantidade *</Label><Input type="number" value={f.quantity} onChange={e => setF({ ...f, quantity: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Valor Unitário (R$) *</Label><Input type="number" step="0.01" value={f.unit_value} onChange={e => setF({ ...f, unit_value: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Data de Aquisição</Label><Input type="date" value={f.acquired_on} onChange={e => setF({ ...f, acquired_on: e.target.value })} className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Número de Série</Label><Input value={f.serial_number} onChange={e => setF({ ...f, serial_number: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
+          <div className="sm:col-span-2"><Label className="text-white/40">Observações</Label><Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" /></div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-slate-900 hover:bg-slate-800">Salvar</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{asset ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
