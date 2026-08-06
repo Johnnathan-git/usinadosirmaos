@@ -273,22 +273,23 @@ div[style*="Edit with Lovable"],
   }
 
   .aurora-blob-2 {
-    background: radial-gradient(circle at center, #a855f7 0%, transparent 65%);
+    background: radial-gradient(circle at center, #fbbf24 0%, transparent 65%);
     bottom: -20%;
     right: -20%;
     animation-delay: -10s;
     animation-duration: 45s;
+    opacity: 0.12;
   }
 
   .aurora-blob-3 {
-    background: radial-gradient(circle at center, #22d3ee 0%, transparent 60%);
+    background: radial-gradient(circle at center, #f59e0b 0%, transparent 60%);
     top: 20%;
     left: 15%;
     width: 70vw;
     height: 70vh;
     animation-delay: -15s;
     animation-duration: 30s;
-    opacity: 0.12;
+    opacity: 0.1;
   }
 
   @keyframes aurora-float {
