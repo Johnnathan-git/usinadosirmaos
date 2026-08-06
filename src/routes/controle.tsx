@@ -247,7 +247,7 @@ function Controle() {
                 const saldoCli = alloc - Number(r.avg);
                 return (
                   <tr key={r.client_id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors zebra-stripe">
-                    <td className="py-4 font-bold text-white uppercase">
+                    <td className="py-4 font-bold text-foreground uppercase">
                       <span className="inline-flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full shadow-sm" style={{ backgroundColor: r.color }} />
                         {r.name}
