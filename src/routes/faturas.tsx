@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonStyles } from "@/lib/format";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { toast } from "sonner";
 
 type Client = {
