@@ -392,7 +392,7 @@ function StatCard({
   
   return (
     <Card 
-      className="glass-card relative overflow-hidden rounded-2xl p-4 transition-all hover:bg-white/5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="glass-card relative overflow-hidden rounded-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
         animationDelay: `${delay}ms`
       }}
