@@ -99,7 +99,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen">
       <header className="no-print sticky top-0 z-50 bg-white shadow-sm">
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
-        <div className="relative flex items-center justify-between px-6 py-4">
+        <div className="relative flex items-center justify-between px-6 py-2">
           <div className="flex items-center gap-0">
             <BrandLockup />
           </div>
@@ -149,7 +149,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
+        <aside className="no-print sticky top-[57px] hidden h-[calc(100vh-57px)] w-64 shrink-0 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
           <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
             Módulos
           </div>
