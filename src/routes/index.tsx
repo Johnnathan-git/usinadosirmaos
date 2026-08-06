@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: É o seguinte. Não estou gostando desse menu lateral e dessa barra branca em cima onde tem o nome da Usina etc. Dê uma reinventada nisso ai, pode ser radical. Não mexa nos dados, ou fluxo dos sistema.
+ * Execute esta instrucao no projeto: Vamos tentar um tema mais escuro, tipo o do link: https://linear.app/coding-sessions
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
