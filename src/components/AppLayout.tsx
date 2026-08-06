@@ -216,14 +216,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
+                    "group relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all duration-200",
                     active
-                      ? "text-white"
-                      : "text-[#9CA3AF] hover:text-white",
+                      ? "text-white bg-white/5"
+                      : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.02]",
                   )}
                 >
-                  {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
-                  <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
+                  <div className={cn(
+                    "absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E] transition-all duration-250",
+                    active ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+                  )} />
+                  <Icon className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
               );
