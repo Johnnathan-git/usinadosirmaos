@@ -98,9 +98,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
+      {/* Background Aurora */}
+      <div className="aurora-container pointer-events-none">
+        <div className="aurora-blob aurora-blob-1" />
+        <div className="aurora-blob aurora-blob-2" />
+        <div className="aurora-blob aurora-blob-3" />
+      </div>
+
       {/* Mobile Top Header */}
-      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md md:hidden">
+      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-white/10 bg-black/50 px-4 backdrop-blur-xl md:hidden">
         <BrandLockup compact />
         <div className="flex items-center gap-2">
           <ChangeOwnPasswordDialog />
