@@ -46,7 +46,7 @@
   --color-negative: #D64545;
   --color-revenue: #2F6F62;
   --color-amber: #C98A3E;
-  --color-navy: #16192B;
+  --color-navy: #151B2E;
 }
 
 :root {
@@ -73,8 +73,7 @@
   --input: #E2E8F0;
   --ring: #C98A3E;
   
-  --sidebar: #16192B;
-
+  --sidebar: #151B2E;
   --sidebar-foreground: #9CA3AF;
   
   --card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
