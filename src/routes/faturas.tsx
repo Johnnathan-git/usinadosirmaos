@@ -284,8 +284,8 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
               <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-foreground" />
             </div>
             <div>
-              <Label className="text-white/40">E-mail</Label>
-              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-white" />
+              <Label className="text-foreground/40">E-mail</Label>
+              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-foreground" />
             </div>
           </div>
           <div>
