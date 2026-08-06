@@ -118,13 +118,13 @@ function Relatorio() {
   }, [monthOptions]);
 
   const selected = useMemo(
-    () => clientInvoices.filter((i) => months.includes(i.reference_date.slice(0, 7))),
-    [clientInvoices, months],
+    () => data.invoices.filter((i) => i.client_id === clientId && months.includes(i.reference_date.slice(0, 7))),
+    [data.invoices, clientId, months],
   );
 
   useEffect(() => {
     setRows(selected.map(s => toRow(s, client)));
-  }, [selected, client?.discount_pct]);
+  }, [selected, client]);
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));

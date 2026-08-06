@@ -344,6 +344,24 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     attachment_url: invoice?.attachment_url ?? "",
   });
 
+  // Watch for invoice changes to keep state in sync when editing from history
+  useEffect(() => {
+    if (invoice) {
+      setF({
+        reference_month: invoice.reference_date.slice(0, 7),
+        consumption_kw: String(invoice.consumption_kw),
+        price_kw: String(invoice.price_kw),
+        public_lighting: String(client.public_lighting_value || 0),
+        interest_fine: String(invoice.interest_fine),
+        value_without_plant: String(invoice.value_without_plant),
+        client_pays: String(invoice.client_pays),
+        distributor_invoice: String(invoice.distributor_invoice),
+        notes: invoice.notes ?? "",
+        attachment_url: invoice.attachment_url ?? "",
+      });
+    }
+  }, [invoice, client.public_lighting_value]);
+
   const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
     const c = Number(consumption) || 0;
     const p = Number(price) || 0;
