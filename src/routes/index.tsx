@@ -123,7 +123,7 @@ function Dashboard() {
       Receita: receita,
       Despesas: despesas,
       Operacionais: operacionais,
-      Distribuidora: distribuidora,
+      Concessionária: distribuidora,
       Lucro: receita - despesas,
     };
   });
