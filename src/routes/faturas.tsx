@@ -290,16 +290,26 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
           </div>
           <div>
             <Label>Cor do Cliente</Label>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               {CLIENT_COLORS.map(col => (
                 <button
                   key={col}
                   type="button"
                   onClick={() => setF({ ...f, color: col })}
-                  className={`h-8 w-8 rounded-full ring-offset-2 ${f.color === col ? "ring-2 ring-foreground" : ""}`}
+                  className={`h-8 w-8 rounded-full ring-offset-2 transition-all ${f.color === col ? "ring-2 ring-foreground scale-110" : "hover:scale-105"}`}
                   style={{ backgroundColor: col }}
                 />
               ))}
+              <div className="relative ml-2 flex items-center">
+                <Input
+                  type="color"
+                  value={f.color}
+                  onChange={e => setF({ ...f, color: e.target.value })}
+                  className="h-9 w-9 cursor-pointer rounded-full border-2 border-slate-200 p-0 overflow-hidden ring-offset-2 focus:ring-2 focus:ring-foreground transition-all hover:scale-105"
+                  title="Escolher cor personalizada"
+                />
+                <span className="ml-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Personalizada</span>
+              </div>
             </div>
           </div>
           <div>
