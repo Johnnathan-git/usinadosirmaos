@@ -129,11 +129,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   to={item.to}
                   className={cn(
                     "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
-                    active ? "text-[#151B2E]" : "text-[#9CA3AF]",
+                    active ? "text-white" : "text-[#9CA3AF]",
                   )}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
+                  {active && <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-8 bg-[#C98A3E] rounded-b-full" />}
+                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
+                  <span className="w-full truncate text-center uppercase tracking-tighter text-[9px]">{item.label}</span>
                 </Link>
               );
             })}
