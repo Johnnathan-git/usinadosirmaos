@@ -145,15 +145,15 @@ function Dashboard() {
   const summary = [...chartData].reverse();
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="mx-auto max-w-7xl space-y-8">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
-        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+        <p className="text-sm font-medium text-muted-foreground mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard 
-          icon={<TrendingUp className="h-5 w-5" />} 
+          icon={<TrendingUp className="h-4 w-4" />} 
           label="Receita Mensal" 
           value={receitaMes} 
           tint="leaf" 
@@ -162,7 +162,7 @@ function Dashboard() {
           delay={0}
         />
         <StatCard
-          icon={<TrendingDown className="h-5 w-5" />}
+          icon={<TrendingDown className="h-4 w-4" />}
           label="Despesas Mensais"
           value={despesasMes}
           tint="clay"
@@ -173,7 +173,7 @@ function Dashboard() {
           delay={60}
         />
         <StatCard 
-          icon={<DollarSign className="h-5 w-5" />} 
+          icon={<DollarSign className="h-4 w-4" />} 
           label="Lucro do Mês" 
           value={lucroMes} 
           tint="sky" 
@@ -182,7 +182,7 @@ function Dashboard() {
           delay={120}
         />
         <StatCard 
-          icon={<Briefcase className="h-5 w-5" />} 
+          icon={<Briefcase className="h-4 w-4" />} 
           label="Lucro Acumulado (Ano)" 
           value={lucroAnualReal} 
           tint="amber" 
@@ -193,73 +193,73 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
-              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
+          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-base font-bold text-foreground">Performance Financeira</h2>
+              <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                 {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
                   <span key={k} className="inline-flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full" style={{ background: c }} />
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: c }} />
                     {k}
                   </span>
                 ))}
               </div>
             </div>
             <div className="-mx-2 overflow-x-auto px-2">
-              <div className="h-64 min-w-[520px] sm:h-80 sm:min-w-0">
+              <div className="h-72 min-w-[520px] sm:min-w-0">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid vertical={false} stroke="#F1F5F9" strokeDasharray="3 3" />
+                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" opacity={0.5} />
                     <XAxis 
                       dataKey="month" 
                       tickLine={false} 
                       axisLine={false} 
-                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }} 
+                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }} 
                       dy={10} 
                     />
                     <YAxis
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }}
                       tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
                     />
                     <Tooltip 
-                      cursor={{ fill: "#F8FAFC", opacity: 0.4 }} 
+                      cursor={{ fill: "var(--accent)", opacity: 0.1 }} 
                       content={<ChartTooltip />} 
                     />
-                    <Bar dataKey="Receita" fill="#2F6F62" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                    <Bar dataKey="Despesas" fill="#D64545" radius={[4, 4, 0, 0]} maxBarSize={32} />
-                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                    <Bar dataKey="Receita" fill="#2F6F62" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                    <Bar dataKey="Despesas" fill="#D64545" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[3, 3, 0, 0]} maxBarSize={24} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
-            <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
+          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+            <h2 className="mb-6 text-base font-bold text-foreground">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-[#E4E7EC]">
-                    <th className="pb-3 text-left font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Mês</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Receita</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Desp. Operacionais</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Fat. Concessionária</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Despesas</th>
-                    <th className="pb-3 text-right font-semibold text-[#4B5563] uppercase text-[10px] tracking-wider">Lucro</th>
+                  <tr className="border-b border-border">
+                    <th className="pb-4 text-left font-bold text-muted-foreground uppercase tracking-widest">Mês</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Receita</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Desp. Operacionais</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Concessionária</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Despesas</th>
+                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Lucro</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F5F6F8]">
+                <tbody className="divide-y divide-border/50">
                   {summary.map(row => (
-                    <tr key={row.month} className="hover:bg-[#F5F6F8]/50 transition-colors zebra-stripe">
-                      <td className="py-4 text-[#374151] font-bold">{row.month}</td>
-                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Receita)}</td>
-                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Operacionais)}</td>
-                      <td className="num py-4 text-right text-[#4B5563]">{brl(row.Concessionária)}</td>
-                      <td className="num py-4 text-right font-medium text-[#4B5563]">{brl(row.Despesas)}</td>
+                    <tr key={row.month} className="hover:bg-accent/30 transition-colors">
+                      <td className="py-4 text-foreground font-semibold">{row.month}</td>
+                      <td className="num py-4 text-right font-medium text-foreground">{brl(row.Receita)}</td>
+                      <td className="num py-4 text-right text-muted-foreground">{brl(row.Operacionais)}</td>
+                      <td className="num py-4 text-right text-muted-foreground">{brl(row.Concessionária)}</td>
+                      <td className="num py-4 text-right font-medium text-foreground">{brl(row.Despesas)}</td>
                       <td className={cn(
-                        "num py-4 text-right font-bold transition-colors",
+                        "num py-4 text-right font-bold",
                         row.Lucro >= 0 ? "text-[#2F6F62]" : "text-[#D64545]"
                       )}>
                         {brl(row.Lucro)}
@@ -271,6 +271,7 @@ function Dashboard() {
             </div>
           </Card>
         </div>
+
 
         <div className="space-y-6">
           <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
