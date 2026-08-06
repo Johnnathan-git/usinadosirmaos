@@ -184,29 +184,25 @@ div[style*="Edit with Lovable"],
     bottom: 0;
     z-index: -1;
     overflow: hidden;
-    background: #000;
+    background: radial-gradient(circle at 50% 50%, #0a0a0c 0%, #000 100%);
   }
 
   .solar-core {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 650px;
-    height: 650px;
-    margin-left: -325px;
-    margin-top: -325px;
+    width: 800px;
+    height: 800px;
+    margin-left: -400px;
+    margin-top: -400px;
     background: radial-gradient(circle at center, 
-      #ff9a00 0%, 
-      #c98a3e 30%, 
-      rgba(201, 138, 62, 0.4) 60%, 
-      transparent 90%
+      rgba(201, 138, 62, 0.4) 0%, 
+      rgba(201, 138, 62, 0.15) 30%, 
+      transparent 70%
     );
     border-radius: 50%;
-    filter: blur(50px);
-    box-shadow: 
-      0 0 120px 40px rgba(255, 154, 0, 0.3),
-      inset 0 0 100px rgba(255, 255, 255, 0.4);
-    animation: solar-pulse 6s infinite ease-in-out;
+    filter: blur(80px);
+    animation: solar-pulse 15s infinite alternate ease-in-out;
     pointer-events: none;
     z-index: 0;
   }
@@ -215,40 +211,38 @@ div[style*="Edit with Lovable"],
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 1000px;
-    height: 1000px;
-    margin-left: -500px;
-    margin-top: -500px;
+    width: 1200px;
+    height: 1200px;
+    margin-left: -600px;
+    margin-top: -600px;
     background: conic-gradient(
       from 0deg,
       transparent 0%,
-      rgba(201, 138, 62, 0.1) 10%,
-      transparent 20%,
-      rgba(255, 255, 255, 0.05) 25%,
+      rgba(201, 138, 62, 0.05) 15%,
       transparent 30%,
-      rgba(201, 138, 62, 0.15) 45%,
+      rgba(201, 138, 62, 0.08) 45%,
       transparent 60%,
-      rgba(201, 138, 62, 0.1) 75%,
-      rgba(255, 255, 255, 0.05) 85%,
+      rgba(201, 138, 62, 0.05) 75%,
+      transparent 90%,
       transparent 100%
     );
     border-radius: 50%;
-    filter: blur(60px);
-    animation: solar-rotate 40s linear infinite;
+    filter: blur(120px);
+    animation: solar-rotate 60s linear infinite;
     pointer-events: none;
     z-index: -1;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   @keyframes solar-pulse {
-    0%, 100% { transform: scale(1) translate(-1%, -1%); filter: blur(50px) brightness(1); opacity: 0.8; }
-    50% { transform: scale(1.1) translate(1%, 1%); filter: blur(70px) brightness(1.4); opacity: 1; }
+    0% { transform: scale(1) translate(-5%, -5%); opacity: 0.6; }
+    50% { transform: scale(1.2) translate(5%, 5%); opacity: 0.9; }
+    100% { transform: scale(1.1) translate(-2%, 8%); opacity: 0.7; }
   }
 
   @keyframes solar-rotate {
-    from { transform: rotate(0deg) scale(1); opacity: 0.4; }
-    50% { transform: rotate(180deg) scale(1.2); opacity: 0.7; }
-    to { transform: rotate(360deg) scale(1); opacity: 0.4; }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .aurora-blob {
