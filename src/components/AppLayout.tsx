@@ -101,12 +101,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
       {/* Background Aurora */}
       <div className="aurora-container pointer-events-none">
+        {/* Giant Solar Core */}
+        <div className="solar-core" />
+        <div className="solar-flare" />
+        
+        {/* Aurora Atmosphere */}
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
         <div className="aurora-blob aurora-blob-3" />
+        
         {/* Subtle noise and scanline effect for depth */}
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/[0.02] to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/[0.01] to-transparent pointer-events-none" />
       </div>
 
       {/* Mobile Top Header */}
