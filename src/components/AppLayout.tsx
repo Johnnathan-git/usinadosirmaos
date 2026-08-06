@@ -8,7 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { getMyAccess } from "@/lib/acessos.functions";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import { BrandLockup } from "@/components/BrandMark";
+import { BrandLockup, BrandMark } from "@/components/BrandMark";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
