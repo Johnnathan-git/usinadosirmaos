@@ -173,30 +173,30 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
-        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
-          <Zap className="h-4 w-4 text-[#C98A3E]" /> Geração da Usina
+      <Card className="glass-card p-6">
+        <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40">
+          <Zap className="h-4 w-4 text-primary" /> Geração da Usina
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Nº de placas</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Nº de placas</Label>
             {editing ? (
-              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.panels_count}</div>}
+              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-white" />
+            ) : <div className="text-2xl font-bold text-white num-lg">{config.panels_count}</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">kW por placa/mês</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">kW por placa/mês</Label>
             {editing ? (
-              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1" />
-            ) : <div className="text-2xl font-bold text-[#374151] num-lg">{config.kw_per_panel} kW</div>}
+              <Input type="number" step="0.01" value={config.kw_per_panel} onChange={e => setConfig({ ...config, kw_per_panel: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-white" />
+            ) : <div className="text-2xl font-bold text-white num-lg">{config.kw_per_panel} kW</div>}
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Geração total/mês</Label>
-            <div className="text-2xl font-bold text-[#374151] num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Geração total/mês</Label>
+            <div className="text-2xl font-bold text-white num-lg">{totalGen.toLocaleString("pt-BR")} kW</div>
           </div>
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Consumo total clientes</Label>
-            <div className="text-2xl font-bold text-[#374151] num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Consumo total clientes</Label>
+            <div className="text-2xl font-bold text-white num-lg">{totalConsumo.toLocaleString("pt-BR")} kW</div>
           </div>
         </div>
       </Card>
