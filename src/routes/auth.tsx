@@ -105,7 +105,7 @@ function AuthPage() {
             <BrandMark className="h-16 w-16" />
           </div>
           <div className="text-center">
-            <div className="font-display text-2xl font-bold tracking-tight text-white text-glow">
+            <div className="font-display text-2xl font-bold tracking-tight text-white">
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
