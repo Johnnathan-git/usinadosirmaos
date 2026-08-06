@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { changeMyPassword } from "@/lib/acessos.functions";
 import { toast } from "sonner";
+import { initial } from "@/lib/format";
+
 
 type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
