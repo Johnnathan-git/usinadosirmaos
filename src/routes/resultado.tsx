@@ -184,8 +184,8 @@ function Resultado() {
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{brl(semUsina)}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center text-white font-bold">{brl(desc)}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-primary">{brl(Number(inv.client_pays))}</td>
-                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-red-400">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-white">{brl(Number(inv.client_pays))}</td>
+                        <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-white">{brl(Number(inv.distributor_invoice))}</td>
                         <td className="num whitespace-nowrap px-4 py-4 text-center font-bold text-primary">{brl(eco)}</td>
                       </tr>
                     );
