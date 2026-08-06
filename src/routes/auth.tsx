@@ -74,70 +74,90 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F5F6F8] p-4 relative overflow-hidden">
-      {/* Elementos decorativos de fundo */}
-      <div className="absolute -top-[10%] -right-[5%] h-64 w-64 rounded-full bg-indigo-500/5 blur-3xl" />
-      <div className="absolute -bottom-[10%] -left-[5%] h-80 w-80 rounded-full bg-[#C98A3E]/10 blur-3xl" />
+    <div className="flex min-h-screen items-center justify-center bg-black p-4 relative overflow-hidden">
+      {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
+      <div className="aurora-container pointer-events-none">
+        <div className="energy-wave" />
+        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
+        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />
+        
+        {[...Array(8)].map((_, i) => (
+          <div 
+            key={i} 
+            className="nebulosa-particle"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              '--duration': `${15 + Math.random() * 20}s`,
+              animationDelay: `${-Math.random() * 20}s`
+            } as any}
+          />
+        ))}
+
+        <div className="aurora-blob aurora-blob-1" />
+        <div className="aurora-blob aurora-blob-2" />
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      </div>
       
-      <Card className="relative w-full max-w-md border-none bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-10">
+      <Card className="glass-card relative w-full max-w-md border-white/10 p-8 shadow-2xl sm:p-10">
         <div className="mb-8 flex flex-col items-center gap-6">
-          <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white p-2 shadow-sm ring-1 ring-[#E4E7EC]">
+          <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white/5 p-2 shadow-sm ring-1 ring-white/10 backdrop-blur-xl">
             <BrandMark className="h-16 w-16" />
           </div>
           <div className="text-center">
-            <div className="font-display text-2xl font-bold tracking-tight text-[#151B2E]">
+            <div className="font-display text-2xl font-bold tracking-tight text-white text-glow">
               Usina dos Irmãos
             </div>
-            <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#C98A3E]">
+            <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
               Gestão de energia
             </div>
           </div>
         </div>
 
         <div className="mb-8 space-y-1 text-center">
-          <h1 className="text-xl font-bold text-[#151B2E]">Seja bem vindo</h1>
-          <p className="text-sm font-medium text-muted-foreground">Acesse sua conta para continuar</p>
+          <h1 className="text-xl font-bold text-white">Seja bem vindo</h1>
+          <p className="text-sm font-medium text-white/40">Acesse sua conta para continuar</p>
         </div>
 
         <form onSubmit={submit} method="post" action="#" className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">E-mail</Label>
+            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-white/40">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-[#E4E7EC] bg-[#F9FAFB] focus:bg-white focus:ring-[#C98A3E]"
+              className="h-11 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Senha</Label>
+            <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-white/40">Senha</Label>
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-[#E4E7EC] bg-[#F9FAFB] focus:bg-white focus:ring-[#C98A3E]"
+                className="h-11 pr-10 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground hover:text-[#151B2E]">
+                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-white/40 hover:text-white">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
           </div>
           
           {error && (
-            <div role="alert" className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-100 bg-red-50 p-3 text-sm font-medium text-[#D64545]">
+            <div role="alert" className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm font-medium text-red-400">
               {error}
             </div>
           )}
 
           <Button type="submit" disabled={loading || !hydrated} 
-            className="h-11 w-full bg-[#151B2E] text-white hover:bg-[#1e2741] font-bold rounded-lg shadow-lg transition-all active:scale-[0.98]">
+            className="h-11 w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
             {loading ? "Autenticando..." : "Entrar no Sistema"}
           </Button>
         </form>
 
-        <div className="mt-8 border-t border-[#F1F5F9] pt-6">
-          <p className="text-center text-[11px] font-medium leading-relaxed text-muted-foreground">
+        <div className="mt-8 border-t border-white/5 pt-6">
+          <p className="text-center text-[11px] font-medium leading-relaxed text-white/40">
             Novos usuarios são cadastrados <br/> 
-            <span className="font-bold text-[#4B5563]">exclusivamente pelo administrador</span>
+            <span className="font-bold text-white/60">exclusivamente pelo administrador</span>
           </p>
         </div>
       </Card>
