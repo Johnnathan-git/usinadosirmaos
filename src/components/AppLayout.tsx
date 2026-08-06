@@ -97,11 +97,23 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="no-print sticky top-0 z-50 bg-white shadow-sm h-[56px]">
+      <header className="no-print sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm h-[56px] md:hidden">
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
         <div className="relative flex items-center justify-between px-6 py-2">
           <div className="flex items-center gap-0">
-            <BrandLockup />
+             <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-black/5 bg-white p-1 shadow-sm">
+                <BrandMark />
+              </div>
+              <div className="min-w-0 leading-tight">
+                <div className="font-sans text-[13px] font-bold tracking-tight text-[#374151]">
+                  Usina dos Irmãos
+                </div>
+                <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#4B5563]">
+                  Gestão de energia
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
@@ -119,7 +131,22 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
-      <div className="flex">
+      <div className="flex min-h-screen relative">
+        <div className="hidden md:flex flex-col items-end pt-4 pr-4 absolute top-0 right-0 z-40">
+           <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-white/80 backdrop-blur-sm pl-3 pr-1 py-0.5 shadow-sm">
+            <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
+              {acc?.effective_admin ? "Admin" : "User"}
+            </span>
+            <div className="flex items-center gap-0.5">
+              <ChangeOwnPasswordDialog />
+              <Button size="sm" variant="ghost" onClick={signOut} className="h-6 px-2 rounded-full hover:bg-[#F3F5F8] text-[#374151]">
+                <LogOut className="h-3 w-3 mr-1" />
+                <span className="text-[9px] font-bold uppercase text-[#374151]">Sair</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+        
         {visibleNav.length > 0 && (
           <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-[#151B2E] pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
             {visibleNav.slice(0, 3).map((item) => {
