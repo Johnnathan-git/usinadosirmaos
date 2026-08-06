@@ -92,7 +92,7 @@ function Inventario() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Inventário</h1>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white">Inventário</h1>
           <p className="text-sm font-medium text-white/40">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
