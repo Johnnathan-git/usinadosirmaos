@@ -162,7 +162,7 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-white/30">
+            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-foreground/30">
               <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
               <span className="flex items-center gap-1">
                 <FileText className="h-3 w-3" /> 
