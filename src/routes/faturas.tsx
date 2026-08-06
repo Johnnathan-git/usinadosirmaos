@@ -474,9 +474,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="glass-card border-white/10 text-foreground max-h-[95vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
+          <DialogTitle className="text-foreground text-glow">{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
         <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
           <span>Desconto: {client.discount_pct}%</span>
