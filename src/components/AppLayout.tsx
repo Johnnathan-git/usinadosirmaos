@@ -144,7 +144,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="flex">
         {/* Desktop Sidebar */}
         <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-white/5 bg-black/40 backdrop-blur-xl md:flex">
-          <div className="p-8">
+          <div className="p-6">
             <BrandLockup />
           </div>
           
