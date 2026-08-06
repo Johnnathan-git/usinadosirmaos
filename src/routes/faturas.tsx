@@ -269,27 +269,27 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
+      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
+          <DialogTitle className="text-white text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label>Nome Completo *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" />
+            <Label className="text-white/40">Nome Completo *</Label>
+            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>Telefone</Label>
-              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" />
+              <Label className="text-white/40">Telefone</Label>
+              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-white" />
             </div>
             <div>
-              <Label>E-mail</Label>
-              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" />
+              <Label className="text-white/40">E-mail</Label>
+              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-white" />
             </div>
           </div>
           <div>
-            <Label>Cor do Cliente</Label>
+            <Label className="text-white/40">Cor do Cliente</Label>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {CLIENT_COLORS.map(col => (
                 <button
@@ -319,25 +319,25 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             </div>
           </div>
           <div>
-            <Label>Número da UC *</Label>
-            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" />
+            <Label className="text-white/40">Número da UC *</Label>
+            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label>Observações</Label>
-            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" />
+            <Label className="text-white/40">Observações</Label>
+            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label>Desconto (%) *</Label>
-            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" />
+            <Label className="text-white/40">Desconto (%) *</Label>
+            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-white/5 border-white/10 text-white" />
           </div>
           <div>
-            <Label>Iluminação Pública (Valor Fixo) *</Label>
-            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" />
+            <Label className="text-white/40">Iluminação Pública (Valor Fixo) *</Label>
+            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-white" />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">{client ? "Salvar" : "Criar"}</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

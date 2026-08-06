@@ -328,27 +328,27 @@ function NewSimClientDialog({ onClose, onAdd }: { onClose: () => void, onAdd: (n
   }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-md">
-        <DialogHeader><DialogTitle>Novo Cliente</DialogTitle></DialogHeader>
+      <DialogContent className="glass-card border-white/10 text-white max-w-md">
+        <DialogHeader><DialogTitle className="text-white text-glow">Novo Cliente</DialogTitle></DialogHeader>
         <div className="space-y-3">
-          <div><Label>Nome do cliente *</Label><Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: JOÃO SILVA" /></div>
-          <div><Label>Unidade Consumidora (UC)</Label><Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" /></div>
-          <div><Label>Consumo médio mensal (kW) *</Label><Input type="number" value={f.avg} onChange={e => setF({ ...f, avg: e.target.value })} placeholder="Ex: 500" /></div>
-          <div><Label>Rateio % *</Label><Input type="number" step="0.01" value={f.pct} onChange={e => setF({ ...f, pct: e.target.value })} placeholder="Ex: 8.20" /></div>
+          <div><Label className="text-white/40">Nome do cliente *</Label><Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: JOÃO SILVA" className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Unidade Consumidora (UC)</Label><Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Consumo médio mensal (kW) *</Label><Input type="number" value={f.avg} onChange={e => setF({ ...f, avg: e.target.value })} placeholder="Ex: 500" className="bg-white/5 border-white/10 text-white" /></div>
+          <div><Label className="text-white/40">Rateio % *</Label><Input type="number" step="0.01" value={f.pct} onChange={e => setF({ ...f, pct: e.target.value })} placeholder="Ex: 8.20" className="bg-white/5 border-white/10 text-white" /></div>
           <div>
-            <Label>Cor</Label>
+            <Label className="text-white/40">Cor</Label>
             <div className="mt-2 flex flex-wrap gap-2">
               {CLIENT_COLORS.map(c => (
                 <button key={c} type="button" onClick={() => setF({ ...f, color: c })}
-                  className={`h-8 w-8 rounded-full ring-offset-2 ${f.color === c ? "ring-2 ring-foreground" : ""}`}
+                  className={`h-8 w-8 rounded-full ring-offset-2 transition-all ${f.color === c ? "ring-2 ring-white scale-110" : "hover:scale-105"}`}
                   style={{ backgroundColor: c }} />
               ))}
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancelar</Button>
-          <Button onClick={submit} className="bg-[#151B2E] text-white hover:bg-[#1F2A45] font-medium">Adicionar</Button>
+          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button onClick={submit} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Adicionar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
