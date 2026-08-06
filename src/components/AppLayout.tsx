@@ -164,7 +164,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar/40 backdrop-blur-xl md:flex">
+        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
           <div className="p-6">
             <BrandLockup />
           </div>
@@ -263,7 +263,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-background/60 px-2 backdrop-blur-2xl md:hidden shadow-2xl">
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-card px-2 backdrop-blur-2xl md:hidden shadow-2xl">
           {visibleNav.slice(0, 5).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
@@ -323,10 +323,11 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
-          <KeyRound className="h-3 w-3 sm:mr-1" />
-          <span className="hidden text-[9px] font-bold uppercase sm:inline text-[#374151]">Senha</span>
+        <Button size="sm" variant="ghost" className="h-8 px-3 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground">
+          <KeyRound className="h-3.5 w-3.5 sm:mr-2" />
+          <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
         </Button>
+
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -348,7 +349,7 @@ function ChangeOwnPasswordDialog() {
           <Button 
             onClick={() => m.mutate()} 
             disabled={m.isPending || password.length < 6}
-            className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
           >
             {m.isPending ? "Alterando..." : "Confirmar Alteração"}
           </Button>
