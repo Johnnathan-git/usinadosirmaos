@@ -280,8 +280,8 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label className="text-white/40">Telefone</Label>
-              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-white" />
+              <Label className="text-foreground/40">Telefone</Label>
+              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-foreground" />
             </div>
             <div>
               <Label className="text-white/40">E-mail</Label>
