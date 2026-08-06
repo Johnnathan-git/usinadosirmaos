@@ -76,7 +76,7 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4 relative overflow-hidden">
       {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
-      <div className="aurora-container pointer-events-none fixed inset-0">
+      <div className="aurora-container pointer-events-none">
         <div className="energy-wave" />
         <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
         <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />

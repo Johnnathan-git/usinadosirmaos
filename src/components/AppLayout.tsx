@@ -100,7 +100,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
-      <div className="aurora-container pointer-events-none fixed inset-0">
+      <div className="aurora-container pointer-events-none">
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
