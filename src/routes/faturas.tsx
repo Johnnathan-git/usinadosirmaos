@@ -300,15 +300,15 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
                   style={{ backgroundColor: col }}
                 />
               ))}
-              <div className="relative ml-2 flex items-center">
+              <div className="relative ml-2 flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50/50 py-1 pl-1 pr-3 transition-all hover:bg-slate-50">
                 <Input
                   type="color"
                   value={f.color}
                   onChange={e => setF({ ...f, color: e.target.value })}
-                  className="h-9 w-9 cursor-pointer rounded-full border-2 border-slate-200 p-0 overflow-hidden ring-offset-2 focus:ring-2 focus:ring-foreground transition-all hover:scale-105"
+                  className="h-8 w-8 cursor-pointer rounded-full border-0 p-0 overflow-hidden ring-offset-2 focus:ring-2 focus:ring-foreground transition-all hover:scale-105"
                   title="Escolher cor personalizada"
                 />
-                <span className="ml-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Personalizada</span>
+                <span className="text-[9px] font-black text-slate-500 uppercase tracking-tighter">Cor Personalizada</span>
               </div>
             </div>
           </div>
