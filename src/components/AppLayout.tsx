@@ -152,16 +152,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
 
-          <div className="mt-auto border-t border-border p-4">
-            <div className="mb-4 flex items-center gap-3 rounded-lg bg-card p-2.5 border border-border shadow-sm">
+          <div className="mt-auto border-t border-white/5 p-4">
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-white/5 p-2.5 border border-white/5 shadow-sm">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-bold text-foreground leading-tight">
+                <div className="truncate text-xs font-bold text-white leading-tight">
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
-                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="text-[10px] font-medium text-white/40 uppercase tracking-wider">
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
               </div>
@@ -172,7 +172,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 border-transparent border transition-all"
+                className="flex-1 h-8 gap-2 rounded-lg bg-white/5 text-white/60 hover:bg-destructive/20 hover:text-white hover:border-destructive/30 border-white/5 border transition-all"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>

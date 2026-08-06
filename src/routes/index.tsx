@@ -147,8 +147,8 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
-        <p className="text-sm font-medium text-muted-foreground mt-1">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-white text-glow">Dashboard</h1>
+        <p className="text-sm font-medium text-white/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
