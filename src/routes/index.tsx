@@ -161,10 +161,10 @@ function Dashboard() {
   const summary = [...chartData].reverse();
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4">
+    <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
-        <p className="text-xs font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
+        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
@@ -206,8 +206,8 @@ function Dashboard() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
           <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
@@ -287,13 +287,13 @@ function Dashboard() {
           </Card>
         </div>
 
-        <div className="space-y-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+        <div className="space-y-6">
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
             <div className="mb-4 flex items-center gap-2">
               <Trophy className="h-5 w-5 text-slate-400" />
               <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-4">
               {ranking.map((c, idx) => (
                 <div 
                   key={c.id} 
@@ -327,7 +327,7 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
                 <Users className="h-6 w-6" />
@@ -391,7 +391,7 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
         borderTop: `3px solid ${semanticColor}`,
         animationDelay: `${delay}ms`
