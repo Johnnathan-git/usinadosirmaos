@@ -118,11 +118,12 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-bold tracking-tight text-white">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-white/40">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground">Faturas</h1>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
+
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-white/5 bg-white/5 text-white/70 hover:text-white rounded-lg">
+          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-border bg-accent text-muted-foreground hover:text-foreground rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
           <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
@@ -132,7 +133,7 @@ function Faturas() {
       </div>
 
       {shown.length === 0 && (
-        <Card className="glass-card border-white/5 p-10 text-center text-white/40">
+        <Card className="glass-card border-border p-10 text-center text-muted-foreground">
           {showInactive ? "Nenhum cliente inativo." : "Nenhum cliente cadastrado. Clique em Novo Cliente."}
         </Card>
       )}
@@ -144,17 +145,19 @@ function Faturas() {
               <div className="flex items-center gap-2.5">
                 <div
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+
                   style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
                 </div>
                 <div className="min-w-0">
-                  <div className="truncate font-bold text-sm text-white">{c.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-white/40">UC {c.uc_number}</div>
+                  <div className="truncate font-bold text-sm text-foreground">{c.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">UC {c.uc_number}</div>
+
                 </div>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-white/30 hover:text-white transition-colors" aria-label={`Editar ${c.name}`}>
+                <button onClick={() => setEditClient(c)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors" aria-label={`Editar ${c.name}`}>
                   <Settings className="h-4 w-4" />
                 </button>
                 <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
@@ -162,14 +165,14 @@ function Faturas() {
                 </button>
               </div>
             </div>
-            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-white/30">
+            <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
               <span className="flex items-center gap-1">
                 <FileText className="h-3 w-3" /> 
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
               {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
-                <span className="flex items-center gap-1 text-white/60">
+                <span className="flex items-center gap-1 text-muted-foreground">
                   <Paperclip className="h-3 w-3" /> Anexos
                 </span>
               )}
@@ -188,10 +191,10 @@ function Faturas() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full gap-2 border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 rounded-lg px-3 py-1.5 font-bold text-[11px] uppercase tracking-wider transition-all"
+                className="w-full gap-2 border border-border bg-accent text-muted-foreground hover:bg-accent/80 rounded-lg px-3 py-1.5 font-bold text-[11px] uppercase tracking-wider transition-all"
                 onClick={() => setHistoryFor(c)}
               >
-                <Eye className="h-3 w-3 text-white/40" /> Histórico
+                <Eye className="h-3 w-3 text-muted-foreground" /> Histórico
               </Button>
             </div>
             {!c.active && (
@@ -269,27 +272,30 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="glass-card border-white/10 text-white max-h-[90vh] max-w-lg overflow-y-auto">
+      <DialogContent className="glass-card border-border text-foreground max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
+          <DialogTitle className="text-foreground dark:text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <Label className="text-white/40">Nome Completo *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Nome Completo *</Label>
+            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-input border-border text-foreground" />
+
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label className="text-white/40">Telefone</Label>
-              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-white/5 border-white/10 text-white" />
+              <Label className="text-muted-foreground">Telefone</Label>
+              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-input border-border text-foreground" />
+
             </div>
             <div>
-              <Label className="text-white/40">E-mail</Label>
-              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-white/5 border-white/10 text-white" />
+              <Label className="text-muted-foreground">E-mail</Label>
+              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-input border-border text-foreground" />
+
             </div>
           </div>
           <div>
-            <Label className="text-white/40">Cor do Cliente</Label>
+            <Label className="text-muted-foreground">Cor do Cliente</Label>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {CLIENT_COLORS.map(col => (
                 <button
@@ -319,24 +325,28 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             </div>
           </div>
           <div>
-            <Label className="text-white/40">Número da UC *</Label>
-            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Número da UC *</Label>
+            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-input border-border text-foreground" />
+
           </div>
           <div>
-            <Label className="text-white/40">Observações</Label>
-            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Observações</Label>
+            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-input border-border text-foreground" />
+
           </div>
           <div>
-            <Label className="text-white/40">Desconto (%) *</Label>
-            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Desconto (%) *</Label>
+            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-input border-border text-foreground" />
+
           </div>
           <div>
-            <Label className="text-white/40">Iluminação Pública (Valor Fixo) *</Label>
-            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-muted-foreground">Iluminação Pública (Valor Fixo) *</Label>
+            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-input border-border text-foreground" />
+
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-white/10 text-white/40 hover:text-white hover:bg-white/5">Cancelar</Button>
+          <Button variant="outline" onClick={onClose} className="border-border text-muted-foreground hover:text-foreground hover:bg-accent">Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
