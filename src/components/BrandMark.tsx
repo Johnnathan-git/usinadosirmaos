@@ -12,7 +12,7 @@ export function BrandMark({ className }: { className?: string }) {
   );
 }
 
-export function BrandLockup({ compact = false, dark = false }: { compact?: boolean; dark?: boolean }) {
+export function BrandLockup({ compact = false, onSidebar = false }: { compact?: boolean; onSidebar?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2">
       <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden bg-transparent">
@@ -20,10 +20,10 @@ export function BrandLockup({ compact = false, dark = false }: { compact?: boole
       </div>
       {!compact && (
         <div className="min-w-0 leading-tight">
-          <div className="font-sans text-[15px] font-bold tracking-tight text-foreground dark:text-glow">
+          <div className={cn("font-sans text-[15px] font-bold tracking-tight text-foreground dark:text-glow", onSidebar && "light:text-white")}>
             Usina dos Irmãos
           </div>
-          <div className="text-[7px] font-semibold uppercase tracking-[0.22em] text-muted-foreground -mt-0.5">
+          <div className={cn("text-[7px] font-semibold uppercase tracking-[0.22em] text-muted-foreground -mt-0.5", onSidebar && "light:text-white/60")}>
             Gestão de energia
           </div>
 
