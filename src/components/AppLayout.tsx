@@ -118,14 +118,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
 
       <div className="flex">
-        {/* Desktop Sidebar - Linear Style */}
-        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-background md:flex">
-          <div className="p-6">
+        {/* Desktop Sidebar */}
+        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-white/5 bg-black/40 backdrop-blur-xl md:flex">
+          <div className="p-8">
             <BrandLockup />
           </div>
           
-          <div className="flex-1 overflow-y-auto px-3 py-2">
-            <nav className="space-y-0.5">
+          <div className="flex-1 overflow-y-auto px-4 py-2">
+            <nav className="space-y-1">
               {visibleNav.map((item) => {
                 const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
                 const Icon = item.icon;
