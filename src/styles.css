@@ -184,7 +184,65 @@ div[style*="Edit with Lovable"],
     bottom: 0;
     z-index: -1;
     overflow: hidden;
-    background: #000;
+    background: radial-gradient(circle at 50% 50%, #0a0a0c 0%, #000 100%);
+  }
+
+  .solar-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    margin-left: -400px;
+    margin-top: -400px;
+    background: radial-gradient(circle at center, 
+      rgba(201, 138, 62, 0.4) 0%, 
+      rgba(201, 138, 62, 0.15) 30%, 
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: solar-pulse 15s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .solar-flare {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1200px;
+    height: 1200px;
+    margin-left: -600px;
+    margin-top: -600px;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      rgba(201, 138, 62, 0.05) 15%,
+      transparent 30%,
+      rgba(201, 138, 62, 0.08) 45%,
+      transparent 60%,
+      rgba(201, 138, 62, 0.05) 75%,
+      transparent 90%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    filter: blur(120px);
+    animation: solar-rotate 60s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  @keyframes solar-pulse {
+    0% { transform: scale(1) translate(-5%, -5%); opacity: 0.6; }
+    50% { transform: scale(1.2) translate(5%, 5%); opacity: 0.9; }
+    100% { transform: scale(1.1) translate(-2%, 8%); opacity: 0.7; }
+  }
+
+  @keyframes solar-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .aurora-blob {
