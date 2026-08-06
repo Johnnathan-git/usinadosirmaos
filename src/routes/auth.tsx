@@ -129,7 +129,7 @@ function AuthPage() {
             <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-white/40">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary"
+              className="h-11 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] autofill:text-white"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
           </div>
           <div className="space-y-2">
@@ -137,7 +137,7 @@ function AuthPage() {
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary"
+                className="h-11 pr-10 border-white/10 bg-white/5 text-white focus:bg-white/10 focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] autofill:text-white"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
