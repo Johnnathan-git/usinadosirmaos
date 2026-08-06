@@ -141,7 +141,7 @@ function Relatorio() {
         </div>
       </div>
 
-      <Card className="no-print rounded-[14px] border border-white/50 bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="no-print rounded-[14px] border border-slate-200 bg-white grid gap-4 p-6 sm:grid-cols-2 shadow-none">
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">Cliente</div>
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>

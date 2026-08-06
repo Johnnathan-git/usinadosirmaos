@@ -173,7 +173,7 @@ function Controle() {
         </div>
       </div>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
         <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
           <Zap className="h-4 w-4 text-[#C98A3E]" /> Geração da Usina
         </div>
@@ -202,17 +202,17 @@ function Controle() {
       </Card>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><TrendingUp className="h-4 w-4 text-[#2E5C8A]" /> Saldo de Energia</div>
           <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-[#D64545]" : "text-[#2E5C8A]"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><BarChart3 className="h-4 w-4 text-[#374151]" /> Aproveitamento</div>
           <div className="text-2xl font-bold text-[#374151] num-lg">{aproveitamento.toFixed(1)}%</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]"><Zap className="h-4 w-4 text-[#C98A3E]" /> Rateio total alocado</div>
           <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-[#2E5C8A]" : "text-[#D64545]"}`}>
             {totalPct.toFixed(2)}%
@@ -223,7 +223,7 @@ function Controle() {
         </Card>
       </div>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs overflow-hidden">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none overflow-hidden">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-bold text-[#374151]">Rateio por Cliente</h2>
           <span className="text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">{rows.length} cliente(s)</span>

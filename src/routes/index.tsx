@@ -163,7 +163,7 @@ function Dashboard() {
         <StatCard icon={<Briefcase className="h-5 w-5" />} label="Lucro Acumulado (Ano)" value={lucroAnualReal} tint="amber" />
       </div>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
@@ -206,7 +206,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-white/50 rounded-xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <div className="mb-4 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-slate-400" />
           <h2 className="text-lg font-bold text-[#374151]">Ranking — Clientes Mais Lucrativos</h2>
@@ -239,7 +239,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="bg-white border border-white/50 rounded-xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
         <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -269,7 +269,7 @@ function Dashboard() {
         </div>
       </Card>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
             <Users className="h-6 w-6" />
@@ -331,7 +331,7 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-[14px] border border-white/50 bg-white p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-xs"
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-4 sm:p-5 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5"
       style={{ borderTop: `3px solid ${semanticColor}` }}
     >
       <div className="mb-2 sm:mb-4 flex items-start justify-between gap-2">
