@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Esta aparecendo uma mensagem de 5 Problemas de Segurança aqui. Verifique e corrija
+ * Execute esta instrucao no projeto: No modulo Relatorio de Cliente tem coluna cortando numeros ainda, pelo notebook está cortando inclusive, imagino pelo celular. Ajustar isso
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
