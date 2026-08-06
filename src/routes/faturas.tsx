@@ -137,7 +137,7 @@ function Faturas() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 [&>*]:glass-card-interactive">
+      <div className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3 [&>*]:glass-card-interactive">
         {shown.map(c => (
           <Card key={c.id} className="glass-card relative overflow-hidden p-5" style={{ borderLeft: `4px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
@@ -702,73 +702,74 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           ) : invoices.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
           ) : (
-            <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-slate-50">
-                <tr className="text-[10px] uppercase tracking-wider text-slate-500">
-                  <th className="px-2 py-2 text-left font-semibold">Mês</th>
-                  <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
-                  <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
-                  <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                  <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
-                  <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
-                  <th className="px-2 py-2 text-center font-semibold">Anexo</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((inv) => {
-                  const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
-                  return (
-                    <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
-                      <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                      <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
-                      <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                      <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
-                      <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                      <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
-                      <td className="py-3 text-center">
-                        {inv.attachment_url ? (
-                          <button 
-                            onClick={async () => {
-                              try {
-                                const path = inv.attachment_url!;
-                                if (path.startsWith('http')) {
-                                  window.open(path, '_blank');
-                                  return;
+            <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
+              <table className="w-full text-sm min-w-[800px]">
+                <thead className="sticky top-0 bg-slate-50">
+                  <tr className="text-[10px] uppercase tracking-wider text-slate-500">
+                    <th className="px-2 py-2 text-left font-semibold">Mês</th>
+                    <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
+                    <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
+                    <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
+                    <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
+                    <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
+                    <th className="px-2 py-2 text-center font-semibold">Anexo</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoices.map((inv) => {
+                    const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
+                    return (
+                      <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
+                        <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
+                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
+                        <td className="py-3 text-center">
+                          {inv.attachment_url ? (
+                            <button 
+                              onClick={async () => {
+                                try {
+                                  const path = inv.attachment_url!;
+                                  if (path.startsWith('http')) {
+                                    window.open(path, '_blank');
+                                    return;
+                                  }
+                                  const { data, error } = await supabase.storage
+                                    .from('faturas_v3_privado_v2')
+                                    .createSignedUrl(path, 3600);
+                                  if (error) throw error;
+                                  const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                                  window.location.href = downloadUrl;
+                                } catch (err: any) {
+                                  toast.error("Erro ao abrir arquivo: " + err.message);
                                 }
-                                const { data, error } = await supabase.storage
-                                  .from('faturas_v3_privado_v2')
-                                  .createSignedUrl(path, 3600);
-                                if (error) throw error;
-                                const a = document.createElement('a');
-                                const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
-                                window.location.href = downloadUrl;
-                              } catch (err: any) {
-                                toast.error("Erro ao abrir arquivo: " + err.message);
-                              }
-                            }}
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
-                            title="Ver anexo"
-                          >
-                            <Paperclip className="h-4 w-4" />
-                          </button>
-                        ) : "—"}
-                      </td>
-                      <td className="py-3 pl-2 text-right">
-                        <div className="flex justify-end gap-1">
-                          <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-[#D64545]" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                              }}
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
+                              title="Ver anexo"
+                            >
+                              <Paperclip className="h-4 w-4" />
+                            </button>
+                          ) : "—"}
+                        </td>
+                        <td className="py-3 pl-2 text-right">
+                          <div className="flex justify-end gap-1">
+                            <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                              <Pencil className="h-4 w-4" />
+                            </button>
+                            <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-[#D64545]" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 

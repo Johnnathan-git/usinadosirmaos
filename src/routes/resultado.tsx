@@ -150,10 +150,10 @@ function Resultado() {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
           <Card key={mk} className="glass-card overflow-hidden">
-            <div className="border-b border-white/5 bg-white/5 px-6 py-4">
+            <div className="border-b border-white/5 bg-white/5 px-4 sm:px-6 py-4">
               <h2 className="text-base font-bold text-white">{monthLabelLong(d)}</h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-white/5 bg-white/5">
