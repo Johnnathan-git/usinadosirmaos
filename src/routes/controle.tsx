@@ -225,8 +225,8 @@ function Controle() {
 
       <Card className="glass-card p-6 overflow-hidden">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Rateio por Cliente</h2>
-          <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{rows.length} cliente(s)</span>
+          <h2 className="text-lg font-bold text-foreground">Rateio por Cliente</h2>
+          <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">{rows.length} cliente(s)</span>
         </div>
         <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
           <table className="w-full text-sm min-w-[700px]">
