@@ -23,6 +23,7 @@ type Client = {
   id: string; name: string; phone: string | null; email: string | null;
   color: string; uc_number: string; notes: string | null; active: boolean;
   discount_pct: number;
+  public_lighting_value: number;
 };
 type InvoiceRow = { id: string; client_id: string; reference_date: string; attachment_url: string | null; notes: string | null };
 
@@ -236,6 +237,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     uc_number: client?.uc_number ?? "",
     notes: client?.notes ?? "",
     discount_pct: client?.discount_pct ?? 30,
+    public_lighting_value: client?.public_lighting_value ?? 0,
   });
   const [saving, setSaving] = useState(false);
 
@@ -253,6 +255,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
       uc_number: f.uc_number.trim(),
       notes: f.notes || null,
       discount_pct: Number(f.discount_pct),
+      public_lighting_value: Number(f.public_lighting_value),
     };
     const res = client
       ? await supabase.from("clients").update(payload).eq("id", client.id)
@@ -311,6 +314,10 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
             <Label>Desconto (%) *</Label>
             <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" />
           </div>
+          <div>
+            <Label>Iluminação Pública (Valor Fixo) *</Label>
+            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" />
+          </div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
@@ -328,7 +335,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     reference_month: invoice?.reference_date?.slice(0, 7) ?? currentMonth,
     consumption_kw: invoice ? String(invoice.consumption_kw) : "",
     price_kw: invoice ? String(invoice.price_kw) : "",
-    public_lighting: invoice ? String(invoice.public_lighting) : "0",
+    public_lighting: invoice ? String(invoice.public_lighting) : String(client.public_lighting_value || 0),
     interest_fine: invoice ? String(invoice.interest_fine) : "0",
     value_without_plant: invoice ? String(invoice.value_without_plant) : "0",
     client_pays: invoice ? String(invoice.client_pays) : "",
@@ -336,6 +343,35 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     notes: invoice?.notes ?? "",
     attachment_url: invoice?.attachment_url ?? "",
   });
+
+  const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
+    const c = Number(consumption) || 0;
+    const p = Number(price) || 0;
+    const l = Number(lighting) || 0;
+    const j = Number(fine) || 0;
+    
+    const sUsina = (c * p) + l + j;
+    const discount = (client.discount_pct || 30) / 100;
+    const cPaga = sUsina * (1 - discount);
+    
+    return {
+      value_without_plant: sUsina.toFixed(2),
+      client_pays: cPaga.toFixed(2)
+    };
+  };
+
+  const handleCalcChange = (field: string, val: string) => {
+    setF(prev => {
+      const next = { ...prev, [field]: val };
+      const { value_without_plant, client_pays } = calculateValues(
+        next.consumption_kw, 
+        next.price_kw, 
+        next.public_lighting, 
+        next.interest_fine
+      );
+      return { ...next, value_without_plant, client_pays };
+    });
+  };
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -408,42 +444,46 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         <DialogHeader>
           <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
+        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
+          <span>Desconto: {client.discount_pct}%</span>
+          <span>Ilum. Fixa: {brl(client.public_lighting_value)}</span>
+        </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <Label>Unidade Consumidora *</Label>
             <Input value={client.uc_number} disabled />
           </div>
           <div>
-            <Label>Data de Referência *</Label>
+            <Label>Mês de Referência *</Label>
             <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => setF(prev => ({ ...prev, consumption_kw: e.target.value }))} placeholder="Ex: 537" />
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" />
           </div>
           <div>
             <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => setF(prev => ({ ...prev, price_kw: e.target.value }))} placeholder="Ex: 1,185396" />
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" />
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => setF(prev => ({ ...prev, public_lighting: e.target.value }))} placeholder="Ex: 26,36" />
+            <Input type="number" step="0.01" value={f.public_lighting} onChange={e => handleCalcChange('public_lighting', e.target.value)} placeholder="Ex: 26,36" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => setF(prev => ({ ...prev, interest_fine: e.target.value }))} placeholder="0" />
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" />
           </div>
           <div>
-            <Label>Valor S/ Usina (R$) *</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} onChange={e => setF(prev => ({ ...prev, value_without_plant: e.target.value }))} placeholder="676,37" />
+            <Label>Valor S/ Usina (R$)</Label>
+            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-slate-50 font-bold" />
           </div>
           <div>
-            <Label>Valor que o Cliente Paga (R$) *</Label>
-            <Input type="number" step="0.01" value={f.client_pays} onChange={e => setF(prev => ({ ...prev, client_pays: e.target.value }))} placeholder="676,37" />
+            <Label>Valor que o Cliente Paga (R$)</Label>
+            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-50 text-[#2F6F62] font-bold" />
           </div>
         </div>
         <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — concessionária (R$)</div>
+          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — Concessionária (R$)</div>
           <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
           <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
         </Card>
@@ -570,7 +610,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             <div className="mt-1 text-xl font-bold text-positive">{brl(totalClientPays)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
-            <div className="text-xs font-medium text-muted-foreground">Fat. Distribuidora (despesa)</div>
+            <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
             <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
@@ -607,8 +647,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                   <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
                   <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                  <th className="px-2 py-2 text-right font-semibold">Fat. Distribuidora</th>
-                  <th className="px-2 py-2 text-right font-semibold">Lucro</th>
+                  <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
+                  <th className="px-2 py-2 text-right font-semibold text-[#2E5C8A]">Lucro</th>
                   <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                   <th></th>
                 </tr>
