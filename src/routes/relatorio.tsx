@@ -223,7 +223,7 @@ function Relatorio() {
                             ? "font-bold text-primary text-sm sm:text-base"
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
-                            : "text-white font-medium"
+                            : "text-foreground font-medium"
                         }`}
                       />
                     </td>
