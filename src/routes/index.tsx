@@ -274,10 +274,10 @@ function Dashboard() {
 
 
         <div className="space-y-6">
-          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="mb-6 flex items-center gap-2">
               <Trophy className="h-4 w-4 text-primary" />
-              <h2 className="text-base font-bold text-foreground tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
+              <h2 className="text-base font-bold text-foreground tracking-tight text-glow">Ranking — Clientes Mais Lucrativos</h2>
             </div>
             <div className="space-y-4">
               {ranking.map((c, idx) => (
