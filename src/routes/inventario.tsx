@@ -92,35 +92,35 @@ function Inventario() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-4xl font-bold tracking-tight text-[#374151]">Inventário</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Patrimônio, equipamentos e gastos de instalação</p>
+          <h1 className="truncate text-4xl font-bold tracking-tight text-white text-glow">Inventário</h1>
+          <p className="text-sm font-medium text-white/40">Patrimônio, equipamentos e gastos de instalação</p>
         </div>
         {tab === "assets"
-          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
-          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
+          ? <Button onClick={() => setAssetOpen(true)} className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 sm:w-auto"><Plus className="h-4 w-4" /> Novo Item</Button>
+          : <Button onClick={() => setExpenseOpen(true)} className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 sm:w-auto"><Plus className="h-4 w-4" /> Novo Gasto</Button>
         }
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#374151]"><TrendingUp className="h-4 w-4" /> Total Investido</div>
-          <div className="text-2xl font-bold text-[#374151] num-lg">{brl(totalInvestido)}</div>
-          <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Ativos + Gastos</div>
+        <Card className="glass-card p-5">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><TrendingUp className="h-4 w-4 text-primary" /> Total Investido</div>
+          <div className="text-2xl font-bold text-white num-lg">{brl(totalInvestido)}</div>
+          <div className="mt-1 text-[10px] text-white/20 font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
-        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]"><Box className="h-4 w-4" /> Valor em Ativos</div>
-          <div className="text-2xl font-bold text-[#2563EB] num-lg">{brl(totalAtivos)}</div>
+        <Card className="glass-card p-5">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-primary"><Box className="h-4 w-4" /> Valor em Ativos</div>
+          <div className="text-2xl font-bold text-primary num-lg">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#374151]"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
-          <div className="text-2xl font-bold text-[#374151] num-lg">{brl(totalGastos)}</div>
+        <Card className="glass-card p-5">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><Hammer className="h-4 w-4 text-white/60" /> Gastos de Investimento</div>
+          <div className="text-2xl font-bold text-white num-lg">{brl(totalGastos)}</div>
         </Card>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="w-full justify-start overflow-x-auto bg-[#F5F6F8] p-1 rounded-lg">
-          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#374151] data-[state=active]:shadow-sm font-bold text-[#4B5563]"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
-          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white data-[state=active]:text-[#374151] data-[state=active]:shadow-sm font-bold text-[#4B5563]"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
+        <TabsList className="w-full justify-start overflow-x-auto bg-white/5 p-1 rounded-lg border border-white/5">
+          <TabsTrigger value="assets" className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white font-bold text-white/40"><Package className="h-4 w-4" /> Ativos / Equipamentos</TabsTrigger>
+          <TabsTrigger value="expenses" className="gap-2 data-[state=active]:bg-white/10 data-[state=active]:text-white font-bold text-white/40"><Hammer className="h-4 w-4" /> Gastos de Investimento</TabsTrigger>
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
