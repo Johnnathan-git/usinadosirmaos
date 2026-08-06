@@ -19,10 +19,10 @@ export function BrandLockup({ compact = false, dark = false }: { compact?: boole
       </div>
       {!compact && (
         <div className="min-w-0 leading-tight">
-          <div className="font-sans text-[13px] font-bold tracking-tight text-[#374151]">
+          <div className="font-sans text-[13px] font-bold tracking-tight text-white text-glow">
             Usina dos Irmãos
           </div>
-          <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#4B5563]">
+          <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-white/50">
             Gestão de energia
           </div>
         </div>
