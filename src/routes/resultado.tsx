@@ -204,8 +204,8 @@ function Resultado() {
       <Card className="glass-card border-blue-600/40 bg-blue-600/20 p-6 text-center shadow-[0_8px_30px_rgba(37,99,235,0.15)] relative overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-transparent opacity-50 pointer-events-none" />
         <div className="relative z-10">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Economia total gerada</div>
-        <div className="num-lg mt-1 text-3xl font-bold text-blue-400 sm:text-4xl drop-shadow-[0_0_15px_rgba(37,99,235,0.3)]">{brl(totalEconomia)}</div>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-white">Economia total gerada</div>
+        <div className="num-lg mt-1 text-3xl font-bold text-white sm:text-4xl drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{brl(totalEconomia)}</div>
         <div className="mt-2 text-[10px] text-white/50 font-bold uppercase tracking-wider">
           {selectedMonths.length} {selectedMonths.length === 1 ? "mês" : "meses"} · {filtered.length} {filtered.length === 1 ? "fatura" : "faturas"}
         </div>

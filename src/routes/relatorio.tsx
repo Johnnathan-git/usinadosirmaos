@@ -179,7 +179,7 @@ function Relatorio() {
         >
           <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-transparent opacity-50 pointer-events-none" />
           <div className="relative z-10">
-          <div className="text-2xl font-black uppercase tracking-[0.3em] text-blue-400 drop-shadow-[0_0_15px_rgba(37,99,235,0.4)] sm:text-4xl">
+          <div className="text-2xl font-black uppercase tracking-[0.3em] text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] sm:text-4xl">
             {client?.name ?? "—"}
           </div>
           </div>
