@@ -50,8 +50,8 @@
 }
 
 :root {
-  --radius: 10px;
-  --background: #F5F6F8;
+  --radius: 14px;
+  --background: linear-gradient(135deg, #F1F5F9 0%, #E8EEF5 100%);
   --foreground: #374151;
   
   --card: #FFFFFF;
@@ -63,30 +63,58 @@
   
   --secondary: #FFFFFF;
   --secondary-foreground: #6B7280;
-  --muted: #F5F6F8;
+  --muted: #F8FAFC;
   --muted-foreground: #6B7280;
-  --accent: #E4E7EC;
+  --accent: #E2E8F0;
   --accent-foreground: #374151;
   --destructive: #D64545;
   --destructive-foreground: #FFFFFF;
-  --border: #E4E7EC;
-  --input: #E4E7EC;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
   --ring: #C98A3E;
   
   --sidebar: #151B2E;
   --sidebar-foreground: #9CA3AF;
+  
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
   body {
-    background-color: var(--color-background);
+    background: var(--background);
+    background-attachment: fixed;
+    min-height: 100vh;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+
+  body::before {
+    top: -10%;
+    right: -5%;
+    width: 40%;
+    height: 40%;
+    background: rgba(201, 138, 62, 0.08); /* Amber */
+  }
+
+  body::after {
+    bottom: -5%;
+    left: -5%;
+    width: 35%;
+    height: 35%;
+    background: rgba(46, 92, 138, 0.1); /* Blue */
   }
 
   h1, h2, h3, h4, h5, h6 {
