@@ -51,7 +51,7 @@
 
 :root {
   --radius: 14px;
-  --background: linear-gradient(135deg, #F1F5F9 0%, #E8EEF5 100%);
+  --background: #FFFFFF;
   --foreground: #374151;
   
   --card: #FFFFFF;
