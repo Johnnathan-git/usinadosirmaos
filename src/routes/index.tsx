@@ -1,24 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Quero redesenhar APENAS a página/componente do Dashboard (não mexer em nenhum outro módulo). NÃO altere nenhum dado, cálculo, lógica de negócio, nomes de variáveis, chamadas de API ou fluxo existente — é uma mudança 100% visual/estrutural (JSX/CSS), mantendo o app funcionando exatamente igual.
- * 
- * 1) CARDS DE KPI (topo)
- * - Adicione uma mini sparkline (linha de tendência simples, sem eixos nem labels) atrás do valor principal de cada card, usando os últimos meses já disponíveis nos dados de "Resumo de Lançamentos" que já existem na página.
- * - Adicione animação de entrada leve (fade + slide-up, 300ms, delay de 60ms entre cards).
- * 
- * 2) GRÁFICO "PERFORMANCE FINANCEIRA"
- * - Arredonde o topo das barras (border-radius só no topo, tipo 4px).
- * - Adicione tooltip ao passar o mouse sobre uma barra, mostrando o valor exato do mês.
- * 
- * 3) LAYOUT GERAL DA PÁGINA — reorganizar em grid
- * - Coloque a seção "Ranking — Clientes Mais Lucrativos" e um novo bloco compacto de "Total de Clientes" lado a lado (ranking ocupando ~70%, total ~30%).
- * - Reduza o espaçamento vertical entre as seções.
- * 
- * 4) RANKING — CLIENTES MAIS LUCRATIVOS
- * - Destaque visualmente o 1º colocado: fundo levemente dourado/âmbar.
- * 
- * 5) TABELA "RESUMO DE LANÇAMENTOS"
- * - Colora o valor da coluna LUCRO: verde (+) / vermelho (-).
- * - Adicione hover discreto nas linhas.
+ * Execute esta instrucao no projeto: No Dashboard o Lucro acumulado ficou sem essas linhas internas coloridas.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
