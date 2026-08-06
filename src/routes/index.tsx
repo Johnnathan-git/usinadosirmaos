@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No celular o sistema ficou igual o print. Dê uma melhorada para que fique mais intuitiva. Mesmo eu liberando nas permissões apenas 2 modulos o usuario fica com uma opção de 3 pontinhos/Mais. Só tem a logo no canto sem o nome da usina, enfim ficou tudo muito escuro, dificil de navegar.
+ * Execute esta instrucao no projeto: O lucro acumulado no dashboard está em zero sendo que tive lucro em janeiro, fevereiro março abril etc.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -85,19 +85,21 @@ function Dashboard() {
   const lucroAno = data.invoices
     .filter(i => {
       const isThisYear = i.reference_date.startsWith(String(now.getFullYear()));
-      const refDate = new Date(i.reference_date + "-01T00:00:00");
-      // Considera apenas meses anteriores ou iguais ao mês atual
-      const isPastOrCurrent = refDate <= now;
-      return isThisYear && isPastOrCurrent;
+      const [year, month] = i.reference_date.split("-").map(Number);
+      const refDate = new Date(year, month - 1, 1);
+      const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      // Considera meses anteriores ou iguais ao mês atual
+      return isThisYear && refDate <= currentMonthStart;
     })
     .reduce((a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)), 0);
 
   const despesasOperAno = data.expenses
     .filter(e => {
       const isThisYear = e.reference_date.startsWith(String(now.getFullYear()));
-      const refDate = new Date(e.reference_date + "-01T00:00:00");
-      const isPastOrCurrent = refDate <= now;
-      return isThisYear && isPastOrCurrent;
+      const [year, month] = e.reference_date.split("-").map(Number);
+      const refDate = new Date(year, month - 1, 1);
+      const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      return isThisYear && refDate <= currentMonthStart;
     })
     .reduce((a, e) => a + Number(e.amount), 0);
   const lucroAnualReal = lucroAno - despesasOperAno;
