@@ -287,11 +287,11 @@ function Controle() {
             </tbody>
             <tfoot className="border-t border-white/10 bg-white/5">
               <tr>
-                <td className="py-4 px-4 font-bold text-white uppercase text-[10px] tracking-wider">TOTAIS</td>
+                <td className="py-4 px-4 font-bold text-foreground uppercase text-[10px] tracking-wider">TOTAIS</td>
                 <td className="py-4"></td>
-                <td className="py-4 text-center font-bold text-white num">{totalPct.toFixed(2)}%</td>
-                <td className="py-4 text-right font-bold text-white num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
-                <td className="py-4 text-center font-bold text-white num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
+                <td className="py-4 text-center font-bold text-foreground num">{totalPct.toFixed(2)}%</td>
+                <td className="py-4 text-right font-bold text-foreground num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                <td className="py-4 text-center font-bold text-foreground num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
                 <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-red-400" : "text-emerald-400"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
