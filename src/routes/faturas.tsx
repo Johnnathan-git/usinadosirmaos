@@ -669,7 +669,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
-            <div className="mt-1 text-xl font-bold text-[#2F6F62]">{brl(totalClientPays)}</div>
+            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(totalClientPays)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
@@ -677,7 +677,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           </Card>
           <Card className="p-4 border-none shadow-sm bg-slate-50">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
-            <div className="mt-1 text-xl font-bold text-[#2E5C8A]">{brl(netProfit)}</div>
+            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
           </Card>
         </div>
@@ -710,7 +710,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
                   <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
                   <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Fat. Concessionária</th>
-                  <th className="px-2 py-2 text-right font-semibold text-[#2E5C8A]">Lucro</th>
+                  <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
                   <th className="px-2 py-2 text-center font-semibold">Anexo</th>
                   <th></th>
                 </tr>
@@ -723,9 +723,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                       <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
                       <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                       <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                      <td className="py-3 text-right text-[#2F6F62]">{brl(Number(inv.client_pays))}</td>
+                      <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
                       <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                      <td className="py-3 text-right font-semibold text-[#2E5C8A]">{brl(lucro)}</td>
+                      <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
                       <td className="py-3 text-center">
                         {inv.attachment_url ? (
                           <button 
