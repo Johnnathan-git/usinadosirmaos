@@ -130,13 +130,13 @@ function Fluxo() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="relative overflow-hidden rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs" style={{ borderTop: "3px solid #2F6F62" }}>
+        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #2F6F62" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
             <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Total de Receitas
           </div>
           <div className="text-2xl font-bold text-[#2F6F62] num-lg">{brl(receitas)}</div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs" style={{ borderTop: "3px solid #D64545" }}>
+        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #D64545" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
             <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total de Despesas
           </div>
@@ -145,7 +145,7 @@ function Fluxo() {
             Operacionais {brl(despesasOperacionais)} + Concessionária {brl(faturasDistribuidora)}
           </div>
         </Card>
-        <Card className="relative overflow-hidden rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs" style={{ borderTop: "3px solid #2E5C8A" }}>
+        <Card className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-6 shadow-none" style={{ borderTop: "3px solid #2E5C8A" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">
             <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
           </div>
@@ -154,7 +154,7 @@ function Fluxo() {
         </Card>
       </div>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
         <h2 className="mb-6 text-lg font-bold text-[#374151]">Faturas dos clientes</h2>
         {monthInvoices.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma fatura neste mês.</p>}
         <div className="divide-y divide-[#F5F6F8]">
@@ -186,7 +186,7 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
         <h2 className="mb-6 text-lg font-bold text-[#374151]">Despesas lançadas — {monthLabel(monthDate)}</h2>
         {monthExpenses.length === 0 && <p className="text-sm text-[#4B5563]">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">

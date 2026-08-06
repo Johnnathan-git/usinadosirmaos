@@ -139,7 +139,7 @@ function Faturas() {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="relative overflow-hidden rounded-[14px] border border-white/50 bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-xs" style={{ borderLeft: `3px solid ${c.color}` }}>
+          <Card key={c.id} className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5" style={{ borderLeft: `3px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-2.5">
                 <div

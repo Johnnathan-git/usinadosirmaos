@@ -102,16 +102,16 @@ function Inventario() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#374151]"><TrendingUp className="h-4 w-4" /> Total Investido</div>
           <div className="text-2xl font-bold text-[#374151] num-lg">{brl(totalInvestido)}</div>
           <div className="mt-1 text-[10px] text-[#9CA3AF] font-medium uppercase tracking-tight">Ativos + Gastos</div>
         </Card>
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#2563EB]"><Box className="h-4 w-4" /> Valor em Ativos</div>
           <div className="text-2xl font-bold text-[#2563EB] num-lg">{brl(totalAtivos)}</div>
         </Card>
-        <Card className="rounded-[14px] border border-white/50 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+        <Card className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-none">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#374151]"><Hammer className="h-4 w-4" /> Gastos de Investimento</div>
           <div className="text-2xl font-bold text-[#374151] num-lg">{brl(totalGastos)}</div>
         </Card>
@@ -124,7 +124,7 @@ function Inventario() {
         </TabsList>
 
         <TabsContent value="assets" className="mt-4">
-          <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <div className="mb-6 flex flex-wrap gap-2">
               <button onClick={() => setCategory("all")}
                 className={`rounded-lg px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${category === "all" ? "bg-[#151B2E] text-white shadow-sm" : "bg-[#F5F6F8] text-[#4B5563] hover:bg-slate-200"}`}>
@@ -182,7 +182,7 @@ function Inventario() {
         </TabsContent>
 
         <TabsContent value="expenses" className="mt-4">
-          <Card className="rounded-[14px] border border-white/50 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#E4E7EC]">

@@ -83,7 +83,7 @@ function AcessosContent() {
         </div>
       )}
 
-      <Card className="rounded-[14px] border border-white/50 bg-white p-0 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xs overflow-hidden">
+      <Card className="rounded-[14px] border border-slate-200 bg-white p-0 shadow-none overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

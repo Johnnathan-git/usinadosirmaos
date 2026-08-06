@@ -98,7 +98,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
       <header className="no-print sticky top-0 z-50 bg-white shadow-sm">
-        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-linear-to-r from-[#C98A3E] to-transparent opacity-60" />
+        <div className="absolute bottom-0 left-0 h-[1px] w-full bg-[#E4E7EC]" />
         <div className="relative flex items-center justify-between px-6 py-4">
           <BrandLockup />
           <div className="flex flex-col items-end gap-1">
