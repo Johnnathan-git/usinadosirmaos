@@ -208,9 +208,9 @@ function Controle() {
           <div className="mt-1 text-[10px] text-foreground/20 font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><BarChart3 className="h-4 w-4 text-white/60" /> Aproveitamento</div>
-          <div className="text-2xl font-bold text-white num-lg">{aproveitamento.toFixed(1)}%</div>
-          <div className="mt-1 text-[10px] text-white/20 font-bold uppercase tracking-tight">Do total gerado utilizado</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-foreground/40"><BarChart3 className="h-4 w-4 text-foreground/60" /> Aproveitamento</div>
+          <div className="text-2xl font-bold text-foreground num-lg">{aproveitamento.toFixed(1)}%</div>
+          <div className="mt-1 text-[10px] text-foreground/20 font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
         <Card className="glass-card p-5">
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><Zap className="h-4 w-4 text-emerald-400" /> Rateio total alocado</div>
