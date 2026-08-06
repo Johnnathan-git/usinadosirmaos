@@ -118,8 +118,8 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-bold tracking-tight text-white">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-white/40">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground">Faturas</h1>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-foreground/40">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-white/5 bg-white/5 text-white/70 hover:text-white rounded-lg">
