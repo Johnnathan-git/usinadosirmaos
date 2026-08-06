@@ -80,33 +80,34 @@
 }
 
 :root.light {
-  --background: #F3F4F6;
-  --foreground: #111827;
+  --background: #FFFFFF;
+  --foreground: #0F172A;
   
-  --card: rgba(255, 255, 255, 0.8);
-  --card-foreground: #111827;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
   --popover: #FFFFFF;
-  --popover-foreground: #111827;
+  --popover-foreground: #0F172A;
   --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
   
-  --secondary: #F3F4F6;
-  --secondary-foreground: #4B5563;
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  --accent: rgba(0, 0, 0, 0.05);
-  --accent-foreground: #111827;
+  --secondary: #F8FAFC;
+  --secondary-foreground: #64748B;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: rgba(0, 0, 0, 0.1);
+  --border: #E2E8F0;
   --input: #FFFFFF;
   --ring: #C98A3E;
   
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #4B5563;
+  --sidebar: #0F172A;
+  --sidebar-foreground: #94A3B8;
   
-  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
+
 
 
 @layer base {
@@ -250,6 +251,11 @@ div[style*="Edit with Lovable"],
     pointer-events: none;
   }
 
+  :root.light .aurora-container {
+    background: var(--background);
+  }
+
+
   /* Órbitas de energia sutil */
   .energy-orbit {
     position: absolute;
@@ -319,6 +325,10 @@ div[style*="Edit with Lovable"],
     pointer-events: none;
   }
 
+  :root.light .aurora-blob {
+    display: none;
+  }
+
   .aurora-blob-1 {
     background: radial-gradient(circle at center, #C98A3E 0%, transparent 70%);
     top: -10%;
@@ -336,20 +346,23 @@ div[style*="Edit with Lovable"],
     100% { transform: scale(1.2); opacity: 0.08; }
   }
 
+
   .glass-card {
-    background: rgba(255, 255, 255, 0.015);
+    background: var(--card);
     backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
     transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+
     will-change: transform;
     backface-visibility: hidden;
     transform: translateZ(0);
   }
 
   .glass-card-interactive:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(201, 138, 62, 0.15);
+    background: var(--accent);
+    border-color: var(--primary);
+
     transform: translateY(-6px) translateZ(0);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   }
