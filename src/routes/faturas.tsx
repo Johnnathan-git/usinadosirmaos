@@ -663,22 +663,22 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </DialogHeader>
 
         <div className="grid gap-3 md:grid-cols-4">
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
-            <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
-            <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
+          <Card className="p-4 border border-white/5 bg-white/5">
+            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Total S/ Usina</div>
+            <div className="mt-1 text-xl font-bold text-foreground num-lg">{brl(totalWithoutPlant)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
-            <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
-            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(totalClientPays)}</div>
+          <Card className="p-4 border border-white/5 bg-white/5">
+            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Cliente Pagou</div>
+            <div className="mt-1 text-xl font-bold text-emerald-400 num-lg">{brl(totalClientPays)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
-            <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
-            <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
+          <Card className="p-4 border border-white/5 bg-white/5">
+            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Fat. Concessionária</div>
+            <div className="mt-1 text-xl font-bold text-red-400 num-lg">{brl(totalDistributor)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
-            <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
-            <div className="mt-1 text-xl font-bold text-emerald-500">{brl(netProfit)}</div>
-            <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
+          <Card className="p-4 border border-white/5 bg-white/5">
+            <div className="text-xs font-medium text-foreground/40 uppercase tracking-widest">Lucro Bruto</div>
+            <div className="mt-1 text-xl font-bold text-emerald-400 num-lg">{brl(netProfit)}</div>
+            <div className="mt-1 text-[10px] text-foreground/30">Sem despesas operacionais</div>
           </Card>
         </div>
 
