@@ -99,22 +99,35 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
-      {/* Background Minimalista e Tecnológico */}
+      {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
-        {/* Campo de Estrelas */}
-        <div className="star-field" />
-        
-        {/* Feixes de Luz Sutis */}
-        <div className="light-beam" />
-        <div className="light-beam light-beam-2" />
+        {/* Fluxo de Energia Rotacional */}
+        <div className="energy-wave" />
 
-        {/* Atmosfera Aurora Minimalista */}
+        {/* Órbitas Celestiais */}
+        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
+        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />
+        
+        {/* Partículas Estelares Flutuantes */}
+        {[...Array(12)].map((_, i) => (
+          <div 
+            key={i} 
+            className="nebulosa-particle"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              '--duration': `${15 + Math.random() * 20}s`,
+              animationDelay: `${-Math.random() * 20}s`
+            } as any}
+          />
+        ))}
+
+        {/* Brilhos de Aurora Sutil */}
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
         
-        {/* Ruído sutil e profundidade */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
+        {/* Textura de profundidade */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
       {/* Mobile Top Header */}
