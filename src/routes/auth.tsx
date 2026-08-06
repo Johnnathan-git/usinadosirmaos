@@ -105,7 +105,7 @@ function AuthPage() {
             {/* Brilho suave de fundo (sem caixa rígida) */}
             <div className="absolute inset-0 bg-white/20 rounded-full blur-[30px] opacity-40" />
             
-            <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-[2rem] bg-white p-1.5 shadow-xl ring-1 ring-white/20">
+            <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-white/20">
               <BrandMark className="h-full w-full object-contain" />
             </div>
           </div>
