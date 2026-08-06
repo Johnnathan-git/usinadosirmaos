@@ -613,8 +613,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
             </Button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose}>Cancelar</Button>
-            <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
+            <Button variant="outline" onClick={onClose} className="border-white/10 text-foreground/40 hover:text-foreground hover:bg-white/5">Cancelar</Button>
+            <Button onClick={submit} disabled={saving || uploading} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">Salvar</Button>
           </div>
         </DialogFooter>
       </DialogContent>
