@@ -524,12 +524,12 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         
         <div className="space-y-4 mt-4">
           <div>
-            <Label>Observações</Label>
+            <Label className="text-foreground/40">Observações</Label>
             <Textarea 
               value={f.notes} 
               onChange={e => setF(prev => ({ ...prev, notes: e.target.value }))} 
               placeholder="Opcional"
-              className="mt-1"
+              className="mt-1 bg-white/5 border-white/10 text-foreground"
             />
           </div>
           
