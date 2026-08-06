@@ -119,7 +119,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
       <div className="flex">
         {visibleNav.length > 0 && (
-          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-white pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+          <div className="no-print fixed inset-x-0 bottom-0 z-40 flex overflow-x-auto border-t border-[#E4E7EC] bg-[#151B2E] pb-[env(safe-area-inset-bottom)] md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
             {visibleNav.slice(0, 3).map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
@@ -129,11 +129,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   to={item.to}
                   className={cn(
                     "relative flex min-w-[74px] flex-1 flex-col items-center gap-1 px-2 py-3 text-[10px] font-semibold transition-all",
-                    active ? "text-[#151B2E]" : "text-[#9CA3AF]",
+                    active ? "text-white" : "text-[#9CA3AF]",
                   )}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="w-full truncate text-center uppercase tracking-tighter">{item.label}</span>
+                  {active && <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-8 bg-[#C98A3E] rounded-b-full" />}
+                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
+                  <span className="w-full truncate text-center uppercase tracking-tighter text-[9px]">{item.label}</span>
                 </Link>
               );
             })}
