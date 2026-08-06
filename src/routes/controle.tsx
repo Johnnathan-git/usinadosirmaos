@@ -213,11 +213,11 @@ function Controle() {
           <div className="mt-1 text-[10px] text-foreground/20 font-bold uppercase tracking-tight">Do total gerado utilizado</div>
         </Card>
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/40"><Zap className="h-4 w-4 text-emerald-400" /> Rateio total alocado</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-foreground/40"><Zap className="h-4 w-4 text-emerald-400" /> Rateio total alocado</div>
           <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-400" : "text-red-400"}`}>
             {totalPct.toFixed(2)}%
           </div>
-          <div className="mt-1 text-[10px] text-white/20 font-bold uppercase tracking-tight">
+          <div className="mt-1 text-[10px] text-foreground/20 font-bold uppercase tracking-tight">
             {Math.abs(totalPct - 100) < 0.5 ? "✓ Rateio 100% alocado" : "Ajuste para 100%"}
           </div>
         </Card>
