@@ -163,17 +163,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               const Icon = item.icon;
               return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
-                    active
-                      ? "text-white"
-                      : "text-[#9CA3AF] hover:text-white",
-                  )}
-                >
-                  {active && <div className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 bg-[#C98A3E]" />}
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "relative flex items-center gap-3 px-4 py-2.5 text-sm font-semibold outline-none transition-all",
+                      active
+                        ? "text-white"
+                        : "text-[#9CA3AF] hover:text-white",
+                    )}
+                  >
+                    {active && <div className="absolute left-[-16px] top-1/2 h-5 w-1.5 -translate-y-1/2 bg-[#C98A3E] rounded-r-full shadow-[2px_0_8px_rgba(201,138,62,0.4)]" />}
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
                   <span className="truncate">{item.label}</span>
                 </Link>
