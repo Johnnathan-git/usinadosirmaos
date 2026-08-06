@@ -260,7 +260,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, pct: Number(e.target.value) } : x))} />
                         : <span className="font-bold text-foreground num">{Number(r.pct).toFixed(2)}%</span>}
                     </td>
-                    <td className="py-4 text-right text-white font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
+                    <td className="py-4 text-right text-foreground font-bold num">{alloc.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                     <td className="py-4 text-center">
                       {editing
                         ? <Input className="mx-auto w-24 text-center border-white/10 bg-white/5 text-white" type="number" value={r.avg}
