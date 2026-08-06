@@ -654,9 +654,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
+      <DialogContent className="glass-card border-white/10 text-foreground max-h-[90vh] max-w-5xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-foreground text-glow">
             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: client.color }} />
             {client.name} — UC {client.uc_number}
           </DialogTitle>
