@@ -484,11 +484,11 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto bg-popover border-border text-foreground">
         <DialogHeader>
           <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
         </DialogHeader>
-        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between">
+        <div className="bg-accent p-3 rounded-lg border border-border mb-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between">
           <span>Desconto: {client.discount_pct}%</span>
           <span>Ilum. Fixa: {brl(client.public_lighting_value)}</span>
         </div>
@@ -511,7 +511,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-slate-50" />
+            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-accent" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
@@ -519,17 +519,18 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Valor S/ Usina (R$)</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-slate-50 font-bold" />
+            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-accent font-bold" />
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$)</Label>
             <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-50 text-[#2F6F62] font-bold" />
           </div>
         </div>
-        <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
-          <div className="mb-1 text-sm font-medium text-red-800">Fatura do Cliente — Concessionária (R$)</div>
-          <div className="mb-2 text-xs text-red-700/70">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-white" placeholder="676,37" />
+        <Card className="mt-2 border-red-500/20 bg-red-500/10 p-4">
+          <div className="mb-1 text-sm font-medium text-red-500">Fatura do Cliente — Concessionária (R$)</div>
+          <div className="mb-2 text-xs text-red-500/70">Valor que você paga à concessionária por este cliente</div>
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-input" placeholder="676,37" />
+
         </Card>
         
         <div className="space-y-4 mt-4">
@@ -624,7 +625,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={onClose}>Cancelar</Button>
-            <Button onClick={submit} disabled={saving || uploading} className="bg-[#151B2E] hover:bg-[#1F2A45] text-white font-medium">Salvar</Button>
+            <Button onClick={submit} disabled={saving || uploading} className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium">Salvar</Button>
           </div>
         </DialogFooter>
       </DialogContent>
@@ -664,7 +665,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto bg-popover border-border text-foreground">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: client.color }} />
@@ -673,19 +674,22 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </DialogHeader>
 
         <div className="grid gap-3 md:grid-cols-4">
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
+          <Card className="p-4 border-none shadow-sm bg-accent">
+
             <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
             <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
+          <Card className="p-4 border-none shadow-sm bg-accent">
+
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
             <div className="mt-1 text-xl font-bold text-emerald-500">{brl(totalClientPays)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
+          <Card className="p-4 border-none shadow-sm bg-accent">
+
             <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
             <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
           </Card>
-          <Card className="p-4 border-none shadow-sm bg-slate-50">
+          <Card className="p-4 border-none shadow-sm bg-accent">
             <div className="text-xs font-medium text-muted-foreground">Lucro Bruto</div>
             <div className="mt-1 text-xl font-bold text-emerald-500">{brl(netProfit)}</div>
             <div className="mt-1 text-[10px] text-muted-foreground">Sem despesas operacionais</div>
@@ -714,8 +718,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           ) : (
             <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full text-sm min-w-[800px]">
-                <thead className="sticky top-0 bg-slate-50">
-                  <tr className="text-[10px] uppercase tracking-wider text-slate-500">
+                <thead className="sticky top-0 bg-accent">
+                  <tr className="text-[10px] uppercase tracking-wider text-muted-foreground">
+
                     <th className="px-2 py-2 text-left font-semibold">Mês</th>
                     <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                     <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
@@ -730,9 +735,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   {invoices.map((inv) => {
                     const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                     return (
-                      <tr key={inv.id} className="border-t border-slate-100 hover:bg-slate-50/50 even:bg-slate-50/30">
+                      <tr key={inv.id} className="border-t border-border hover:bg-accent transition-colors even:bg-accent/30">
                         <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right text-slate-600">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="py-3 text-right text-muted-foreground">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
                         <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
                         <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
                         <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
@@ -757,7 +762,7 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                                   toast.error("Erro ao abrir arquivo: " + err.message);
                                 }
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-muted-foreground hover:bg-accent/80"
                               title="Ver anexo"
                             >
                               <Paperclip className="h-4 w-4" />
