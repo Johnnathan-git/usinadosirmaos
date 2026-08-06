@@ -205,7 +205,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex h-16 items-center justify-around border-t border-border bg-background px-2 pb-[env(safe-area-inset-bottom)] md:hidden shadow-2xl">
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-white/10 bg-black/50 px-2 backdrop-blur-xl md:hidden shadow-2xl">
           {visibleNav.slice(0, 4).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
