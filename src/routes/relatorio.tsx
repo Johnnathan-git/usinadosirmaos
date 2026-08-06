@@ -200,7 +200,7 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-white/5 px-3 py-4 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
