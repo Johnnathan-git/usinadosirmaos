@@ -484,36 +484,36 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <Label>Unidade Consumidora *</Label>
-            <Input value={client.uc_number} disabled />
+            <Label className="text-foreground/40">Unidade Consumidora *</Label>
+            <Input value={client.uc_number} disabled className="bg-white/5 border-white/10 text-foreground/60" />
           </div>
           <div>
-            <Label>Mês de Referência *</Label>
-            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
+            <Label className="text-foreground/40">Mês de Referência *</Label>
+            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
-            <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" />
+            <Label className="text-foreground/40">Consumo (kW) *</Label>
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
-            <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" />
+            <Label className="text-foreground/40">Preço kW (R$) *</Label>
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
-            <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-slate-50" />
+            <Label className="text-foreground/40">Ilum. Pública (R$)</Label>
+            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-white/5 border-white/10 text-foreground/60" />
           </div>
           <div>
-            <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" />
+            <Label className="text-foreground/40">Juros/Multa (R$)</Label>
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" className="bg-white/5 border-white/10 text-foreground" />
           </div>
           <div>
-            <Label>Valor S/ Usina (R$)</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-slate-50 font-bold" />
+            <Label className="text-foreground/40">Valor S/ Usina (R$)</Label>
+            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-white/5 border-white/10 text-foreground font-bold" />
           </div>
           <div>
-            <Label>Valor que o Cliente Paga (R$)</Label>
-            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-50 text-[#2F6F62] font-bold" />
+            <Label className="text-foreground/40">Valor que o Cliente Paga (R$)</Label>
+            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 border-emerald-500/20 text-emerald-400 font-bold" />
           </div>
         </div>
         <Card className="mt-2 border-red-100 bg-red-50/50 p-4">
