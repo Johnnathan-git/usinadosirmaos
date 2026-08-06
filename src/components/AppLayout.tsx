@@ -97,20 +97,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="no-print sticky top-0 z-50 bg-white shadow-sm">
+      <header className="no-print sticky top-0 z-50 bg-[#151B2E] shadow-sm">
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#C98A3E]/20 via-[#C98A3E] to-[#C98A3E]/20" />
         <div className="relative flex items-center justify-between px-6 py-4">
-          <BrandLockup />
+          <BrandLockup dark />
           <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
-              <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
+            <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 pl-3 pr-1 py-0.5">
+              <span className="text-[8px] font-bold text-white/50 uppercase tracking-widest mr-2 border-r border-white/10 pr-2">
                 {acc?.effective_admin ? "Admin" : "User"}
               </span>
               <div className="flex items-center gap-0.5">
                 <ChangeOwnPasswordDialog />
-                <Button size="sm" variant="ghost" onClick={signOut} className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
+                <Button size="sm" variant="ghost" onClick={signOut} className="h-6 px-2 rounded-full hover:bg-white/10 text-white">
                   <LogOut className="h-3 w-3 sm:mr-1" />
-                  <span className="hidden text-[9px] font-bold uppercase sm:inline">Sair</span>
+                  <span className="hidden text-[9px] font-bold uppercase sm:inline text-white">Sair</span>
                 </Button>
               </div>
             </div>
@@ -147,7 +147,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </button>
           </div>
         )}
-        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-white/5 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-[4px_0_15px_rgba(201,138,62,0.08)]">
+        <aside className="no-print sticky top-[73px] hidden h-[calc(100vh-73px)] w-64 shrink-0 border-r border-[#C98A3E]/20 bg-gradient-to-b from-[#151B2E] to-[#0A0E1A] px-4 py-8 md:block shadow-none">
           <div className="mb-6 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#9CA3AF]">
             Módulos
           </div>
@@ -211,9 +211,9 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-6 px-2 rounded-full hover:bg-white hover:shadow-xs text-[#374151]">
+        <Button size="sm" variant="ghost" className="h-6 px-2 rounded-full hover:bg-white/10 text-white">
           <KeyRound className="h-3 w-3 sm:mr-1" />
-          <span className="hidden text-[9px] font-bold uppercase sm:inline">Senha</span>
+          <span className="hidden text-[9px] font-bold uppercase sm:inline text-white">Senha</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
