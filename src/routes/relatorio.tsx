@@ -205,7 +205,7 @@ function Relatorio() {
                     {h.label}
                   </th>
                 ))}
-                <th className="border border-white/5 px-3 py-4 text-center font-bold text-white/40 uppercase text-[10px] tracking-widest w-[100px]">
+                <th className="border border-white/5 px-3 py-4 text-center font-bold text-foreground/40 uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
               </tr>
