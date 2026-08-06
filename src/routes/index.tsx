@@ -1,24 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Quero redesenhar APENAS a página/componente do Dashboard (não mexer em nenhum outro módulo). NÃO altere nenhum dado, cálculo, lógica de negócio, nomes de variáveis, chamadas de API ou fluxo existente — é uma mudança 100% visual/estrutural (JSX/CSS), mantendo o app funcionando exatamente igual.
- * 
- * 1) CARDS DE KPI (topo)
- * - Adicione uma mini sparkline (linha de tendência simples, sem eixos nem labels) atrás do valor principal de cada card, usando os últimos meses já disponíveis nos dados de "Resumo de Lançamentos" que já existem na página.
- * - Adicione animação de entrada leve (fade + slide-up, 300ms, delay de 60ms entre cards).
- * 
- * 2) GRÁFICO "PERFORMANCE FINANCEIRA"
- * - Arredonde o topo das barras (border-radius só no topo, tipo 4px).
- * - Adicione tooltip ao passar o mouse sobre uma barra, mostrando o valor exato do mês.
- * 
- * 3) LAYOUT GERAL DA PÁGINA — reorganizar em grid
- * - Coloque a seção "Ranking — Clientes Mais Lucrativos" e um novo bloco compacto de "Total de Clientes" lado a lado (ranking ocupando ~70%, total ~30%).
- * - Reduza o espaçamento vertical entre as seções.
- * 
- * 4) RANKING — CLIENTES MAIS LUCRATIVOS
- * - Destaque visualmente o 1º colocado: fundo levemente dourado/âmbar.
- * 
- * 5) TABELA "RESUMO DE LANÇAMENTOS"
- * - Colora o valor da coluna LUCRO: verde (+) / vermelho (-).
- * - Adicione hover discreto nas linhas.
+ * Execute esta instrucao no projeto: No Dashboard o Lucro acumulado ficou sem essas linhas internas coloridas.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -119,9 +100,9 @@ function Dashboard() {
   const lucroPrev = receitaPrev - despesasPrev;
   const delta = (cur: number, old: number) => (old === 0 ? null : ((cur - old) / Math.abs(old)) * 100);
 
-  // last 6 months
+  // last 12 months for historical context
   const months: { key: string; label: string; date: Date }[] = [];
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     months.push({
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
@@ -129,7 +110,7 @@ function Dashboard() {
       date: d,
     });
   }
-  const chartData = months.map(m => {
+  const allChartData = months.map(m => {
     const receita = data.invoices.filter(i => inMonth(i.reference_date, m.key))
       .reduce((a, i) => a + Number(i.client_pays), 0);
     const distribuidora = data.invoices.filter(i => inMonth(i.reference_date, m.key))
@@ -146,6 +127,9 @@ function Dashboard() {
       Lucro: receita - despesas,
     };
   });
+
+  // performance chart usually shows last 6
+  const chartData = allChartData.slice(-6);
 
   // ranking
   const profitByClient = new Map<string, number>();
@@ -202,6 +186,7 @@ function Dashboard() {
           label="Lucro Acumulado (Ano)" 
           value={lucroAnualReal} 
           tint="amber" 
+          sparkData={allChartData.map(d => ({ value: d.Lucro }))}
           delay={180}
         />
       </div>
