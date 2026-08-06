@@ -102,7 +102,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#F5F6F8]">
       <header className="no-print sticky top-0 z-50 border-b border-[#E4E7EC] bg-white shadow-sm">
         <div className="relative flex items-center justify-between px-6 py-4">
-          <BrandLockup />
+          <div className="flex items-center gap-3">
+            <BrandLockup />
+            <div className="hidden h-5 w-px bg-slate-200 md:block" />
+            <div className="hidden text-xs font-bold text-[#374151] uppercase tracking-wider md:block">
+              {current?.label || "Usina dos Irmãos"}
+            </div>
+            <div className="text-[10px] font-bold text-[#374151] uppercase tracking-wider md:hidden">
+              {current?.label}
+            </div>
+          </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 rounded-full border border-[#E4E7EC] bg-[#F5F6F8] pl-3 pr-1 py-0.5">
               <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-widest mr-2 border-r border-[#E4E7EC] pr-2">
