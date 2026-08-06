@@ -704,8 +704,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
           ) : (
             <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full text-sm min-w-[800px]">
-                <thead className="sticky top-0 bg-slate-50">
-                  <tr className="text-[10px] uppercase tracking-wider text-slate-500">
+                <thead className="sticky top-0 bg-black">
+                  <tr className="text-[10px] uppercase tracking-wider text-foreground/40">
                     <th className="px-2 py-2 text-left font-semibold">Mês</th>
                     <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                     <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
