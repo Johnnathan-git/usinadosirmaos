@@ -110,9 +110,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="aurora-blob aurora-blob-2" />
         <div className="aurora-blob aurora-blob-3" />
         
-        {/* Subtle noise and scanline effect for depth */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/[0.01] to-transparent pointer-events-none" />
+        {/* Energy atmosphere and rays */}
+        <div className="absolute inset-0 opacity-[0.1] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="absolute inset-0 bg-radial-gradient(circle at 50% 50%, transparent 20%, black 80%) pointer-events-none opacity-60" />
       </div>
 
       {/* Mobile Top Header */}
