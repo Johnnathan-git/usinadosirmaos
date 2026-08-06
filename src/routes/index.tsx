@@ -256,12 +256,12 @@ function Dashboard() {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="pb-4 text-left font-bold text-white/50 uppercase tracking-widest">Mês</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Receita</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Desp. Operacionais</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Concessionária</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Despesas</th>
-                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Lucro</th>
+                    <th className="pb-4 text-left font-bold text-foreground/40 uppercase tracking-widest">Mês</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Receita</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Desp. Operacionais</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Concessionária</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Despesas</th>
+                    <th className="pb-4 text-right font-bold text-foreground/40 uppercase tracking-widest">Lucro</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/50">
