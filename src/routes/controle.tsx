@@ -179,10 +179,10 @@ function Controle() {
         </div>
         <div className="grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-4">
           <div>
-            <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">Nº de placas</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">Nº de placas</Label>
             {editing ? (
-              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-white" />
-            ) : <div className="text-2xl font-bold text-white num-lg">{config.panels_count}</div>}
+              <Input type="number" value={config.panels_count} onChange={e => setConfig({ ...config, panels_count: Number(e.target.value) })} className="mt-1 border-white/10 bg-white/5 text-foreground" />
+            ) : <div className="text-2xl font-bold text-foreground num-lg">{config.panels_count}</div>}
           </div>
           <div>
             <Label className="text-[10px] font-bold uppercase tracking-wider text-white/40">kW por placa/mês</Label>
