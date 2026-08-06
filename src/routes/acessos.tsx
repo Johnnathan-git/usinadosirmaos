@@ -189,9 +189,9 @@ function UserFormDialog({ mode, user, clients }: { mode: "create" | "edit"; user
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {mode === "create" ? (
-          <Button className="bg-[#151B2E] text-white hover:bg-[#1F2A45] rounded-lg px-4 py-2 font-bold shadow-sm"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20"><Plus className="mr-2 h-4 w-4" /> Novo usuário</Button>
         ) : (
-          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#9CA3AF] hover:text-[#374151]"><Pencil className="h-4 w-4" /></Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-white/30 hover:text-white"><Pencil className="h-4 w-4" /></Button>
         )}
       </DialogTrigger>
       <DialogContent>
