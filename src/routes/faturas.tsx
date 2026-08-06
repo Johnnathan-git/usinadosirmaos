@@ -118,28 +118,28 @@ function Faturas() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
-          <h1 className="truncate text-3xl font-bold tracking-tight text-[#374151]">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-[#4B5563]">{active.length} ativos · {inactive.length} inativos</p>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-white text-glow">Faturas</h1>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-white/40">{active.length} ativos · {inactive.length} inativos</p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="border border-[#E4E7EC] bg-white text-[#4B5563] hover:bg-slate-50 rounded-lg">
+          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-white/5 bg-white/5 text-white/70 hover:text-white rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-[#151B2E]/5 border border-[#151B2E]/10 text-[#151B2E] hover:bg-[#151B2E]/10 rounded-lg px-4 py-2 font-bold shadow-none transition-colors">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
       </div>
 
       {shown.length === 0 && (
-        <Card className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-500 shadow-none">
+        <Card className="glass-card border-white/5 p-10 text-center text-white/40">
           {showInactive ? "Nenhum cliente inativo." : "Nenhum cliente cadastrado. Clique em Novo Cliente."}
         </Card>
       )}
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map(c => (
-          <Card key={c.id} className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5" style={{ borderLeft: `3px solid ${c.color}` }}>
+          <Card key={c.id} className="glass-card relative overflow-hidden p-5" style={{ borderLeft: `4px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-2.5">
                 <div
@@ -149,12 +149,12 @@ function Faturas() {
                   {initial(c.name)}
                 </div>
                 <div className="min-w-0">
-                  <div className="truncate font-bold text-sm text-[#374151]">{c.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">UC {c.uc_number}</div>
+                  <div className="truncate font-bold text-sm text-white">{c.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-white/40">UC {c.uc_number}</div>
                 </div>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" aria-label={`Editar ${c.name}`}>
+                <button onClick={() => setEditClient(c)} className="p-1.5 text-white/30 hover:text-white transition-colors" aria-label={`Editar ${c.name}`}>
                   <Settings className="h-4 w-4" />
                 </button>
                 <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>

@@ -107,12 +107,12 @@ function Resultado() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div>
-          <h1 className="truncate text-2xl font-bold tracking-tight text-[#374151] sm:text-3xl">Resultado</h1>
-          <p className="text-sm font-medium text-[#4B5563]">Economia gerada por mês para o Cliente</p>
+          <h1 className="truncate text-2xl font-bold tracking-tight text-white text-glow sm:text-3xl">Resultado</h1>
+          <p className="text-sm font-medium text-white/40">Economia gerada por mês para o Cliente</p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:flex">
           <Select value={clientId} onValueChange={setClientId} disabled={!!locked}>
-            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white border border-slate-200 rounded-lg shadow-none"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="col-span-2 w-full sm:w-48 bg-white/5 border-white/10 rounded-lg text-white"><SelectValue /></SelectTrigger>
             <SelectContent>
               {!locked && <SelectItem value="all">Todos os clientes</SelectItem>}
               {data.clients
@@ -122,7 +122,7 @@ function Resultado() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg">
+              <Button variant="outline" className="w-full gap-2 sm:w-auto bg-white/5 border-white/10 text-white/70 hover:text-white rounded-lg">
                 {selectedMonths.length} {selectedMonths.length === 1 ? "mês selecionado" : "meses selecionados"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -149,9 +149,9 @@ function Resultado() {
       {sortedMonths.map(mk => {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
-          <Card key={mk} className="overflow-hidden bg-white border border-slate-200 rounded-xl p-0 shadow-none">
-            <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
-              <h2 className="text-base font-bold text-[#374151]">{monthLabelLong(d)}</h2>
+          <Card key={mk} className="glass-card overflow-hidden">
+            <div className="border-b border-white/5 bg-white/5 px-6 py-4">
+              <h2 className="text-base font-bold text-white">{monthLabelLong(d)}</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px] border-collapse text-sm">
