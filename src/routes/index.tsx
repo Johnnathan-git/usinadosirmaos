@@ -1,22 +1,24 @@
 /**
- * Execute esta instrucao no projeto: Quero aplicar uma nova direção visual APENAS na página do Dashboard (não altere a sidebar nem nenhum outro módulo do menu). Inspirado em dashboards SaaS modernos e densos: compacto, com cor usada só para indicar status/destaque, não para decoração. NÃO altere nenhum dado, cálculo, lógica de negócio ou fluxo — só estrutura visual (JSX/CSS) da página do Dashboard.
+ * Execute esta instrucao no projeto: Quero redesenhar APENAS a página/componente do Dashboard (não mexer em nenhum outro módulo). NÃO altere nenhum dado, cálculo, lógica de negócio, nomes de variáveis, chamadas de API ou fluxo existente — é uma mudança 100% visual/estrutural (JSX/CSS), mantendo o app funcionando exatamente igual.
  * 
- * 1) DENSIDADE DOS CARDS DE KPI
- * - Reduza um pouco o padding interno dos cards (mais compactos, menos "ar" vazio), aproximando o label do valor.
- * - O badge de variação (↘ 100%, ↘ 63%...) deve parecer uma "pill" pequena e discreta, não um destaque grande.
+ * 1) CARDS DE KPI (topo)
+ * - Adicione uma mini sparkline (linha de tendência simples, sem eixos nem labels) atrás do valor principal de cada card, usando os últimos meses já disponíveis nos dados de "Resumo de Lançamentos" que já existem na página.
+ * - Adicione animação de entrada leve (fade + slide-up, 300ms, delay de 60ms entre cards).
  * 
- * 2) CORES COM PROPÓSITO, NÃO DECORAÇÃO
- * - Use verde só para indicar valores positivos, vermelho só para negativos, e a cor dourada apenas para destaques pontuais (como já está no 1º colocado do ranking) — sem gradientes ou blur decorativos extras no fundo da página do Dashboard.
- * - Fundo da página: cinza bem claro e neutro, uniforme.
+ * 2) GRÁFICO "PERFORMANCE FINANCEIRA"
+ * - Arredonde o topo das barras (border-radius só no topo, tipo 4px).
+ * - Adicione tooltip ao passar o mouse sobre uma barra, mostrando o valor exato do mês.
  * 
- * 3) CABEÇALHO DA PÁGINA ("Dashboard" / "Visão geral — Agosto de 2026")
- * - Reduza um pouco o espaçamento vertical acima e abaixo desse bloco, deixando o topo da página mais compacto.
+ * 3) LAYOUT GERAL DA PÁGINA — reorganizar em grid
+ * - Coloque a seção "Ranking — Clientes Mais Lucrativos" e um novo bloco compacto de "Total de Clientes" lado a lado (ranking ocupando ~70%, total ~30%).
+ * - Reduza o espaçamento vertical entre as seções.
  * 
- * 4) HIERARQUIA DOS LABELS
- * - Labels acima dos valores (tipo "RECEITA MENSAL", "DESPESAS MENSAIS") em uppercase, tamanho pequeno, cor cinza-média — reforce que ficam bem menores e mais discretos que o valor principal em R$.
+ * 4) RANKING — CLIENTES MAIS LUCRATIVOS
+ * - Destaque visualmente o 1º colocado: fundo levemente dourado/âmbar.
  * 
- * 5) ESPAÇAMENTO GERAL ENTRE SEÇÕES
- * - Reduza levemente o espaço vertical entre os blocos (cards de KPI → gráfico → ranking → tabela → total de clientes), criando um ritmo mais compacto e denso, sem parecer apertado.
+ * 5) TABELA "RESUMO DE LANÇAMENTOS"
+ * - Colora o valor da coluna LUCRO: verde (+) / vermelho (-).
+ * - Adicione hover discreto nas linhas.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -159,27 +161,27 @@ function Dashboard() {
   const summary = [...chartData].reverse();
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4">
-      <div className="mb-2">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard</h1>
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Visão geral — {monthLabelLong(now)}</p>
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div>
+        <h1 className="text-4xl font-bold tracking-tight text-[#374151]">Dashboard</h1>
+        <p className="text-sm font-medium text-[#4B5563]">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-4">
         <StatCard 
-          icon={<TrendingUp className="h-4 w-4" />} 
+          icon={<TrendingUp className="h-5 w-5" />} 
           label="Receita Mensal" 
           value={receitaMes} 
-          tint="neutral" 
+          tint="leaf" 
           delta={delta(receitaMes, receitaPrev)} 
           sparkData={chartData.map(d => ({ value: d.Receita }))}
           delay={0}
         />
         <StatCard
-          icon={<TrendingDown className="h-4 w-4" />}
+          icon={<TrendingDown className="h-5 w-5" />}
           label="Despesas Mensais"
           value={despesasMes}
-          tint="neutral"
+          tint="clay"
           invertDelta
           delta={delta(despesasMes, despesasPrev)}
           hint={`Operacionais ${brl(despesasOperMes)} + Concessionária ${brl(faturasDistMes)}`}
@@ -187,28 +189,28 @@ function Dashboard() {
           delay={60}
         />
         <StatCard 
-          icon={<DollarSign className="h-4 w-4" />} 
+          icon={<DollarSign className="h-5 w-5" />} 
           label="Lucro do Mês" 
           value={lucroMes} 
-          tint="neutral" 
+          tint="sky" 
           delta={delta(lucroMes, lucroPrev)} 
           sparkData={chartData.map(d => ({ value: d.Lucro }))}
           delay={120}
         />
         <StatCard 
-          icon={<Briefcase className="h-4 w-4" />} 
+          icon={<Briefcase className="h-5 w-5" />} 
           label="Lucro Acumulado (Ano)" 
           value={lucroAnualReal} 
-          tint="neutral" 
+          tint="amber" 
           delay={180}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 space-y-4">
-          <Card className="rounded-xl border border-slate-200 bg-white p-5 shadow-none">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Performance Financeira</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-[#374151]">Performance Financeira</h2>
               <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-[#4B5563] uppercase tracking-wider">
                 {[["Receita", "#2F6F62"], ["Despesas", "#D64545"], ["Lucro", "#2E5C8A"]].map(([k, c]) => (
                   <span key={k} className="inline-flex items-center gap-1.5">
@@ -249,8 +251,8 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
-            <h2 className="mb-5 text-sm font-bold text-slate-800 uppercase tracking-tight">Resumo de Lançamentos</h2>
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
+            <h2 className="mb-6 text-lg font-bold text-[#374151]">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -285,11 +287,11 @@ function Dashboard() {
           </Card>
         </div>
 
-        <div className="space-y-4">
-          <Card className="bg-white border border-slate-200 rounded-xl p-5 shadow-none">
+        <div className="space-y-6">
+          <Card className="bg-white border border-slate-200 rounded-xl p-6 shadow-none">
             <div className="mb-4 flex items-center gap-2">
-              <Trophy className="h-4 w-4 text-slate-400" />
-              <h2 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Ranking — Lucratividade</h2>
+              <Trophy className="h-5 w-5 text-slate-400" />
+              <h2 className="text-lg font-bold text-[#374151] tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
             </div>
             <div className="space-y-4">
               {ranking.map((c, idx) => (
@@ -325,14 +327,14 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-xl border border-slate-200 bg-white p-5 shadow-none">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-50 text-slate-400 border border-slate-100">
-                <Users className="h-5 w-5" />
+          <Card className="rounded-[14px] border border-slate-200 bg-white p-6 shadow-none">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F5F6F8] text-[#9CA3AF]">
+                <Users className="h-6 w-6" />
               </div>
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total de Clientes</div>
-                <div className="text-xl font-bold text-slate-900">{data.clients.length}</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-[#4B5563]">Total de Clientes</div>
+                <div className="text-2xl font-bold text-[#374151]">{data.clients.length}</div>
               </div>
             </div>
           </Card>
@@ -363,7 +365,7 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta, sparkData, delay
 }: {
-  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber" | "neutral";
+  icon: React.ReactElement<any>; label: string; value: number; tint: "leaf" | "clay" | "sky" | "amber";
   hint?: string; delta?: number | null; invertDelta?: boolean; sparkData?: { value: number }[]; delay?: number;
 }) {
   const semanticColor = 
@@ -371,64 +373,69 @@ function StatCard({
     tint === "clay" ? "#D64545" : 
     tint === "sky" ? "#2E5C8A" : 
     tint === "amber" ? "#C98A3E" :
-    "#1E293B"; // slate-800
+    "#64748B";
   
-  const iconBg = "bg-slate-50 border border-slate-100";
+  const iconBg = 
+    tint === "leaf" ? "bg-[#2F6F62]/10" : 
+    tint === "clay" ? "bg-[#D64545]/10" : 
+    tint === "sky" ? "bg-[#2E5C8A]/10" : 
+    tint === "amber" ? "bg-[#C98A3E]/10" :
+    "bg-slate-100";
   
   const styledIcon = React.cloneElement(icon, {
-    className: cn(icon.props.className, "text-slate-400"),
+    className: cn(icon.props.className),
+    style: { color: semanticColor }
   });
 
   const good = delta == null ? null : invertDelta ? delta <= 0 : delta >= 0;
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-none transition-all animate-in fade-in slide-in-from-bottom-1 duration-300 fill-mode-both"
-      style={{ animationDelay: `${delay}ms` }}
+      className="relative overflow-hidden rounded-[14px] border border-slate-200 bg-white p-3 sm:p-4 shadow-none transition-all hover:shadow-md hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      style={{ 
+        borderTop: `3px solid ${semanticColor}`,
+        animationDelay: `${delay}ms`
+      }}
     >
+      {sparkData && (
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke={semanticColor} 
+                fill={semanticColor} 
+                strokeWidth={2} 
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-2.5">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{label}</div>
+        <div className="mb-1 sm:mb-2 flex items-start justify-between gap-2">
+          <div className={cn("flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg shadow-sm", iconBg)}>
+            {styledIcon}
+          </div>
           {delta != null && Number.isFinite(delta) && (
             <span
               className={cn(
-                "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold",
-                good ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-rose-50 text-rose-600 border border-rose-100"
+                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold",
+                good ? "bg-[#2F6F62]/10 text-[#2F6F62]" : "bg-[#D64545]/10 text-[#D64545]"
               )}
             >
-              {delta >= 0 ? <ArrowUpRight className="h-2.5 w-2.5" /> : <ArrowDownRight className="h-2.5 w-2.5" />}
+              {delta >= 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
               {Math.abs(delta).toFixed(0)}%
             </span>
           )}
         </div>
-        
-        <div className="flex items-end justify-between">
-          <div className="text-lg font-bold leading-none tracking-tight text-slate-900 num">
-            {brl(value)}
-          </div>
-          <div className={cn("flex h-7 w-7 items-center justify-center rounded-md", iconBg)}>
-            {styledIcon}
-          </div>
+        <div className="text-[10px] font-bold uppercase tracking-wider text-[#4B5563]">{label}</div>
+        <div className="mt-1.5 text-base sm:text-xl font-bold leading-none num-lg" style={{ color: semanticColor }}>
+          {brl(value)}
         </div>
-        
-        {sparkData && (
-          <div className="mt-3 h-6 w-full opacity-30 pointer-events-none">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={sparkData}>
-                <Area 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke={semanticColor} 
-                  fill={semanticColor} 
-                  strokeWidth={1.5} 
-                  isAnimationActive={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-
-        {hint && <div className="mt-2 text-[9px] leading-tight text-slate-400 font-medium truncate">{hint}</div>}
+        {hint && <div className="mt-4 text-[10px] leading-relaxed text-[#9CA3AF] font-medium">{hint}</div>}
       </div>
     </Card>
   );
