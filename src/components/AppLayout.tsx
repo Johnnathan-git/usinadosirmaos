@@ -215,17 +215,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
             <div className="flex gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleTheme} 
+                className="h-8 w-8 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground"
+                title={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
+              >
+                {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+              </Button>
               <ChangeOwnPasswordDialog />
               <Button 
                 variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg bg-white/5 text-white/60 hover:bg-destructive/20 hover:text-white hover:border-destructive/30 border-white/5 border transition-all"
+                className="flex-1 h-8 gap-2 rounded-lg bg-accent text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 border-border border transition-all"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>
               </Button>
             </div>
+
           </div>
         </aside>
 
