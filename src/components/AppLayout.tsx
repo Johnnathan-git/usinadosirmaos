@@ -98,9 +98,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-black text-foreground selection:bg-primary/30">
+      {/* Background Aurora */}
+      <div className="aurora-container pointer-events-none">
+        <div className="aurora-blob aurora-blob-1" />
+        <div className="aurora-blob aurora-blob-2" />
+        <div className="aurora-blob aurora-blob-3" />
+      </div>
+
       {/* Mobile Top Header */}
-      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md md:hidden">
+      <header className="no-print sticky top-0 z-50 flex h-14 items-center justify-between border-b border-white/10 bg-black/50 px-4 backdrop-blur-xl md:hidden">
         <BrandLockup compact />
         <div className="flex items-center gap-2">
           <ChangeOwnPasswordDialog />
@@ -111,14 +118,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </header>
 
       <div className="flex">
-        {/* Desktop Sidebar - Linear Style */}
-        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-background md:flex">
-          <div className="p-6">
+        {/* Desktop Sidebar */}
+        <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-white/5 bg-black/40 backdrop-blur-xl md:flex">
+          <div className="p-8">
             <BrandLockup />
           </div>
           
-          <div className="flex-1 overflow-y-auto px-3 py-2">
-            <nav className="space-y-0.5">
+          <div className="flex-1 overflow-y-auto px-4 py-2">
+            <nav className="space-y-1">
               {visibleNav.map((item) => {
                 const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
                 const Icon = item.icon;
@@ -129,8 +136,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     className={cn(
                       "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
-                        ? "bg-accent text-foreground shadow-sm"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-white/5 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                        : "text-white/40 hover:bg-white/5 hover:text-white"
                     )}
                   >
                     <Icon className={cn(
@@ -145,16 +152,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
 
-          <div className="mt-auto border-t border-border p-4">
-            <div className="mb-4 flex items-center gap-3 rounded-lg bg-card p-2.5 border border-border shadow-sm">
+          <div className="mt-auto border-t border-white/5 p-4">
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-white/5 p-2.5 border border-white/5 shadow-sm">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-bold text-foreground leading-tight">
+                <div className="truncate text-xs font-bold text-white leading-tight">
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
-                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="text-[10px] font-medium text-white/40 uppercase tracking-wider">
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
               </div>
@@ -165,7 +172,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 border-transparent border transition-all"
+                className="flex-1 h-8 gap-2 rounded-lg bg-white/5 text-white/60 hover:bg-destructive/20 hover:text-white hover:border-destructive/30 border-white/5 border transition-all"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>
@@ -175,8 +182,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </aside>
 
         {/* Main Content Area */}
-        <main className="min-h-screen min-w-0 flex-1 bg-[#0D0D10]">
-          <div className="mx-auto max-w-7xl px-4 py-8 pb-28 sm:px-8 md:pb-8">
+        <main className="min-h-screen min-w-0 flex-1">
+          <div className="mx-auto max-w-7xl px-4 py-8 pb-32 sm:px-8 md:pb-12">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
@@ -198,7 +205,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex h-16 items-center justify-around border-t border-border bg-background px-2 pb-[env(safe-area-inset-bottom)] md:hidden shadow-2xl">
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-white/10 bg-black/50 px-2 backdrop-blur-xl md:hidden shadow-2xl">
           {visibleNav.slice(0, 4).map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;

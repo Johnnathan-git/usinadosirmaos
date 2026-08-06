@@ -14,15 +14,15 @@ export function BrandMark({ className }: { className?: string }) {
 export function BrandLockup({ compact = false, dark = false }: { compact?: boolean; dark?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/50 bg-white p-0.5 shadow-sm">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white p-0.5 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
         <BrandMark />
       </div>
       {!compact && (
         <div className="min-w-0 leading-tight">
-          <div className="font-sans text-[13px] font-bold tracking-tight text-[#374151]">
+          <div className="font-sans text-[13px] font-bold tracking-tight text-white text-glow">
             Usina dos Irmãos
           </div>
-          <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-[#4B5563]">
+          <div className="text-[8px] font-semibold uppercase tracking-[0.22em] text-white/50">
             Gestão de energia
           </div>
         </div>

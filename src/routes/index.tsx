@@ -147,8 +147,8 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
-        <p className="text-sm font-medium text-muted-foreground mt-1">Visão geral — {monthLabelLong(now)}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-white text-glow">Dashboard</h1>
+        <p className="text-sm font-medium text-white/50 mt-1">Visão geral — {monthLabelLong(now)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -193,7 +193,7 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-base font-bold text-foreground">Performance Financeira</h2>
               <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
@@ -236,18 +236,18 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
-            <h2 className="mb-6 text-base font-bold text-foreground">Resumo de Lançamentos</h2>
+          <Card className="glass-card rounded-2xl p-6">
+            <h2 className="mb-6 text-base font-bold text-foreground text-glow">Resumo de Lançamentos</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="pb-4 text-left font-bold text-muted-foreground uppercase tracking-widest">Mês</th>
-                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Receita</th>
-                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Desp. Operacionais</th>
-                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Concessionária</th>
-                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Despesas</th>
-                    <th className="pb-4 text-right font-bold text-muted-foreground uppercase tracking-widest">Lucro</th>
+                    <th className="pb-4 text-left font-bold text-white/50 uppercase tracking-widest">Mês</th>
+                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Receita</th>
+                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Desp. Operacionais</th>
+                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Concessionária</th>
+                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Despesas</th>
+                    <th className="pb-4 text-right font-bold text-white/50 uppercase tracking-widest">Lucro</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/50">
@@ -274,10 +274,10 @@ function Dashboard() {
 
 
         <div className="space-y-6">
-          <Card className="bg-card border border-border rounded-xl p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="mb-6 flex items-center gap-2">
               <Trophy className="h-4 w-4 text-primary" />
-              <h2 className="text-base font-bold text-foreground tracking-tight">Ranking — Clientes Mais Lucrativos</h2>
+              <h2 className="text-base font-bold text-foreground tracking-tight text-glow">Ranking — Clientes Mais Lucrativos</h2>
             </div>
             <div className="space-y-4">
               {ranking.map((c, idx) => (
@@ -313,7 +313,7 @@ function Dashboard() {
             </div>
           </Card>
 
-          <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <Card className="glass-card rounded-2xl p-6">
             <div className="flex items-center gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/30 text-muted-foreground">
                 <Users className="h-5 w-5" />
@@ -334,7 +334,7 @@ function Dashboard() {
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-border bg-card px-3 py-2 elev-3">
+    <div className="glass-card rounded-xl px-3 py-2 shadow-2xl">
       <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
       {payload.map((p: any) => (
         <div key={p.dataKey} className="flex items-center justify-between gap-6 text-sm">
@@ -378,14 +378,13 @@ function StatCard({
   
   return (
     <Card 
-      className="relative overflow-hidden rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:bg-accent/10 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+      className="glass-card relative overflow-hidden rounded-2xl p-4 transition-all hover:bg-white/5 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
       style={{ 
-        borderTop: `2px solid ${semanticColor}`,
         animationDelay: `${delay}ms`
       }}
     >
       {sparkData && (
-        <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
               <Area 

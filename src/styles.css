@@ -51,32 +51,32 @@
 
 :root {
   --radius: 12px;
-  --background: #0D0D10; /* Dark background similar to Linear */
-  --foreground: #E2E2E6;
+  --background: #000000;
+  --foreground: #FFFFFF;
   
-  --card: #151518;
-  --card-foreground: #E2E2E6;
-  --popover: #151518;
-  --popover-foreground: #E2E2E6;
+  --card: rgba(13, 13, 16, 0.7);
+  --card-foreground: #FFFFFF;
+  --popover: #0D0D10;
+  --popover-foreground: #FFFFFF;
   --primary: #C98A3E;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #000000;
   
-  --secondary: #1F1F23;
+  --secondary: #161618;
   --secondary-foreground: #A1A1AA;
-  --muted: #1F1F23;
-  --muted-foreground: #A1A1AA;
-  --accent: #2A2A2F;
-  --accent-foreground: #F4F4F5;
+  --muted: #161618;
+  --muted-foreground: #71717A;
+  --accent: rgba(255, 255, 255, 0.05);
+  --accent-foreground: #FFFFFF;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: #27272A;
-  --input: #1F1F23;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: #0D0D10;
   --ring: #C98A3E;
   
-  --sidebar: #0D0D10;
+  --sidebar: #000000;
   --sidebar-foreground: #A1A1AA;
   
-  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px -4px rgba(0, 0, 0, 0.5);
 }
 
 @layer base {
@@ -172,5 +172,71 @@ div[style*="Edit with Lovable"],
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@layer utilities {
+  .aurora-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .aurora-blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    mix-blend-mode: screen;
+    animation: aurora-float 20s infinite alternate ease-in-out;
+  }
+
+  .aurora-blob-1 {
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+  }
+
+  .aurora-blob-2 {
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    bottom: -10%;
+    right: -10%;
+    animation-delay: -5s;
+    animation-duration: 25s;
+  }
+
+  .aurora-blob-3 {
+    background: radial-gradient(circle, #22d3ee 0%, transparent 70%);
+    top: 40%;
+    left: 40%;
+    width: 400px;
+    height: 400px;
+    animation-delay: -10s;
+    animation-duration: 18s;
+  }
+
+  @keyframes aurora-float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(10%, 10%) scale(1.1); }
+    66% { transform: translate(-5%, 15%) scale(0.9); }
+    100% { transform: translate(5%, -10%) scale(1); }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   }
 }
