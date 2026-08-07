@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No modulo Relatorio do Cliente afinar mais o card principal, está estranho. Esse ajuste é nos dois temas
+ * Execute esta instrucao no projeto: Afine tambem o resto do card e não só o titulo, pois quando marco mais meses fica muito extenso para baixo
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
