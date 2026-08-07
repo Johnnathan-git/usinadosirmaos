@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: A borda continua ficando branca quando seleciono o meu email que já está salvo no note, como pode ver no print. Lembrando, no tema black.
+ * Execute esta instrucao no projeto: Cara, quando eu abro o sistema a esfera de energia está pequena e com um gradiente esfumaçado. Ajuste isso, deixe só a linha da esfera mesmo.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
