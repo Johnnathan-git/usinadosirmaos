@@ -162,7 +162,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-primary border-primary text-primary-foreground shadow-sm" : "bg-card border-border text-muted-foreground hover:bg-accent"
+                    on ? "bg-primary border-primary text-primary-foreground shadow-sm light:bg-emerald-600 light:border-emerald-600" : "bg-card border-border text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -176,12 +176,12 @@ function Relatorio() {
 
       <Card className="overflow-hidden glass-card p-0">
         <div 
-          className="px-8 py-3 text-center border-b border-white/10 bg-blue-600/30 relative overflow-hidden light:border-blue-700 light:bg-blue-600"
+          className="px-8 py-3 text-center border-b border-white/10 bg-blue-600/30 relative overflow-hidden light:border-blue-700 light:bg-[#1E3A8A]"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none light:hidden" />
           <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-blue-600/60 via-blue-500/30 to-transparent opacity-100 pointer-events-none" />
           <div className="relative z-10">
-            <div className="text-lg font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-xl">
+            <div className="text-lg font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-xl light:drop-shadow-none">
 
               {client?.name ?? "—"}
             </div>
@@ -190,7 +190,7 @@ function Relatorio() {
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
           <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
-              <tr className="bg-white/5 light:bg-[#1E3A8A] light:border-b light:border-blue-200">
+              <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 {[
                   { label: "Mês referência", width: "w-[120px]" },
                   { label: "Unidade Consumidora", width: "w-[160px]" },
@@ -203,7 +203,7 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground light:text-white uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
@@ -227,7 +227,7 @@ function Relatorio() {
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
                             : f === "mes" 
-                            ? "text-foreground light:text-emerald-600 font-bold"
+                            ? "text-foreground light:text-foreground font-bold"
                             : "text-foreground font-medium"
                         }`}
                       />
