@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Cara, quando eu abro o sistema a esfera de energia está pequena e com um gradiente esfumaçado. Ajuste isso, deixe só a linha da esfera mesmo.
+ * Execute esta instrucao no projeto: Ficou otimo, mas pode aumentar ela
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
