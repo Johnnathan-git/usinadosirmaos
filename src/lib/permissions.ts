@@ -1,8 +1,5 @@
 export const MODULES = [
   { key: "dashboard", label: "Dashboard", path: "/" },
-  { key: "transacoes", label: "Transações", path: "/transacoes" },
-  { key: "orcamento", label: "Orçamento", path: "/orcamento" },
-  { key: "resultado-familiar", label: "Resultado Familiar", path: "/resultado-familiar" },
   { key: "faturas", label: "Faturas e Clientes", path: "/faturas" },
   { key: "fluxo-caixa", label: "Fluxo de Caixa", path: "/fluxo-caixa" },
   { key: "resultado", label: "Resultado", path: "/resultado" },
