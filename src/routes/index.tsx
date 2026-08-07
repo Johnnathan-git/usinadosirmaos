@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Afine tambem o resto do card e não só o titulo, pois quando marco mais meses fica muito extenso para baixo
+ * Execute esta instrucao no projeto: No primeiro colocado do ranking dos clientes mais lucrativos no dashboard tem uma sombra tipo um card ao redor, pode retirar. Em ambos os temas
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
