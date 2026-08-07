@@ -169,7 +169,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--background);
     border-radius: 10px;
   }
 
