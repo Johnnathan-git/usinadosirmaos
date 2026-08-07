@@ -162,7 +162,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-primary border-primary text-primary-foreground shadow-sm light:bg-emerald-600 light:border-emerald-600" : "bg-card border-border text-muted-foreground hover:bg-accent"
+                    on ? "bg-primary border-primary text-primary-foreground shadow-sm light:bg-[#10B981] light:border-[#10B981]" : "bg-card border-border text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}
@@ -223,7 +223,7 @@ function Relatorio() {
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
                           f === "comDesconto"
-                            ? "font-bold text-primary light:text-emerald-600 text-sm sm:text-base"
+                            ? "font-bold text-primary light:text-[#10B981] text-sm sm:text-base"
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
                             : f === "mes" 

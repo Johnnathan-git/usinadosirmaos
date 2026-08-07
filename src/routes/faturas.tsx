@@ -126,7 +126,7 @@ function Faturas() {
           <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-border bg-accent text-muted-foreground hover:text-foreground rounded-lg">
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
+          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 light:bg-[#10B981] light:hover:bg-[#10B981]/90">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -347,7 +347,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose} className="border-border text-muted-foreground hover:text-foreground hover:bg-accent">Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
+          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold light:bg-[#10B981] light:hover:bg-[#10B981]/90">{client ? "Salvar" : "Criar"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
