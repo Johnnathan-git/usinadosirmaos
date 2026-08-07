@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Na pagina de login, diminiui a logo e quando coloco o meu email que já está salvo no notebook a borda do card Email fica branca. Tema black.
+ * Execute esta instrucao no projeto: A borda continua ficando branca quando seleciono o meu email que já está salvo no note, como pode ver no print. Lembrando, no tema black.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

@@ -197,9 +197,14 @@
     -webkit-box-shadow: 0 0 0 1000px var(--input) inset !important;
     -webkit-text-fill-color: var(--foreground) !important;
     border: 1px solid var(--border) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
+    box-shadow: 0 0 0 1000px var(--input) inset !important;
     transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Force background color to match the card/input in dark mode during autofill */
+  .dark input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #0D0D10 inset !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
   }
 }
 
