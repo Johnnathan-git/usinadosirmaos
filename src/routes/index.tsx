@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ficou otimo, mas pode aumentar ela
+ * Execute esta instrucao no projeto: Aumente mais
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
