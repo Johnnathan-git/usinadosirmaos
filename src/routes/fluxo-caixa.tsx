@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ajusta todo o sistema para uma visualização intuitiva pelo celular
+ * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
