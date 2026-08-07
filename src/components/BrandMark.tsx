@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
-import logoSolarAsset from "@/assets/logo-solar-v2.png.asset.json";
+import usinaLogoAsset from "@/assets/usina-logo.png.asset.json";
 
 /** Logotipo da Usina dos Irmãos. */
 export function BrandMark({ className }: { className?: string }) {
   return (
     <img 
-      src={logoSolarAsset.url} 
+      src={usinaLogoAsset.url} 
       alt="Logo Usina dos Irmãos"
-      className={cn("h-full w-full object-contain rounded-md", className)}
+      className={cn("h-full w-full object-contain", className)}
     />
   );
 }
