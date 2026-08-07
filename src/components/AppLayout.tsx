@@ -131,26 +131,49 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
+        {/* Centro de Energia Descentralizado */}
+        <div 
+          className="absolute rounded-full opacity-20 blur-[100px] pointer-events-none"
+          style={{ 
+            top: '48%', 
+            left: '52%', 
+            width: '400px', 
+            height: '400px', 
+            background: 'radial-gradient(circle, #C98A3E 0%, transparent 70%)',
+            transform: 'translate(-50%, -50%)'
+          }}
+        />
+
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
-        {/* Órbitas Celestiais */}
-        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
-        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />
+        {/* Órbitas Celestiais Dinâmicas */}
+        <div className="energy-orbit" style={{ width: '600px', height: '600px', '--duration': '35s' } as any} />
+        <div className="energy-orbit" style={{ width: '900px', height: '900px', '--duration': '55s' } as any} />
+        <div className="energy-orbit" style={{ width: '1300px', height: '1300px', '--duration': '85s' } as any} />
         
-        {/* Partículas Estelares Flutuantes */}
-        {[...Array(12)].map((_, i) => (
-          <div 
-            key={i} 
-            className="nebulosa-particle"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              '--duration': `${15 + Math.random() * 20}s`,
-              animationDelay: `${-Math.random() * 20}s`
-            } as any}
-          />
-        ))}
+        {/* Partículas Estelares com Variação de Cor e Movimento */}
+        {[...Array(20)].map((_, i) => {
+          const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
+          const color = colors[i % colors.length];
+          const size = 1 + Math.random() * 2;
+          return (
+            <div 
+              key={i} 
+              className="nebulosa-particle"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                '--size': `${size}px`,
+                '--color': color,
+                '--duration': `${10 + Math.random() * 25}s`,
+                '--move-x': `${(Math.random() - 0.5) * 150}px`,
+                '--move-y': `${(Math.random() - 0.5) * 150}px`,
+                animationDelay: `${-Math.random() * 20}s`
+              } as any}
+            />
+          );
+        })}
 
         {/* Brilhos de Aurora Sutil */}
         <div className="aurora-blob aurora-blob-1" />
