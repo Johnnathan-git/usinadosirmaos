@@ -227,7 +227,7 @@ function Relatorio() {
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
                             : f === "mes" 
-                            ? "text-foreground light:text-emerald-600 font-bold"
+                            ? "text-foreground light:text-foreground font-bold"
                             : "text-foreground font-medium"
                         }`}
                       />
