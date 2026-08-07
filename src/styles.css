@@ -194,9 +194,11 @@
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px var(--input) inset !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--input) inset !important;
     -webkit-text-fill-color: var(--foreground) !important;
     border: 1px solid var(--border) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
     transition: background-color 5000s ease-in-out 0s;
   }
 }
