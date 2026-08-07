@@ -131,26 +131,24 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
-        {/* Centro de Energia Orgânico e Gradual */}
+        {/* Centro de Energia Realista com Gradiente Orgânico e Esfumaçado */}
         <div 
-          className="absolute rounded-full opacity-30 blur-[120px] pointer-events-none"
+          className="absolute rounded-full opacity-40 blur-[90px] pointer-events-none"
           style={{ 
-            top: '48%', 
-            left: '52%', 
-            width: '500px', 
-            height: '500px', 
-            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.08) 40%, transparent 80%)',
-            transform: 'translate(-50%, -50%) rotate(-15deg)',
+            top: '45%', 
+            left: '48%', 
+            width: '450px', 
+            height: '450px', 
+            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.25) 0%, rgba(37, 99, 235, 0.1) 45%, transparent 75%)',
+            transform: 'translate(-50%, -50%)',
           }}
         />
 
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
-        {/* Órbitas Celestiais Dinâmicas */}
-        <div className="energy-orbit" style={{ width: '600px', height: '600px', '--duration': '35s' } as any} />
-        <div className="energy-orbit" style={{ width: '900px', height: '900px', '--duration': '55s' } as any} />
-        <div className="energy-orbit" style={{ width: '1300px', height: '1300px', '--duration': '85s' } as any} />
+        {/* Esfera Celestial Única com Profundidade e Reflexos Realistas */}
+        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '60s' } as any} />
         
         {/* Partículas Estelares com Variação de Cor e Movimento */}
         {[...Array(20)].map((_, i) => {
