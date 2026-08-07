@@ -190,7 +190,7 @@ function Relatorio() {
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
           <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
-              <tr className="bg-white/5 light:bg-[#1E3A8A] light:border-b light:border-blue-200">
+              <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 {[
                   { label: "Mês referência", width: "w-[120px]" },
                   { label: "Unidade Consumidora", width: "w-[160px]" },
@@ -203,7 +203,7 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground light:text-white uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
