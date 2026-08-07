@@ -409,6 +409,10 @@ div[style*="Edit with Lovable"],
     will-change: transform;
     backface-visibility: hidden;
     transform: translateZ(0);
+    
+    /* Optimization for slower devices */
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 100px;
   }
 
   .glass-card-interactive:hover {

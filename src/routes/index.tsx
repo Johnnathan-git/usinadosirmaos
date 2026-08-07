@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: O card de login não está com o efeito do fundo e a esfera não não ficou igualzinha
+ * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

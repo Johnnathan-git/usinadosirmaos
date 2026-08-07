@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Vamos tentar um tema mais escuro, tipo o do link: https://linear.app/coding-sessions
+ * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
  */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
