@@ -87,7 +87,7 @@ function AuthPage() {
         <div 
           className="absolute rounded-full opacity-20 blur-[120px]"
           style={{ 
-            top: '48%', left: '40%', width: '700px', height: '700px', 
+            top: '48%', left: '30%', width: '1000px', height: '1000px', 
             background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
             transform: 'translate(-50%, -50%)',
           }}
@@ -100,8 +100,8 @@ function AuthPage() {
         <div 
           className="energy-orbit" 
           style={{ 
-            width: '950px', height: '950px', '--duration': '50s',
-            top: '48%', left: '40%'
+            width: '1200px', height: '1200px', '--duration': '50s',
+            top: '48%', left: '30%'
           } as any} 
         />
       </div>
