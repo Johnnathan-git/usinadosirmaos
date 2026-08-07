@@ -128,7 +128,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-background text-foreground selection:bg-primary/30">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
         {/* Efeito de Glow Sutil de Fundo */}
@@ -136,9 +136,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           className="absolute rounded-full opacity-20 blur-[120px] pointer-events-none"
           style={{ 
             top: '48%', 
-            left: '30%', 
-            width: '1000px', 
-            height: '1000px', 
+            left: '40%', 
+            width: '700px', 
+            height: '700px', 
             background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
             transform: 'translate(-50%, -50%)',
           }}
@@ -148,7 +148,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="energy-wave" />
 
         {/* Esfera Celestial Única (Menor) com Profundidade e Reflexos Realistas */}
-        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '50s' } as any} />
+        <div className="energy-orbit" style={{ width: '950px', height: '950px', '--duration': '50s' } as any} />
         
         {/* Partículas Estelares com Variação de Cor e Movimento */}
         {[...Array(20)].map((_, i) => {

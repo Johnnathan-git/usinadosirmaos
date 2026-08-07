@@ -51,7 +51,6 @@
 }
 
 :root {
-  color-scheme: dark;
   --radius: 12px;
   --background: #000000;
   --foreground: #F1F1F1;
@@ -82,7 +81,6 @@
 }
 
 :root.light {
-  color-scheme: light;
   --background: #FFFFFF;
   --foreground: #0F172A;
   
@@ -114,7 +112,7 @@
 
 
 @layer base {
-  html, body {
+  body {
     background: var(--background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -122,9 +120,6 @@
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    padding: 0;
   }
 
 
@@ -169,7 +164,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--background);
+    background: transparent;
     border-radius: 10px;
   }
 
@@ -291,7 +286,7 @@ div[style*="Edit with Lovable"],
   .energy-orbit {
     position: absolute;
     top: 48%;
-    left: 30%;
+    left: 40%;
     border: 1px solid rgba(201, 138, 62, 0.4);
     border-radius: 50%;
     transform: translate(-50%, -50%);

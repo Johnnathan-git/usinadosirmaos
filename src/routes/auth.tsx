@@ -80,14 +80,14 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex h-[100dvh] w-full items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
+    <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
       {/* Background e Efeitos Visuais (Identico ao AppLayout) */}
       <div className="aurora-container pointer-events-none z-0">
         {/* Glow de Fundo */}
         <div 
           className="absolute rounded-full opacity-20 blur-[120px]"
           style={{ 
-            top: '48%', left: '30%', width: '1000px', height: '1000px', 
+            top: '48%', left: '40%', width: '700px', height: '700px', 
             background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
             transform: 'translate(-50%, -50%)',
           }}
@@ -100,8 +100,8 @@ function AuthPage() {
         <div 
           className="energy-orbit" 
           style={{ 
-            width: '1200px', height: '1200px', '--duration': '50s',
-            top: '48%', left: '30%'
+            width: '950px', height: '950px', '--duration': '50s',
+            top: '48%', left: '40%'
           } as any} 
         />
       </div>
