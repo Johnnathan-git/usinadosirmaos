@@ -194,7 +194,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     className={cn(
                       "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
-                        ? "bg-primary/10 text-primary shadow-[0_0_20px_rgba(201,138,62,0.1)]"
+                        ? "bg-primary/10 text-primary shadow-[0_0_20px_rgba(16,185,129,0.1)]"
                         : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     )}
                   >
@@ -203,7 +203,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                       active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                     )} strokeWidth={2} />
                     <span className="truncate">{item.label}</span>
-                    {active && <div className="ml-auto h-1 w-1 rounded-full bg-primary" />}
+                    {active && <div className="ml-auto h-0 w-0" />}
                   </Link>
                 );
               })}
@@ -295,7 +295,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
                 </div>
                 <span className="text-[9px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
-                {active && <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-primary shadow-[0_0_8px_rgba(245,158,11,0.6)]" />}
+                {active && <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-primary shadow-[0_0_8px_rgba(16,185,129,0.6)]" />}
               </Link>
             );
           })}
@@ -327,7 +327,7 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-8 px-3 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground light:bg-[#0F172A] light:text-white light:hover:bg-[#0F172A]/90">
+        <Button size="sm" variant="ghost" className="h-8 px-3 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground light:bg-white/10 light:border-white/15 light:text-white/80 light:hover:text-white">
           <KeyRound className="h-3.5 w-3.5 sm:mr-2" />
           <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
         </Button>
