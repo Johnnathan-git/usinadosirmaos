@@ -54,16 +54,30 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
+    (async () => {
+      const { data: sess } = await supabase.auth.getSession();
       if (!mounted) return;
-      if (!data.session) {
-        navigate({ to: "/auth" });
-      } else {
+      if (!sess.session) {
+        navigate({ to: "/auth", replace: true });
+        return;
+      }
+      // Valida o token no servidor: sessões expiradas/inválidas são descartadas.
+      const { data: userData, error } = await supabase.auth.getUser();
+      if (!mounted) return;
+      if (error || !userData.user) {
+        await supabase.auth.signOut();
+        navigate({ to: "/auth", replace: true });
+        return;
+      }
+      setReady(true);
+    })();
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || (!session && event !== "INITIAL_SESSION")) {
+        setReady(false);
+        navigate({ to: "/auth", replace: true });
+      } else if (session) {
         setReady(true);
       }
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (!session) navigate({ to: "/auth" });
     });
     return () => { mounted = false; sub.subscription.unsubscribe(); };
   }, [navigate]);
