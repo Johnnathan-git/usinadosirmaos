@@ -274,7 +274,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
         {/* Main Content Area */}
         <main className="min-h-screen min-w-0 flex-1 relative z-10">
-          <div className="mx-auto max-w-7xl px-4 py-8 pb-32 sm:px-8 md:pb-12">
+          <div className="mx-auto w-full max-w-[1800px] px-4 py-8 pb-32 sm:px-8 md:pb-12 2xl:px-12">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
