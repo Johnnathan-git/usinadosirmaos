@@ -81,8 +81,7 @@ function AuthPage() {
 
   return (
     <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
-      {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
-      {/* Background e Efeitos Visuais */}
+      {/* Background e Efeitos Visuais (Identico ao AppLayout) */}
       <div className="aurora-container pointer-events-none z-0">
         {/* Glow de Fundo */}
         <div 
@@ -96,7 +95,7 @@ function AuthPage() {
         <div className="energy-wave" />
       </div>
 
-      {/* Esfera de Energia que Sobrepõe o Card */}
+      {/* Esfera de Energia que Sobrepõe o Card (Identica ao AppLayout) */}
       <div className="aurora-container pointer-events-none z-[60]">
         <div 
           className="energy-orbit" 
@@ -130,7 +129,7 @@ function AuthPage() {
         <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
       
-      <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card">
+      <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card backdrop-blur-2xl z-10">
         <div className="mb-8 flex flex-col items-center gap-6">
           <div className="relative flex h-24 w-24 items-center justify-center">
             {/* Brilho atmosférico sutil sem forma rígida */}
