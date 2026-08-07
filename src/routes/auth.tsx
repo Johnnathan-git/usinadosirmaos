@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
-import { BrandMark } from "@/components/BrandMark";
+// BrandMark removed as we are using text logo for the new system
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -14,8 +14,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Entrar — Usina dos Irmãos" },
-      { name: "description", content: "Acesso ao sistema de gestão da Usina dos Irmãos." },
+      { title: "Entrar — Finanças John e Thais" },
+      { name: "description", content: "Acesso ao sistema de gestão financeira familiar John e Thais." },
     ],
   }),
 });
@@ -135,16 +135,16 @@ function AuthPage() {
             {/* Brilho atmosférico sutil sem forma rígida */}
             <div className="absolute inset-0 bg-primary/10 rounded-full blur-[35px] opacity-25" />
             
-            <div className="relative flex h-18 w-18 items-center justify-center bg-transparent">
-              <BrandMark className="h-full w-full object-contain rounded-full" />
+            <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/20 border border-primary/30">
+              <span className="text-primary font-black text-3xl">JT</span>
             </div>
           </div>
           <div className="text-center">
             <div className="font-display text-2xl font-bold tracking-tight text-foreground dark:text-glow">
-              Usina dos Irmãos
+              Finanças John e Thais
             </div>
             <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
-              Gestão de energia
+              Gestão Familiar Autoral
             </div>
           </div>
         </div>
