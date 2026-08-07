@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Descentraliza o circulo um pouco e coloque mais realidade, talvez com um pouco mais de cor nos movimentos.
+ * Execute esta instrucao no projeto: Para não ficar um circulo exato parecendo que foi desenhado, coloque um gradiente ai sei lá, para dar mais vida
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
