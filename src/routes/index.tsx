@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Chegue ela um pouco para a esquerda
+ * Execute esta instrucao no projeto: Ficou perfeito, Replique ela na pagina de login, igualzim. Ah inclusive ela deve sobrepor o card de login e não apenas ao redor.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
