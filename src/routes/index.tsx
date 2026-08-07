@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Deu certo, mas quando passo o mouse em cima do botao + Novo Cliente ele fica dourado sendo que o certo é saltar o preto da escrita igual no botão editar ao lado. Só no tema brancoo
+ * Execute esta instrucao no projeto: No modulo Relatorio do Cliente afinar mais o card principal, está estranho. Esse ajuste é nos dois temas
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
