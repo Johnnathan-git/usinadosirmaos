@@ -82,6 +82,7 @@
 }
 
 :root.light {
+  color-scheme: light;
   --background: #FFFFFF;
   --foreground: #0F172A;
   
