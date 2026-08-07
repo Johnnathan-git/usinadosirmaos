@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Eu vi que vc deu uma realçada nela. Na verdade ela é so um circulo dentro de outro e uns pontinhos que ficam se mexendo. Consegue colocar mais realidade nisso?
+ * Execute esta instrucao no projeto: Descentraliza o circulo um pouco e coloque mais realidade, talvez com um pouco mais de cor nos movimentos.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
