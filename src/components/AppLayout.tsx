@@ -39,10 +39,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as "dark" | "light";
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.classList.toggle("light", saved === "light");
-    }
+    const initial = saved === "light" ? "light" : "dark";
+    setTheme(initial);
+    document.documentElement.classList.toggle("light", initial === "light");
   }, []);
 
   const toggleTheme = () => {
@@ -198,17 +197,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
 
-          <div className="mt-auto border-t border-border p-4">
-            <div className="mb-4 flex items-center gap-3 rounded-xl bg-accent p-2.5 border border-border shadow-sm">
+          <div className="mt-auto border-t border-border p-4 light:border-white/10">
+            <div className="mb-4 flex items-center gap-3 rounded-xl bg-accent p-2.5 border border-border shadow-sm light:bg-white/10 light:border-white/15">
 
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-bold text-foreground leading-tight">
+                <div className="truncate text-xs font-bold text-foreground leading-tight light:text-white">
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
-                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider light:text-white/60">
 
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
@@ -219,7 +218,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 variant="ghost" 
                 size="icon" 
                 onClick={toggleTheme} 
-                className="h-8 w-8 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground"
+                className="h-8 w-8 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground light:bg-white/10 light:border-white/15 light:text-white/80 light:hover:text-white"
                 title={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
               >
                 {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
@@ -229,7 +228,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 variant="secondary" 
                 size="sm" 
                 onClick={signOut} 
-                className="flex-1 h-8 gap-2 rounded-lg bg-accent text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 border-border border transition-all"
+                className="flex-1 h-8 gap-2 rounded-lg bg-accent text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 border-border border transition-all light:bg-white/10 light:border-white/15 light:text-white/80"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span className="text-[10px] font-bold uppercase">Sair</span>
