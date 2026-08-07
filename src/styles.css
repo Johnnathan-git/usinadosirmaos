@@ -286,7 +286,7 @@ div[style*="Edit with Lovable"],
   .energy-orbit {
     position: absolute;
     top: 48%;
-    left: 45%;
+    left: 40%;
     border: 1px solid rgba(201, 138, 62, 0.4);
     border-radius: 50%;
     transform: translate(-50%, -50%);
