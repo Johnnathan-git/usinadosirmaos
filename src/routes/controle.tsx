@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
+ * Execute esta instrucao no projeto: Crie um sistema de controle financeiro familiar chamado "Finanças John e Thais", com design moderno, autoral e não genérico (evitar visual padrão de dashboard template — usar tipografia com personalidade, hierarquia visual clara, micro-interações e uma paleta de cores própria, mantendo o padrão de verde para receitas e vermelho para despesas). onde eu consiga lançar receitas e despesas, importar extrato do cartão e o próprio sistema vai memorizando as categorias conforme vou preenchendo manualmente e vai dando sugestões no momento da categorização manual. Preciso de um modulo de Orçamento onde eu projeto receitas e despesas e na medida que os lançamentos de despesas e receitas vao sendo lançadas o sistema puxa esses dados para a aba de realizado(Prints). Criar um modulo também chamado resultado onde consigo visualizar de acordo com o mês que escolho o resultado do mês. Ah, não esquece da opção de lançar despesas futuras. Preciso de um sistema moderno e não genérico.
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/controle")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Controle da Usina — Usina dos Irmãos" },
+      { title: "Gestão — Finanças John e Thais" },
       { name: "description", content: "Geração x consumo e rateio por cliente." },
     ],
   }),
