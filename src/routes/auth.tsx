@@ -80,7 +80,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
+    <div className="flex h-[100dvh] w-full items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
       {/* Background e Efeitos Visuais (Identico ao AppLayout) */}
       <div className="aurora-container pointer-events-none z-0">
         {/* Glow de Fundo */}
