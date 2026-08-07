@@ -264,42 +264,41 @@ div[style*="Edit with Lovable"],
   }
 
 
-  /* Esfera Celestiais com Profundidade Realista - Orgânica e Gradiente */
+  /* Esfera Celestial Única com Profundidade Realista */
   .energy-orbit {
     position: absolute;
     top: 48%;
     left: 52%;
-    border: 1px solid transparent;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: orbit-spin var(--duration) linear infinite;
     pointer-events: none;
-    background: linear-gradient(to right, rgba(201, 138, 62, 0.04), transparent, rgba(37, 99, 235, 0.02));
+    background: radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.1) 60%, transparent 100%);
     box-shadow: 
-      inset 0 0 100px rgba(201, 138, 62, 0.05),
-      inset 0 0 40px rgba(37, 99, 235, 0.03),
-      0 0 40px rgba(201, 138, 62, 0.02);
-    filter: blur(0.5px);
+      inset 0 0 50px rgba(37, 99, 235, 0.3),
+      0 0 60px rgba(37, 99, 235, 0.2);
+    filter: blur(2px);
   }
 
+  /* Rajadas de Energia Azul exalando da esfera */
   .energy-orbit::after {
     content: '';
     position: absolute;
-    inset: -3px;
+    inset: -20px;
     border-radius: 50%;
     background: conic-gradient(
       from 0deg, 
       transparent, 
-      rgba(201, 138, 62, 0.2) 20%, 
-      rgba(37, 99, 235, 0.15) 45%, 
+      rgba(37, 99, 235, 0.4) 10%, 
+      transparent 20%, 
+      rgba(37, 99, 235, 0.3) 45%, 
       transparent 60%,
-      rgba(201, 138, 62, 0.2) 85%, 
+      rgba(37, 99, 235, 0.5) 85%, 
       transparent
     );
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    animation: orbit-spin calc(var(--duration) * 0.7) linear infinite reverse;
-    filter: blur(2px);
+    filter: blur(15px);
+    animation: orbit-spin calc(var(--duration) * 0.2) linear infinite;
+    mix-blend-mode: screen;
   }
 
   @keyframes orbit-spin {
