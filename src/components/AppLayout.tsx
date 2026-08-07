@@ -134,12 +134,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
-        {/* Órbitas Celestiais */}
-        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
-        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />
+        {/* Estrutura da Galáxia Espiral */}
+        <div className="energy-orbit" style={{ width: '600px', height: '600px', '--duration': '25s' } as any} />
+        <div className="energy-orbit" style={{ width: '900px', height: '900px', '--duration': '45s' } as any} />
+        <div className="energy-orbit" style={{ width: '1300px', height: '1300px', '--duration': '70s' } as any} />
         
-        {/* Partículas Estelares Flutuantes */}
-        {[...Array(12)].map((_, i) => (
+        {/* Partículas Estelares (Campo de Estrelas) */}
+        {[...Array(40)].map((_, i) => (
           <div 
             key={i} 
             className="nebulosa-particle"
