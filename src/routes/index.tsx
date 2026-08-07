@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Dê mais destaque as ondas de energia que ficam se movimentando, coloque uma cor nelas
+ * Execute esta instrucao no projeto: Voce voltou com a outra esfera? Mandei deixar apenas uma, a menor. A minha idèia é que seja uma esfera de energia no espaço.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";

@@ -147,8 +147,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
-        {/* Esfera Celestial Única com Profundidade e Reflexos Realistas */}
-        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '60s' } as any} />
+        {/* Esfera Celestial Única (Menor) com Profundidade e Reflexos Realistas */}
+        <div className="energy-orbit" style={{ width: '400px', height: '400px', '--duration': '40s' } as any} />
         
         {/* Partículas Estelares com Variação de Cor e Movimento */}
         {[...Array(20)].map((_, i) => {
