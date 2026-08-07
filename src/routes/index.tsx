@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Ficou muito bom. Precisa mesmo de dois circulos para ficar parecendo uma galaxia com estrelas e tal?
+ * Execute esta instrucao no projeto: Eu vi que vc deu uma realçada nela. Na verdade ela é so um circulo dentro de outro e uns pontinhos que ficam se mexendo. Consegue colocar mais realidade nisso?
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
