@@ -87,7 +87,7 @@ function AuthPage() {
         <div 
           className="absolute rounded-full opacity-20 blur-[120px]"
           style={{ 
-            top: '48%', left: '45%', width: '600px', height: '600px', 
+            top: '48%', left: '40%', width: '700px', height: '700px', 
             background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
             transform: 'translate(-50%, -50%)',
           }}
