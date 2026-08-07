@@ -151,14 +151,14 @@ function Resultado() {
         const d = new Date(Number(mk.slice(0, 4)), Number(mk.slice(5, 7)) - 1, 1);
         return (
           <Card key={mk} className="glass-card overflow-hidden">
-            <div className="border-b border-border bg-accent px-4 sm:px-6 py-4 light:border-emerald-200 light:bg-emerald-600 light:shadow-sm">
-              <h2 className="text-base font-bold text-foreground light:text-white light:tracking-wide">{monthLabelLong(d)}</h2>
+            <div className="border-b border-border bg-accent px-4 sm:px-6 py-4 light:border-slate-200 light:bg-slate-100 light:shadow-sm">
+              <h2 className="text-base font-bold text-foreground light:text-slate-900 light:tracking-wide">{monthLabelLong(d)}</h2>
 
             </div>
             <div className="overflow-x-auto -mx-6 px-6 scrollbar-hide">
               <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-border bg-accent light:border-emerald-200 light:bg-emerald-50">
+                  <tr className="border-b border-border bg-accent light:border-slate-200 light:bg-slate-50">
                     <th className="px-4 py-3 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Mês</th>
                     <th className="px-4 py-3 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wider">Consumo (kW)</th>
 
