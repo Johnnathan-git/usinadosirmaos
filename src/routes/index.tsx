@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Afine tambem o resto do card e não só o titulo, pois quando marco mais meses fica muito extenso para baixo
+ * Execute esta instrucao no projeto: No primeiro colocado do ranking dos clientes mais lucrativos no dashboard tem uma sombra tipo um card ao redor, pode retirar. Em ambos os temas
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -299,10 +299,7 @@ function Dashboard() {
               {ranking.map((c, idx) => (
                 <div 
                   key={c.id} 
-                  className={cn(
-                    "flex items-center gap-3 p-2 rounded-lg transition-colors",
-                    idx === 0 && "bg-primary/5 border border-primary/10"
-                  )}
+                  className="flex items-center gap-3 p-2 rounded-lg transition-colors"
                 >
                   <span className="w-5 text-right text-xs text-muted-foreground font-medium">{idx + 1}</span>
                   <div
