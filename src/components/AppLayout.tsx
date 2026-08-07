@@ -196,7 +196,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
                       active
                         ? "bg-primary/10 text-primary shadow-[0_0_20px_rgba(201,138,62,0.1)]"
                         : "text-muted-foreground hover:bg-accent hover:text-foreground"
-
                     )}
                   >
                     <Icon className={cn(
@@ -276,8 +275,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-card px-2 backdrop-blur-2xl md:hidden shadow-2xl">
-          {visibleNav.slice(0, 5).map((item) => {
+        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-card px-2 backdrop-blur-2xl md:hidden shadow-2xl overflow-x-auto scrollbar-hide">
+          {visibleNav.map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
@@ -285,7 +284,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "relative flex flex-col items-center gap-1.5 px-3 py-1 transition-all",
+                  "relative flex flex-col items-center gap-1.5 px-4 py-1 transition-all flex-shrink-0",
                   active ? "text-primary" : "text-muted-foreground",
                 )}
               >
@@ -300,14 +299,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
-          {visibleNav.length > 5 && (
-            <button className="flex flex-col items-center gap-1.5 px-3 py-1 text-muted-foreground">
-              <div className="flex h-8 w-8 items-center justify-center">
-                <MoreHorizontal className="h-5 w-5" />
-              </div>
-              <span className="text-[9px] font-bold uppercase tracking-wider">Mais</span>
-            </button>
-          )}
         </nav>
       </div>
     </div>
@@ -336,7 +327,7 @@ function ChangeOwnPasswordDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="h-8 px-3 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground">
+        <Button size="sm" variant="ghost" className="h-8 px-3 rounded-lg border border-border bg-accent text-muted-foreground hover:text-foreground light:bg-[#0F172A] light:text-white light:hover:bg-[#0F172A]/90">
           <KeyRound className="h-3.5 w-3.5 sm:mr-2" />
           <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
         </Button>
