@@ -15,7 +15,7 @@ export function BrandMark({ className }: { className?: string }) {
 export function BrandLockup({ compact = false, onSidebar = false }: { compact?: boolean; onSidebar?: boolean }) {
   return (
     <div className="flex min-w-0 items-center gap-2">
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden bg-transparent">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-transparent">
         <BrandMark />
       </div>
       {!compact && (
