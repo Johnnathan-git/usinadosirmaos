@@ -26,7 +26,7 @@ export const Route = createFileRoute("/acessos")({
   component: AcessosPage,
   head: () => ({
     meta: [
-      { title: "Acessos — Usina dos Irmãos" },
+      { title: "Acessos — Finanças John e Thais" },
       { name: "description", content: "Gerencie usuários e permissões do sistema." },
     ],
   }),

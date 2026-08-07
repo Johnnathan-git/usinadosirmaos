@@ -51,7 +51,7 @@ export const Route = createFileRoute("/resultado")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Resultado — Usina dos Irmãos" },
+      { title: "Resultados — Finanças John e Thais" },
       { name: "description", content: "Economia gerada por mês e cliente." },
     ],
   }),

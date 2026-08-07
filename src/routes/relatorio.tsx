@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
+ * Execute esta instrucao no projeto: Crie um sistema de controle financeiro familiar chamado "Finanças John e Thais", com design moderno, autoral e não genérico (evitar visual padrão de dashboard template — usar tipografia com personalidade, hierarquia visual clara, micro-interações e uma paleta de cores própria, mantendo o padrão de verde para receitas e vermelho para despesas). onde eu consiga lançar receitas e despesas, importar extrato do cartão e o próprio sistema vai memorizando as categorias conforme vou preenchendo manualmente e vai dando sugestões no momento da categorização manual. Preciso de um modulo de Orçamento onde eu projeto receitas e despesas e na medida que os lançamentos de despesas e receitas vao sendo lançadas o sistema puxa esses dados para a aba de realizado(Prints). Criar um modulo também chamado resultado onde consigo visualizar de acordo com o mês que escolho o resultado do mês. Ah, não esquece da opção de lançar despesas futuras. Preciso de um sistema moderno e não genérico.
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
@@ -52,10 +52,10 @@ export const Route = createFileRoute("/relatorio")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Relatório do Cliente — Usina dos Irmãos" },
-      { name: "description", content: "Monte, edite e envie a planilha mensal de economia para cada cliente." },
-      { property: "og:title", content: "Relatório do Cliente — Usina dos Irmãos" },
-      { property: "og:description", content: "Planilha mensal de economia pronta para enviar ao cliente." },
+      { title: "Relatório — Finanças John e Thais" },
+      { name: "description", content: "Relatório de gestão financeira familiar." },
+      { property: "og:title", content: "Relatório — Finanças John e Thais" },
+      { property: "og:description", content: "Planilha mensal de economia familiar." },
     ],
   }),
 });
@@ -137,10 +137,9 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório Detalhado</h1>
           <p className="text-sm font-medium text-muted-foreground">
-
-            Controle Mensal.
+            Gestão Familiar Autoral.
           </p>
         </div>
       </div>

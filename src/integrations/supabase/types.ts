@@ -14,6 +14,76 @@ export type Database = {
   }
   public: {
     Tables: {
+      budgets: {
+        Row: {
+          amount_projected: number
+          category_id: string
+          created_at: string | null
+          id: string
+          month: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_projected?: number
+          category_id: string
+          created_at?: string | null
+          id?: string
+          month: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_projected?: number
+          category_id?: string
+          created_at?: string | null
+          id?: string
+          month?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budgets_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "transaction_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      category_suggestions: {
+        Row: {
+          category_id: string
+          frequency: number | null
+          id: string
+          search_term: string
+          user_id: string
+        }
+        Insert: {
+          category_id: string
+          frequency?: number | null
+          id?: string
+          search_term: string
+          user_id: string
+        }
+        Update: {
+          category_id?: string
+          frequency?: number | null
+          id?: string
+          search_term?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_suggestions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "transaction_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_allocations: {
         Row: {
           allocation_pct: number
@@ -296,6 +366,95 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      transaction_categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          icon: string | null
+          id: string
+          name: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          attachment_url: string | null
+          category_id: string | null
+          created_at: string | null
+          date: string
+          description: string | null
+          id: string
+          installment_group: string | null
+          installment_no: number | null
+          installment_total: number | null
+          status: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          attachment_url?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          date: string
+          description?: string | null
+          id?: string
+          installment_group?: string | null
+          installment_no?: number | null
+          installment_total?: number | null
+          status?: string
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          attachment_url?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          date?: string
+          description?: string | null
+          id?: string
+          installment_group?: string | null
+          installment_no?: number | null
+          installment_total?: number | null
+          status?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "transaction_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_clients: {
         Row: {
