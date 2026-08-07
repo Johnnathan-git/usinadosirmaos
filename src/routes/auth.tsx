@@ -30,10 +30,8 @@ function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as "dark" | "light";
-    if (saved) {
-      document.documentElement.classList.toggle("light", saved === "light");
-    }
+    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+    document.documentElement.classList.toggle("light", saved === "light");
   }, []);
 
   useEffect(() => {
