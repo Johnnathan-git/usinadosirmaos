@@ -128,7 +128,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
+    <div className="min-h-screen w-full overflow-x-hidden bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
         {/* Efeito de Glow Sutil de Fundo */}
