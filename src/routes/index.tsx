@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Pode desfazer, não gostei, destacou mais ainda o redondo parecido que foi feito a mão.
+ * Execute esta instrucao no projeto: Para não ficar um circulo exato parecendo que foi desenhado, coloque um gradiente ai sei lá, para dar mais vida
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
