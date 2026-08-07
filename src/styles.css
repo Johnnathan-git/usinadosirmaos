@@ -204,8 +204,10 @@
 }
 
 nav a span::before, 
-nav a::before {
+nav a::before,
+nav a div.ml-auto {
   content: none !important;
+  display: none !important;
 }
 
 @media print {
