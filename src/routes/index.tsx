@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No primeiro colocado do ranking dos clientes mais lucrativos no dashboard tem uma sombra tipo um card ao redor, pode retirar. Em ambos os temas
+ * Execute esta instrucao no projeto: Lembra da esfera dinamica que tem no fundo do sistema? Consegue realçar ela um pouco mais, quase não dá pra ver.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
