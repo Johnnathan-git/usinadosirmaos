@@ -136,7 +136,7 @@ function AuthPage() {
             <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset] autofill:border-border"
+              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_1000px_#0D0D10_inset] light:autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] autofill:border-border"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
 
           </div>
@@ -145,7 +145,7 @@ function AuthPage() {
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset] autofill:border-border"
+                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_1000px_#0D0D10_inset] light:autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] autofill:border-border"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
 
               <button type="button" onClick={() => setShowPassword(v => !v)}
