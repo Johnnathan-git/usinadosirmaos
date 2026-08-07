@@ -7,7 +7,7 @@ export function BrandMark({ className }: { className?: string }) {
     <img 
       src={usinaLogoAsset.url} 
       alt="Logo Usina dos Irmãos"
-      className={cn("h-full w-full object-contain", className)}
+      className={cn("h-full w-full object-contain rounded-full", className)}
     />
   );
 }
