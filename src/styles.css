@@ -114,7 +114,7 @@
 
 
 @layer base {
-  body {
+  html, body {
     background: var(--background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -122,6 +122,9 @@
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
 
