@@ -203,6 +203,11 @@
   font-weight: 600;
 }
 
+nav a span::before, 
+nav a::before {
+  content: none !important;
+}
+
 @media print {
   .no-print {
     display: none !important;

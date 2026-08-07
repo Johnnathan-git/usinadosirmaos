@@ -178,9 +178,10 @@ function Relatorio() {
         <div 
           className="px-8 py-3 text-center border-b border-white/10 bg-blue-600/30 relative overflow-hidden light:border-blue-700 light:bg-blue-600"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none light:from-blue-700 light:via-blue-600 light:to-blue-500 light:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none light:bg-none" />
+          <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-blue-600/60 via-blue-500/30 to-transparent opacity-100 pointer-events-none" />
           <div className="relative z-10">
-            <div className="text-xl font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-2xl">
+            <div className="text-lg font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-xl">
 
               {client?.name ?? "—"}
             </div>
@@ -189,7 +190,7 @@ function Relatorio() {
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
           <table className="w-full min-w-[1000px] border-collapse text-sm">
             <thead>
-              <tr className="bg-white/5 light:bg-blue-50 light:border-b light:border-blue-200">
+              <tr className="bg-white/5 light:bg-[#1E3A8A] light:border-b light:border-blue-200">
                 {[
                   { label: "Mês referência", width: "w-[120px]" },
                   { label: "Unidade Consumidora", width: "w-[160px]" },
@@ -202,7 +203,7 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground light:text-white uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
@@ -214,7 +215,7 @@ function Relatorio() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent transition-colors">
+                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent light:hover:bg-blue-50/50 transition-colors">
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
                     <td key={f} className="border border-border p-0">
                       <Input
@@ -222,9 +223,11 @@ function Relatorio() {
                         onChange={(e) => edit(r.id, f, e.target.value)}
                         className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
                           f === "comDesconto"
-                            ? "font-bold text-primary text-sm sm:text-base"
+                            ? "font-bold text-primary light:text-emerald-600 text-sm sm:text-base"
                             : f === "semUsina"
                             ? "text-red-400 font-bold"
+                            : f === "mes" 
+                            ? "text-foreground light:text-emerald-600 font-bold"
                             : "text-foreground font-medium"
                         }`}
                       />
