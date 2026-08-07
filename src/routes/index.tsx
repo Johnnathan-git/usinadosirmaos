@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: As esferas ficaram esfumaçadas por dentro e destacou mais ainda o circulo parecido ter sido feito a mão. Ah e a proposito pode excluir a esfera de fora. Deixe apenas uma
+ * Execute esta instrucao no projeto: Dê mais destaque as ondas de energia que ficam se movimentando, coloque uma cor nelas
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
