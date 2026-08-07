@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Lembra da esfera dinamica que tem no fundo do sistema? Consegue realçar ela um pouco mais, quase não dá pra ver.
+ * Execute esta instrucao no projeto: Eu vi que vc deu uma realçada nela. Na verdade ela é so um circulo dentro de outro e uns pontinhos que ficam se mexendo. Consegue colocar mais realidade nisso?
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
