@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Mude a logo para essa em anexo. Ajusta ela para ficar homogeneo
+ * Execute esta instrucao no projeto: Auditar sistema
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
