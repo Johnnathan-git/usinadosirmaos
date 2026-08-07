@@ -51,6 +51,7 @@
 }
 
 :root {
+  color-scheme: dark;
   --radius: 12px;
   --background: #000000;
   --foreground: #F1F1F1;
