@@ -154,7 +154,7 @@ function Controle() {
 
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 light:bg-[#10B981] light:hover:bg-[#10B981]/90">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
@@ -162,7 +162,7 @@ function Controle() {
               <Button variant="outline" onClick={recalcRateio} className="gap-2 border border-border bg-accent text-muted-foreground hover:text-foreground rounded-lg px-4 py-2 font-bold">
                 <RefreshCw className="h-4 w-4" /> Recalcular rateio
               </Button>
-              <Button onClick={() => setEditing(false)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold">
+              <Button onClick={() => setEditing(false)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold light:bg-[#10B981] light:hover:bg-[#10B981]/90">
                 <X className="h-4 w-4" /> Finalizar Edição
               </Button>
             </>
