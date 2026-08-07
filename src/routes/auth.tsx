@@ -107,11 +107,11 @@ function AuthPage() {
       
       <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card">
         <div className="mb-8 flex flex-col items-center gap-6">
-          <div className="relative flex h-32 w-32 items-center justify-center">
+          <div className="relative flex h-24 w-24 items-center justify-center">
             {/* Brilho atmosférico sutil sem forma rígida */}
-            <div className="absolute inset-0 bg-primary/10 rounded-full blur-[40px] opacity-20" />
+            <div className="absolute inset-0 bg-primary/10 rounded-full blur-[30px] opacity-20" />
             
-            <div className="relative flex h-24 w-24 items-center justify-center bg-transparent">
+            <div className="relative flex h-16 w-16 items-center justify-center bg-transparent">
               <BrandMark className="h-full w-full object-contain rounded-xl" />
             </div>
           </div>
@@ -136,7 +136,7 @@ function AuthPage() {
             <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset]"
+              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset] autofill:border-border"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
 
           </div>
@@ -145,7 +145,7 @@ function AuthPage() {
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset]"
+                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_30px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_30px_#0D0D10_inset] light:autofill:shadow-[0_0_0_30px_#FFFFFF_inset] autofill:border-border"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
 
               <button type="button" onClick={() => setShowPassword(v => !v)}

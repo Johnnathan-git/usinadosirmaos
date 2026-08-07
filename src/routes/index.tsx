@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Voce voltou com a outra esfera? Mandei deixar apenas uma, a menor. A minha idèia é que seja uma esfera de energia no espaço.
+ * Execute esta instrucao no projeto: Na pagina de login, diminiui a logo e quando coloco o meu email que já está salvo no notebook a borda do card Email fica branca. Tema black.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
