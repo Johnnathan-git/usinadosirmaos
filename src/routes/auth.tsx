@@ -82,27 +82,52 @@ function AuthPage() {
   return (
     <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
       {/* Background Atmosférico e Cinético (Cópia do Layout para manter consistência) */}
-      <div className="aurora-container pointer-events-none">
+      {/* Background e Efeitos Visuais */}
+      <div className="aurora-container pointer-events-none z-0">
+        {/* Glow de Fundo */}
+        <div 
+          className="absolute rounded-full opacity-20 blur-[120px]"
+          style={{ 
+            top: '48%', left: '45%', width: '600px', height: '600px', 
+            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
         <div className="energy-wave" />
-        <div className="energy-orbit" style={{ width: '800px', height: '800px', '--duration': '40s' } as any} />
-        <div className="energy-orbit" style={{ width: '1200px', height: '1200px', '--duration': '60s' } as any} />
-        
-        {[...Array(8)].map((_, i) => (
-          <div 
-            key={i} 
-            className="nebulosa-particle"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              '--duration': `${15 + Math.random() * 20}s`,
-              animationDelay: `${-Math.random() * 20}s`
-            } as any}
-          />
-        ))}
+      </div>
 
+      {/* Esfera de Energia que Sobrepõe o Card */}
+      <div className="aurora-container pointer-events-none z-[60]">
+        <div 
+          className="energy-orbit" 
+          style={{ 
+            width: '850px', height: '850px', '--duration': '50s',
+            top: '48%', left: '45%'
+          } as any} 
+        />
+      </div>
+
+      <div className="aurora-container pointer-events-none z-0">
+        {[...Array(20)].map((_, i) => {
+          const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
+          const color = colors[i % colors.length];
+          const size = 1 + Math.random() * 2;
+          return (
+            <div 
+              key={i} className="nebulosa-particle"
+              style={{
+                top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`,
+                '--size': `${size}px`, '--color': color,
+                '--duration': `${10 + Math.random() * 25}s`,
+                '--move-x': `${(Math.random() - 0.5) * 150}px`, '--move-y': `${(Math.random() - 0.5) * 150}px`,
+                animationDelay: `${-Math.random() * 20}s`
+              } as any}
+            />
+          );
+        })}
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
       
       <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card">
