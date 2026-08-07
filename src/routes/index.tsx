@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Para não ficar um circulo exato parecendo que foi desenhado, coloque um gradiente ai sei lá, para dar mais vida
+ * Execute esta instrucao no projeto: As esferas ficaram esfumaçadas por dentro e destacou mais ainda o circulo parecido ter sido feito a mão. Ah e a proposito pode excluir a esfera de fora. Deixe apenas uma
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
