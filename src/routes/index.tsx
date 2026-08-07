@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: No modulo Controle + Novo Cliente deixar com o fundo translucido igual ao botao ao lado Editar. Apenas no tema branco.
+ * Execute esta instrucao no projeto: Deu certo, mas quando passo o mouse em cima do botao + Novo Cliente ele fica dourado sendo que o certo é saltar o preto da escrita igual no botão editar ao lado. Só no tema brancoo
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
