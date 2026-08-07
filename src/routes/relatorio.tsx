@@ -202,12 +202,12 @@ function Relatorio() {
                 ].map((h) => (
                   <th
                     key={h.label}
-                    className={`border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
+                    className={`border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h.width}`}
                   >
                     {h.label}
                   </th>
                 ))}
-                <th className="border border-border px-3 py-4 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest w-[100px]">
+                <th className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
               </tr>
@@ -220,14 +220,14 @@ function Relatorio() {
                       <Input
                         value={r[f]}
                         onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-14 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
+                        className={`num h-10 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
                           f === "comDesconto"
-                            ? "font-bold text-primary light:text-emerald-600 text-sm sm:text-base"
+                            ? "font-bold text-primary light:text-emerald-600 text-[13px]"
                             : f === "semUsina"
-                            ? "text-red-400 font-bold"
+                            ? "text-red-400 font-bold text-[13px]"
                             : f === "mes" 
-                            ? "text-foreground light:text-foreground font-bold"
-                            : "text-foreground font-medium"
+                            ? "text-foreground light:text-foreground font-bold text-[13px]"
+                            : "text-foreground font-medium text-[13px]"
                         }`}
                       />
                     </td>
@@ -252,14 +252,14 @@ function Relatorio() {
                             alert("Erro ao abrir arquivo: " + err.message);
                           }
                         }}
-                        className="flex h-14 w-full items-center justify-center gap-2 text-primary hover:bg-primary/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
+                        className="flex h-10 w-full items-center justify-center gap-2 text-primary hover:bg-primary/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
                         title="Baixar Fatura"
                       >
                         <Paperclip className="h-3 w-3" />
                         <span className="hidden sm:inline">Baixar</span>
                       </button>
                     ) : (
-                      <div className="flex h-14 w-full items-center justify-center text-muted-foreground">
+                      <div className="flex h-10 w-full items-center justify-center text-muted-foreground">
                         <Paperclip className="h-4 w-4 opacity-30" />
                       </div>
                     )}
