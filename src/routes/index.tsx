@@ -1,5 +1,5 @@
 /**
- * Execute esta instrucao no projeto: Auditar sistema
+ * Execute esta instrucao no projeto: No modulo Controle + Novo Cliente deixar com o fundo translucido igual ao botao ao lado Editar. Apenas no tema branco.
  */
 import React, { Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
