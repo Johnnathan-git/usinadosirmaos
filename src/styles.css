@@ -264,20 +264,21 @@ div[style*="Edit with Lovable"],
   }
 
 
-  /* Esfera Celestiais com Profundidade Realista - Descentralizada e Colorida */
+  /* Esfera Celestiais com Profundidade Realista - Orgânica e Gradiente */
   .energy-orbit {
     position: absolute;
     top: 48%;
     left: 52%;
-    border: 1px solid rgba(201, 138, 62, 0.2);
+    border: 1px solid transparent;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: orbit-spin var(--duration) linear infinite;
     pointer-events: none;
+    background: linear-gradient(to right, rgba(201, 138, 62, 0.05), transparent, rgba(37, 99, 235, 0.03));
     box-shadow: 
-      inset 0 0 60px rgba(201, 138, 62, 0.1),
-      inset 0 0 20px rgba(37, 99, 235, 0.05),
-      0 0 40px rgba(201, 138, 62, 0.05);
+      inset 0 0 80px rgba(201, 138, 62, 0.08),
+      inset 0 0 30px rgba(37, 99, 235, 0.04),
+      0 0 60px rgba(201, 138, 62, 0.03);
   }
 
   .energy-orbit::after {
@@ -288,15 +289,16 @@ div[style*="Edit with Lovable"],
     background: conic-gradient(
       from 0deg, 
       transparent, 
-      rgba(201, 138, 62, 0.4) 25%, 
-      rgba(37, 99, 235, 0.3) 50%, 
-      rgba(201, 138, 62, 0.4) 75%, 
+      rgba(201, 138, 62, 0.2) 20%, 
+      rgba(37, 99, 235, 0.15) 45%, 
+      transparent 60%,
+      rgba(201, 138, 62, 0.2) 85%, 
       transparent
     );
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     animation: orbit-spin calc(var(--duration) * 0.7) linear infinite reverse;
-    filter: blur(1px);
+    filter: blur(2px);
   }
 
   @keyframes orbit-spin {

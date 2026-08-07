@@ -131,16 +131,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
-        {/* Centro de Energia Descentralizado */}
+        {/* Centro de Energia Orgânico e Gradual */}
         <div 
-          className="absolute rounded-full opacity-20 blur-[100px] pointer-events-none"
+          className="absolute rounded-full opacity-30 blur-[120px] pointer-events-none"
           style={{ 
             top: '48%', 
             left: '52%', 
-            width: '400px', 
-            height: '400px', 
-            background: 'radial-gradient(circle, #C98A3E 0%, transparent 70%)',
-            transform: 'translate(-50%, -50%)'
+            width: '500px', 
+            height: '500px', 
+            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.08) 40%, transparent 80%)',
+            transform: 'translate(-50%, -50%) rotate(-15deg)',
           }}
         />
 
