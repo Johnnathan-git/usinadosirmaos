@@ -46,7 +46,7 @@
   --color-positive: #2563EB;
   --color-negative: #D64545;
   --color-revenue: #2F6F62;
-  --color-amber: #10B981;
+  --color-amber: #C98A3E;
   --color-navy: #151B2E;
 }
 
@@ -59,7 +59,7 @@
   --card-foreground: #F1F1F1;
   --popover: #0D0D10;
   --popover-foreground: #F1F1F1;
-  --primary: #10B981;
+  --primary: #C98A3E;
   --primary-foreground: #000000;
   
   --secondary: #161618;
@@ -72,7 +72,7 @@
   --destructive-foreground: #F1F1F1;
   --border: rgba(255, 255, 255, 0.1);
   --input: #0D0D10;
-  --ring: #10B981;
+  --ring: #C98A3E;
   
   --sidebar: #000000;
   --sidebar-foreground: #A1A1AA;
@@ -88,7 +88,7 @@
   --card-foreground: #0F172A;
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
-  --primary: #10B981;
+  --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
   
   --secondary: #F8FAFC;
@@ -101,7 +101,7 @@
   --destructive-foreground: #FFFFFF;
   --border: #E2E8F0;
   --input: #FFFFFF;
-  --ring: #10B981;
+  --ring: #C98A3E;
   
   --sidebar: #0F172A;
   --sidebar-foreground: #94A3B8;
@@ -267,7 +267,7 @@ div[style*="Edit with Lovable"],
     position: absolute;
     top: 50%;
     left: 50%;
-    border: 1px solid rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(201, 138, 62, 0.1);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: orbit-spin var(--duration) linear infinite;
@@ -307,7 +307,7 @@ div[style*="Edit with Lovable"],
     background: conic-gradient(
       from 0deg,
       transparent 0deg,
-      rgba(16, 185, 129, 0.05) 180deg,
+      rgba(201, 138, 62, 0.05) 180deg,
       transparent 360deg
     );
     animation: wave-rotate 30s linear infinite;
@@ -336,7 +336,7 @@ div[style*="Edit with Lovable"],
   }
 
   .aurora-blob-1 {
-    background: radial-gradient(circle at center, #10B981 0%, transparent 70%);
+    background: radial-gradient(circle at center, #C98A3E 0%, transparent 70%);
     top: -10%;
     right: -10%;
   }
@@ -374,6 +374,6 @@ div[style*="Edit with Lovable"],
   }
 
   .text-glow {
-    text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    text-shadow: 0 0 20px rgba(201, 138, 62, 0.3);
   }
 }
