@@ -162,7 +162,7 @@ function Relatorio() {
                   key={m}
                   onClick={() => setMonths((ms) => (on ? ms.filter((x) => x !== m) : [...ms, m]))}
                   className={`rounded-lg border px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${
-                    on ? "bg-primary border-primary text-primary-foreground shadow-sm light:bg-emerald-600 light:border-emerald-600" : "bg-card border-border text-muted-foreground hover:bg-accent"
+                    on ? "bg-primary border-primary text-primary-foreground shadow-sm light:bg-emerald-600 light:border-emerald-600 light:text-white" : "bg-card border-border text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   {monthLabelFromISO(`${m}-01`)}

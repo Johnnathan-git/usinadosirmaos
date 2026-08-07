@@ -208,8 +208,8 @@ function Controle() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><TrendingUp className="h-4 w-4 text-emerald-400" /> Saldo de Energia</div>
-          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-red-400" : "text-emerald-400"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground light:text-emerald-600"><TrendingUp className="h-4 w-4 text-emerald-400 light:text-emerald-600" /> Saldo de Energia</div>
+          <div className={`text-2xl font-bold num-lg ${saldo < 0 ? "text-red-400" : "text-emerald-400 light:text-emerald-600"}`}>{saldo >= 0 ? "+" : ""}{saldo.toLocaleString("pt-BR")} kW</div>
           <div className="mt-1 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">{saldo >= 0 ? "Sobra de energia gerada" : "Consumo excede geração"}</div>
         </Card>
         <Card className="glass-card p-5">
@@ -219,8 +219,8 @@ function Controle() {
 
         </Card>
         <Card className="glass-card p-5">
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground"><Zap className="h-4 w-4 text-emerald-400" /> Rateio total alocado</div>
-          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-400" : "text-red-400"}`}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground light:text-emerald-600"><Zap className="h-4 w-4 text-emerald-400 light:text-emerald-600" /> Rateio total alocado</div>
+          <div className={`text-2xl font-bold num-lg ${Math.abs(totalPct - 100) < 0.5 ? "text-emerald-400 light:text-emerald-600" : "text-red-400"}`}>
             {totalPct.toFixed(2)}%
           </div>
           <div className="mt-1 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">
@@ -276,7 +276,7 @@ function Controle() {
                             onChange={e => setRows(rs => rs.map((x, i) => i === idx ? { ...x, avg: Number(e.target.value) } : x))} />
                         : <span className="font-bold text-foreground num">{Number(r.avg).toLocaleString("pt-BR")} kW</span>}
                     </td>
-                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-red-400" : "text-emerald-400"}`}>
+                    <td className={`py-4 text-right font-bold num ${saldoCli < 0 ? "text-red-400" : "text-emerald-400 light:text-emerald-600"}`}>
                       {saldoCli >= 0 ? "+" : ""}{saldoCli.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                     </td>
                     {editing && (
@@ -303,7 +303,7 @@ function Controle() {
                 <td className="py-4 text-right font-bold text-foreground num">{totalRateioKw.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW</td>
                 <td className="py-4 text-center font-bold text-foreground num">{totalConsumo.toLocaleString("pt-BR")} kW</td>
 
-                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-red-400" : "text-emerald-400"}`}>
+                <td className={`py-4 text-right font-bold num ${totalSaldo < 0 ? "text-red-400" : "text-emerald-400 light:text-emerald-600"}`}>
                   {totalSaldo >= 0 ? "+" : ""}{totalSaldo.toLocaleString("pt-BR", { maximumFractionDigits: 0 })} kW
                 </td>
                 {editing && <td></td>}
