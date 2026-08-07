@@ -100,8 +100,8 @@ function AuthPage() {
         <div 
           className="energy-orbit" 
           style={{ 
-            width: '850px', height: '850px', '--duration': '50s',
-            top: '48%', left: '45%'
+            width: '950px', height: '950px', '--duration': '50s',
+            top: '48%', left: '40%'
           } as any} 
         />
       </div>
