@@ -119,7 +119,7 @@ function Faturas() {
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
           <h1 className="truncate text-3xl font-bold tracking-tight text-foreground">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{active.length} ativos · {inactive.length} inativos</p>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground light:text-emerald-600">{active.length} ativos · {inactive.length} inativos</p>
 
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">

@@ -276,7 +276,7 @@ function Dashboard() {
                       <td className="num py-4 text-right font-medium text-foreground">{brl(row.Despesas)}</td>
                       <td className={cn(
                         "num py-4 text-right font-bold",
-                        row.Lucro >= 0 ? "text-[#2F6F62]" : "text-[#D64545]"
+                        row.Lucro >= 0 ? "text-[#2F6F62] light:text-emerald-600" : "text-[#D64545]"
                       )}>
                         {brl(row.Lucro)}
                       </td>
