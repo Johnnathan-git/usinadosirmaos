@@ -131,6 +131,19 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       {/* Background Atmosférico e Cinético */}
       <div className="aurora-container pointer-events-none">
+        {/* Centro de Energia Descentralizado */}
+        <div 
+          className="absolute rounded-full opacity-20 blur-[100px] pointer-events-none"
+          style={{ 
+            top: '48%', 
+            left: '52%', 
+            width: '400px', 
+            height: '400px', 
+            background: 'radial-gradient(circle, #C98A3E 0%, transparent 70%)',
+            transform: 'translate(-50%, -50%)'
+          }}
+        />
+
         {/* Fluxo de Energia Rotacional */}
         <div className="energy-wave" />
 
