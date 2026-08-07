@@ -154,7 +154,7 @@ function Controle() {
 
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 light:bg-accent light:text-muted-foreground light:hover:text-foreground light:border light:border-border light:shadow-none">
+          <Button onClick={() => setNewOpen(true)} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 light:bg-accent light:text-muted-foreground light:hover:text-foreground light:border light:border-border light:shadow-none light:hover:bg-accent/80">
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
           {editing ? (
