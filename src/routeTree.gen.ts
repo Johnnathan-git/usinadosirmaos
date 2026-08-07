@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransacoesRouteImport } from './routes/transacoes'
+import { Route as ResultadoFamiliarRouteImport } from './routes/resultado-familiar'
 import { Route as ResultadoRouteImport } from './routes/resultado'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RelatorioRouteImport } from './routes/relatorio'
@@ -26,6 +27,11 @@ import { Route as ApiPublicDownloadRouteImport } from './routes/api/public/downl
 const TransacoesRoute = TransacoesRouteImport.update({
   id: '/transacoes',
   path: '/transacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultadoFamiliarRoute = ResultadoFamiliarRouteImport.update({
+  id: '/resultado-familiar',
+  path: '/resultado-familiar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResultadoRoute = ResultadoRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/resultado-familiar': typeof ResultadoFamiliarRoute
   '/transacoes': typeof TransacoesRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/resultado-familiar': typeof ResultadoFamiliarRoute
   '/transacoes': typeof TransacoesRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resultado': typeof ResultadoRoute
+  '/resultado-familiar': typeof ResultadoFamiliarRoute
   '/transacoes': typeof TransacoesRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/resultado-familiar'
     | '/transacoes'
     | '/api/public/download'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/resultado-familiar'
     | '/transacoes'
     | '/api/public/download'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/relatorio'
     | '/reset-password'
     | '/resultado'
+    | '/resultado-familiar'
     | '/transacoes'
     | '/api/public/download'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   RelatorioRoute: typeof RelatorioRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultadoRoute: typeof ResultadoRoute
+  ResultadoFamiliarRoute: typeof ResultadoFamiliarRoute
   TransacoesRoute: typeof TransacoesRoute
   ApiPublicDownloadRoute: typeof ApiPublicDownloadRoute
 }
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/transacoes'
       fullPath: '/transacoes'
       preLoaderRoute: typeof TransacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resultado-familiar': {
+      id: '/resultado-familiar'
+      path: '/resultado-familiar'
+      fullPath: '/resultado-familiar'
+      preLoaderRoute: typeof ResultadoFamiliarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resultado': {
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   RelatorioRoute: RelatorioRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultadoRoute: ResultadoRoute,
+  ResultadoFamiliarRoute: ResultadoFamiliarRoute,
   TransacoesRoute: TransacoesRoute,
   ApiPublicDownloadRoute: ApiPublicDownloadRoute,
 }
