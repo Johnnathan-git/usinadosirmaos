@@ -280,9 +280,6 @@ function Relatorio() {
 
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
-            <div className="text-[10px] font-bold text-primary uppercase tracking-widest">
-              Usina dos Irmãos • Energia Inteligente
-            </div>
           </div>
         )}
       </Card>
