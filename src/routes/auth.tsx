@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,25 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const particles = useMemo(
+    () =>
+      [...Array(20)].map((_, i) => {
+        const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
+        return {
+          key: i,
+          color: colors[i % colors.length],
+          size: 1 + Math.random() * 2,
+          top: Math.random() * 100,
+          left: Math.random() * 100,
+          duration: 10 + Math.random() * 25,
+          moveX: (Math.random() - 0.5) * 150,
+          moveY: (Math.random() - 0.5) * 150,
+          delay: -Math.random() * 20,
+        };
+      }),
+    [],
+  );
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as "dark" | "light" | null;
@@ -107,26 +126,21 @@ function AuthPage() {
       </div>
 
       <div className="aurora-container pointer-events-none z-0">
-        {[...Array(20)].map((_, i) => {
-          const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
-          const color = colors[i % colors.length];
-          const size = 1 + Math.random() * 2;
-          return (
-            <div 
-              key={i} className="nebulosa-particle"
-              style={{
-                top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`,
-                '--size': `${size}px`, '--color': color,
-                '--duration': `${10 + Math.random() * 25}s`,
-                '--move-x': `${(Math.random() - 0.5) * 150}px`, '--move-y': `${(Math.random() - 0.5) * 150}px`,
-                animationDelay: `${-Math.random() * 20}s`
-              } as any}
-            />
-          );
-        })}
+        {particles.map((p) => (
+          <div 
+            key={p.key} className="nebulosa-particle"
+            style={{
+              top: `${p.top}%`, left: `${p.left}%`,
+              '--size': `${p.size}px`, '--color': p.color,
+              '--duration': `${p.duration}s`,
+              '--move-x': `${p.moveX}px`, '--move-y': `${p.moveY}px`,
+              animationDelay: `${p.delay}s`
+            } as any}
+          />
+        ))}
         <div className="aurora-blob aurora-blob-1" />
         <div className="aurora-blob aurora-blob-2" />
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay grain-overlay" />
       </div>
       
       <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card backdrop-blur-2xl z-10">
