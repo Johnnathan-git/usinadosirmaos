@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +20,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDateBR } from "@/lib/format";
 
-export const Route = createFileRoute("/acessos")({
+export const Route = createFileRoute("/_app/acessos")({
   ssr: false,
   component: AcessosPage,
   head: () => ({
@@ -35,11 +34,7 @@ export const Route = createFileRoute("/acessos")({
 const MODULE_OPTIONS = MODULES.filter((m) => m.key !== "acessos");
 
 function AcessosPage() {
-  return (
-    <AppLayout>
-      <AcessosContent />
-    </AppLayout>
-  );
+  return <AcessosContent />;
 }
 
 function AcessosContent() {

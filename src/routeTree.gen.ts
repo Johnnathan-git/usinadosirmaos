@@ -9,51 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResultadoRouteImport } from './routes/resultado'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RelatorioRouteImport } from './routes/relatorio'
-import { Route as InventarioRouteImport } from './routes/inventario'
-import { Route as FluxoCaixaRouteImport } from './routes/fluxo-caixa'
-import { Route as FaturasRouteImport } from './routes/faturas'
-import { Route as ControleRouteImport } from './routes/controle'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AcessosRouteImport } from './routes/acessos'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppAcessosRouteImport } from './routes/_app.acessos'
+import { Route as AppControleRouteImport } from './routes/_app.controle'
+import { Route as AppFaturasRouteImport } from './routes/_app.faturas'
+import { Route as AppFluxoCaixaRouteImport } from './routes/_app.fluxo-caixa'
+import { Route as AppInventarioRouteImport } from './routes/_app.inventario'
+import { Route as AppRelatorioRouteImport } from './routes/_app.relatorio'
+import { Route as AppResultadoRouteImport } from './routes/_app.resultado'
 import { Route as ApiPublicDownloadRouteImport } from './routes/api/public/download'
 
-const ResultadoRoute = ResultadoRouteImport.update({
-  id: '/resultado',
-  path: '/resultado',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RelatorioRoute = RelatorioRouteImport.update({
-  id: '/relatorio',
-  path: '/relatorio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InventarioRoute = InventarioRouteImport.update({
-  id: '/inventario',
-  path: '/inventario',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FluxoCaixaRoute = FluxoCaixaRouteImport.update({
-  id: '/fluxo-caixa',
-  path: '/fluxo-caixa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaturasRoute = FaturasRouteImport.update({
-  id: '/faturas',
-  path: '/faturas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ControleRoute = ControleRouteImport.update({
-  id: '/controle',
-  path: '/controle',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -61,15 +31,50 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AcessosRoute = AcessosRouteImport.update({
-  id: '/acessos',
-  path: '/acessos',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAcessosRoute = AppAcessosRouteImport.update({
+  id: '/acessos',
+  path: '/acessos',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppControleRoute = AppControleRouteImport.update({
+  id: '/controle',
+  path: '/controle',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFaturasRoute = AppFaturasRouteImport.update({
+  id: '/faturas',
+  path: '/faturas',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFluxoCaixaRoute = AppFluxoCaixaRouteImport.update({
+  id: '/fluxo-caixa',
+  path: '/fluxo-caixa',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInventarioRoute = AppInventarioRouteImport.update({
+  id: '/inventario',
+  path: '/inventario',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRelatorioRoute = AppRelatorioRouteImport.update({
+  id: '/relatorio',
+  path: '/relatorio',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResultadoRoute = AppResultadoRouteImport.update({
+  id: '/resultado',
+  path: '/resultado',
+  getParentRoute: () => AppRoute,
 } as any)
 const ApiPublicDownloadRoute = ApiPublicDownloadRouteImport.update({
   id: '/api/public/download',
@@ -78,150 +83,103 @@ const ApiPublicDownloadRoute = ApiPublicDownloadRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/acessos': typeof AcessosRoute
+  '/': typeof AppIndexRoute
   '/auth': typeof AuthRoute
-  '/controle': typeof ControleRoute
-  '/faturas': typeof FaturasRoute
-  '/fluxo-caixa': typeof FluxoCaixaRoute
-  '/inventario': typeof InventarioRoute
-  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/resultado': typeof ResultadoRoute
+  '/acessos': typeof AppAcessosRoute
+  '/controle': typeof AppControleRoute
+  '/faturas': typeof AppFaturasRoute
+  '/fluxo-caixa': typeof AppFluxoCaixaRoute
+  '/inventario': typeof AppInventarioRoute
+  '/relatorio': typeof AppRelatorioRoute
+  '/resultado': typeof AppResultadoRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/acessos': typeof AcessosRoute
   '/auth': typeof AuthRoute
-  '/controle': typeof ControleRoute
-  '/faturas': typeof FaturasRoute
-  '/fluxo-caixa': typeof FluxoCaixaRoute
-  '/inventario': typeof InventarioRoute
-  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/resultado': typeof ResultadoRoute
+  '/acessos': typeof AppAcessosRoute
+  '/controle': typeof AppControleRoute
+  '/faturas': typeof AppFaturasRoute
+  '/fluxo-caixa': typeof AppFluxoCaixaRoute
+  '/inventario': typeof AppInventarioRoute
+  '/relatorio': typeof AppRelatorioRoute
+  '/resultado': typeof AppResultadoRoute
+  '/': typeof AppIndexRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/acessos': typeof AcessosRoute
+  '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
-  '/controle': typeof ControleRoute
-  '/faturas': typeof FaturasRoute
-  '/fluxo-caixa': typeof FluxoCaixaRoute
-  '/inventario': typeof InventarioRoute
-  '/relatorio': typeof RelatorioRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/resultado': typeof ResultadoRoute
+  '/_app/acessos': typeof AppAcessosRoute
+  '/_app/controle': typeof AppControleRoute
+  '/_app/faturas': typeof AppFaturasRoute
+  '/_app/fluxo-caixa': typeof AppFluxoCaixaRoute
+  '/_app/inventario': typeof AppInventarioRoute
+  '/_app/relatorio': typeof AppRelatorioRoute
+  '/_app/resultado': typeof AppResultadoRoute
+  '/_app/': typeof AppIndexRoute
   '/api/public/download': typeof ApiPublicDownloadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/acessos'
     | '/auth'
+    | '/reset-password'
+    | '/acessos'
     | '/controle'
     | '/faturas'
     | '/fluxo-caixa'
     | '/inventario'
     | '/relatorio'
-    | '/reset-password'
     | '/resultado'
     | '/api/public/download'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/acessos'
     | '/auth'
+    | '/reset-password'
+    | '/acessos'
     | '/controle'
     | '/faturas'
     | '/fluxo-caixa'
     | '/inventario'
     | '/relatorio'
-    | '/reset-password'
     | '/resultado'
+    | '/'
     | '/api/public/download'
   id:
     | '__root__'
-    | '/'
-    | '/acessos'
+    | '/_app'
     | '/auth'
-    | '/controle'
-    | '/faturas'
-    | '/fluxo-caixa'
-    | '/inventario'
-    | '/relatorio'
     | '/reset-password'
-    | '/resultado'
+    | '/_app/acessos'
+    | '/_app/controle'
+    | '/_app/faturas'
+    | '/_app/fluxo-caixa'
+    | '/_app/inventario'
+    | '/_app/relatorio'
+    | '/_app/resultado'
+    | '/_app/'
     | '/api/public/download'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AcessosRoute: typeof AcessosRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
-  ControleRoute: typeof ControleRoute
-  FaturasRoute: typeof FaturasRoute
-  FluxoCaixaRoute: typeof FluxoCaixaRoute
-  InventarioRoute: typeof InventarioRoute
-  RelatorioRoute: typeof RelatorioRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  ResultadoRoute: typeof ResultadoRoute
   ApiPublicDownloadRoute: typeof ApiPublicDownloadRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/resultado': {
-      id: '/resultado'
-      path: '/resultado'
-      fullPath: '/resultado'
-      preLoaderRoute: typeof ResultadoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/relatorio': {
-      id: '/relatorio'
-      path: '/relatorio'
-      fullPath: '/relatorio'
-      preLoaderRoute: typeof RelatorioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inventario': {
-      id: '/inventario'
-      path: '/inventario'
-      fullPath: '/inventario'
-      preLoaderRoute: typeof InventarioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fluxo-caixa': {
-      id: '/fluxo-caixa'
-      path: '/fluxo-caixa'
-      fullPath: '/fluxo-caixa'
-      preLoaderRoute: typeof FluxoCaixaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faturas': {
-      id: '/faturas'
-      path: '/faturas'
-      fullPath: '/faturas'
-      preLoaderRoute: typeof FaturasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/controle': {
-      id: '/controle'
-      path: '/controle'
-      fullPath: '/controle'
-      preLoaderRoute: typeof ControleRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -231,19 +189,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/acessos': {
-      id: '/acessos'
-      path: '/acessos'
-      fullPath: '/acessos'
-      preLoaderRoute: typeof AcessosRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/acessos': {
+      id: '/_app/acessos'
+      path: '/acessos'
+      fullPath: '/acessos'
+      preLoaderRoute: typeof AppAcessosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/controle': {
+      id: '/_app/controle'
+      path: '/controle'
+      fullPath: '/controle'
+      preLoaderRoute: typeof AppControleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/faturas': {
+      id: '/_app/faturas'
+      path: '/faturas'
+      fullPath: '/faturas'
+      preLoaderRoute: typeof AppFaturasRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/fluxo-caixa': {
+      id: '/_app/fluxo-caixa'
+      path: '/fluxo-caixa'
+      fullPath: '/fluxo-caixa'
+      preLoaderRoute: typeof AppFluxoCaixaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/inventario': {
+      id: '/_app/inventario'
+      path: '/inventario'
+      fullPath: '/inventario'
+      preLoaderRoute: typeof AppInventarioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/relatorio': {
+      id: '/_app/relatorio'
+      path: '/relatorio'
+      fullPath: '/relatorio'
+      preLoaderRoute: typeof AppRelatorioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/resultado': {
+      id: '/_app/resultado'
+      path: '/resultado'
+      fullPath: '/resultado'
+      preLoaderRoute: typeof AppResultadoRouteImport
+      parentRoute: typeof AppRoute
     }
     '/api/public/download': {
       id: '/api/public/download'
@@ -255,17 +262,34 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppRouteChildren {
+  AppAcessosRoute: typeof AppAcessosRoute
+  AppControleRoute: typeof AppControleRoute
+  AppFaturasRoute: typeof AppFaturasRoute
+  AppFluxoCaixaRoute: typeof AppFluxoCaixaRoute
+  AppInventarioRoute: typeof AppInventarioRoute
+  AppRelatorioRoute: typeof AppRelatorioRoute
+  AppResultadoRoute: typeof AppResultadoRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAcessosRoute: AppAcessosRoute,
+  AppControleRoute: AppControleRoute,
+  AppFaturasRoute: AppFaturasRoute,
+  AppFluxoCaixaRoute: AppFluxoCaixaRoute,
+  AppInventarioRoute: AppInventarioRoute,
+  AppRelatorioRoute: AppRelatorioRoute,
+  AppResultadoRoute: AppResultadoRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AcessosRoute: AcessosRoute,
+  AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
-  ControleRoute: ControleRoute,
-  FaturasRoute: FaturasRoute,
-  FluxoCaixaRoute: FluxoCaixaRoute,
-  InventarioRoute: InventarioRoute,
-  RelatorioRoute: RelatorioRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  ResultadoRoute: ResultadoRoute,
   ApiPublicDownloadRoute: ApiPublicDownloadRoute,
 }
 export const routeTree = rootRouteImport

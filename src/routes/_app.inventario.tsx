@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +45,7 @@ const q = queryOptions({
   },
 });
 
-export const Route = createFileRoute("/inventario")({
+export const Route = createFileRoute("/_app/inventario")({
   ssr: false,
   component: Page,
   head: () => ({
@@ -59,11 +58,9 @@ export const Route = createFileRoute("/inventario")({
 
 function Page() {
   return (
-    <AppLayout>
-      <Suspense fallback={<div>Carregando...</div>}>
-        <Inventario />
-      </Suspense>
-    </AppLayout>
+    <Suspense fallback={<div>Carregando...</div>}>
+      <Inventario />
+    </Suspense>
   );
 }
 

@@ -1,11 +1,7 @@
-/**
- * Execute esta instrucao no projeto: O sistema está muito lento, faz uma varredura geral e o deixe mais rapido.
- */
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { AppLayout } from "@/components/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,7 +51,7 @@ const faturasQ = queryOptions({
   },
 });
 
-export const Route = createFileRoute("/faturas")({
+export const Route = createFileRoute("/_app/faturas")({
   ssr: false,
   component: FaturasPage,
   head: () => ({
@@ -68,11 +64,9 @@ export const Route = createFileRoute("/faturas")({
 
 function FaturasPage() {
   return (
-    <AppLayout>
-      <Suspense fallback={<div>Carregando...</div>}>
-        <Faturas />
-      </Suspense>
-    </AppLayout>
+    <Suspense fallback={<div>Carregando...</div>}>
+      <Faturas />
+    </Suspense>
   );
 }
 

@@ -265,6 +265,11 @@ div[style*="Edit with Lovable"],
 }
 
 @layer utilities {
+  /* Pausa as animações de fundo quando a aba está em segundo plano, economizando recursos em sessões longas */
+  :root.tab-hidden .aurora-container * {
+    animation-play-state: paused !important;
+  }
+
   .aurora-container {
     position: fixed;
     top: 0;

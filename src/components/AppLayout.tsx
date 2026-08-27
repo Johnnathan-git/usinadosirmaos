@@ -1,7 +1,7 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, MoreHorizontal, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -123,6 +123,34 @@ export function AppLayout({ children }: { children: ReactNode }) {
     window.location.replace("/auth?manual=1");
   }
 
+  useEffect(() => {
+    const onVisibility = () => {
+      document.documentElement.classList.toggle("tab-hidden", document.hidden);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  const particles = useMemo(
+    () =>
+      [...Array(20)].map((_, i) => {
+        const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
+        return {
+          key: i,
+          color: colors[i % colors.length],
+          size: 1 + Math.random() * 2,
+          top: Math.random() * 100,
+          left: Math.random() * 100,
+          duration: 10 + Math.random() * 25,
+          moveX: (Math.random() - 0.5) * 150,
+          moveY: (Math.random() - 0.5) * 150,
+          delay: -Math.random() * 20,
+        };
+      }),
+    [],
+  );
+
   if (!ready || access.isLoading) {
     return <div className="min-h-screen bg-background" />;
   }
@@ -151,27 +179,22 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="energy-orbit" style={{ width: '950px', height: '950px', '--duration': '50s' } as any} />
         
         {/* Partículas Estelares com Variação de Cor e Movimento */}
-        {[...Array(20)].map((_, i) => {
-          const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
-          const color = colors[i % colors.length];
-          const size = 1 + Math.random() * 2;
-          return (
-            <div 
-              key={i} 
-              className="nebulosa-particle"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                '--size': `${size}px`,
-                '--color': color,
-                '--duration': `${10 + Math.random() * 25}s`,
-                '--move-x': `${(Math.random() - 0.5) * 150}px`,
-                '--move-y': `${(Math.random() - 0.5) * 150}px`,
-                animationDelay: `${-Math.random() * 20}s`
-              } as any}
-            />
-          );
-        })}
+        {particles.map((p) => (
+          <div 
+            key={p.key} 
+            className="nebulosa-particle"
+            style={{
+              top: `${p.top}%`,
+              left: `${p.left}%`,
+              '--size': `${p.size}px`,
+              '--color': p.color,
+              '--duration': `${p.duration}s`,
+              '--move-x': `${p.moveX}px`,
+              '--move-y': `${p.moveY}px`,
+              animationDelay: `${p.delay}s`
+            } as any}
+          />
+        ))}
 
         {/* Brilhos de Aurora Sutil */}
         <div className="aurora-blob aurora-blob-1" />
