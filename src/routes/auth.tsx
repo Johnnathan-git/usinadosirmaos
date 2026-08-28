@@ -29,9 +29,10 @@ function AuthPage() {
   const [hydrated, setHydrated] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // Força tema claro (branco) apenas na página de login
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
-    document.documentElement.classList.toggle("light", saved === "light");
+    document.documentElement.classList.add("light");
+    document.documentElement.classList.remove("dark");
   }, []);
 
   useEffect(() => {
@@ -94,7 +95,7 @@ function AuthPage() {
             </div>
           </div>
           <div className="text-center">
-            <div className="font-display text-2xl font-bold tracking-tight text-foreground dark:text-glow">
+            <div className="font-display text-2xl font-bold tracking-tight text-foreground">
               Usina dos Irmãos
             </div>
             <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
@@ -114,7 +115,7 @@ function AuthPage() {
             <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-mail</Label>
             <Input id="email" type="email" inputMode="email" autoCapitalize="none" autoCorrect="off"
               required autoComplete="username" value={email}
-              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_1000px_#0D0D10_inset] light:autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] autofill:border-border"
+              className="h-11 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] autofill:border-border"
               onChange={e => setEmail(e.target.value)} placeholder="voce@exemplo.com" />
 
           </div>
@@ -123,7 +124,7 @@ function AuthPage() {
             <div className="relative">
               <Input id="password" type={showPassword ? "text" : "password"} required
                 autoComplete="current-password" 
-                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#0D0D10_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] dark:autofill:shadow-[0_0_0_1000px_#0D0D10_inset] light:autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] autofill:border-border"
+                className="h-11 pr-10 border-border bg-input text-foreground focus:ring-primary autofill:shadow-[0_0_0_1000px_#FFFFFF_inset] [text-fill-color:var(--foreground)] [-webkit-text-fill-color:var(--foreground)] autofill:border-border"
                 value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
 
               <button type="button" onClick={() => setShowPassword(v => !v)}
@@ -135,7 +136,7 @@ function AuthPage() {
           </div>
           
           {error && (
-            <div role="alert" className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm font-medium text-red-400">
+            <div role="alert" className="animate-in fade-in slide-in-from-top-1 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm font-medium text-red-500">
               {error}
             </div>
           )}
@@ -146,10 +147,10 @@ function AuthPage() {
           </Button>
         </form>
 
-        <div className="mt-8 border-t border-white/5 pt-6">
-          <p className="text-center text-[11px] font-medium leading-relaxed text-white/40">
+        <div className="mt-8 border-t border-border pt-6">
+          <p className="text-center text-[11px] font-medium leading-relaxed text-muted-foreground">
             Novos usuarios são cadastrados <br/> 
-            <span className="font-bold text-white/60">exclusivamente pelo administrador</span>
+            <span className="font-bold text-foreground/80">exclusivamente pelo administrador</span>
           </p>
         </div>
       </Card>
