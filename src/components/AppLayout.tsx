@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, MoreHorizontal, Sun, Moon } from "lucide-react";
+import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,6 +30,36 @@ const nav: NavItem[] = [
   { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
 ];
 
+function AppShellSkeleton() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="fixed inset-0 z-0 pointer-events-none bg-background" />
+      <div className="flex">
+        <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
+          <div className="p-6">
+            <div className="h-9 w-36 animate-pulse rounded-lg bg-accent" />
+          </div>
+          <div className="flex-1 space-y-2 px-4 py-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-9 animate-pulse rounded-lg bg-accent" style={{ opacity: 1 - i * 0.08 }} />
+            ))}
+          </div>
+        </aside>
+        <main className="min-h-screen min-w-0 flex-1 relative z-10">
+          <div className="mx-auto w-full max-w-[1800px] px-4 py-8 sm:px-8 2xl:px-12">
+            <div className="mb-6 h-8 w-48 animate-pulse rounded-lg bg-accent" />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-36 animate-pulse rounded-xl border border-border bg-card" />
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
@@ -39,9 +69,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as "dark" | "light";
-    const initial = saved === "light" ? "light" : "dark";
-    setTheme(initial);
-    document.documentElement.classList.toggle("light", initial === "light");
+    const initialTheme = saved === "light" ? "light" : "dark";
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle("light", initialTheme === "light");
   }, []);
 
   const toggleTheme = () => {
@@ -51,17 +81,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("light", next === "light");
   };
 
-
   useEffect(() => {
     let mounted = true;
     (async () => {
+      // Sessão local primeiro (rápido). Validação de usuário em paralelo quando possível.
       const { data: sess } = await supabase.auth.getSession();
       if (!mounted) return;
       if (!sess.session) {
         navigate({ to: "/auth", replace: true });
         return;
       }
-      // Valida o token no servidor: sessões expiradas/inválidas são descartadas.
+      // Valida token no servidor; se falhar, desloga.
       const { data: userData, error } = await supabase.auth.getUser();
       if (!mounted) return;
       if (error || !userData.user) {
@@ -86,7 +116,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const access = useQuery({
     queryKey: ["my-access"],
     queryFn: async () => {
-      // Garante que existe sessão (token) antes de chamar a função protegida.
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
         navigate({ to: "/auth" });
@@ -96,7 +125,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
     },
     enabled: ready,
     retry: false,
-    staleTime: 30_000,
+    staleTime: 5 * 60_000, // 5 min — evita refetch a cada troca de módulo
+    gcTime: 10 * 60_000,
     refetchOnWindowFocus: false,
   });
 
@@ -109,7 +139,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const current = nav.find((n) => n.to === "/" ? pathname === "/" : pathname.startsWith(n.to));
   const blocked = Boolean(acc && current && !visibleNav.some((n) => n.to === current.to));
 
-  // Se o usuário caiu numa rota sem permissão, leva para o primeiro módulo liberado.
   useEffect(() => {
     if (blocked && visibleNav.length > 0) {
       navigate({ to: visibleNav[0].to, replace: true });
@@ -124,12 +153,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   if (!ready || access.isLoading) {
-    return <div className="min-h-screen bg-background" />;
+    return <AppShellSkeleton />;
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
-      {/* Fundo estático simples (fundo animado removido temporariamente para teste de performance) */}
       <div className="fixed inset-0 z-0 pointer-events-none bg-background" />
 
       {/* Mobile Top Header */}
@@ -163,6 +191,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   <Link
                     key={item.to}
                     to={item.to}
+                    preload="intent"
                     className={cn(
                       "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
                       active
@@ -255,6 +284,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <Link
                 key={item.to}
                 to={item.to}
+                preload="intent"
                 className={cn(
                   "relative flex flex-col items-center gap-1.5 px-4 py-1 transition-all flex-shrink-0",
                   active ? "text-primary" : "text-muted-foreground",
