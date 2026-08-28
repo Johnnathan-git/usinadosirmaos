@@ -134,7 +134,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   const particles = useMemo(
     () =>
-      [...Array(20)].map((_, i) => {
+      [...Array(12)].map((_, i) => {
         const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
         return {
           key: i,

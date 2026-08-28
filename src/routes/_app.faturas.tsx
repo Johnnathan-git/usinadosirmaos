@@ -10,7 +10,10 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip, Send } from "lucide-react";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
 import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonStyles } from "@/lib/format";
 import { Suspense, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -348,6 +351,37 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
   );
 }
 
+const MONTH_NAMES = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
+function MonthYearSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const now = new Date();
+  const [y, m] = value ? value.split("-") : [String(now.getFullYear()), String(now.getMonth() + 1).padStart(2, "0")];
+  const years = Array.from({ length: 8 }, (_, i) => String(now.getFullYear() + 1 - i));
+
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      <Select value={m} onValueChange={(newMonth) => onChange(`${y}-${newMonth}`)}>
+        <SelectTrigger><SelectValue placeholder="Mês" /></SelectTrigger>
+        <SelectContent>
+          {MONTH_NAMES.map((name, i) => {
+            const mm = String(i + 1).padStart(2, "0");
+            return <SelectItem key={mm} value={mm}>{name}</SelectItem>;
+          })}
+        </SelectContent>
+      </Select>
+      <Select value={y} onValueChange={(newYear) => onChange(`${newYear}-${m}`)}>
+        <SelectTrigger><SelectValue placeholder="Ano" /></SelectTrigger>
+        <SelectContent>
+          {years.map((yr) => <SelectItem key={yr} value={yr}>{yr}</SelectItem>)}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
 function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?: Invoice; onClose: () => void }) {
   const qc = useQueryClient();
   const currentMonth = new Date().toISOString().slice(0, 7);
@@ -493,37 +527,37 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Mês de Referência *</Label>
-            <Input type="month" value={f.reference_month} onChange={e => setF(prev => ({ ...prev, reference_month: e.target.value }))} />
+            <MonthYearSelect value={f.reference_month} onChange={(v) => setF(prev => ({ ...prev, reference_month: v }))} />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" />
+            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" className="no-spinner" />
           </div>
           <div>
             <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" />
+            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" className="no-spinner" />
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-accent" />
+            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-accent no-spinner" />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" />
+            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" className="no-spinner" />
           </div>
           <div>
             <Label>Valor S/ Usina (R$)</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-accent font-bold" />
+            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-accent font-bold no-spinner" />
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$)</Label>
-            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 text-emerald-500 font-bold" />
+            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 text-emerald-500 font-bold no-spinner" />
           </div>
         </div>
         <Card className="mt-2 border-red-500/20 bg-red-500/10 p-4">
           <div className="mb-1 text-sm font-medium text-red-500">Fatura do Cliente — Concessionária (R$)</div>
           <div className="mb-2 text-xs text-red-500/70">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-input" placeholder="676,37" />
+          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-input no-spinner" placeholder="676,37" />
 
         </Card>
         
@@ -591,33 +625,7 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
         </div>
 
         <DialogFooter className="mt-6 flex flex-col sm:flex-row gap-2">
-          <div className="flex-1 flex justify-start">
-            <Button 
-              type="button"
-              variant="outline" 
-              className="gap-2 text-[#25D366] border-[#25D366] hover:bg-[#25D366]/5"
-              onClick={() => {
-                const text = `*Fechamento de Fatura - Usina dos Irmãos*\n\n` +
-                  `*Cliente:* ${client.name}\n` +
-                  `*Mês:* ${monthLabelFromISO(`${f.reference_month}-01`)}\n` +
-                  `*UC:* ${client.uc_number}\n\n` +
-                  `*Consumo:* ${f.consumption_kw} kW\n` +
-                  `*Preço kW:* ${brl(Number(f.price_kw))}\n` +
-                  `*Ilum. Pública:* ${brl(Number(f.public_lighting))}\n` +
-                  `*Juros/Multa:* ${brl(Number(f.interest_fine))}\n\n` +
-                  `*Valor S/ Usina:* ${brl(Number(f.value_without_plant))}\n` +
-                  `*VALOR A PAGAR:* ${brl(Number(f.client_pays))}\n\n` +
-                  `_Enviando anexo em seguida..._`;
-                
-                const phone = client.phone?.replace(/\D/g, '');
-                const url = `https://wa.me/${phone ? (phone.startsWith('55') ? phone : '55' + phone) : ''}?text=${encodeURIComponent(text)}`;
-                window.open(url, '_blank');
-              }}
-            >
-              <Send className="h-4 w-4" /> Enviar p/ WhatsApp
-            </Button>
-          </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 sm:ml-auto">
             <Button variant="outline" onClick={onClose}>Cancelar</Button>
             <Button onClick={submit} disabled={saving || uploading} className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium">Salvar</Button>
           </div>

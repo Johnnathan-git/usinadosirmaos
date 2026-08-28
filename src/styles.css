@@ -265,6 +265,16 @@ div[style*="Edit with Lovable"],
 }
 
 @layer utilities {
+  /* Remove as setas de incremento/decremento (spinners) de inputs numéricos */
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .no-spinner[type="number"] {
+    -moz-appearance: textfield;
+  }
+
   /* Textura de ruído sutil gerada localmente (sem dependência de rede externa) */
   .grain-overlay {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -285,6 +295,11 @@ div[style*="Edit with Lovable"],
     overflow: hidden;
     background: radial-gradient(circle at 50% 50%, var(--card) 0%, var(--background) 100%);
     pointer-events: none;
+    /* Isola esta camada do resto da árvore de renderização: mudanças de hover
+       na sidebar (ou em qualquer outro elemento) não forçam o navegador a
+       recalcular/repintar este fundo animado, e vice-versa. */
+    contain: layout paint style;
+    isolation: isolate;
   }
 
   :root.light .aurora-container {
@@ -299,13 +314,13 @@ div[style*="Edit with Lovable"],
     left: 40%;
     border: 1px solid rgba(201, 138, 62, 0.4);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(0);
     animation: orbit-spin var(--duration) linear infinite;
     pointer-events: none;
     box-shadow: 
       0 0 20px rgba(201, 138, 62, 0.2),
       inset 0 0 15px rgba(201, 138, 62, 0.1);
-    filter: blur(0.5px);
+    will-change: transform;
   }
 
   .energy-orbit::after {
@@ -341,8 +356,8 @@ div[style*="Edit with Lovable"],
     background: var(--color, #fff);
     border-radius: 50%;
     box-shadow: 0 0 10px 1px var(--color, rgba(255, 255, 255, 0.4));
-    filter: blur(0.5px);
     animation: star-flicker var(--duration) ease-in-out infinite alternate;
+    will-change: transform, opacity;
   }
 
   @keyframes star-flicker {
@@ -354,10 +369,10 @@ div[style*="Edit with Lovable"],
   /* Fluxo de energia (Waves) com Gradientes Volumétricos Multicores */
   .energy-wave {
     position: absolute;
-    width: 250%;
-    height: 250%;
-    top: -75%;
-    left: -75%;
+    width: 160%;
+    height: 160%;
+    top: -30%;
+    left: -30%;
     background: radial-gradient(circle at 50% 50%, 
       transparent 20%, 
       rgba(201, 138, 62, 0.15) 35%, 
@@ -368,7 +383,8 @@ div[style*="Edit with Lovable"],
     animation: wave-pulse 15s ease-in-out infinite alternate;
     mask-image: conic-gradient(from 0deg, transparent, black, transparent, black, transparent);
     mix-blend-mode: screen;
-    filter: blur(20px);
+    filter: blur(10px);
+    will-change: transform, opacity;
   }
 
   @keyframes wave-pulse {
@@ -378,13 +394,14 @@ div[style*="Edit with Lovable"],
 
   .aurora-blob {
     position: absolute;
-    width: 60vw;
-    height: 60vh;
+    width: 40vw;
+    height: 40vh;
     border-radius: 50%;
-    filter: blur(160px);
+    filter: blur(80px);
     mix-blend-mode: screen;
     animation: aurora-pulse 25s infinite alternate ease-in-out;
     pointer-events: none;
+    will-change: transform, opacity;
   }
 
   :root.light .aurora-blob {
