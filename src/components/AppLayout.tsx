@@ -1,7 +1,7 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound, MoreHorizontal, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -123,86 +123,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
     window.location.replace("/auth?manual=1");
   }
 
-  useEffect(() => {
-    const onVisibility = () => {
-      document.documentElement.classList.toggle("tab-hidden", document.hidden);
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    onVisibility();
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, []);
-
-  const particles = useMemo(
-    () =>
-      [...Array(12)].map((_, i) => {
-        const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
-        return {
-          key: i,
-          color: colors[i % colors.length],
-          size: 1 + Math.random() * 2,
-          top: Math.random() * 100,
-          left: Math.random() * 100,
-          duration: 10 + Math.random() * 25,
-          moveX: (Math.random() - 0.5) * 150,
-          moveY: (Math.random() - 0.5) * 150,
-          delay: -Math.random() * 20,
-        };
-      }),
-    [],
-  );
-
   if (!ready || access.isLoading) {
     return <div className="min-h-screen bg-background" />;
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
-      {/* Background Atmosférico e Cinético */}
-      <div className="aurora-container pointer-events-none">
-        {/* Efeito de Glow Sutil de Fundo */}
-        <div 
-          className="absolute rounded-full opacity-20 blur-[120px] pointer-events-none"
-          style={{ 
-            top: '48%', 
-            left: '40%', 
-            width: '700px', 
-            height: '700px', 
-            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-
-        {/* Fluxo de Energia Rotacional */}
-        <div className="energy-wave" />
-
-        {/* Esfera Celestial Única (Menor) com Profundidade e Reflexos Realistas */}
-        <div className="energy-orbit" style={{ width: '950px', height: '950px', '--duration': '50s' } as any} />
-        
-        {/* Partículas Estelares com Variação de Cor e Movimento */}
-        {particles.map((p) => (
-          <div 
-            key={p.key} 
-            className="nebulosa-particle"
-            style={{
-              top: `${p.top}%`,
-              left: `${p.left}%`,
-              '--size': `${p.size}px`,
-              '--color': p.color,
-              '--duration': `${p.duration}s`,
-              '--move-x': `${p.moveX}px`,
-              '--move-y': `${p.moveY}px`,
-              animationDelay: `${p.delay}s`
-            } as any}
-          />
-        ))}
-
-        {/* Brilhos de Aurora Sutil */}
-        <div className="aurora-blob aurora-blob-1" />
-        <div className="aurora-blob aurora-blob-2" />
-        
-        {/* Textura de profundidade */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay grain-overlay" />
-      </div>
+      {/* Fundo estático simples (fundo animado removido temporariamente para teste de performance) */}
+      <div className="fixed inset-0 z-0 pointer-events-none bg-background" />
 
       {/* Mobile Top Header */}
       <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-border bg-background/40 px-4 backdrop-blur-xl md:hidden">

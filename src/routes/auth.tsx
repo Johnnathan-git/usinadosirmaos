@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,25 +28,6 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const particles = useMemo(
-    () =>
-      [...Array(12)].map((_, i) => {
-        const colors = ['#ffffff', '#C98A3E', '#2563EB', '#2F6F62'];
-        return {
-          key: i,
-          color: colors[i % colors.length],
-          size: 1 + Math.random() * 2,
-          top: Math.random() * 100,
-          left: Math.random() * 100,
-          duration: 10 + Math.random() * 25,
-          moveX: (Math.random() - 0.5) * 150,
-          moveY: (Math.random() - 0.5) * 150,
-          delay: -Math.random() * 20,
-        };
-      }),
-    [],
-  );
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as "dark" | "light" | null;
@@ -100,48 +81,7 @@ function AuthPage() {
 
   return (
     <div className="flex h-[100dvh] w-screen items-center justify-center bg-background p-4 relative overflow-hidden overscroll-none text-foreground">
-      {/* Background e Efeitos Visuais (Identico ao AppLayout) */}
-      <div className="aurora-container pointer-events-none z-0">
-        {/* Glow de Fundo */}
-        <div 
-          className="absolute rounded-full opacity-20 blur-[120px]"
-          style={{ 
-            top: '48%', left: '40%', width: '700px', height: '700px', 
-            background: 'radial-gradient(circle at center, rgba(201, 138, 62, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 80%)',
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-        <div className="energy-wave" />
-      </div>
-
-      {/* Esfera de Energia que Sobrepõe o Card (Identica ao AppLayout) */}
-      <div className="aurora-container pointer-events-none z-[60]">
-        <div 
-          className="energy-orbit" 
-          style={{ 
-            width: '950px', height: '950px', '--duration': '50s',
-            top: '48%', left: '40%'
-          } as any} 
-        />
-      </div>
-
-      <div className="aurora-container pointer-events-none z-0">
-        {particles.map((p) => (
-          <div 
-            key={p.key} className="nebulosa-particle"
-            style={{
-              top: `${p.top}%`, left: `${p.left}%`,
-              '--size': `${p.size}px`, '--color': p.color,
-              '--duration': `${p.duration}s`,
-              '--move-x': `${p.moveX}px`, '--move-y': `${p.moveY}px`,
-              animationDelay: `${p.delay}s`
-            } as any}
-          />
-        ))}
-        <div className="aurora-blob aurora-blob-1" />
-        <div className="aurora-blob aurora-blob-2" />
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay grain-overlay" />
-      </div>
+      {/* Fundo animado removido temporariamente para teste de performance */}
       
       <Card className="glass-card relative w-full max-w-md border-border p-8 shadow-2xl sm:p-10 bg-card backdrop-blur-2xl z-10">
         <div className="mb-8 flex flex-col items-center gap-6">
