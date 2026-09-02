@@ -1,6 +1,5 @@
-import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, useQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,14 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip } from "lucide-react";
-import { CLIENT_COLORS, brl, initial, monthLabelFromISO, softBg, getClientSoftColor, getClientButtonStyles } from "@/lib/format";
-import { Suspense, useState, useEffect } from "react";
+import { Plus, Zap, FileText, Power, PowerOff, Settings, TrendingUp, Pencil, Trash2, Eye, ShieldAlert, Paperclip, Loader2 } from "lucide-react";
+import { CLIENT_COLORS, brl, initial, monthLabelFromISO, getClientButtonStyles } from "@/lib/format";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 type Client = {
@@ -41,18 +40,18 @@ type Invoice = {
   attachment_url: string | null;
 };
 
-const faturasQ = queryOptions({
-  queryKey: ["faturas-page"],
-  queryFn: async () => {
-    const [c, i] = await Promise.all([
-      supabase.from("clients").select("*").order("created_at", { ascending: true }),
-      supabase.from("invoices").select("id,client_id,reference_date,attachment_url,notes"),
-    ]);
-    if (c.error) throw c.error;
-    if (i.error) throw i.error;
-    return { clients: (c.data ?? []) as Client[], invoices: (i.data ?? []) as InvoiceRow[] };
-  },
-});
+async function fetchFaturasPage() {
+  const [c, i] = await Promise.all([
+    supabase.from("clients").select("*").order("created_at", { ascending: true }),
+    supabase.from("invoices").select("id,client_id,reference_date,attachment_url,notes"),
+  ]);
+  if (c.error) throw new Error(c.error.message || "Erro ao carregar clientes");
+  if (i.error) throw new Error(i.error.message || "Erro ao carregar faturas");
+  return {
+    clients: (c.data ?? []) as Client[],
+    invoices: (i.data ?? []) as InvoiceRow[],
+  };
+}
 
 export const Route = createFileRoute("/_app/faturas")({
   ssr: false,
@@ -66,33 +65,55 @@ export const Route = createFileRoute("/_app/faturas")({
 });
 
 function FaturasPage() {
-  return (
-    <Suspense fallback={<div>Carregando...</div>}>
-      <Faturas />
-    </Suspense>
-  );
-}
-
-function Faturas() {
-  const { data } = useSuspenseQuery(faturasQ);
   const qc = useQueryClient();
+  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
+    queryKey: ["faturas-page"],
+    queryFn: fetchFaturasPage,
+    retry: 1,
+    staleTime: 30_000,
+  });
+
   const [showInactive, setShowInactive] = useState(false);
   const [newClientOpen, setNewClientOpen] = useState(false);
   const [editClient, setEditClient] = useState<Client | null>(null);
   const [invoiceFor, setInvoiceFor] = useState<Client | null>(null);
   const [historyFor, setHistoryFor] = useState<Client | null>(null);
 
-  const active = data.clients.filter(c => c.active);
-  const inactive = data.clients.filter(c => !c.active);
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-muted-foreground">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-sm">Carregando faturas e clientes...</p>
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <Card className="mx-auto max-w-lg space-y-4 border-border p-8 text-center">
+        <h2 className="text-lg font-bold text-foreground">Não foi possível carregar</h2>
+        <p className="text-sm text-muted-foreground">
+          {(error as Error)?.message || "Erro desconhecido ao buscar dados."}
+        </p>
+        <Button onClick={() => refetch()} disabled={isFetching} className="gap-2">
+          {isFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+          Tentar de novo
+        </Button>
+      </Card>
+    );
+  }
+
+  const active = data.clients.filter((c) => c.active);
+  const inactive = data.clients.filter((c) => !c.active);
   const shown = showInactive ? inactive : active;
 
-  const invCount = (id: string) => data.invoices.filter(i => i.client_id === id).length;
+  const invCount = (id: string) => data.invoices.filter((i) => i.client_id === id).length;
 
   async function toggleActive(c: Client) {
-    const { error } = await supabase.from("clients").update({ active: !c.active }).eq("id", c.id);
-    if (error) return toast.error(error.message);
+    const { error: err } = await supabase.from("clients").update({ active: !c.active }).eq("id", c.id);
+    if (err) return toast.error(err.message);
     toast.success(c.active ? "Cliente desativado" : "Cliente reativado");
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["faturas-page"] });
   }
 
   async function deleteClientForever(c: Client) {
@@ -108,7 +129,7 @@ function Faturas() {
     const cli = await supabase.from("clients").delete().eq("id", c.id);
     if (cli.error) return toast.error(cli.error.message);
     toast.success(`Cliente ${c.name} excluído definitivamente`);
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["faturas-page"] });
   }
 
   return (
@@ -116,14 +137,22 @@ function Faturas() {
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
           <h1 className="truncate text-3xl font-bold tracking-tight text-foreground">Faturas</h1>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground light:text-emerald-600">{active.length} ativos · {inactive.length} inativos</p>
-
+          <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground light:text-emerald-600">
+            {active.length} ativos · {inactive.length} inativos
+          </p>
         </div>
         <div className="flex flex-wrap gap-2 [&>*]:flex-1 sm:[&>*]:flex-none">
-          <Button variant="outline" onClick={() => setShowInactive(v => !v)} className="glass-card border-border bg-accent text-muted-foreground hover:text-foreground rounded-lg">
+          <Button
+            variant="outline"
+            onClick={() => setShowInactive((v) => !v)}
+            className="glass-card border-border bg-accent text-muted-foreground hover:text-foreground rounded-lg"
+          >
             {showInactive ? "Ver ativos" : "Ver inativos"}
           </Button>
-          <Button onClick={() => setNewClientOpen(true)} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
+          <Button
+            onClick={() => setNewClientOpen(true)}
+            className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-4 py-2 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95"
+          >
             <Plus className="h-4 w-4" /> Novo Cliente
           </Button>
         </div>
@@ -136,39 +165,50 @@ function Faturas() {
       )}
 
       <div className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3 [&>*]:glass-card-interactive">
-        {shown.map(c => (
+        {shown.map((c) => (
           <Card key={c.id} className="glass-card relative overflow-hidden p-5" style={{ borderLeft: `4px solid ${c.color}` }}>
             <div className="mb-3 flex w-full items-start justify-between text-left">
               <div className="flex items-center gap-2.5">
                 <div
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
-
                   style={{ backgroundColor: c.color }}
                 >
                   {initial(c.name)}
                 </div>
                 <div className="min-w-0">
                   <div className="truncate font-bold text-sm text-foreground">{c.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">UC {c.uc_number}</div>
-
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    UC {c.uc_number}
+                  </div>
                 </div>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => setEditClient(c)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors" aria-label={`Editar ${c.name}`}>
+                <button
+                  onClick={() => setEditClient(c)}
+                  className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={`Editar ${c.name}`}
+                >
                   <Settings className="h-4 w-4" />
                 </button>
-                <button onClick={() => toggleActive(c)} className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors" title={c.active ? "Desativar" : "Ativar"} aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}>
+                <button
+                  onClick={() => toggleActive(c)}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors"
+                  title={c.active ? "Desativar" : "Ativar"}
+                  aria-label={c.active ? `Desativar ${c.name}` : `Ativar ${c.name}`}
+                >
                   {c.active ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
                 </button>
               </div>
             </div>
             <div className="mb-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> 1 UC</span>
               <span className="flex items-center gap-1">
-                <FileText className="h-3 w-3" /> 
+                <Zap className="h-3 w-3" /> 1 UC
+              </span>
+              <span className="flex items-center gap-1">
+                <FileText className="h-3 w-3" />
                 {invCount(c.id)} {invCount(c.id) === 1 ? "fatura" : "faturas"}
               </span>
-              {data.invoices.some(i => i.client_id === c.id && i.attachment_url) && (
+              {data.invoices.some((i) => i.client_id === c.id && i.attachment_url) && (
                 <span className="flex items-center gap-1 text-muted-foreground">
                   <Paperclip className="h-3 w-3" /> Anexos
                 </span>
@@ -182,7 +222,7 @@ function Faturas() {
                 onClick={() => setInvoiceFor(c)}
                 disabled={!c.active}
               >
-                <Plus className="h-3 w-3 text-white" /> 
+                <Plus className="h-3 w-3 text-white" />
                 <span>Lançar</span>
               </Button>
               <Button
@@ -211,18 +251,14 @@ function Faturas() {
         <ClientDialog
           client={editClient}
           open
-          onClose={() => { setNewClientOpen(false); setEditClient(null); }}
+          onClose={() => {
+            setNewClientOpen(false);
+            setEditClient(null);
+          }}
         />
       )}
-      {invoiceFor && (
-        <InvoiceDialog client={invoiceFor} onClose={() => setInvoiceFor(null)} />
-      )}
-      {historyFor && (
-        <HistoryDialog
-          client={historyFor}
-          onClose={() => setHistoryFor(null)}
-        />
-      )}
+      {invoiceFor && <InvoiceDialog client={invoiceFor} onClose={() => setInvoiceFor(null)} />}
+      {historyFor && <HistoryDialog client={historyFor} onClose={() => setHistoryFor(null)} />}
     </div>
   );
 }
@@ -263,7 +299,7 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
     toast.success(client ? "Cliente atualizado" : "Cliente criado");
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["faturas-page"] });
     onClose();
   }
 
@@ -271,80 +307,133 @@ function ClientDialog({ client, open, onClose }: { client: Client | null; open: 
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="glass-card border-border text-foreground max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-foreground dark:text-glow">{client ? "Editar Cliente" : "Novo Cliente"}</DialogTitle>
+          <DialogTitle className="text-foreground dark:text-glow">
+            {client ? "Editar Cliente" : "Novo Cliente"}
+          </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
             <Label className="text-muted-foreground">Nome Completo *</Label>
-            <Input value={f.name} onChange={e => setF({ ...f, name: e.target.value })} placeholder="Ex: Pantera's Bar" className="bg-input border-border text-foreground" />
-
+            <Input
+              value={f.name}
+              onChange={(e) => setF({ ...f, name: e.target.value })}
+              placeholder="Ex: Pantera's Bar"
+              className="bg-input border-border text-foreground"
+            />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-muted-foreground">Telefone</Label>
-              <Input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} placeholder="(00) 00000-0000" className="bg-input border-border text-foreground" />
-
+              <Input
+                value={f.phone}
+                onChange={(e) => setF({ ...f, phone: e.target.value })}
+                placeholder="(00) 00000-0000"
+                className="bg-input border-border text-foreground"
+              />
             </div>
             <div>
               <Label className="text-muted-foreground">E-mail</Label>
-              <Input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} placeholder="email@exemplo.com" className="bg-input border-border text-foreground" />
-
+              <Input
+                value={f.email}
+                onChange={(e) => setF({ ...f, email: e.target.value })}
+                placeholder="email@exemplo.com"
+                className="bg-input border-border text-foreground"
+              />
             </div>
           </div>
           <div>
             <Label className="text-muted-foreground">Cor do Cliente</Label>
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              {CLIENT_COLORS.map(col => (
+              {CLIENT_COLORS.map((col) => (
                 <button
                   key={col}
                   type="button"
                   onClick={() => setF({ ...f, color: col })}
-                  className={`h-8 w-8 rounded-full ring-offset-2 transition-all ${f.color === col ? "ring-2 ring-foreground scale-110" : "hover:scale-105"}`}
+                  className={`h-8 w-8 rounded-full ring-offset-2 transition-all ${
+                    f.color === col ? "ring-2 ring-foreground scale-110" : "hover:scale-105"
+                  }`}
                   style={{ backgroundColor: col }}
                 />
               ))}
-              <div className={`relative ml-2 flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 transition-all ${
-                !CLIENT_COLORS.includes(f.color) 
-                  ? "border-foreground ring-2 ring-foreground bg-slate-100 scale-105" 
-                  : "border-slate-200 bg-slate-50/50 hover:bg-slate-50"
-              }`}>
+              <div
+                className={`relative ml-2 flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 transition-all ${
+                  !CLIENT_COLORS.includes(f.color)
+                    ? "border-foreground ring-2 ring-foreground bg-slate-100 scale-105"
+                    : "border-slate-200 bg-slate-50/50 hover:bg-slate-50"
+                }`}
+              >
                 <Input
                   type="color"
                   value={f.color}
-                  onChange={e => setF({ ...f, color: e.target.value })}
+                  onChange={(e) => setF({ ...f, color: e.target.value })}
                   className="h-8 w-8 cursor-pointer rounded-full border-0 p-0 overflow-hidden transition-all hover:scale-110"
                   title="Escolher cor personalizada"
                 />
-                <span className={`text-[9px] font-black uppercase tracking-tighter ${
-                  !CLIENT_COLORS.includes(f.color) ? "text-foreground" : "text-slate-500"
-                }`}>Cor Personalizada</span>
+                <span
+                  className={`text-[9px] font-black uppercase tracking-tighter ${
+                    !CLIENT_COLORS.includes(f.color) ? "text-foreground" : "text-slate-500"
+                  }`}
+                >
+                  Cor Personalizada
+                </span>
               </div>
             </div>
           </div>
           <div>
             <Label className="text-muted-foreground">Número da UC *</Label>
-            <Input value={f.uc_number} onChange={e => setF({ ...f, uc_number: e.target.value })} placeholder="Ex: 303007001223" className="bg-input border-border text-foreground" />
-
+            <Input
+              value={f.uc_number}
+              onChange={(e) => setF({ ...f, uc_number: e.target.value })}
+              placeholder="Ex: 303007001223"
+              className="bg-input border-border text-foreground"
+            />
           </div>
           <div>
             <Label className="text-muted-foreground">Observações</Label>
-            <Textarea value={f.notes} onChange={e => setF({ ...f, notes: e.target.value })} placeholder="Opcional" className="bg-input border-border text-foreground" />
-
+            <Textarea
+              value={f.notes}
+              onChange={(e) => setF({ ...f, notes: e.target.value })}
+              placeholder="Opcional"
+              className="bg-input border-border text-foreground"
+            />
           </div>
           <div>
             <Label className="text-muted-foreground">Desconto (%) *</Label>
-            <Input type="number" value={f.discount_pct} onChange={e => setF({ ...f, discount_pct: Number(e.target.value) })} placeholder="Ex: 30" className="bg-input border-border text-foreground" />
-
+            <Input
+              type="number"
+              value={f.discount_pct}
+              onChange={(e) => setF({ ...f, discount_pct: Number(e.target.value) })}
+              placeholder="Ex: 30"
+              className="bg-input border-border text-foreground"
+            />
           </div>
           <div>
             <Label className="text-muted-foreground">Iluminação Pública (Valor Fixo) *</Label>
-            <Input type="number" step="0.01" value={f.public_lighting_value} onChange={e => setF({ ...f, public_lighting_value: Number(e.target.value) })} placeholder="Ex: 26.36" className="bg-input border-border text-foreground" />
-
+            <Input
+              type="number"
+              step="0.01"
+              value={f.public_lighting_value}
+              onChange={(e) => setF({ ...f, public_lighting_value: Number(e.target.value) })}
+              placeholder="Ex: 26.36"
+              className="bg-input border-border text-foreground"
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="border-border text-muted-foreground hover:text-foreground hover:bg-accent">Cancelar</Button>
-          <Button onClick={submit} disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">{client ? "Salvar" : "Criar"}</Button>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="border-border text-muted-foreground hover:text-foreground hover:bg-accent"
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={submit}
+            disabled={saving}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
+          >
+            {client ? "Salvar" : "Criar"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -358,31 +447,53 @@ const MONTH_NAMES = [
 
 function MonthYearSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const now = new Date();
-  const [y, m] = value ? value.split("-") : [String(now.getFullYear()), String(now.getMonth() + 1).padStart(2, "0")];
+  const [y, m] = value
+    ? value.split("-")
+    : [String(now.getFullYear()), String(now.getMonth() + 1).padStart(2, "0")];
   const years = Array.from({ length: 8 }, (_, i) => String(now.getFullYear() + 1 - i));
 
   return (
     <div className="grid grid-cols-2 gap-2">
       <Select value={m} onValueChange={(newMonth) => onChange(`${y}-${newMonth}`)}>
-        <SelectTrigger><SelectValue placeholder="Mês" /></SelectTrigger>
+        <SelectTrigger>
+          <SelectValue placeholder="Mês" />
+        </SelectTrigger>
         <SelectContent>
           {MONTH_NAMES.map((name, i) => {
             const mm = String(i + 1).padStart(2, "0");
-            return <SelectItem key={mm} value={mm}>{name}</SelectItem>;
+            return (
+              <SelectItem key={mm} value={mm}>
+                {name}
+              </SelectItem>
+            );
           })}
         </SelectContent>
       </Select>
       <Select value={y} onValueChange={(newYear) => onChange(`${newYear}-${m}`)}>
-        <SelectTrigger><SelectValue placeholder="Ano" /></SelectTrigger>
+        <SelectTrigger>
+          <SelectValue placeholder="Ano" />
+        </SelectTrigger>
         <SelectContent>
-          {years.map((yr) => <SelectItem key={yr} value={yr}>{yr}</SelectItem>)}
+          {years.map((yr) => (
+            <SelectItem key={yr} value={yr}>
+              {yr}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
   );
 }
 
-function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?: Invoice; onClose: () => void }) {
+function InvoiceDialog({
+  client,
+  invoice,
+  onClose,
+}: {
+  client: Client;
+  invoice?: Invoice;
+  onClose: () => void;
+}) {
   const qc = useQueryClient();
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [f, setF] = useState({
@@ -398,7 +509,6 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     attachment_url: invoice?.attachment_url ?? "",
   });
 
-  // Watch for invoice changes to keep state in sync when editing from history
   useEffect(() => {
     if (invoice) {
       setF({
@@ -421,25 +531,23 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     const p = Number(price) || 0;
     const l = Number(lighting) || 0;
     const j = Number(fine) || 0;
-    
-    const sUsina = (c * p) + l + j;
+    const sUsina = c * p + l + j;
     const discount = (client.discount_pct || 30) / 100;
     const cPaga = sUsina * (1 - discount);
-    
     return {
       value_without_plant: sUsina.toFixed(2),
-      client_pays: cPaga.toFixed(2)
+      client_pays: cPaga.toFixed(2),
     };
   };
 
   const handleCalcChange = (field: string, val: string) => {
-    setF(prev => {
+    setF((prev) => {
       const next = { ...prev, [field]: val };
       const { value_without_plant, client_pays } = calculateValues(
-        next.consumption_kw, 
-        next.price_kw, 
-        next.public_lighting, 
-        next.interest_fine
+        next.consumption_kw,
+        next.price_kw,
+        next.public_lighting,
+        next.interest_fine,
       );
       return { ...next, value_without_plant, client_pays };
     });
@@ -477,7 +585,8 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success(invoice ? "Fatura atualizada" : "Fatura lançada");
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["faturas-page"] });
+    qc.invalidateQueries({ queryKey: ["invoice-history", client.id] });
     onClose();
   }
 
@@ -487,21 +596,21 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
     try {
       setUploading(true);
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${client.id}/${Date.now()}.${fileExt}`;
       const filePath = `invoices/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('faturas_v3_privado_v2')
+        .from("faturas_v3_privado_v2")
         .upload(filePath, file, {
-          cacheControl: '3600',
+          cacheControl: "3600",
           upsert: true,
-          contentType: file.type || 'application/pdf'
+          contentType: file.type || "application/pdf",
         });
 
       if (uploadError) throw uploadError;
 
-      setF(prev => ({ ...prev, attachment_url: filePath }));
+      setF((prev) => ({ ...prev, attachment_url: filePath }));
       toast.success("Arquivo anexado!");
     } catch (err: any) {
       toast.error("Erro ao subir arquivo: " + err.message);
@@ -514,7 +623,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto bg-popover border-border text-foreground">
         <DialogHeader>
-          <DialogTitle>{invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}</DialogTitle>
+          <DialogTitle>
+            {invoice ? "Editar Fatura" : "Lançar Fatura"} — {client.name}
+          </DialogTitle>
         </DialogHeader>
         <div className="bg-accent p-3 rounded-lg border border-border mb-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between">
           <span>Desconto: {client.discount_pct}%</span>
@@ -527,81 +638,130 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
           </div>
           <div>
             <Label>Mês de Referência *</Label>
-            <MonthYearSelect value={f.reference_month} onChange={(v) => setF(prev => ({ ...prev, reference_month: v }))} />
+            <MonthYearSelect
+              value={f.reference_month}
+              onChange={(v) => setF((prev) => ({ ...prev, reference_month: v }))}
+            />
           </div>
           <div>
             <Label>Consumo (kW) *</Label>
-            <Input type="number" step="0.01" value={f.consumption_kw} onChange={e => handleCalcChange('consumption_kw', e.target.value)} placeholder="Ex: 537" className="no-spinner" />
+            <Input
+              type="number"
+              step="0.01"
+              value={f.consumption_kw}
+              onChange={(e) => handleCalcChange("consumption_kw", e.target.value)}
+              placeholder="Ex: 537"
+              className="no-spinner"
+            />
           </div>
           <div>
             <Label>Preço kW (R$) *</Label>
-            <Input type="number" step="0.000001" value={f.price_kw} onChange={e => handleCalcChange('price_kw', e.target.value)} placeholder="Ex: 1,185396" className="no-spinner" />
+            <Input
+              type="number"
+              step="0.000001"
+              value={f.price_kw}
+              onChange={(e) => handleCalcChange("price_kw", e.target.value)}
+              placeholder="Ex: 1,185396"
+              className="no-spinner"
+            />
           </div>
           <div>
             <Label>Ilum. Pública (R$)</Label>
-            <Input type="number" step="0.01" value={f.public_lighting} disabled className="bg-accent no-spinner" />
+            <Input
+              type="number"
+              step="0.01"
+              value={f.public_lighting}
+              disabled
+              className="bg-accent no-spinner"
+            />
           </div>
           <div>
             <Label>Juros/Multa (R$)</Label>
-            <Input type="number" step="0.01" value={f.interest_fine} onChange={e => handleCalcChange('interest_fine', e.target.value)} placeholder="0" className="no-spinner" />
+            <Input
+              type="number"
+              step="0.01"
+              value={f.interest_fine}
+              onChange={(e) => handleCalcChange("interest_fine", e.target.value)}
+              placeholder="0"
+              className="no-spinner"
+            />
           </div>
           <div>
             <Label>Valor S/ Usina (R$)</Label>
-            <Input type="number" step="0.01" value={f.value_without_plant} disabled className="bg-accent font-bold no-spinner" />
+            <Input
+              type="number"
+              step="0.01"
+              value={f.value_without_plant}
+              disabled
+              className="bg-accent font-bold no-spinner"
+            />
           </div>
           <div>
             <Label>Valor que o Cliente Paga (R$)</Label>
-            <Input type="number" step="0.01" value={f.client_pays} disabled className="bg-emerald-500/10 text-emerald-500 font-bold no-spinner" />
+            <Input
+              type="number"
+              step="0.01"
+              value={f.client_pays}
+              disabled
+              className="bg-emerald-500/10 text-emerald-500 font-bold no-spinner"
+            />
           </div>
         </div>
         <Card className="mt-2 border-red-500/20 bg-red-500/10 p-4">
-          <div className="mb-1 text-sm font-medium text-red-500">Fatura do Cliente — Concessionária (R$)</div>
-          <div className="mb-2 text-xs text-red-500/70">Valor que você paga à concessionária por este cliente</div>
-          <Input type="number" step="0.01" value={f.distributor_invoice} onChange={e => setF(prev => ({ ...prev, distributor_invoice: e.target.value }))} className="bg-input no-spinner" placeholder="676,37" />
-
+          <div className="mb-1 text-sm font-medium text-red-500">
+            Fatura do Cliente — Concessionária (R$)
+          </div>
+          <div className="mb-2 text-xs text-red-500/70">
+            Valor que você paga à concessionária por este cliente
+          </div>
+          <Input
+            type="number"
+            step="0.01"
+            value={f.distributor_invoice}
+            onChange={(e) => setF((prev) => ({ ...prev, distributor_invoice: e.target.value }))}
+            className="bg-input no-spinner"
+            placeholder="676,37"
+          />
         </Card>
-        
+
         <div className="space-y-4 mt-4">
           <div>
             <Label>Observações</Label>
-            <Textarea 
-              value={f.notes} 
-              onChange={e => setF(prev => ({ ...prev, notes: e.target.value }))} 
+            <Textarea
+              value={f.notes}
+              onChange={(e) => setF((prev) => ({ ...prev, notes: e.target.value }))}
               placeholder="Opcional"
               className="mt-1"
             />
           </div>
-          
+
           <div>
             <Label>Anexar Fatura / Comprovante</Label>
             <div className="mt-2 flex items-center gap-3">
-              <Button 
-                variant="outline" 
-                type="button" 
-                className="gap-2 relative" 
-                disabled={uploading}
-                asChild
-              >
+              <Button variant="outline" type="button" className="gap-2 relative" disabled={uploading} asChild>
                 <label className="cursor-pointer">
-                  <Paperclip className="h-4 w-4" /> 
+                  <Paperclip className="h-4 w-4" />
                   {uploading ? "Enviando..." : f.attachment_url ? "Trocar arquivo" : "Selecionar arquivo"}
-                  <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*,application/pdf" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    accept="image/*,application/pdf"
+                  />
                 </label>
               </Button>
               {f.attachment_url && (
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
                     type="button"
                     onClick={async () => {
                       try {
                         const path = f.attachment_url!;
                         const { data, error } = await supabase.storage
-                          .from('faturas_v3_privado_v2')
+                          .from("faturas_v3_privado_v2")
                           .createSignedUrl(path, 60);
                         if (error) throw error;
-                        
-                        // Proxy download via our own API to avoid direct Supabase URL being blocked
-                        const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                        const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split("/").pop() || "fatura.pdf")}`;
                         window.location.href = downloadUrl;
                       } catch (err: any) {
                         toast.error("Erro ao abrir arquivo: " + err.message);
@@ -611,9 +771,9 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
                   >
                     <Eye className="h-3 w-3" /> Ver anexo
                   </button>
-                  <button 
+                  <button
                     type="button"
-                    onClick={() => setF(prev => ({ ...prev, attachment_url: "" }))}
+                    onClick={() => setF((prev) => ({ ...prev, attachment_url: "" }))}
                     className="text-xs text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0"
                   >
                     Remover
@@ -626,8 +786,16 @@ function InvoiceDialog({ client, invoice, onClose }: { client: Client; invoice?:
 
         <DialogFooter className="mt-6 flex flex-col sm:flex-row gap-2">
           <div className="flex gap-2 sm:ml-auto">
-            <Button variant="outline" onClick={onClose}>Cancelar</Button>
-            <Button onClick={submit} disabled={saving || uploading} className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium">Salvar</Button>
+            <Button variant="outline" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={submit}
+              disabled={saving || uploading}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
+            >
+              Salvar
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>
@@ -657,7 +825,8 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
     const { error } = await supabase.from("invoices").delete().eq("id", inv.id);
     if (error) return toast.error(error.message);
     toast.success("Fatura excluída");
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["faturas-page"] });
+    qc.invalidateQueries({ queryKey: ["invoice-history", client.id] });
   }
 
   const totalWithoutPlant = invoices.reduce((sum, inv) => sum + Number(inv.value_without_plant), 0);
@@ -677,17 +846,14 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
 
         <div className="grid gap-3 md:grid-cols-4">
           <Card className="p-4 border-none shadow-sm bg-accent">
-
             <div className="text-xs font-medium text-muted-foreground">Total S/ Usina</div>
             <div className="mt-1 text-xl font-bold text-foreground">{brl(totalWithoutPlant)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-accent">
-
             <div className="text-xs font-medium text-muted-foreground">Cliente Pagou (receita)</div>
             <div className="mt-1 text-xl font-bold text-emerald-500">{brl(totalClientPays)}</div>
           </Card>
           <Card className="p-4 border-none shadow-sm bg-accent">
-
             <div className="text-xs font-medium text-muted-foreground">Fat. Concessionária (despesa)</div>
             <div className="mt-1 text-xl font-bold text-negative">{brl(totalDistributor)}</div>
           </Card>
@@ -722,7 +888,6 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
               <table className="w-full text-sm min-w-[800px]">
                 <thead className="sticky top-0 bg-accent">
                   <tr className="text-[10px] uppercase tracking-wider text-muted-foreground">
-
                     <th className="px-2 py-2 text-left font-semibold">Mês</th>
                     <th className="px-2 py-2 text-right font-semibold">Consumo (kW)</th>
                     <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
@@ -737,28 +902,37 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                   {invoices.map((inv) => {
                     const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                     return (
-                      <tr key={inv.id} className="border-t border-border hover:bg-accent transition-colors even:bg-accent/30">
+                      <tr
+                        key={inv.id}
+                        className="border-t border-border hover:bg-accent transition-colors even:bg-accent/30"
+                      >
                         <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right text-muted-foreground">{Number(inv.consumption_kw).toLocaleString("pt-BR")}</td>
+                        <td className="py-3 text-right text-muted-foreground">
+                          {Number(inv.consumption_kw).toLocaleString("pt-BR")}
+                        </td>
                         <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-3 text-right text-emerald-500">
+                          {brl(Number(inv.client_pays))}
+                        </td>
+                        <td className="py-3 text-right text-negative">
+                          {brl(Number(inv.distributor_invoice))}
+                        </td>
                         <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
                         <td className="py-3 text-center">
                           {inv.attachment_url ? (
-                            <button 
+                            <button
                               onClick={async () => {
                                 try {
                                   const path = inv.attachment_url!;
-                                  if (path.startsWith('http')) {
-                                    window.open(path, '_blank');
+                                  if (path.startsWith("http")) {
+                                    window.open(path, "_blank");
                                     return;
                                   }
                                   const { data, error } = await supabase.storage
-                                    .from('faturas_v3_privado_v2')
+                                    .from("faturas_v3_privado_v2")
                                     .createSignedUrl(path, 3600);
                                   if (error) throw error;
-                                  const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split('/').pop() || 'fatura.pdf')}`;
+                                  const downloadUrl = `/api/public/download?token=${encodeURIComponent(data.signedUrl)}&name=${encodeURIComponent(path.split("/").pop() || "fatura.pdf")}`;
                                   window.location.href = downloadUrl;
                                 } catch (err: any) {
                                   toast.error("Erro ao abrir arquivo: " + err.message);
@@ -769,14 +943,24 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                             >
                               <Paperclip className="h-4 w-4" />
                             </button>
-                          ) : "—"}
+                          ) : (
+                            "—"
+                          )}
                         </td>
                         <td className="py-3 pl-2 text-right">
                           <div className="flex justify-end gap-1">
-                            <button onClick={() => setEditing(inv)} className="p-1 text-muted-foreground hover:text-foreground" aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                            <button
+                              onClick={() => setEditing(inv)}
+                              className="p-1 text-muted-foreground hover:text-foreground"
+                              aria-label={`Editar fatura de ${monthLabelFromISO(inv.reference_date)}`}
+                            >
                               <Pencil className="h-4 w-4" />
                             </button>
-                            <button onClick={() => del(inv)} className="p-1 text-muted-foreground hover:text-[#D64545]" aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}>
+                            <button
+                              onClick={() => del(inv)}
+                              className="p-1 text-muted-foreground hover:text-[#D64545]"
+                              aria-label={`Excluir fatura de ${monthLabelFromISO(inv.reference_date)}`}
+                            >
                               <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
@@ -791,7 +975,9 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
         </div>
 
         {launching && <InvoiceDialog client={client} onClose={() => setLaunching(false)} />}
-        {editing && <InvoiceDialog client={client} invoice={editing} onClose={() => setEditing(null)} />}
+        {editing && (
+          <InvoiceDialog client={client} invoice={editing} onClose={() => setEditing(null)} />
+        )}
       </DialogContent>
     </Dialog>
   );
