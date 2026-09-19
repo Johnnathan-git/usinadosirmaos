@@ -18,16 +18,16 @@ import { toast } from "sonner";
 import { initial } from "@/lib/format";
 
 
-type NavItem = { to: string; label: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
+type NavItem = { to: string; label: string; shortLabel: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
-  { to: "/", label: "Dashboard", icon: LayoutGrid, module: "dashboard" },
-  { to: "/faturas", label: "Faturas e Clientes", icon: Users, module: "faturas" },
-  { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
-  { to: "/relatorio", label: "Controle cliente", icon: FileSpreadsheet, module: "relatorio" },
-  { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado" },
-  { to: "/controle", label: "Controle ADM", icon: Gauge, module: "controle" },
-  { to: "/inventario", label: "Inventário", icon: Package, module: "inventario" },
-  { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
+  { to: "/", label: "Dashboard", shortLabel: "Home", icon: LayoutGrid, module: "dashboard" },
+  { to: "/faturas", label: "Faturas e Clientes", shortLabel: "Faturas", icon: Users, module: "faturas" },
+  { to: "/fluxo-caixa", label: "Fluxo de Caixa", shortLabel: "Fluxo", icon: Wallet, module: "fluxo-caixa" },
+  { to: "/relatorio", label: "Controle cliente", shortLabel: "Cliente", icon: FileSpreadsheet, module: "relatorio" },
+  { to: "/resultado", label: "Resultado", shortLabel: "Resultado", icon: BarChart3, module: "resultado" },
+  { to: "/controle", label: "Controle ADM", shortLabel: "ADM", icon: Gauge, module: "controle" },
+  { to: "/inventario", label: "Inventário", shortLabel: "Estoque", icon: Package, module: "inventario" },
+  { to: "/acessos", label: "Acessos", shortLabel: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
 ];
 
 function AppShellSkeleton() {
@@ -229,7 +229,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </aside>
 
         <main className="min-h-screen min-w-0 flex-1 relative z-10">
-          <div className="mx-auto w-full max-w-[1800px] px-4 py-8 pb-32 sm:px-8 md:pb-12 2xl:px-12">
+          <div className="mx-auto w-full max-w-[1800px] px-3 py-6 pb-24 sm:px-8 sm:py-8 md:pb-12 2xl:px-12">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
@@ -250,7 +250,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </main>
 
-        <nav className="no-print fixed inset-x-0 bottom-6 z-40 mx-4 flex h-16 items-center justify-around rounded-2xl border border-border bg-card px-2 backdrop-blur-2xl md:hidden shadow-2xl overflow-x-auto scrollbar-hide">
+        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex items-center justify-start gap-0.5 border-t border-border bg-card/95 px-1 pt-1 backdrop-blur-xl md:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.08)] overflow-x-auto scrollbar-hide"
+          style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+        >
           {visibleNav.map((item) => {
             const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
             const Icon = item.icon;
@@ -260,18 +262,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 to={item.to}
                 preload="intent"
                 className={cn(
-                  "relative flex flex-col items-center gap-1.5 px-4 py-1 transition-all flex-shrink-0",
+                  "relative flex min-w-[3.25rem] flex-1 flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all flex-shrink-0",
                   active ? "text-primary" : "text-muted-foreground",
                 )}
               >
                 <div className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-lg transition-all",
+                  "flex h-7 w-7 items-center justify-center rounded-lg transition-all",
                   active ? "bg-primary/10" : "bg-transparent"
                 )}>
-                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
+                  <Icon className={cn("h-4 w-4 transition-transform", active && "scale-110")} strokeWidth={2} />
                 </div>
-                <span className="text-[9px] font-bold uppercase tracking-wider">{item.label.split(' ')[0]}</span>
-                {active && <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-primary shadow-[0_0_8px_rgba(245,158,11,0.6)]" />}
+                <span className="max-w-[4.5rem] truncate text-[9px] font-bold uppercase tracking-tight leading-tight text-center">
+                  {item.shortLabel}
+                </span>
+                {active && <div className="absolute bottom-0.5 h-0.5 w-4 rounded-full bg-primary" />}
               </Link>
             );
           })}
