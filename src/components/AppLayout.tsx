@@ -25,7 +25,7 @@ const nav: NavItem[] = [
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", icon: Wallet, module: "fluxo-caixa" },
   { to: "/relatorio", label: "Controle cliente", icon: FileSpreadsheet, module: "relatorio" },
   { to: "/resultado", label: "Resultado", icon: BarChart3, module: "resultado" },
-  { to: "/controle", label: "Controle", icon: Gauge, module: "controle" },
+  { to: "/controle", label: "Controle ADM", icon: Gauge, module: "controle" },
   { to: "/inventario", label: "Inventário", icon: Package, module: "inventario" },
   { to: "/acessos", label: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
 ];
