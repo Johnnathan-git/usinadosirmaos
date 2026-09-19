@@ -46,7 +46,7 @@ function AppShellSkeleton() {
           </div>
         </aside>
         <main className="min-h-screen min-w-0 flex-1 relative z-10">
-          <div className="mx-auto w-full max-w-[1800px] px-4 py-8 sm:px-8 2xl:px-12">
+          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 md:px-8">
             <div className="mb-6 h-8 w-48 animate-pulse rounded-lg bg-accent" />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -66,7 +66,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const qc = useQueryClient();
   const [ready, setReady] = useState(false);
 
-  // Tema fixo: apenas claro (branco)
   useEffect(() => {
     document.documentElement.classList.add("light");
     document.documentElement.classList.remove("dark");
@@ -154,7 +153,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <BrandLockup />
         <div className="flex items-center gap-2">
           <ChangeOwnPasswordDialog />
-
           <Button size="icon" variant="ghost" onClick={signOut} className="h-9 w-9 text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" />
           </Button>
@@ -166,7 +164,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="p-6">
             <BrandLockup onSidebar />
           </div>
-          
           <div className="flex-1 overflow-y-auto px-4 py-2">
             <nav className="space-y-1">
               {visibleNav.map((item) => {
@@ -195,10 +192,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
               })}
             </nav>
           </div>
-
           <div className="mt-auto border-t border-border p-4 light:border-white/10">
             <div className="mb-4 flex items-center gap-3 rounded-xl bg-accent p-2.5 border border-border shadow-sm light:bg-white/10 light:border-white/15">
-
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground uppercase">
                 {initial((acc as any)?.display_name || 'U')}
               </div>
@@ -207,7 +202,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
                   {(acc as any)?.display_name || 'Usuário'}
                 </div>
                 <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider light:text-white/60">
-
                   {acc?.effective_admin ? "Administrador" : "Cliente"}
                 </div>
               </div>
@@ -224,12 +218,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 <span className="text-[10px] font-bold uppercase">Sair</span>
               </Button>
             </div>
-
           </div>
         </aside>
 
         <main className="min-h-screen min-w-0 flex-1 relative z-10">
-          <div className="mx-auto w-full max-w-[1800px] px-3 py-6 pb-24 sm:px-8 sm:py-8 md:pb-12 2xl:px-12">
+          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-24 sm:px-6 md:px-8 md:pb-10">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
@@ -307,7 +300,6 @@ function ChangeOwnPasswordDialog() {
           <KeyRound className="h-3.5 w-3.5 sm:mr-2" />
           <span className="hidden text-[10px] font-bold uppercase sm:inline">Senha</span>
         </Button>
-
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
