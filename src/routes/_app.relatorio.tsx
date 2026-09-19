@@ -58,9 +58,9 @@ export const Route = createFileRoute("/_app/relatorio")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Relatório do Cliente — Usina dos Irmãos" },
+      { title: "Controle cliente — Usina dos Irmãos" },
       { name: "description", content: "Monte, edite e envie a planilha mensal de economia para cada cliente." },
-      { property: "og:title", content: "Relatório do Cliente — Usina dos Irmãos" },
+      { property: "og:title", content: "Controle cliente — Usina dos Irmãos" },
       { property: "og:description", content: "Planilha mensal de economia pronta para enviar ao cliente." },
     ],
   }),
@@ -148,7 +148,7 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">Controle cliente</h1>
           <p className="text-sm font-medium text-muted-foreground">Controle Mensal · Status de pagamento</p>
         </div>
       </div>
