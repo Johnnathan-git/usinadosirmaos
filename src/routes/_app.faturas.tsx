@@ -469,18 +469,23 @@ function InvoiceDialog({
   }, [invoice, client.public_lighting_value]);
 
   const parseNum = (v: string) => Number(String(v).replace(/\./g, "").replace(",", ".")) || 0;
+  const fmtBR = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
-  const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
+  const computeRaw = (consumption: string, price: string, lighting: string, fine: string) => {
     const c = parseNum(consumption);
     const p = parseNum(price);
     const l = parseNum(lighting);
     const j = parseNum(fine);
     const sUsina = c * p + l + j;
-    const discount = (client.discount_pct || 30) / 100;
-    const cPaga = sUsina * (1 - discount);
+    const discount = (client.discount_pct ?? 30) / 100;
+    return { sUsina, cPaga: sUsina * (1 - discount) };
+  };
+
+  const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
+    const { sUsina, cPaga } = computeRaw(consumption, price, lighting, fine);
     return {
-      value_without_plant: sUsina.toFixed(2),
-      client_pays: cPaga.toFixed(2),
+      value_without_plant: fmtBR(sUsina),
+      client_pays: fmtBR(cPaga),
     };
   };
 
@@ -509,6 +514,7 @@ function InvoiceDialog({
       return;
     }
     setSaving(true);
+    const { sUsina, cPaga } = computeRaw(f.consumption_kw, f.price_kw, f.public_lighting, f.interest_fine);
     const payload = {
       client_id: client.id,
       uc_number: client.uc_number,
@@ -517,8 +523,8 @@ function InvoiceDialog({
       price_kw: parseNum(f.price_kw),
       public_lighting: parseNum(f.public_lighting || "0"),
       interest_fine: parseNum(f.interest_fine || "0"),
-      value_without_plant: parseNum(f.value_without_plant || "0"),
-      client_pays: parseNum(f.client_pays),
+      value_without_plant: Number(sUsina.toFixed(4)),
+      client_pays: Number(cPaga.toFixed(4)),
       distributor_invoice: parseNum(f.distributor_invoice || "0"),
       notes: withPaymentTag(f.notes, f.payment_status),
       attachment_url: f.attachment_url || null,
