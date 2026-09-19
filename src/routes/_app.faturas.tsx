@@ -468,11 +468,13 @@ function InvoiceDialog({
     }
   }, [invoice, client.public_lighting_value]);
 
+  const parseNum = (v: string) => Number(String(v).replace(/\./g, "").replace(",", ".")) || 0;
+
   const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
-    const c = Number(consumption) || 0;
-    const p = Number(price) || 0;
-    const l = Number(lighting) || 0;
-    const j = Number(fine) || 0;
+    const c = parseNum(consumption);
+    const p = parseNum(price);
+    const l = parseNum(lighting);
+    const j = parseNum(fine);
     const sUsina = c * p + l + j;
     const discount = (client.discount_pct || 30) / 100;
     const cPaga = sUsina * (1 - discount);
@@ -511,13 +513,13 @@ function InvoiceDialog({
       client_id: client.id,
       uc_number: client.uc_number,
       reference_date: `${f.reference_month}-01`,
-      consumption_kw: Number(f.consumption_kw),
-      price_kw: Number(f.price_kw),
-      public_lighting: Number(f.public_lighting || 0),
-      interest_fine: Number(f.interest_fine || 0),
-      value_without_plant: Number(f.value_without_plant || 0),
-      client_pays: Number(f.client_pays),
-      distributor_invoice: Number(f.distributor_invoice || 0),
+      consumption_kw: parseNum(f.consumption_kw),
+      price_kw: parseNum(f.price_kw),
+      public_lighting: parseNum(f.public_lighting || "0"),
+      interest_fine: parseNum(f.interest_fine || "0"),
+      value_without_plant: parseNum(f.value_without_plant || "0"),
+      client_pays: parseNum(f.client_pays),
+      distributor_invoice: parseNum(f.distributor_invoice || "0"),
       notes: withPaymentTag(f.notes, f.payment_status),
       attachment_url: f.attachment_url || null,
     };
@@ -590,9 +592,11 @@ function InvoiceDialog({
             <div>
               <Label>Iluminação pública</Label>
               <Input
-                value={f.public_lighting}
-                onChange={(e) => handleCalcChange("public_lighting", e.target.value)}
-                className="mt-1"
+                value={Number(f.public_lighting || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                readOnly
+                disabled
+                title="Definido nas configurações do cliente"
+                className="mt-1 bg-accent text-muted-foreground"
               />
             </div>
             <div>
@@ -607,15 +611,11 @@ function InvoiceDialog({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Valor S/ Usina</Label>
-              <Input value={f.value_without_plant} readOnly className="mt-1 bg-accent" />
+              <Input value={f.value_without_plant} readOnly disabled className="mt-1 bg-accent text-muted-foreground" />
             </div>
             <div>
-              <Label>Cliente paga *</Label>
-              <Input
-                value={f.client_pays}
-                onChange={(e) => setF((prev) => ({ ...prev, client_pays: e.target.value }))}
-                className="mt-1"
-              />
+              <Label>Cliente paga ({client.discount_pct ?? 30}% desc.)</Label>
+              <Input value={f.client_pays} readOnly disabled className="mt-1 bg-accent text-muted-foreground" />
             </div>
           </div>
           <div>
@@ -769,18 +769,18 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             ) : invoices.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
             ) : (
-              <table className="w-full text-sm min-w-[900px]">
+              <table className="w-full text-[12px] table-fixed">
                 <thead className="sticky top-0 bg-accent">
-                  <tr className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    <th className="px-2 py-2 text-left font-semibold">Mês</th>
-                    <th className="px-2 py-2 text-right font-semibold">Consumo</th>
-                    <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
-                    <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                    <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Concessionária</th>
-                    <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
-                    <th className="px-2 py-2 text-center font-semibold">Anexo</th>
-                    <th className="px-2 py-2 text-center font-semibold">Pagamento</th>
-                    <th></th>
+                  <tr className="text-[9px] uppercase tracking-wider text-muted-foreground">
+                    <th className="px-1.5 py-1.5 text-left font-semibold w-[15%]">Mês</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[10%]">Consumo</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[12%]">S/ Usina</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[13%]">Cliente</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold text-[#D64545] w-[13%]">Concession.</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold text-emerald-500 w-[12%]">Lucro</th>
+                    <th className="px-1.5 py-1.5 text-center font-semibold w-[6%]">Anexo</th>
+                    <th className="px-1.5 py-1.5 text-center font-semibold w-[11%]">Status</th>
+                    <th className="w-[8%]"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -788,25 +788,25 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                     const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                     return (
                       <tr key={inv.id} className="border-t border-border hover:bg-accent even:bg-accent/30">
-                        <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right text-muted-foreground">
+                        <td className="py-2 px-1.5 truncate font-medium">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="py-2 px-1.5 text-right text-muted-foreground tabular-nums">
                           {Number(inv.consumption_kw).toLocaleString("pt-BR")}
                         </td>
-                        <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
-                        <td className="py-3 text-center">
-                          {inv.attachment_url ? <Paperclip className="h-4 w-4 mx-auto text-muted-foreground" /> : "—"}
+                        <td className="py-2 px-1.5 text-right tabular-nums">{brl(Number(inv.value_without_plant))}</td>
+                        <td className="py-2 px-1.5 text-right text-emerald-500 tabular-nums">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-2 px-1.5 text-right text-negative tabular-nums">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-2 px-1.5 text-right font-semibold text-emerald-500 tabular-nums">{brl(lucro)}</td>
+                        <td className="py-2 px-1 text-center">
+                          {inv.attachment_url ? <Paperclip className="h-3.5 w-3.5 mx-auto text-muted-foreground" /> : "—"}
                         </td>
-                        <td className="py-3 text-center">
+                        <td className="py-2 px-1 text-center">
                           {invoicePaymentStatus(inv.notes) === "pago" ? (
-                            <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-800">Pago</span>
+                            <span className="inline-flex rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-emerald-800">Pago</span>
                           ) : (
-                            <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-800">Pendente</span>
+                            <span className="inline-flex rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-amber-800">Pend.</span>
                           )}
                         </td>
-                        <td className="py-3 pl-2 text-right">
+                        <td className="py-2 text-right">
                           <div className="flex justify-end gap-1">
                             <button
                               onClick={() => setEditing(inv)}
