@@ -42,7 +42,6 @@
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   
-  /* Cores Semânticas Financeiras */
   --color-positive: #2563EB;
   --color-negative: #D64545;
   --color-revenue: #2F6F62;
@@ -54,14 +53,12 @@
   --radius: 12px;
   --background: #000000;
   --foreground: #F1F1F1;
-  
   --card: rgba(13, 13, 16, 0.7);
   --card-foreground: #F1F1F1;
   --popover: #0D0D10;
   --popover-foreground: #F1F1F1;
   --primary: #C98A3E;
   --primary-foreground: #000000;
-  
   --secondary: #161618;
   --secondary-foreground: #949494;
   --muted: #161618;
@@ -73,24 +70,20 @@
   --border: rgba(255, 255, 255, 0.1);
   --input: #0D0D10;
   --ring: #C98A3E;
-  
   --sidebar: #000000;
   --sidebar-foreground: #A1A1AA;
-  
   --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 16px -4px rgba(0, 0, 0, 0.5);
 }
 
 :root.light {
   --background: #FFFFFF;
   --foreground: #0F172A;
-  
   --card: #FFFFFF;
   --card-foreground: #0F172A;
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
   --primary: #C98A3E;
   --primary-foreground: #FFFFFF;
-  
   --secondary: #F8FAFC;
   --secondary-foreground: #64748B;
   --muted: #F1F5F9;
@@ -102,10 +95,8 @@
   --border: #E2E8F0;
   --input: #F1F5F9;
   --ring: #C98A3E;
-  
   --sidebar: #0F172A;
   --sidebar-foreground: #94A3B8;
-  
   --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
@@ -119,13 +110,19 @@
 }
 
 .glass-card {
-  @apply rounded-2xl border border-border bg-card shadow-sm;
+  @apply rounded-xl border border-border bg-card shadow-sm;
   box-shadow: var(--card-shadow);
 }
 
 .num, .num-lg {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
+}
+
+.num-lg {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
 }
 
 .zebra-stripe:nth-child(even) {
@@ -146,7 +143,7 @@
   }
 }
 
-/* Mobile: safe area + touch + horizontal scroll helpers */
+/* Mobile */
 @supports (padding: env(safe-area-inset-bottom)) {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
@@ -159,5 +156,17 @@
   }
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Notebook / desktop: evita cards e títulos estourados */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 1.75rem !important;
+    line-height: 2.25rem !important;
+  }
+  .num-lg {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
   }
 }
