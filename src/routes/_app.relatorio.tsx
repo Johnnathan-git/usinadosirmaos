@@ -137,8 +137,8 @@ function Relatorio() {
     setRows(selected.map((s) => toRow(s, client)));
   }, [selected, client]);
 
-  const paidCount = rows.filter((r) => r.payment === "pago").length;
-  const pendingCount = rows.filter((r) => r.payment === "pendente").length;
+  // Status global do cliente (todas as faturas lançadas, independente do mês marcado)
+  const pendingCount = clientInvoices.filter((inv) => paymentStatus(inv.notes) === "pendente").length;
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
@@ -185,24 +185,18 @@ function Relatorio() {
         </div>
       </Card>
 
-      {rows.length > 0 && (
-        <div className="no-print grid gap-3 sm:grid-cols-3">
-          <Card className="glass-card p-4 flex items-center gap-3 border-border">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-              <CheckCircle2 className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pagas</p>
-              <p className="text-xl font-bold text-emerald-700 tabular-nums">{paidCount}</p>
-            </div>
-          </Card>
+      {clientInvoices.length > 0 && (
+        <div className="no-print grid gap-3 sm:grid-cols-2">
           <Card className="glass-card p-4 flex items-center gap-3 border-border">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
               <Clock className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Faturas pendentes</p>
               <p className="text-xl font-bold text-amber-700 tabular-nums">{pendingCount}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">
+                de {clientInvoices.length} fatura{clientInvoices.length === 1 ? "" : "s"} lançada{clientInvoices.length === 1 ? "" : "s"}
+              </p>
             </div>
           </Card>
           <Card className="glass-card p-4 flex items-center gap-3 border-border">
