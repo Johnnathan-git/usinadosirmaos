@@ -24,7 +24,6 @@ type Invoice = {
 };
 
 function isInvoicePaid(notes: string | null | undefined): boolean {
-  // sem tag [[status:pendente]] = pago (histórico)
   return !notes?.includes("[[status:pendente]]");
 }
 
@@ -39,10 +38,11 @@ type Client = { id: string; name: string; color: string };
 
 const fluxoQ = queryOptions({
   queryKey: ["fluxo-page"],
+  staleTime: 30_000,
   queryFn: async () => {
     const [i, e, c] = await Promise.all([
       supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice,notes"),
-      supabase.from("expenses").select("*").order("reference_date", { ascending: false }),
+      supabase.from("expenses").select("id,reference_date,category,description,amount,notes,installment_group,installment_no,installment_total").order("reference_date", { ascending: false }),
       supabase.from("clients").select("id,name,color"),
     ]);
     if (i.error) throw i.error;
@@ -77,6 +77,7 @@ function Page() {
 
 function Fluxo() {
   const { data } = useSuspenseQuery(fluxoQ);
+  const qc = useQueryClient();
   const now = new Date();
   const [monthKey, setMonthKey] = useState(
     `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
@@ -99,29 +100,25 @@ function Fluxo() {
   const monthExpenses = data.expenses.filter(e => e.reference_date.startsWith(monthKey));
 
   const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
-  // Lucro bruto = soma (recebido − concessionária) só de faturas PAGAS
   const lucroBruto = paidInvoices.reduce(
     (a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)),
     0,
   );
-  // Despesas lançadas = só despesas operacionais (lista "Despesas lançadas")
   const totalDespesasLancadas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
-  // Lucro líquido do mês
   const lucro = lucroBruto - totalDespesasLancadas;
 
-  const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate text-4xl font-bold tracking-tight text-foreground">Fluxo de Caixa</h1>
+          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Fluxo de Caixa</h1>
           <p className="text-sm font-medium text-muted-foreground">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-36 sm:w-40 bg-accent border-border text-foreground"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="w-full sm:w-40 bg-accent border-border text-foreground"><SelectValue /></SelectTrigger>
             <SelectContent>
               {months.map(m => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
@@ -135,47 +132,47 @@ function Fluxo() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="glass-card p-6" style={{ borderTop: "3px solid #2F6F62" }}>
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2F6F62" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Lucro bruto
           </div>
-          <div className="text-2xl font-bold text-foreground num-lg">{brl(lucroBruto)}</div>
+          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">{brl(lucroBruto)}</div>
         </Card>
-        <Card className="glass-card p-6" style={{ borderTop: "3px solid #D64545" }}>
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #D64545" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total Despesas Lançadas
           </div>
-          <div className="text-2xl font-bold text-foreground num-lg">{brl(totalDespesasLancadas)}</div>
+          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">{brl(totalDespesasLancadas)}</div>
         </Card>
-        <Card className="glass-card p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro líquido do mês
           </div>
-          <div className="text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
+          <div className="text-xl sm:text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
           <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">Lucro bruto − Despesas lançadas</div>
         </Card>
       </div>
 
-      <Card className="glass-card p-6">
-        <h2 className="mb-6 text-lg font-bold text-foreground">Faturas dos clientes</h2>
+      <Card className="glass-card p-4 sm:p-6">
+        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">Faturas dos clientes</h2>
         {monthInvoices.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma fatura neste mês.</p>}
-        <div className="divide-y divide-white/5">
+        <div className="divide-y divide-border">
           {monthInvoices.map(inv => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             const client = data.clients.find(c => c.id === inv.client_id);
             return (
-              <div key={inv.id} className="flex items-start justify-between py-4">
-                <div className="flex items-center gap-3">
-                  <div 
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
+              <div key={inv.id} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
                     style={{ backgroundColor: client?.color ?? '#64748B' }}
                   >
                     {initial(client?.name ?? "?")}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-bold text-foreground">{client?.name ?? "—"}</span>
+                      <span className="font-bold text-foreground truncate">{client?.name ?? "—"}</span>
                       {isInvoicePaid(inv.notes) ? (
                         <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">Pago</span>
                       ) : (
@@ -185,7 +182,7 @@ function Fluxo() {
                     <div className="text-xs font-medium text-muted-foreground">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
-                <div className="text-right text-sm">
+                <div className="text-left sm:text-right text-sm pl-13 sm:pl-0">
                   <div className="text-muted-foreground font-bold">Lucro bruto: <span className="font-bold text-primary num">{brl(profit)}</span></div>
                   <div className="text-muted-foreground text-xs">Recebido: <span className="num">{brl(Number(inv.client_pays))}</span></div>
                   <div className="text-muted-foreground text-xs">Fat. concessionária: <span className="num">{brl(Number(inv.distributor_invoice))}</span></div>
@@ -196,12 +193,12 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="glass-card p-6">
-        <h2 className="mb-6 text-lg font-bold text-foreground">Despesas lançadas — {monthLabel(monthDate)}</h2>
+      <Card className="glass-card p-4 sm:p-6">
+        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">Despesas lançadas — {monthLabel(monthDate)}</h2>
         {monthExpenses.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>}
         <div className="space-y-3">
           {monthExpenses.map(e => (
-            <div key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 rounded-lg border border-border p-4 hover:bg-accent transition-colors zebra-stripe">
+            <div key={e.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start rounded-lg border border-border p-3 sm:p-4 hover:bg-accent transition-colors zebra-stripe">
               <div className="min-w-0">
                 <div className="truncate font-bold text-foreground">{e.description}</div>
                 <div className="mt-1 flex flex-wrap gap-2">
@@ -213,10 +210,12 @@ function Fluxo() {
                   ) : null}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between sm:justify-end gap-3">
                 <span className="whitespace-nowrap font-bold text-red-400 num-lg">{brl(Number(e.amount))}</span>
-                <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground transition-colors"><Pencil className="h-4 w-4" /></button>
-                <button aria-label="Excluir" onClick={() => deleteExpense(e)} className="text-muted-foreground hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
+                <div className="flex gap-2">
+                  <button aria-label="Editar" onClick={() => setEdit(e)} className="text-muted-foreground hover:text-foreground transition-colors p-1"><Pencil className="h-4 w-4" /></button>
+                  <button aria-label="Excluir" onClick={() => deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))} className="text-muted-foreground hover:text-red-400 transition-colors p-1"><Trash2 className="h-4 w-4" /></button>
+                </div>
               </div>
             </div>
           ))}
@@ -230,7 +229,7 @@ function Fluxo() {
   );
 }
 
-async function deleteExpense(e: Expense) {
+async function deleteExpense(e: Expense, onDone: () => void) {
   const isParcel = Boolean(e.installment_group && (e.installment_total ?? 0) > 1);
   if (isParcel) {
     const all = confirm(
@@ -248,7 +247,7 @@ async function deleteExpense(e: Expense) {
     if (error) return toast.error(error.message);
     toast.success("Despesa excluída");
   }
-  location.reload();
+  onDone();
 }
 
 function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose: () => void }) {
@@ -307,9 +306,9 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
     toast.success(
-      expense ? "Despesa atualizada" : installments ? `${parcels} parcelas lançadas` : "Despesa lançada",
+      expense ? "Despesa atualizada" : installments ? `${parcels} parcelas lançadas" : "Despesa lançada",
     );
-    qc.invalidateQueries();
+    qc.invalidateQueries({ queryKey: ["fluxo-page"] });
     onClose();
   }
 
