@@ -788,25 +788,25 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
                     const lucro = Number(inv.client_pays) - Number(inv.distributor_invoice);
                     return (
                       <tr key={inv.id} className="border-t border-border hover:bg-accent even:bg-accent/30">
-                        <td className="py-3">{monthLabelFromISO(inv.reference_date)}</td>
-                        <td className="py-3 text-right text-muted-foreground">
+                        <td className="py-2 px-1.5 truncate font-medium">{monthLabelFromISO(inv.reference_date)}</td>
+                        <td className="py-2 px-1.5 text-right text-muted-foreground tabular-nums">
                           {Number(inv.consumption_kw).toLocaleString("pt-BR")}
                         </td>
-                        <td className="py-3 text-right">{brl(Number(inv.value_without_plant))}</td>
-                        <td className="py-3 text-right text-emerald-500">{brl(Number(inv.client_pays))}</td>
-                        <td className="py-3 text-right text-negative">{brl(Number(inv.distributor_invoice))}</td>
-                        <td className="py-3 text-right font-semibold text-emerald-500">{brl(lucro)}</td>
-                        <td className="py-3 text-center">
-                          {inv.attachment_url ? <Paperclip className="h-4 w-4 mx-auto text-muted-foreground" /> : "—"}
+                        <td className="py-2 px-1.5 text-right tabular-nums">{brl(Number(inv.value_without_plant))}</td>
+                        <td className="py-2 px-1.5 text-right text-emerald-500 tabular-nums">{brl(Number(inv.client_pays))}</td>
+                        <td className="py-2 px-1.5 text-right text-negative tabular-nums">{brl(Number(inv.distributor_invoice))}</td>
+                        <td className="py-2 px-1.5 text-right font-semibold text-emerald-500 tabular-nums">{brl(lucro)}</td>
+                        <td className="py-2 px-1 text-center">
+                          {inv.attachment_url ? <Paperclip className="h-3.5 w-3.5 mx-auto text-muted-foreground" /> : "—"}
                         </td>
-                        <td className="py-3 text-center">
+                        <td className="py-2 px-1 text-center">
                           {invoicePaymentStatus(inv.notes) === "pago" ? (
-                            <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-800">Pago</span>
+                            <span className="inline-flex rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-emerald-800">Pago</span>
                           ) : (
-                            <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-800">Pendente</span>
+                            <span className="inline-flex rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-amber-800">Pend.</span>
                           )}
                         </td>
-                        <td className="py-3 pl-2 text-right">
+                        <td className="py-2 text-right">
                           <div className="flex justify-end gap-1">
                             <button
                               onClick={() => setEditing(inv)}
