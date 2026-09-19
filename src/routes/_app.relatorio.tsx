@@ -1,20 +1,36 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Paperclip } from "lucide-react";
+import { Paperclip, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
   consumption_kw: number; price_kw: number; public_lighting: number;
   interest_fine: number; value_without_plant: number; client_pays: number;
-  attachment_url: string | null;
+  attachment_url: string | null; notes: string | null;
 };
 type Client = { id: string; name: string; phone: string | null; discount_pct: number; color: string };
+
+/** Status de pagamento em notes: [[status:pendente]] — sem tag = pago (faturas já lançadas) */
+function paymentStatus(notes: string | null | undefined): "pago" | "pendente" {
+  if (notes?.includes("[[status:pendente]]")) return "pendente";
+  return "pago";
+}
+
+function withPaymentStatus(notes: string | null | undefined, status: "pago" | "pendente"): string | null {
+  const cleaned = (notes || "").replace(/\[\[status:(pago|pendente)\]\]/g, "").trim();
+  if (status === "pendente") {
+    return cleaned ? `${cleaned} [[status:pendente]]` : "[[status:pendente]]";
+  }
+  return cleaned || null;
+}
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
@@ -22,7 +38,7 @@ const q = queryOptions({
     const [i, c, sess] = await Promise.all([
       supabase
         .from("invoices")
-        .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays,attachment_url")
+        .select("id,client_id,reference_date,uc_number,consumption_kw,price_kw,public_lighting,interest_fine,value_without_plant,client_pays,attachment_url,notes")
         .order("reference_date", { ascending: false }),
       supabase.from("clients").select("id,name,phone,discount_pct,color").order("name"),
       supabase.auth.getSession(),
@@ -30,16 +46,22 @@ const q = queryOptions({
     if (i.error) throw i.error;
     if (c.error) throw c.error;
     let restrictedClientId: string | null = null;
+    let isAdmin = false;
     const uid = sess.data.session?.user?.id;
     if (uid) {
       const [{ data: link }, { data: roles }] = await Promise.all([
         supabase.from("user_clients").select("client_id").eq("user_id", uid).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", uid),
       ]);
-      const isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
+      isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
       if (!isAdmin && link?.client_id) restrictedClientId = link.client_id as string;
     }
-    return { invoices: (i.data ?? []) as Invoice[], clients: (c.data ?? []) as Client[], restrictedClientId };
+    return {
+      invoices: (i.data ?? []) as Invoice[],
+      clients: (c.data ?? []) as Client[],
+      restrictedClientId,
+      isAdmin,
+    };
   },
 });
 
@@ -68,6 +90,8 @@ type Row = {
   id: string; mes: string; uc: string; consumo: string; preco: string;
   ilum: string; juros: string; semUsina: string; comDesconto: string;
   attachment_url?: string | null;
+  notes?: string | null;
+  payment: "pago" | "pendente";
 };
 
 const numBR = (n: number, d = 2) =>
@@ -87,16 +111,21 @@ function toRow(inv: Invoice, client?: Client): Row {
     semUsina: brl(Number(inv.value_without_plant)),
     comDesconto: brl(Number(inv.value_without_plant) * (1 - discountFactor)),
     attachment_url: inv.attachment_url,
+    notes: inv.notes,
+    payment: paymentStatus(inv.notes),
   };
 }
 
 function Relatorio() {
+  const qc = useQueryClient();
   const { data } = useSuspenseQuery(q);
   const locked = data.restrictedClientId;
+  const isAdmin = data.isAdmin;
   const clients = data.clients.filter((c) => !locked || c.id === locked);
   const [clientId, setClientId] = useState<string>(locked ?? clients[0]?.id ?? "");
   const [months, setMonths] = useState<string[]>([]);
   const [rows, setRows] = useState<Row[]>([]);
+  const [savingId, setSavingId] = useState<string | null>(null);
 
   const client = clients.find((c) => c.id === clientId);
   const clientInvoices = useMemo(
@@ -120,11 +149,32 @@ function Relatorio() {
   );
 
   useEffect(() => {
-    setRows(selected.map(s => toRow(s, client)));
+    setRows(selected.map((s) => toRow(s, client)));
   }, [selected, client]);
+
+  const paidCount = rows.filter((r) => r.payment === "pago").length;
+  const pendingCount = rows.filter((r) => r.payment === "pendente").length;
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
+  }
+
+  async function setPaid(invoiceId: string, status: "pago" | "pendente") {
+    if (!isAdmin) {
+      toast.error("Apenas o administrador pode alterar o status de pagamento.");
+      return;
+    }
+    setSavingId(invoiceId);
+    const inv = data.invoices.find((i) => i.id === invoiceId);
+    const nextNotes = withPaymentStatus(inv?.notes, status);
+    const { error } = await supabase.from("invoices").update({ notes: nextNotes }).eq("id", invoiceId);
+    setSavingId(null);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(status === "pago" ? "Fatura marcada como paga" : "Fatura marcada como pendente");
+    qc.invalidateQueries({ queryKey: ["relatorio-page"] });
   }
 
   return (
@@ -132,10 +182,7 @@ function Relatorio() {
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-foreground">Relatório do Cliente</h1>
-          <p className="text-sm font-medium text-muted-foreground">
-
-            Controle Mensal.
-          </p>
+          <p className="text-sm font-medium text-muted-foreground">Controle Mensal · Status de pagamento</p>
         </div>
       </div>
 
@@ -171,12 +218,45 @@ function Relatorio() {
         </div>
       </Card>
 
+      {rows.length > 0 && (
+        <div className="no-print grid gap-3 sm:grid-cols-3">
+          <Card className="glass-card p-4 flex items-center gap-3 border-border">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pagas</p>
+              <p className="text-xl font-bold text-emerald-700 tabular-nums">{paidCount}</p>
+            </div>
+          </Card>
+          <Card className="glass-card p-4 flex items-center gap-3 border-border">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Clock className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
+              <p className="text-xl font-bold text-amber-700 tabular-nums">{pendingCount}</p>
+            </div>
+          </Card>
+          <Card className="glass-card p-4 flex items-center gap-3 border-border">
+            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
+              <AlertCircle className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Situação</p>
+              <p className={`text-sm font-bold ${pendingCount > 0 ? "text-rose-700" : "text-emerald-700"}`}>
+                {pendingCount > 0 ? "Há pendências" : "Tudo em dia"}
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
+
       <Card className="overflow-hidden glass-card p-0">
-        <div 
+        <div
           className="px-8 py-2 text-center border-b border-white/10 bg-blue-600/30 relative overflow-hidden light:border-blue-700 light:bg-[#1E3A8A]"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-blue-500/20 to-transparent opacity-80 pointer-events-none light:hidden" />
-          <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-blue-600/60 via-blue-500/30 to-transparent opacity-100 pointer-events-none" />
           <div className="relative z-10">
             <div className="text-base font-black uppercase tracking-[0.4em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] sm:text-lg light:drop-shadow-none">
               {client?.name ?? "—"}
@@ -184,7 +264,7 @@ function Relatorio() {
           </div>
         </div>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-          <table className="w-full min-w-[1000px] border-collapse text-sm">
+          <table className="w-full min-w-[1100px] border-collapse text-sm">
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 {[
@@ -207,6 +287,9 @@ function Relatorio() {
                 <th className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest w-[100px]">
                   Baixar
                 </th>
+                <th className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest w-[140px]">
+                  Pagamento
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -222,7 +305,7 @@ function Relatorio() {
                             ? "font-bold text-primary light:text-emerald-600 text-[13px]"
                             : f === "semUsina"
                             ? "text-red-400 font-bold text-[13px]"
-                            : f === "mes" 
+                            : f === "mes"
                             ? "text-foreground light:text-foreground font-bold text-[13px]"
                             : "text-foreground font-medium text-[13px]"
                         }`}
@@ -235,13 +318,12 @@ function Relatorio() {
                         onClick={async () => {
                           try {
                             const path = r.attachment_url!;
-                            const { data, error } = await supabase.storage
+                            const { data: signed, error } = await supabase.storage
                               .from("faturas_v3_privado_v2")
                               .createSignedUrl(path, 3600);
                             if (error) throw error;
-
                             const downloadUrl = `/api/public/download?token=${encodeURIComponent(
-                              data.signedUrl,
+                              signed.signedUrl,
                             )}&name=${encodeURIComponent(path.split("/").pop() || "fatura.pdf")}`;
                             window.location.href = downloadUrl;
                           } catch (err: any) {
@@ -261,11 +343,39 @@ function Relatorio() {
                       </div>
                     )}
                   </td>
+                  <td className="border border-border p-2 text-center align-middle">
+                    <div className="flex flex-col items-center gap-1.5">
+                      {r.payment === "pago" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
+                          <CheckCircle2 className="h-3 w-3" /> Pago
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-800">
+                          <Clock className="h-3 w-3" /> Pendente
+                        </span>
+                      )}
+                      {isAdmin && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={savingId === r.id}
+                          className="h-7 text-[10px] font-bold uppercase px-2"
+                          onClick={() => setPaid(r.id, r.payment === "pago" ? "pendente" : "pago")}
+                        >
+                          {savingId === r.id
+                            ? "..."
+                            : r.payment === "pago"
+                            ? "Marcar pendente"
+                            : "Marcar paga"}
+                        </Button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-20 text-center text-muted-foreground font-medium italic">
+                  <td colSpan={10} className="py-20 text-center text-muted-foreground font-medium italic">
                     Selecione os meses acima para gerar o relatório.
                   </td>
                 </tr>
@@ -274,11 +384,15 @@ function Relatorio() {
           </table>
         </div>
         {rows.length > 0 && (
-          <div className="border-t border-border bg-accent px-8 py-3 flex justify-between items-center">
+          <div className="border-t border-border bg-accent px-8 py-3 flex flex-wrap justify-between items-center gap-2">
             <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
+            {!isAdmin && (
+              <p className="text-[10px] text-muted-foreground">
+                Somente o administrador pode marcar faturas como pagas.
+              </p>
+            )}
           </div>
         )}
       </Card>
