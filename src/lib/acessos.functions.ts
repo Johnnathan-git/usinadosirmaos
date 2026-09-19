@@ -12,12 +12,17 @@ type ManagedUser = {
 };
 
 async function isBootstrapMode() {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { count } = await supabaseAdmin
-    .from("user_roles")
-    .select("user_id", { count: "exact", head: true })
-    .eq("role", "admin");
-  return (count ?? 0) === 0;
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { count } = await supabaseAdmin
+      .from("user_roles")
+      .select("user_id", { count: "exact", head: true })
+      .eq("role", "admin");
+    return (count ?? 0) === 0;
+  } catch (e) {
+    console.error("[acessos] isBootstrapMode falhou:", e);
+    return false;
+  }
 }
 
 async function isEffectiveAdmin(supabase: any, userId: string) {
