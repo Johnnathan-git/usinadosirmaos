@@ -629,9 +629,6 @@ function InvoiceDialog({
 
           <div className="rounded-xl border border-border bg-accent/40 p-4 space-y-3">
             <Label className="text-foreground font-semibold">Status de pagamento</Label>
-            <p className="text-[11px] text-muted-foreground">
-              Integra automaticamente com o Relatório do Cliente.
-            </p>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
