@@ -195,8 +195,8 @@ function Resultado() {
                 <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent/40">
                   <td className="px-3 py-2.5 font-medium">{r.mes}</td>
                   <td className="px-3 py-2.5 num text-red-500">{brl(r.sem)}</td>
-                  <td className="px-3 py-2.5 num text-emerald-600 font-semibold">{brl(r.com)}</td>
-                  <td className="px-3 py-2.5 num font-semibold text-primary">{brl(r.economia)}</td>
+                  <td className="px-3 py-2.5 num font-semibold text-primary">{brl(r.com)}</td>
+                  <td className="px-3 py-2.5 num text-emerald-600 font-semibold">{brl(r.economia)}</td>
                   <td className="px-3 py-2.5 num">{r.pct}%</td>
                 </tr>
               ))}
