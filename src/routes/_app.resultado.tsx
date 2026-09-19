@@ -166,9 +166,11 @@ function Resultado() {
           className="overflow-hidden border-0 p-4 text-white"
           style={{ background: "linear-gradient(135deg, #0f766e 0%, #115e59 50%, #134e4a 100%)" }}
         >
-          <div className="text-[10px] font-bold uppercase tracking-widest text-white/80">Economia total gerada</div>
-          <div className="mt-1 text-xl font-bold num text-white sm:text-2xl">
-            {brl(totalEconomia)}
+          <div className="text-center">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-white/80">Economia total gerada</div>
+            <div className="mt-1 text-xl font-bold num text-white sm:text-2xl">
+              {brl(totalEconomia)}
+            </div>
           </div>
         </Card>
       )}
