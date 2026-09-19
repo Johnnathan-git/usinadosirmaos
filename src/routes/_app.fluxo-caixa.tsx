@@ -113,19 +113,15 @@ function Fluxo() {
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
-      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+    <div className="mx-auto max-w-5xl space-y-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Fluxo de Caixa
-          </h1>
-          <p className="text-sm font-medium text-muted-foreground">
-            Gestão de receitas e despesas operacionais
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Fluxo de Caixa</h1>
+          <p className="text-sm text-muted-foreground">Gestão de receitas e despesas operacionais</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={monthKey} onValueChange={setMonthKey}>
-            <SelectTrigger className="w-full sm:w-40 bg-accent border-border text-foreground">
+            <SelectTrigger className="w-36 bg-accent border-border text-foreground">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -141,41 +137,37 @@ function Fluxo() {
           </Select>
           <Button
             onClick={() => setNewOpen(true)}
-            className="flex-1 gap-2 bg-primary hover:bg-primary/90 text-primary-foreground sm:flex-none font-bold"
+            className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
           >
             <Plus className="h-4 w-4" /> Nova Despesa
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
-        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2F6F62" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Lucro bruto
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <Card className="glass-card p-4" style={{ borderTop: "3px solid #2F6F62" }}>
+          <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <TrendingUp className="h-3.5 w-3.5 text-[#2F6F62]" /> Lucro bruto
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">{brl(lucroBruto)}</div>
+          <div className="text-2xl font-bold text-foreground num">{brl(lucroBruto)}</div>
         </Card>
-        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #D64545" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total Despesas Lançadas
+        <Card className="glass-card p-4" style={{ borderTop: "3px solid #D64545" }}>
+          <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <TrendingDown className="h-3.5 w-3.5 text-[#D64545]" /> Total Despesas Lançadas
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">
-            {brl(totalDespesasLancadas)}
-          </div>
+          <div className="text-2xl font-bold text-foreground num">{brl(totalDespesasLancadas)}</div>
         </Card>
-        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro líquido do mês
+        <Card className="glass-card p-4" style={{ borderTop: "3px solid #2E5C8A" }}>
+          <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <DollarSign className="h-3.5 w-3.5 text-[#2E5C8A]" /> Lucro líquido do mês
           </div>
-          <div className="text-xl sm:text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">
-            Lucro bruto − Despesas lançadas
-          </div>
+          <div className="text-2xl font-bold text-foreground num">{brl(lucro)}</div>
+          <div className="mt-1 text-[10px] text-muted-foreground">Lucro bruto − Despesas</div>
         </Card>
       </div>
 
-      <Card className="glass-card p-4 sm:p-6">
-        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">Faturas dos clientes</h2>
+      <Card className="glass-card p-4">
+        <h2 className="mb-3 text-base font-semibold text-foreground">Faturas dos clientes</h2>
         {monthInvoices.length === 0 && (
           <p className="text-sm text-muted-foreground">Nenhuma fatura neste mês.</p>
         )}
@@ -186,41 +178,42 @@ function Fluxo() {
             return (
               <div
                 key={inv.id}
-                className="flex flex-col gap-2 py-4 sm:flex-row sm:items-start sm:justify-between"
+                className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                     style={{ backgroundColor: client?.color ?? "#64748B" }}
                   >
                     {initial(client?.name ?? "?")}
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-bold text-foreground truncate">{client?.name ?? "—"}</span>
+                      <span className="text-sm font-semibold text-foreground truncate">
+                        {client?.name ?? "—"}
+                      </span>
                       {isInvoicePaid(inv.notes) ? (
-                        <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
+                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">
                           Pago
                         </span>
                       ) : (
-                        <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">
                           Pendente
                         </span>
                       )}
                     </div>
-                    <div className="text-xs font-medium text-muted-foreground">{monthLabel(monthDate)}</div>
+                    <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
-                <div className="text-left sm:text-right text-sm sm:pl-0">
-                  <div className="text-muted-foreground font-bold">
-                    Lucro bruto: <span className="font-bold text-primary num">{brl(profit)}</span>
+                <div className="text-left sm:text-right text-sm">
+                  <div className="text-muted-foreground">
+                    Lucro bruto:{" "}
+                    <span className="font-semibold text-primary num">{brl(profit)}</span>
                   </div>
-                  <div className="text-muted-foreground text-xs">
+                  <div className="text-xs text-muted-foreground">
                     Recebido: <span className="num">{brl(Number(inv.client_pays))}</span>
-                  </div>
-                  <div className="text-muted-foreground text-xs">
-                    Fat. concessionária:{" "}
-                    <span className="num">{brl(Number(inv.distributor_invoice))}</span>
+                    {" · "}
+                    Conc.: <span className="num">{brl(Number(inv.distributor_invoice))}</span>
                   </div>
                 </div>
               </div>
@@ -229,52 +222,52 @@ function Fluxo() {
         </div>
       </Card>
 
-      <Card className="glass-card p-4 sm:p-6">
-        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">
+      <Card className="glass-card p-4">
+        <h2 className="mb-3 text-base font-semibold text-foreground">
           Despesas lançadas — {monthLabel(monthDate)}
         </h2>
         {monthExpenses.length === 0 && (
           <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>
         )}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {monthExpenses.map((e) => (
             <div
               key={e.id}
-              className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start rounded-lg border border-border p-3 sm:p-4 hover:bg-accent transition-colors zebra-stripe"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 hover:bg-accent/50 transition-colors"
             >
-              <div className="min-w-0">
-                <div className="truncate font-bold text-foreground">{e.description}</div>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  <span className="inline-block rounded-md bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-medium text-foreground truncate">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
                     {e.category}
                   </span>
                   {e.installment_total ? (
-                    <span className="inline-block rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                    <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium uppercase text-primary">
                       Parcela {e.installment_no}/{e.installment_total}
                     </span>
                   ) : null}
                 </div>
               </div>
-              <div className="flex items-center justify-between sm:justify-end gap-3">
-                <span className="whitespace-nowrap font-bold text-red-400 num-lg">{brl(Number(e.amount))}</span>
-                <div className="flex gap-2">
-                  <button
-                    aria-label="Editar"
-                    onClick={() => setEdit(e)}
-                    className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button>
-                  <button
-                    aria-label="Excluir"
-                    onClick={() =>
-                      deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))
-                    }
-                    className="text-muted-foreground hover:text-red-400 transition-colors p-1"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-red-500 num whitespace-nowrap">
+                  {brl(Number(e.amount))}
+                </span>
+                <button
+                  aria-label="Editar"
+                  onClick={() => setEdit(e)}
+                  className="p-1.5 text-muted-foreground hover:text-foreground"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  aria-label="Excluir"
+                  onClick={() =>
+                    deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))
+                  }
+                  className="p-1.5 text-muted-foreground hover:text-red-500"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
           ))}
