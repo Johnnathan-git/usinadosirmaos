@@ -468,11 +468,13 @@ function InvoiceDialog({
     }
   }, [invoice, client.public_lighting_value]);
 
+  const parseNum = (v: string) => Number(String(v).replace(/\./g, "").replace(",", ".")) || 0;
+
   const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
-    const c = Number(consumption) || 0;
-    const p = Number(price) || 0;
-    const l = Number(lighting) || 0;
-    const j = Number(fine) || 0;
+    const c = parseNum(consumption);
+    const p = parseNum(price);
+    const l = parseNum(lighting);
+    const j = parseNum(fine);
     const sUsina = c * p + l + j;
     const discount = (client.discount_pct || 30) / 100;
     const cPaga = sUsina * (1 - discount);
@@ -590,9 +592,11 @@ function InvoiceDialog({
             <div>
               <Label>Iluminação pública</Label>
               <Input
-                value={f.public_lighting}
-                onChange={(e) => handleCalcChange("public_lighting", e.target.value)}
-                className="mt-1"
+                value={Number(f.public_lighting || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                readOnly
+                disabled
+                title="Definido nas configurações do cliente"
+                className="mt-1 bg-accent text-muted-foreground"
               />
             </div>
             <div>
@@ -607,15 +611,11 @@ function InvoiceDialog({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Valor S/ Usina</Label>
-              <Input value={f.value_without_plant} readOnly className="mt-1 bg-accent" />
+              <Input value={f.value_without_plant} readOnly disabled className="mt-1 bg-accent text-muted-foreground" />
             </div>
             <div>
-              <Label>Cliente paga *</Label>
-              <Input
-                value={f.client_pays}
-                onChange={(e) => setF((prev) => ({ ...prev, client_pays: e.target.value }))}
-                className="mt-1"
-              />
+              <Label>Cliente paga ({client.discount_pct ?? 30}% desc.)</Label>
+              <Input value={f.client_pays} readOnly disabled className="mt-1 bg-accent text-muted-foreground" />
             </div>
           </div>
           <div>
