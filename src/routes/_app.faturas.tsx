@@ -468,7 +468,19 @@ function InvoiceDialog({
     }
   }, [invoice, client.public_lighting_value]);
 
-  const parseNum = (v: string) => Number(String(v).replace(/\./g, "").replace(",", ".")) || 0;
+  const parseNum = (value: string | number) => {
+    if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+
+    const normalized = String(value).trim().replace(/\s/g, "");
+    if (!normalized) return 0;
+
+    // Entradas pt-BR usam vírgula decimal; valores vindos do banco usam ponto decimal.
+    const decimalValue = normalized.includes(",")
+      ? normalized.replace(/\./g, "").replace(",", ".")
+      : normalized;
+    const parsed = Number(decimalValue);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
   const fmtBR = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
   const computeRaw = (consumption: string, price: string, lighting: string, fine: string) => {
