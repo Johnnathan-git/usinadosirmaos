@@ -513,13 +513,13 @@ function InvoiceDialog({
       client_id: client.id,
       uc_number: client.uc_number,
       reference_date: `${f.reference_month}-01`,
-      consumption_kw: Number(f.consumption_kw),
-      price_kw: Number(f.price_kw),
-      public_lighting: Number(f.public_lighting || 0),
-      interest_fine: Number(f.interest_fine || 0),
-      value_without_plant: Number(f.value_without_plant || 0),
-      client_pays: Number(f.client_pays),
-      distributor_invoice: Number(f.distributor_invoice || 0),
+      consumption_kw: parseNum(f.consumption_kw),
+      price_kw: parseNum(f.price_kw),
+      public_lighting: parseNum(f.public_lighting || "0"),
+      interest_fine: parseNum(f.interest_fine || "0"),
+      value_without_plant: parseNum(f.value_without_plant || "0"),
+      client_pays: parseNum(f.client_pays),
+      distributor_invoice: parseNum(f.distributor_invoice || "0"),
       notes: withPaymentTag(f.notes, f.payment_status),
       attachment_url: f.attachment_url || null,
     };
@@ -769,18 +769,18 @@ function HistoryDialog({ client, onClose }: { client: Client; onClose: () => voi
             ) : invoices.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma fatura lançada.</p>
             ) : (
-              <table className="w-full text-sm min-w-[900px]">
+              <table className="w-full text-[12px] table-fixed">
                 <thead className="sticky top-0 bg-accent">
-                  <tr className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    <th className="px-2 py-2 text-left font-semibold">Mês</th>
-                    <th className="px-2 py-2 text-right font-semibold">Consumo</th>
-                    <th className="px-2 py-2 text-right font-semibold">S/ Usina</th>
-                    <th className="px-2 py-2 text-right font-semibold">Cliente Pagou</th>
-                    <th className="px-2 py-2 text-right font-semibold text-[#D64545]">Concessionária</th>
-                    <th className="px-2 py-2 text-right font-semibold text-emerald-500">Lucro</th>
-                    <th className="px-2 py-2 text-center font-semibold">Anexo</th>
-                    <th className="px-2 py-2 text-center font-semibold">Pagamento</th>
-                    <th></th>
+                  <tr className="text-[9px] uppercase tracking-wider text-muted-foreground">
+                    <th className="px-1.5 py-1.5 text-left font-semibold w-[15%]">Mês</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[10%]">Consumo</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[12%]">S/ Usina</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold w-[13%]">Cliente</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold text-[#D64545] w-[13%]">Concession.</th>
+                    <th className="px-1.5 py-1.5 text-right font-semibold text-emerald-500 w-[12%]">Lucro</th>
+                    <th className="px-1.5 py-1.5 text-center font-semibold w-[6%]">Anexo</th>
+                    <th className="px-1.5 py-1.5 text-center font-semibold w-[11%]">Status</th>
+                    <th className="w-[8%]"></th>
                   </tr>
                 </thead>
                 <tbody>
