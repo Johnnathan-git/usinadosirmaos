@@ -1,14 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Paperclip, CheckCircle2, Clock, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
@@ -22,14 +20,6 @@ type Client = { id: string; name: string; phone: string | null; discount_pct: nu
 function paymentStatus(notes: string | null | undefined): "pago" | "pendente" {
   if (notes?.includes("[[status:pendente]]")) return "pendente";
   return "pago";
-}
-
-function withPaymentStatus(notes: string | null | undefined, status: "pago" | "pendente"): string | null {
-  const cleaned = (notes || "").replace(/\[\[status:(pago|pendente)\]\]/g, "").trim();
-  if (status === "pendente") {
-    return cleaned ? `${cleaned} [[status:pendente]]` : "[[status:pendente]]";
-  }
-  return cleaned || null;
 }
 
 const q = queryOptions({
@@ -46,21 +36,19 @@ const q = queryOptions({
     if (i.error) throw i.error;
     if (c.error) throw c.error;
     let restrictedClientId: string | null = null;
-    let isAdmin = false;
     const uid = sess.data.session?.user?.id;
     if (uid) {
       const [{ data: link }, { data: roles }] = await Promise.all([
         supabase.from("user_clients").select("client_id").eq("user_id", uid).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", uid),
       ]);
-      isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
+      const isAdmin = (roles ?? []).some((r: { role: string }) => r.role === "admin");
       if (!isAdmin && link?.client_id) restrictedClientId = link.client_id as string;
     }
     return {
       invoices: (i.data ?? []) as Invoice[],
       clients: (c.data ?? []) as Client[],
       restrictedClientId,
-      isAdmin,
     };
   },
 });
@@ -117,15 +105,12 @@ function toRow(inv: Invoice, client?: Client): Row {
 }
 
 function Relatorio() {
-  const qc = useQueryClient();
   const { data } = useSuspenseQuery(q);
   const locked = data.restrictedClientId;
-  const isAdmin = data.isAdmin;
   const clients = data.clients.filter((c) => !locked || c.id === locked);
   const [clientId, setClientId] = useState<string>(locked ?? clients[0]?.id ?? "");
   const [months, setMonths] = useState<string[]>([]);
   const [rows, setRows] = useState<Row[]>([]);
-  const [savingId, setSavingId] = useState<string | null>(null);
 
   const client = clients.find((c) => c.id === clientId);
   const clientInvoices = useMemo(
@@ -157,24 +142,6 @@ function Relatorio() {
 
   function edit(id: string, field: keyof Row, value: string) {
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
-  }
-
-  async function setPaid(invoiceId: string, status: "pago" | "pendente") {
-    if (!isAdmin) {
-      toast.error("Apenas o administrador pode alterar o status de pagamento.");
-      return;
-    }
-    setSavingId(invoiceId);
-    const inv = data.invoices.find((i) => i.id === invoiceId);
-    const nextNotes = withPaymentStatus(inv?.notes, status);
-    const { error } = await supabase.from("invoices").update({ notes: nextNotes }).eq("id", invoiceId);
-    setSavingId(null);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success(status === "pago" ? "Fatura marcada como paga" : "Fatura marcada como pendente");
-    qc.invalidateQueries({ queryKey: ["relatorio-page"] });
   }
 
   return (
@@ -344,32 +311,15 @@ function Relatorio() {
                     )}
                   </td>
                   <td className="border border-border p-2 text-center align-middle">
-                    <div className="flex flex-col items-center gap-1.5">
-                      {r.payment === "pago" ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
-                          <CheckCircle2 className="h-3 w-3" /> Pago
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-800">
-                          <Clock className="h-3 w-3" /> Pendente
-                        </span>
-                      )}
-                      {isAdmin && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          disabled={savingId === r.id}
-                          className="h-7 text-[10px] font-bold uppercase px-2"
-                          onClick={() => setPaid(r.id, r.payment === "pago" ? "pendente" : "pago")}
-                        >
-                          {savingId === r.id
-                            ? "..."
-                            : r.payment === "pago"
-                            ? "Marcar pendente"
-                            : "Marcar paga"}
-                        </Button>
-                      )}
-                    </div>
+                    {r.payment === "pago" ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
+                        <CheckCircle2 className="h-3 w-3" /> Pago
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-800">
+                        <Clock className="h-3 w-3" /> Pendente
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -388,11 +338,9 @@ function Relatorio() {
             <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
-            {!isAdmin && (
-              <p className="text-[10px] text-muted-foreground">
-                Somente o administrador pode marcar faturas como pagas.
-              </p>
-            )}
+            <p className="text-[10px] text-muted-foreground">
+              Status de pagamento é definido em Faturas e Clientes (lançar / editar).
+            </p>
           </div>
         )}
       </Card>
