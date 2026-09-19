@@ -20,7 +20,14 @@ import { toast } from "sonner";
 type Invoice = {
   id: string; client_id: string; reference_date: string;
   client_pays: number; distributor_invoice: number;
+  notes: string | null;
 };
+
+function isInvoicePaid(notes: string | null | undefined): boolean {
+  // sem tag [[status:pendente]] = pago (histórico)
+  return !notes?.includes("[[status:pendente]]");
+}
+
 type Expense = {
   id: string; reference_date: string; category: string;
   description: string; amount: number; notes: string | null;
@@ -34,7 +41,7 @@ const fluxoQ = queryOptions({
   queryKey: ["fluxo-page"],
   queryFn: async () => {
     const [i, e, c] = await Promise.all([
-      supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice"),
+      supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice,notes"),
       supabase.from("expenses").select("*").order("reference_date", { ascending: false }),
       supabase.from("clients").select("id,name,color"),
     ]);
@@ -91,11 +98,13 @@ function Fluxo() {
   const monthInvoices = data.invoices.filter(i => i.reference_date.startsWith(monthKey));
   const monthExpenses = data.expenses.filter(e => e.reference_date.startsWith(monthKey));
 
-  const receitas = monthInvoices.reduce((a, i) => a + Number(i.client_pays), 0);
+  const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
+  // Receita só conta fatura paga (não pendente)
+  const lucroBruto = paidInvoices.reduce((a, i) => a + Number(i.client_pays), 0);
   const despesasOperacionais = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
   const faturasDistribuidora = monthInvoices.reduce((a, i) => a + Number(i.distributor_invoice), 0);
-  const despesas = despesasOperacionais + faturasDistribuidora;
-  const lucro = receitas - despesas;
+  const totalDespesasLancadas = despesasOperacionais + faturasDistribuidora;
+  const lucro = lucroBruto - totalDespesasLancadas;
 
   const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
@@ -126,15 +135,15 @@ function Fluxo() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="glass-card p-6" style={{ borderTop: "3px solid #2F6F62" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Total de Receitas
+            <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Lucro bruto
           </div>
-          <div className="text-2xl font-bold text-foreground num-lg">{brl(receitas)}</div>
+          <div className="text-2xl font-bold text-foreground num-lg">{brl(lucroBruto)}</div>
         </Card>
         <Card className="glass-card p-6" style={{ borderTop: "3px solid #D64545" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total de Despesas
+            <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total Despesas Lançadas
           </div>
-          <div className="text-2xl font-bold text-foreground num-lg">{brl(despesas)}</div>
+          <div className="text-2xl font-bold text-foreground num-lg">{brl(totalDespesasLancadas)}</div>
           <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">
             Operacionais {brl(despesasOperacionais)} + Concessionária {brl(faturasDistribuidora)}
           </div>
@@ -144,7 +153,7 @@ function Fluxo() {
             <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
           </div>
           <div className="text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">Receitas − (operacionais + concessionária)</div>
+          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">Lucro bruto − Total Despesas Lançadas</div>
         </Card>
       </div>
 
@@ -165,7 +174,14 @@ function Fluxo() {
                     {initial(client?.name ?? "?")}
                   </div>
                   <div>
-                    <div className="font-bold text-foreground">{client?.name ?? "—"}</div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-bold text-foreground">{client?.name ?? "—"}</span>
+                      {isInvoicePaid(inv.notes) ? (
+                        <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">Pago</span>
+                      ) : (
+                        <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">Pendente</span>
+                      )}
+                    </div>
                     <div className="text-xs font-medium text-muted-foreground">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
