@@ -183,24 +183,21 @@ function Relatorio() {
       </Card>
 
       {clientInvoices.length > 0 && (
-        <div className="no-print grid gap-3 sm:grid-cols-2">
-          <Card className="glass-card p-4 flex items-center gap-3 border-border">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-              <Clock className="h-5 w-5" />
+        <div className="no-print grid grid-cols-2 gap-2 sm:gap-3">
+          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Faturas pendentes</p>
-              <p className="text-xl font-bold text-amber-700 tabular-nums">{pendingCount}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">
-                de {clientInvoices.length} fatura{clientInvoices.length === 1 ? "" : "s"} lançada{clientInvoices.length === 1 ? "" : "s"}
-              </p>
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
+              <p className="text-lg font-bold text-amber-700 tabular-nums">{pendingCount}</p>
             </div>
           </Card>
-          <Card className="glass-card p-4 flex items-center gap-3 border-border">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
-              <AlertCircle className="h-5 w-5" />
+          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
+            <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
+              <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Situação</p>
               <p className={`text-sm font-bold ${pendingCount > 0 ? "text-rose-700" : "text-emerald-700"}`}>
                 {pendingCount > 0 ? "Há pendências" : "Tudo em dia"}
