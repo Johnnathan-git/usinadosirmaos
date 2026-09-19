@@ -338,9 +338,6 @@ function Relatorio() {
             <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
               {rows.length} {rows.length === 1 ? "mês selecionado" : "meses selecionados"}
             </div>
-            <p className="text-[10px] text-muted-foreground">
-              Status de pagamento é definido em Faturas e Clientes (lançar / editar).
-            </p>
           </div>
         )}
       </Card>
