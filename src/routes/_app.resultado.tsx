@@ -69,14 +69,30 @@ function Resultado() {
   const locked = data.restrictedClientId;
   const [clientId, setClientId] = useState<string>(locked ?? "all");
   useEffect(() => { if (locked) setClientId(locked); }, [locked]);
+
   const monthOptions = useMemo(() => {
     const set = new Set<string>();
     data.invoices
-      .filter(i => !locked || i.client_id === locked)
-      .forEach(i => set.add(i.reference_date.slice(0, 7)));
+      .filter((i) => {
+        if (locked && i.client_id !== locked) return false;
+        // Só meses com fatura do cliente selecionado (ou todos se "all")
+        if (clientId !== "all" && i.client_id !== clientId) return false;
+        return true;
+      })
+      .forEach((i) => set.add(i.reference_date.slice(0, 7)));
     return [...set].sort().reverse();
-  }, [data, locked]);
-  const [selectedMonths, setSelectedMonths] = useState<string[]>(monthOptions.slice(0, 1));
+  }, [data, locked, clientId]);
+
+  const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
+
+  // Ao trocar cliente (ou lista de meses), mantém só meses válidos; se vazio, seleciona o mais recente
+  useEffect(() => {
+    setSelectedMonths((prev) => {
+      const valid = prev.filter((m) => monthOptions.includes(m));
+      if (valid.length > 0) return valid;
+      return monthOptions.slice(0, 1);
+    });
+  }, [clientId, monthOptions]);
 
   const filtered = data.invoices.filter(inv => {
     const mk = inv.reference_date.slice(0, 7);
