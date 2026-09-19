@@ -99,11 +99,14 @@ function Fluxo() {
   const monthExpenses = data.expenses.filter(e => e.reference_date.startsWith(monthKey));
 
   const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
-  // Receita só conta fatura paga (não pendente)
-  const lucroBruto = paidInvoices.reduce((a, i) => a + Number(i.client_pays), 0);
-  const despesasOperacionais = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
-  const faturasDistribuidora = monthInvoices.reduce((a, i) => a + Number(i.distributor_invoice), 0);
-  const totalDespesasLancadas = despesasOperacionais + faturasDistribuidora;
+  // Lucro bruto = soma (recebido − concessionária) só de faturas PAGAS
+  const lucroBruto = paidInvoices.reduce(
+    (a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)),
+    0,
+  );
+  // Despesas lançadas = só despesas operacionais (lista "Despesas lançadas")
+  const totalDespesasLancadas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
+  // Lucro líquido do mês
   const lucro = lucroBruto - totalDespesasLancadas;
 
   const clientName = (id: string) => data.clients.find(c => c.id === id)?.name ?? "—";
@@ -144,16 +147,13 @@ function Fluxo() {
             <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total Despesas Lançadas
           </div>
           <div className="text-2xl font-bold text-foreground num-lg">{brl(totalDespesasLancadas)}</div>
-          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">
-            Operacionais {brl(despesasOperacionais)} + Concessionária {brl(faturasDistribuidora)}
-          </div>
         </Card>
         <Card className="glass-card p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
           <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-            <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro do Mês
+            <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro líquido do mês
           </div>
           <div className="text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
-          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">Lucro bruto − Total Despesas Lançadas</div>
+          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">Lucro bruto − Despesas lançadas</div>
         </Card>
       </div>
 
