@@ -1,1 +1,501 @@
-PLACEHOLDER
+import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery, queryOptions, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import { Plus, TrendingUp, TrendingDown, DollarSign, Pencil, Trash2 } from "lucide-react";
+import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
+import { Suspense, useMemo, useState } from "react";
+import { toast } from "sonner";
+
+type Invoice = {
+  id: string; client_id: string; reference_date: string;
+  client_pays: number; distributor_invoice: number;
+  notes: string | null;
+};
+
+function isInvoicePaid(notes: string | null | undefined): boolean {
+  return !notes?.includes("[[status:pendente]]");
+}
+
+type Expense = {
+  id: string; reference_date: string; category: string;
+  description: string; amount: number; notes: string | null;
+  installment_group?: string | null;
+  installment_no?: number | null;
+  installment_total?: number | null;
+};
+type Client = { id: string; name: string; color: string };
+
+const fluxoQ = queryOptions({
+  queryKey: ["fluxo-page"],
+  staleTime: 30_000,
+  queryFn: async () => {
+    const [i, e, c] = await Promise.all([
+      supabase.from("invoices").select("id,client_id,reference_date,client_pays,distributor_invoice,notes"),
+      supabase
+        .from("expenses")
+        .select("id,reference_date,category,description,amount,notes,installment_group,installment_no,installment_total")
+        .order("reference_date", { ascending: false }),
+      supabase.from("clients").select("id,name,color"),
+    ]);
+    if (i.error) throw i.error;
+    if (e.error) throw e.error;
+    if (c.error) throw c.error;
+    return {
+      invoices: (i.data ?? []) as Invoice[],
+      expenses: (e.data ?? []) as Expense[],
+      clients: (c.data ?? []) as Client[],
+    };
+  },
+});
+
+export const Route = createFileRoute("/_app/fluxo-caixa")({
+  ssr: false,
+  component: Page,
+  head: () => ({
+    meta: [
+      { title: "Fluxo de Caixa — Usina dos Irmãos" },
+      { name: "description", content: "Controle mensal de receitas e despesas." },
+    ],
+  }),
+});
+
+function Page() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <Fluxo />
+    </Suspense>
+  );
+}
+
+function Fluxo() {
+  const { data } = useSuspenseQuery(fluxoQ);
+  const qc = useQueryClient();
+  const now = new Date();
+  const [monthKey, setMonthKey] = useState(
+    `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`,
+  );
+  const [newOpen, setNewOpen] = useState(false);
+  const [edit, setEdit] = useState<Expense | null>(null);
+
+  const months = useMemo(() => {
+    const set = new Set<string>();
+    for (let i = -6; i <= 6; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+      set.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
+    }
+    data.invoices.forEach((inv) => set.add(inv.reference_date.slice(0, 7)));
+    data.expenses.forEach((e) => set.add(e.reference_date.slice(0, 7)));
+    return [...set].sort().reverse();
+  }, [data]);
+
+  const monthInvoices = data.invoices.filter((i) => i.reference_date.startsWith(monthKey));
+  const monthExpenses = data.expenses.filter((e) => e.reference_date.startsWith(monthKey));
+
+  const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
+  const lucroBruto = paidInvoices.reduce(
+    (a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)),
+    0,
+  );
+  const totalDespesasLancadas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
+  const lucro = lucroBruto - totalDespesasLancadas;
+
+  const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="truncate text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Fluxo de Caixa
+          </h1>
+          <p className="text-sm font-medium text-muted-foreground">
+            Gestão de receitas e despesas operacionais
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Select value={monthKey} onValueChange={setMonthKey}>
+            <SelectTrigger className="w-full sm:w-40 bg-accent border-border text-foreground">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {months.map((m) => {
+                const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
+                return (
+                  <SelectItem key={m} value={m}>
+                    {monthLabel(d)}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+          <Button
+            onClick={() => setNewOpen(true)}
+            className="flex-1 gap-2 bg-primary hover:bg-primary/90 text-primary-foreground sm:flex-none font-bold"
+          >
+            <Plus className="h-4 w-4" /> Nova Despesa
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3">
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2F6F62" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <TrendingUp className="h-4 w-4 text-[#2F6F62]" /> Lucro bruto
+          </div>
+          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">{brl(lucroBruto)}</div>
+        </Card>
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #D64545" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <TrendingDown className="h-4 w-4 text-[#D64545]" /> Total Despesas Lançadas
+          </div>
+          <div className="text-xl sm:text-2xl font-bold text-foreground num-lg">
+            {brl(totalDespesasLancadas)}
+          </div>
+        </Card>
+        <Card className="glass-card p-4 sm:p-6" style={{ borderTop: "3px solid #2E5C8A" }}>
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <DollarSign className="h-4 w-4 text-[#2E5C8A]" /> Lucro líquido do mês
+          </div>
+          <div className="text-xl sm:text-2xl font-bold num-lg text-foreground">{brl(lucro)}</div>
+          <div className="mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tight">
+            Lucro bruto − Despesas lançadas
+          </div>
+        </Card>
+      </div>
+
+      <Card className="glass-card p-4 sm:p-6">
+        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">Faturas dos clientes</h2>
+        {monthInvoices.length === 0 && (
+          <p className="text-sm text-muted-foreground">Nenhuma fatura neste mês.</p>
+        )}
+        <div className="divide-y divide-border">
+          {monthInvoices.map((inv) => {
+            const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
+            const client = data.clients.find((c) => c.id === inv.client_id);
+            return (
+              <div
+                key={inv.id}
+                className="flex flex-col gap-2 py-4 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground shadow-sm"
+                    style={{ backgroundColor: client?.color ?? "#64748B" }}
+                  >
+                    {initial(client?.name ?? "?")}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-bold text-foreground truncate">{client?.name ?? "—"}</span>
+                      {isInvoicePaid(inv.notes) ? (
+                        <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
+                          Pago
+                        </span>
+                      ) : (
+                        <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
+                          Pendente
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs font-medium text-muted-foreground">{monthLabel(monthDate)}</div>
+                  </div>
+                </div>
+                <div className="text-left sm:text-right text-sm sm:pl-0">
+                  <div className="text-muted-foreground font-bold">
+                    Lucro bruto: <span className="font-bold text-primary num">{brl(profit)}</span>
+                  </div>
+                  <div className="text-muted-foreground text-xs">
+                    Recebido: <span className="num">{brl(Number(inv.client_pays))}</span>
+                  </div>
+                  <div className="text-muted-foreground text-xs">
+                    Fat. concessionária:{" "}
+                    <span className="num">{brl(Number(inv.distributor_invoice))}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      <Card className="glass-card p-4 sm:p-6">
+        <h2 className="mb-4 sm:mb-6 text-base sm:text-lg font-bold text-foreground">
+          Despesas lançadas — {monthLabel(monthDate)}
+        </h2>
+        {monthExpenses.length === 0 && (
+          <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>
+        )}
+        <div className="space-y-3">
+          {monthExpenses.map((e) => (
+            <div
+              key={e.id}
+              className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start rounded-lg border border-border p-3 sm:p-4 hover:bg-accent transition-colors zebra-stripe"
+            >
+              <div className="min-w-0">
+                <div className="truncate font-bold text-foreground">{e.description}</div>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  <span className="inline-block rounded-md bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {e.category}
+                  </span>
+                  {e.installment_total ? (
+                    <span className="inline-block rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                      Parcela {e.installment_no}/{e.installment_total}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+              <div className="flex items-center justify-between sm:justify-end gap-3">
+                <span className="whitespace-nowrap font-bold text-red-400 num-lg">{brl(Number(e.amount))}</span>
+                <div className="flex gap-2">
+                  <button
+                    aria-label="Editar"
+                    onClick={() => setEdit(e)}
+                    className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button
+                    aria-label="Excluir"
+                    onClick={() =>
+                      deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))
+                    }
+                    className="text-muted-foreground hover:text-red-400 transition-colors p-1"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {(newOpen || edit) && (
+        <ExpenseDialog
+          expense={edit}
+          onClose={() => {
+            setNewOpen(false);
+            setEdit(null);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+async function deleteExpense(e: Expense, onDone: () => void) {
+  const isParcel = Boolean(e.installment_group && (e.installment_total ?? 0) > 1);
+  if (isParcel) {
+    const all = confirm(
+      `Esta é a parcela ${e.installment_no}/${e.installment_total}.\n\nOK = excluir TODAS as parcelas desta compra.\nCancelar = excluir somente esta parcela.`,
+    );
+    const q = all
+      ? supabase.from("expenses").delete().eq("installment_group", e.installment_group!)
+      : supabase.from("expenses").delete().eq("id", e.id);
+    const { error } = await q;
+    if (error) return toast.error(error.message);
+    toast.success(all ? "Parcelas excluídas" : "Parcela excluída");
+  } else {
+    if (!confirm("Excluir esta despesa?")) return;
+    const { error } = await supabase.from("expenses").delete().eq("id", e.id);
+    if (error) return toast.error(error.message);
+    toast.success("Despesa excluída");
+  }
+  onDone();
+}
+
+function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose: () => void }) {
+  const qc = useQueryClient();
+  const today = new Date().toISOString().slice(0, 10);
+  const [f, setF] = useState({
+    reference_date: expense?.reference_date ?? today,
+    category: expense?.category ?? EXPENSE_CATEGORIES[0],
+    description: expense?.description ?? "",
+    amount: expense ? String(expense.amount) : "",
+    notes: expense?.notes ?? "",
+  });
+  const [installments, setInstallments] = useState(false);
+  const [parcels, setParcels] = useState("2");
+  const [mode, setMode] = useState<"parcela" | "total">("parcela");
+  const [saving, setSaving] = useState(false);
+
+  async function submit() {
+    if (!f.description.trim() || !f.amount) {
+      toast.error("Preencha descrição e valor");
+      return;
+    }
+    setSaving(true);
+    const payload = {
+      reference_date: f.reference_date,
+      category: f.category,
+      description: f.description.trim(),
+      amount: Number(f.amount),
+      notes: f.notes || null,
+    };
+    let res;
+    if (expense) {
+      res = await supabase.from("expenses").update(payload).eq("id", expense.id);
+    } else if (installments && Number(parcels) > 1) {
+      const n = Math.min(120, Math.max(2, Math.round(Number(parcels))));
+      const total = mode === "total" ? Number(f.amount) : Number(f.amount) * n;
+      const base = Math.floor((total / n) * 100) / 100;
+      const group = crypto.randomUUID();
+      const [y, m] = f.reference_date.slice(0, 7).split("-").map(Number);
+      const rows = Array.from({ length: n }, (_, i) => {
+        const d = new Date(y, m - 1 + i, 1);
+        const amount = i === n - 1 ? Math.round((total - base * (n - 1)) * 100) / 100 : base;
+        return {
+          ...payload,
+          amount,
+          reference_date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`,
+          installment_group: group,
+          installment_no: i + 1,
+          installment_total: n,
+        };
+      });
+      res = await supabase.from("expenses").insert(rows);
+    } else {
+      res = await supabase.from("expenses").insert(payload);
+    }
+    setSaving(false);
+    if (res.error) return toast.error(res.error.message);
+    toast.success(
+      expense
+        ? "Despesa atualizada"
+        : installments
+          ? `${parcels} parcelas lançadas`
+          : "Despesa lançada",
+    );
+    qc.invalidateQueries({ queryKey: ["fluxo-page"] });
+    onClose();
+  }
+
+  return (
+    <Dialog open onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{expense ? "Editar Despesa" : "Nova Despesa"}</DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <Label>{installments ? "Mês da 1ª parcela *" : "Mês de Referência *"}</Label>
+            <Input
+              type="month"
+              value={f.reference_date.slice(0, 7)}
+              onChange={(e) => setF({ ...f, reference_date: `${e.target.value}-01` })}
+            />
+          </div>
+          <div>
+            <Label>Categoria *</Label>
+            <Select value={f.category} onValueChange={(v) => setF({ ...f, category: v })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {EXPENSE_CATEGORIES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="sm:col-span-2">
+            <Label>Descrição *</Label>
+            <Input
+              value={f.description}
+              onChange={(e) => setF({ ...f, description: e.target.value })}
+              placeholder="Ex: Fatura CEMIG maio/25"
+            />
+          </div>
+          {!expense && (
+            <div className="rounded-xl border bg-muted/40 p-3 sm:col-span-2">
+              <label className="flex items-center gap-2 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 accent-rose-500"
+                  checked={installments}
+                  onChange={(e) => setInstallments(e.target.checked)}
+                />
+                Compra parcelada (lançar parcelas futuras)
+              </label>
+              {installments && (
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>Nº de parcelas *</Label>
+                    <Input
+                      type="number"
+                      min={2}
+                      max={120}
+                      inputMode="numeric"
+                      value={parcels}
+                      onChange={(e) => setParcels(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label>O valor informado é</Label>
+                    <Select value={mode} onValueChange={(v) => setMode(v as "parcela" | "total")}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="parcela">Valor de cada parcela</SelectItem>
+                        <SelectItem value="total">Valor total da compra</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <p className="text-xs text-muted-foreground sm:col-span-2">
+                    Serão criados {parcels || 0} lançamentos mensais a partir do mês escolhido.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="sm:col-span-2">
+            <Label>
+              {installments
+                ? mode === "total"
+                  ? "Valor total (R$) *"
+                  : "Valor da parcela (R$) *"
+                : "Valor (R$) *"}
+            </Label>
+            <Input
+              type="number"
+              inputMode="decimal"
+              step="0.01"
+              value={f.amount}
+              onChange={(e) => setF({ ...f, amount: e.target.value })}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <Label>Observações</Label>
+            <Textarea
+              value={f.notes}
+              onChange={(e) => setF({ ...f, notes: e.target.value })}
+              placeholder="Opcional"
+            />
+          </div>
+        </div>
+        <DialogFooter className="flex-col gap-2 sm:flex-row">
+          <Button variant="outline" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button onClick={submit} disabled={saving} className="bg-destructive hover:bg-destructive/90">
+            {expense ? "Salvar" : installments ? "Lançar parcelas" : "Lançar"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
