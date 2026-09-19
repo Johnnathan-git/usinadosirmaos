@@ -110,19 +110,13 @@
 }
 
 .glass-card {
-  @apply rounded-xl border border-border bg-card shadow-sm;
+  @apply rounded-2xl border border-border bg-card shadow-sm;
   box-shadow: var(--card-shadow);
 }
 
 .num, .num-lg {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
-}
-
-.num-lg {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: 700;
 }
 
 .zebra-stripe:nth-child(even) {
@@ -143,7 +137,6 @@
   }
 }
 
-/* Mobile */
 @supports (padding: env(safe-area-inset-bottom)) {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
@@ -156,17 +149,5 @@
   }
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* Notebook / desktop: evita cards e títulos estourados */
-@media (min-width: 768px) {
-  h1 {
-    font-size: 1.75rem !important;
-    line-height: 2.25rem !important;
-  }
-  .num-lg {
-    font-size: 1.5rem !important;
-    line-height: 2rem !important;
   }
 }
