@@ -482,6 +482,7 @@ function InvoiceDialog({
         notes: stripPaymentTag(invoice.notes),
         attachment_url: invoice.attachment_url ?? "",
         payment_status: invoicePaymentStatus(invoice.notes),
+        due_date: invoiceDueDate(invoice.notes),
       });
     }
   }, [invoice, client.public_lighting_value]);
