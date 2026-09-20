@@ -260,11 +260,11 @@ function Relatorio() {
                   <td className="border border-border p-1 text-center align-middle">
                     <div className="flex flex-col items-center justify-center gap-0.5 py-1">
                       {r.payment === "pago" ? (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-emerald-800">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[13px] font-medium uppercase tracking-wide text-emerald-800">
                           <CheckCircle2 className="h-3 w-3" /> Pago
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-amber-800">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[13px] font-medium uppercase tracking-wide text-amber-800">
                           <Clock className="h-3 w-3" /> Pendente
                         </span>
                       )}
