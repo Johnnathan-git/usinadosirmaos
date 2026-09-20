@@ -319,7 +319,7 @@ function Relatorio() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="py-20 text-center text-muted-foreground font-medium italic">
+                  <td colSpan={11} className="py-20 text-center text-muted-foreground font-medium italic">
                     Selecione os meses acima para gerar o relatório.
                   </td>
                 </tr>
