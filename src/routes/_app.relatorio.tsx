@@ -29,6 +29,11 @@ function formatDueBR(iso: string): string {
   const [y, mo, d] = iso.slice(0, 10).split("-");
   return `${d}/${mo}/${y}`;
 }
+function formatDueShortBR(iso: string): string {
+  if (!iso || iso.length < 10) return "";
+  const [_, mo, d] = iso.slice(0, 10).split("-");
+  return `${d}/${mo}`;
+}
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
