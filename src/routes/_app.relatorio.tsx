@@ -190,7 +190,7 @@ function Relatorio() {
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
-              <p className="text-lg font-bold text-amber-700 tabular-nums">{pendingCount} {pendingCount === 1 ? "fatura" : "faturas"}</p>
+              <p className="text-sm font-bold text-amber-700 tabular-nums">{pendingCount} {pendingCount === 1 ? "fatura" : "faturas"}</p>
             </div>
           </Card>
           <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
