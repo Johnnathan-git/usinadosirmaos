@@ -1,1 +1,1 @@
-import { createFileRoute } from "@tanstack/react-router";
+RESTORE_FROM_PARENT
