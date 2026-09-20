@@ -300,7 +300,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </aside>
 
         <main id="app-scroll" className="min-w-0 flex-1 relative z-10 h-full overflow-y-auto overflow-x-hidden overscroll-y-none md:h-auto md:overflow-visible md:overscroll-auto">
-          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-32 sm:px-6 md:px-8 md:pb-10">
+          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] sm:px-6 md:px-8 md:pb-10">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
