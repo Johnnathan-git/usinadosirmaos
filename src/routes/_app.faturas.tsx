@@ -690,6 +690,15 @@ function InvoiceDialog({
                 Pendente
               </button>
             </div>
+            <div>
+              <Label>Venc. Fatura</Label>
+              <Input
+                type="date"
+                value={f.due_date}
+                onChange={(e) => setF((prev) => ({ ...prev, due_date: e.target.value }))}
+                className="mt-1"
+              />
+            </div>
           </div>
 
           <div>
