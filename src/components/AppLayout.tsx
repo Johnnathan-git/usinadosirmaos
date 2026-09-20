@@ -72,6 +72,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
     localStorage.setItem("theme", "light");
   }, []);
 
+  // Move Lovable badge above bottom nav (near Controle), out of content
+  useEffect(() => {
+    const moveBadge = () => {
+      document.querySelectorAll('a[href*="lovable"]').forEach((el) => {
+        const n = el as HTMLElement;
+        n.style.setProperty("bottom", "calc(4.25rem + env(safe-area-inset-bottom, 0px))", "important");
+        n.style.setProperty("right", "0.25rem", "important");
+        n.style.setProperty("left", "auto", "important");
+        n.style.setProperty("z-index", "45", "important");
+      });
+    };
+    moveBadge();
+    const obs = new MutationObserver(moveBadge);
+    obs.observe(document.body, { childList: true, subtree: true });
+    const t = window.setInterval(moveBadge, 1500);
+    return () => {
+      obs.disconnect();
+      window.clearInterval(t);
+    };
+  }, []);
+
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -146,7 +167,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
+    <div className="h-[100dvh] overflow-hidden bg-background text-foreground selection:bg-primary/30 md:h-auto md:min-h-screen md:overflow-visible">
       <div className="fixed inset-0 z-0 pointer-events-none bg-background" />
 
       <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-border bg-background/40 px-4 backdrop-blur-xl md:hidden">
@@ -159,7 +180,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="flex">
+      <div className="flex h-[calc(100dvh-4rem)] md:h-auto">
         <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
           <div className="p-6">
             <BrandLockup onSidebar />
@@ -221,8 +242,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1 relative z-10">
-          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6 md:px-8 md:pb-10">
+        <main className="min-w-0 flex-1 relative z-10 h-full overflow-y-auto overflow-x-hidden overscroll-y-contain md:h-auto md:overflow-visible">
+          <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-32 sm:px-6 md:px-8 md:pb-10">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent text-muted-foreground">
@@ -243,7 +264,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </main>
 
-        <nav className="no-print fixed inset-x-0 bottom-0 z-40 flex items-center justify-start gap-0.5 border-t border-border bg-card/95 px-1 pt-1 backdrop-blur-xl md:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.08)] overflow-x-auto scrollbar-hide"
+        <nav className="no-print fixed inset-x-0 bottom-0 z-50 flex items-center justify-start gap-0.5 border-t border-border bg-card/95 px-1 pt-1 backdrop-blur-xl md:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.08)] overflow-x-auto scrollbar-hide"
           style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
         >
           {visibleNav.map((item) => {
