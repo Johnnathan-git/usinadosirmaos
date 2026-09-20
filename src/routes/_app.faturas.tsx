@@ -46,12 +46,29 @@ function invoicePaymentStatus(notes: string | null | undefined): "pago" | "pende
   return "pago";
 }
 function stripPaymentTag(notes: string | null | undefined): string {
-  return (notes || "").replace(/\[\[status:(pago|pendente)\]\]/g, "").trim();
+  return (notes || "")
+    .replace(/\[\[status:(pago|pendente)\]\]/g, "")
+    .replace(/\[\[due:\d{4}-\d{2}-\d{2}\]\]/g, "")
+    .trim();
 }
-function withPaymentTag(notes: string | null | undefined, status: "pago" | "pendente"): string | null {
+/** Vencimento da fatura em notes: [[due:yyyy-mm-dd]] */
+function invoiceDueDate(notes: string | null | undefined): string {
+  return (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/)?.[1] ?? "";
+}
+function withPaymentTag(
+  notes: string | null | undefined,
+  status: "pago" | "pendente",
+  due?: string,
+): string | null {
   const cleaned = stripPaymentTag(notes);
-  if (status === "pendente") return cleaned ? `${cleaned} [[status:pendente]]` : "[[status:pendente]]";
-  return cleaned || null;
+  const tags = [
+    status === "pendente" ? "[[status:pendente]]" : "",
+    due && /^\d{4}-\d{2}-\d{2}$/.test(due) ? `[[due:${due}]]` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const out = [cleaned, tags].filter(Boolean).join(" ").trim();
+  return out || null;
 }
 
 async function fetchFaturasPage() {
@@ -448,6 +465,7 @@ function InvoiceDialog({
     notes: stripPaymentTag(invoice?.notes),
     attachment_url: invoice?.attachment_url ?? "",
     payment_status: invoicePaymentStatus(invoice?.notes) as "pago" | "pendente",
+    due_date: invoiceDueDate(invoice?.notes),
   });
 
   useEffect(() => {
@@ -464,6 +482,7 @@ function InvoiceDialog({
         notes: stripPaymentTag(invoice.notes),
         attachment_url: invoice.attachment_url ?? "",
         payment_status: invoicePaymentStatus(invoice.notes),
+        due_date: invoiceDueDate(invoice.notes),
       });
     }
   }, [invoice, client.public_lighting_value]);
@@ -538,7 +557,7 @@ function InvoiceDialog({
       value_without_plant: Number(sUsina.toFixed(4)),
       client_pays: Number(cPaga.toFixed(4)),
       distributor_invoice: parseNum(f.distributor_invoice || "0"),
-      notes: withPaymentTag(f.notes, f.payment_status),
+      notes: withPaymentTag(f.notes, f.payment_status, f.due_date),
       attachment_url: f.attachment_url || null,
     };
     const { error } = invoice
@@ -670,6 +689,15 @@ function InvoiceDialog({
               >
                 Pendente
               </button>
+            </div>
+            <div>
+              <Label>Venc. Fatura</Label>
+              <Input
+                type="date"
+                value={f.due_date}
+                onChange={(e) => setF((prev) => ({ ...prev, due_date: e.target.value }))}
+                className="mt-1"
+              />
             </div>
           </div>
 

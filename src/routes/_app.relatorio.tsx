@@ -231,6 +231,7 @@ function Relatorio() {
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Pagamento</th>
+                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest whitespace-nowrap">Venc. Fatura</th>
                 {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
                   <th key={h} className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h === "Juros" ? "px-0.5" : "px-1.5"}`}>
                     {h}
@@ -253,12 +254,12 @@ function Relatorio() {
                           <Clock className="h-3 w-3" /> Pendente
                         </span>
                       )}
-                      {r.due ? (
-                        <span className="text-[9px] font-semibold text-muted-foreground tabular-nums whitespace-nowrap" title="Vencimento">
-                          Venc. {formatDueBR(r.due)}
-                        </span>
-                      ) : null}
                     </div>
+                  </td>
+                  <td className="border border-border p-1 text-center align-middle">
+                    <span className="text-[11px] font-semibold text-foreground tabular-nums whitespace-nowrap">
+                      {r.due ? formatDueBR(r.due) : "—"}
+                    </span>
                   </td>
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((fld) => (
                     <td key={fld} className="border border-border p-0">
@@ -318,7 +319,7 @@ function Relatorio() {
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="py-20 text-center text-muted-foreground font-medium italic">
+                  <td colSpan={11} className="py-20 text-center text-muted-foreground font-medium italic">
                     Selecione os meses acima para gerar o relatório.
                   </td>
                 </tr>
