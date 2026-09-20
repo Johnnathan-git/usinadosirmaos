@@ -254,12 +254,12 @@ function Relatorio() {
                           <Clock className="h-3 w-3" /> Pendente
                         </span>
                       )}
-                      {r.due ? (
-                        <span className="text-[9px] font-semibold text-muted-foreground tabular-nums whitespace-nowrap" title="Vencimento">
-                          Venc. {formatDueBR(r.due)}
-                        </span>
-                      ) : null}
                     </div>
+                  </td>
+                  <td className="border border-border p-1 text-center align-middle">
+                    <span className="text-[11px] font-semibold text-foreground tabular-nums whitespace-nowrap">
+                      {r.due ? formatDueBR(r.due) : "—"}
+                    </span>
                   </td>
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((fld) => (
                     <td key={fld} className="border border-border p-0">
