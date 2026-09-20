@@ -31,7 +31,7 @@ function formatDueBR(iso: string): string {
 }
 function formatDueShortBR(iso: string): string {
   if (!iso || iso.length < 10) return "";
-  const [_, mo, d] = iso.slice(0, 10).split("-");
+  const [, mo, d] = iso.slice(0, 10).split("-");
   return `${d}/${mo}`;
 }
 
