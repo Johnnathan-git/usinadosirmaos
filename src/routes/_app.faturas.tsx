@@ -557,7 +557,7 @@ function InvoiceDialog({
       value_without_plant: Number(sUsina.toFixed(4)),
       client_pays: Number(cPaga.toFixed(4)),
       distributor_invoice: parseNum(f.distributor_invoice || "0"),
-      notes: withPaymentTag(f.notes, f.payment_status),
+      notes: withPaymentTag(f.notes, f.payment_status, f.due_date),
       attachment_url: f.attachment_url || null,
     };
     const { error } = invoice
