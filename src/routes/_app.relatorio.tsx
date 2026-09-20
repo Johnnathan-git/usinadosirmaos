@@ -200,18 +200,18 @@ function Relatorio() {
 
       {clientInvoices.length > 0 && (
         <div className="no-print grid grid-cols-2 gap-2 sm:gap-3">
-          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-              <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+          <Card className="glass-card p-2 sm:p-2.5 flex items-center gap-2 sm:gap-3 border-border">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Clock className="h-4 w-4" />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
               <p className="text-sm font-bold text-amber-700 tabular-nums">{pendingCount} {pendingCount === 1 ? "fatura" : "faturas"}</p>
             </div>
           </Card>
-          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
-            <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
-              <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+          <Card className="glass-card p-2 sm:p-2.5 flex items-center gap-2 sm:gap-3 border-border">
+            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
+              <AlertCircle className="h-4 w-4" />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Situação</p>
