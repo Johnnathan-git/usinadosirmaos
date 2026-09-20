@@ -231,6 +231,7 @@ function Relatorio() {
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Pagamento</th>
+                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest whitespace-nowrap">Venc. Fatura</th>
                 {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
                   <th key={h} className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h === "Juros" ? "px-0.5" : "px-1.5"}`}>
                     {h}
