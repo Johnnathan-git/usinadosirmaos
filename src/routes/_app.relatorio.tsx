@@ -24,14 +24,9 @@ function dueDateFromNotes(notes: string | null | undefined): string {
   const m = (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/);
   return m?.[1] ?? "";
 }
-function formatDueBR(iso: string): string {
-  if (!iso || iso.length < 10) return "";
-  const [y, mo, d] = iso.slice(0, 10).split("-");
-  return `${d}/${mo}/${y}`;
-}
 function formatDueShortBR(iso: string): string {
   if (!iso || iso.length < 10) return "";
-  const [, mo, d] = iso.slice(0, 10).split("-");
+  const [y, mo, d] = iso.slice(0, 10).split("-");
   return `${d}/${mo}`;
 }
 
@@ -200,18 +195,18 @@ function Relatorio() {
 
       {clientInvoices.length > 0 && (
         <div className="no-print grid grid-cols-2 gap-2 sm:gap-3">
-          <Card className="glass-card p-2 sm:p-2.5 flex items-center gap-2 sm:gap-3 border-border">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-              <Clock className="h-4 w-4" />
+          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
               <p className="text-sm font-bold text-amber-700 tabular-nums">{pendingCount} {pendingCount === 1 ? "fatura" : "faturas"}</p>
             </div>
           </Card>
-          <Card className="glass-card p-2 sm:p-2.5 flex items-center gap-2 sm:gap-3 border-border">
-            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
-              <AlertCircle className="h-4 w-4" />
+          <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
+            <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full ${pendingCount > 0 ? "bg-rose-100 text-rose-700" : "bg-emerald-100 text-emerald-700"}`}>
+              <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Situação</p>
@@ -232,15 +227,13 @@ function Relatorio() {
           </div>
         </div>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-          <table className="w-full min-w-[900px] border-collapse text-[11px]">
+          <table className="w-full min-w-[860px] border-collapse text-[12px]">
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
                 {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Pagamento", "Venc. Fatura", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`, "Baixar"].map((h) => (
                   <th
                     key={h}
-                    className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${
-                      h === "Juros" || h === "Baixar" ? "px-0.5" : "px-1"
-                    }`}
+                    className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-wide"
                   >
                     {h}
                   </th>
@@ -257,38 +250,34 @@ function Relatorio() {
                         title={fld === "uc" ? r[fld] : undefined}
                         readOnly={fld === "uc"}
                         onChange={(e) => edit(r.id, fld, e.target.value)}
-                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap px-1 text-[11px] font-semibold ${
-                          fld === "mes"
-                            ? "text-foreground font-bold"
-                            : "text-foreground"
-                        }`}
+                        className="num h-9 min-w-0 rounded-none border-0 bg-transparent text-center text-[12px] font-semibold text-foreground shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap px-0.5"
                       />
                     </td>
                   ))}
                   <td className="border border-border p-1 text-center align-middle">
                     <div className="flex flex-col items-center justify-center gap-0.5 py-1">
                       {r.payment === "pago" ? (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
                           <CheckCircle2 className="h-3 w-3" /> Pago
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800">
                           <Clock className="h-3 w-3" /> Pendente
                         </span>
                       )}
                     </div>
                   </td>
                   <td className="border border-border p-1 text-center align-middle">
-                    <span className="text-[11px] font-semibold text-foreground tabular-nums whitespace-nowrap">
+                    <span className="text-[12px] font-semibold text-foreground tabular-nums whitespace-nowrap px-0.5">
                       {r.due ? formatDueShortBR(r.due) : "—"}
                     </span>
                   </td>
                   {(["semUsina", "comDesconto"] as const).map((fld) => (
-                    <td key={fld} className="border border-border p-0">
+                    <td key={fld} className="border border-border p-0 min-w-[6.5rem]">
                       <Input
                         value={r[fld]}
                         readOnly
-                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-0 w-full whitespace-nowrap px-1 text-[11px] font-bold ${
+                        className={`num h-9 min-w-[6.25rem] rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-0 w-full whitespace-nowrap overflow-visible px-1 text-[12px] font-semibold ${
                           fld === "comDesconto"
                             ? "text-primary light:text-emerald-600"
                             : "text-red-400"
