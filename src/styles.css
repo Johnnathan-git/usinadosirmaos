@@ -38,14 +38,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
-  
-  --color-positive: #2563EB;
-  --color-negative: #D64545;
-  --color-revenue: #2F6F62;
-  --color-amber: #C98A3E;
+  --color-positive: #22C55E;
+  --color-negative: #EF4444;
   --color-navy: #151B2E;
 }
 
@@ -157,5 +153,17 @@
   h1 {
     font-size: 1.5rem !important;
     line-height: 2rem !important;
+  }
+}
+
+/* Mobile: evita tela branca no overscroll; badge Lovable perto do nav Controle */
+@media (max-width: 767px) {
+  html, body {
+    overscroll-behavior-y: none;
+  }
+  body a[href*="lovable.dev"],
+  body a[href*="lovable.app"] {
+    bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    right: 0.35rem !important;
   }
 }
