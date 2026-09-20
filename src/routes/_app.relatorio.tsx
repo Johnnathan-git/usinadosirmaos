@@ -58,7 +58,7 @@ export const Route = createFileRoute("/_app/relatorio")({
   component: Page,
   head: () => ({
     meta: [
-      { title: "Controle cliente — Usina dos Irmãos" },
+      { title: "Controle Cliente — Usina dos Irmãos" },
       { name: "description", content: "Monte, edite e envie a planilha mensal de economia para cada cliente." },
     ],
   }),
@@ -145,7 +145,7 @@ function Relatorio() {
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Controle cliente</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Controle Cliente</h1>
           <p className="text-sm font-medium text-muted-foreground">Controle Mensal · Status de pagamento</p>
         </div>
       </div>
@@ -190,7 +190,7 @@ function Relatorio() {
             </div>
             <div className="min-w-0">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pendentes</p>
-              <p className="text-lg font-bold text-amber-700 tabular-nums">{pendingCount}</p>
+              <p className="text-lg font-bold text-amber-700 tabular-nums">{pendingCount} {pendingCount === 1 ? "fatura" : "faturas"}</p>
             </div>
           </Card>
           <Card className="glass-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3 border-border">
