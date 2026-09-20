@@ -155,9 +155,12 @@
   }
 }
 
-/* Mobile: permite puxar para atualizar; badge reposicionado via JS no AppLayout */
+/* Mobile: body travado; scroll só no #app-scroll; PTR via JS */
 @media (max-width: 767px) {
-  html, body {
-    overscroll-behavior-y: auto;
+  html, body, #root {
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
 }
