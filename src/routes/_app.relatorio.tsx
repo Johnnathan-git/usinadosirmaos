@@ -219,31 +219,48 @@ function Relatorio() {
           <table className="w-full min-w-[900px] border-collapse text-sm">
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
-                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros/Multa", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
-                  <th key={h} className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">
+                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Pagamento</th>
+                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
+                  <th key={h} className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h === "Juros" ? "px-0.5" : "px-1.5"}`}>
                     {h}
                   </th>
                 ))}
-                <th className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Baixar</th>
-                <th className="border border-border px-3 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Pagamento</th>
+                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Baixar</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent light:hover:bg-blue-50/50 transition-colors">
-                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((f) => (
-                    <td key={f} className="border border-border p-0">
+                  <td className="border border-border p-1 text-center align-middle">
+                    {r.payment === "pago" ? (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
+                        <CheckCircle2 className="h-3 w-3" /> Pago
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
+                        <Clock className="h-3 w-3" /> Pendente
+                      </span>
+                    )}
+                  </td>
+                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((fld) => (
+                    <td key={fld} className="border border-border p-0">
                       <Input
-                        value={r[f]}
-                        onChange={(e) => edit(r.id, f, e.target.value)}
-                        className={`num h-10 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full px-2 ${
-                          f === "comDesconto"
-                            ? "font-bold text-primary light:text-emerald-600 text-[13px]"
-                            : f === "semUsina"
-                            ? "text-red-400 font-bold text-[13px]"
-                            : f === "mes"
-                            ? "text-foreground font-bold text-[13px]"
-                            : "text-foreground font-medium text-[13px]"
+                        value={r[fld]}
+                        onChange={(e) => edit(r.id, fld, e.target.value)}
+                        className={`num h-10 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap ${
+                          fld === "juros" || fld === "ilum"
+                            ? "px-0.5 text-[11px]"
+                            : fld === "uc" || fld === "preco" || fld === "semUsina" || fld === "comDesconto"
+                            ? "px-1 text-[12px]"
+                            : "px-1.5 text-[12px]"
+                        } ${
+                          fld === "comDesconto"
+                            ? "font-bold text-primary light:text-emerald-600"
+                            : fld === "semUsina"
+                            ? "text-red-400 font-bold"
+                            : fld === "mes"
+                            ? "text-foreground font-bold"
+                            : "text-foreground font-medium"
                         }`}
                       />
                     </td>
@@ -273,17 +290,6 @@ function Relatorio() {
                       <div className="flex h-10 w-full items-center justify-center text-muted-foreground">
                         <Paperclip className="h-4 w-4 opacity-30" />
                       </div>
-                    )}
-                  </td>
-                  <td className="border border-border p-2 text-center align-middle">
-                    {r.payment === "pago" ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
-                        <CheckCircle2 className="h-3 w-3" /> Pago
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-800">
-                        <Clock className="h-3 w-3" /> Pendente
-                      </span>
                     )}
                   </td>
                 </tr>
