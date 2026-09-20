@@ -465,6 +465,7 @@ function InvoiceDialog({
     notes: stripPaymentTag(invoice?.notes),
     attachment_url: invoice?.attachment_url ?? "",
     payment_status: invoicePaymentStatus(invoice?.notes) as "pago" | "pendente",
+    due_date: invoiceDueDate(invoice?.notes),
   });
 
   useEffect(() => {
