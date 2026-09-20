@@ -270,10 +270,12 @@ function Relatorio() {
                       )}
                     </div>
                   </td>
-                  <td className="border border-border p-1 text-center align-middle">
-                    <span className="text-[13px] font-medium text-foreground tabular-nums whitespace-nowrap px-1">
-                      {r.due ? formatDueShortBR(r.due) : "—"}
-                    </span>
+                  <td className="border border-border p-0">
+                    <Input
+                      value={r.due ? formatDueShortBR(r.due) : "—"}
+                      readOnly
+                      className="num h-9 rounded-none border-0 bg-transparent text-center text-[13px] font-medium text-foreground shadow-none focus-visible:ring-0 w-full whitespace-nowrap overflow-visible px-1"
+                    />
                   </td>
                   {(["semUsina", "comDesconto"] as const).map((fld) => (
                     <td key={fld} className="border border-border p-0 min-w-[6.75rem]">
