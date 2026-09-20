@@ -23,7 +23,7 @@ const nav: NavItem[] = [
   { to: "/", label: "Dashboard", shortLabel: "Home", icon: LayoutGrid, module: "dashboard" },
   { to: "/faturas", label: "Faturas e Clientes", shortLabel: "Faturas", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", shortLabel: "Fluxo", icon: Wallet, module: "fluxo-caixa" },
-  { to: "/relatorio", label: "Controle cliente", shortLabel: "Controle", icon: FileSpreadsheet, module: "relatorio" },
+  { to: "/relatorio", label: "Controle Cliente", shortLabel: "Controle", icon: FileSpreadsheet, module: "relatorio" },
   { to: "/resultado", label: "Resultado", shortLabel: "Resultado", icon: BarChart3, module: "resultado" },
   { to: "/controle", label: "Controle ADM", shortLabel: "ADM", icon: Gauge, module: "controle" },
   { to: "/inventario", label: "Inventário", shortLabel: "Estoque", icon: Package, module: "inventario" },
