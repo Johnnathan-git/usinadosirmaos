@@ -232,22 +232,39 @@ function Relatorio() {
           </div>
         </div>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-          <table className="w-full min-w-[900px] border-collapse text-sm">
+          <table className="w-full min-w-[900px] border-collapse text-[11px]">
             <thead>
               <tr className="bg-white/5 light:bg-transparent light:border-b light:border-border">
-                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Pagamento</th>
-                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest whitespace-nowrap">Venc. Fatura</th>
-                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`].map((h) => (
-                  <th key={h} className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${h === "Juros" ? "px-0.5" : "px-1.5"}`}>
+                {["Mês referência", "Unidade Consumidora", "Consumo (kW)", "Preço kW", "Ilum. pública", "Juros", "Pagamento", "Venc. Fatura", "Valor S/ Usina", `Valor COM ${client?.discount_pct ?? 30}% DESC`, "Baixar"].map((h) => (
+                  <th
+                    key={h}
+                    className={`border border-border py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest ${
+                      h === "Juros" || h === "Baixar" ? "px-0.5" : "px-1"
+                    }`}
+                  >
                     {h}
                   </th>
                 ))}
-                <th className="border border-border px-1 py-2 text-center font-bold text-muted-foreground uppercase text-[10px] tracking-widest">Baixar</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent light:hover:bg-blue-50/50 transition-colors">
+                  {(["mes", "uc", "consumo", "preco", "ilum", "juros"] as const).map((fld) => (
+                    <td key={fld} className="border border-border p-0">
+                      <Input
+                        value={fld === "uc" && r[fld].length > 8 ? `${r[fld].slice(0, 6)}...` : r[fld]}
+                        title={fld === "uc" ? r[fld] : undefined}
+                        readOnly={fld === "uc"}
+                        onChange={(e) => edit(r.id, fld, e.target.value)}
+                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap px-1 text-[11px] font-semibold ${
+                          fld === "mes"
+                            ? "text-foreground font-bold"
+                            : "text-foreground"
+                        }`}
+                      />
+                    </td>
+                  ))}
                   <td className="border border-border p-1 text-center align-middle">
                     <div className="flex flex-col items-center justify-center gap-0.5 py-1">
                       {r.payment === "pago" ? (
@@ -263,32 +280,18 @@ function Relatorio() {
                   </td>
                   <td className="border border-border p-1 text-center align-middle">
                     <span className="text-[11px] font-semibold text-foreground tabular-nums whitespace-nowrap">
-                      {r.due ? formatDueBR(r.due) : "—"}
+                      {r.due ? formatDueShortBR(r.due) : "—"}
                     </span>
                   </td>
-                  {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((fld) => (
+                  {(["semUsina", "comDesconto"] as const).map((fld) => (
                     <td key={fld} className="border border-border p-0">
                       <Input
-                        value={fld === "uc" && r[fld].length > 8 ? `${r[fld].slice(0, 6)}...` : r[fld]}
-                        title={fld === "uc" ? r[fld] : undefined}
-                        readOnly={fld === "uc"}
-                        onChange={(e) => edit(r.id, fld, e.target.value)}
-                        className={`num h-10 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap ${
-                          fld === "juros" || fld === "ilum"
-                            ? "px-0.5 text-[11px]"
-                            : fld === "uc"
-                            ? "px-0.5 text-[11px] max-w-[5.5rem] mx-auto"
-                            : fld === "preco" || fld === "semUsina" || fld === "comDesconto"
-                            ? "px-1 text-[12px]"
-                            : "px-1.5 text-[12px]"
-                        } ${
+                        value={r[fld]}
+                        readOnly
+                        className={`num h-9 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-0 w-full whitespace-nowrap px-1 text-[11px] font-bold ${
                           fld === "comDesconto"
-                            ? "font-bold text-primary light:text-emerald-600"
-                            : fld === "semUsina"
-                            ? "text-red-400 font-bold"
-                            : fld === "mes"
-                            ? "text-foreground font-bold"
-                            : "text-foreground font-medium"
+                            ? "text-primary light:text-emerald-600"
+                            : "text-red-400"
                         }`}
                       />
                     </td>
@@ -309,13 +312,13 @@ function Relatorio() {
                             alert("Erro ao abrir arquivo: " + err.message);
                           }
                         }}
-                        className="flex h-10 w-full items-center justify-center gap-2 text-primary hover:bg-primary/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
+                        className="flex h-9 w-full items-center justify-center gap-2 text-primary hover:bg-primary/5 transition-colors font-bold text-[10px] uppercase tracking-wider"
                       >
                         <Paperclip className="h-3 w-3" />
                         <span className="hidden sm:inline">Baixar</span>
                       </button>
                     ) : (
-                      <div className="flex h-10 w-full items-center justify-center text-muted-foreground">
+                      <div className="flex h-9 w-full items-center justify-center text-muted-foreground">
                         <Paperclip className="h-4 w-4 opacity-30" />
                       </div>
                     )}
