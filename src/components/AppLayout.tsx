@@ -108,6 +108,48 @@ export function AppLayout({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  // Mobile: puxar para atualizar no container de scroll (sem tela branca no body)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const el = () => document.getElementById("app-scroll");
+    let startY = 0;
+    let armed = false;
+    const onStart = (e: TouchEvent) => {
+      const main = el();
+      if (!main || window.innerWidth >= 768) return;
+      if (main.scrollTop <= 0) {
+        startY = e.touches[0].clientY;
+        armed = true;
+      } else {
+        armed = false;
+      }
+    };
+    const onMove = (e: TouchEvent) => {
+      if (!armed) return;
+      const main = el();
+      if (!main || main.scrollTop > 0) {
+        armed = false;
+        return;
+      }
+      const dy = e.touches[0].clientY - startY;
+      if (dy > 90) {
+        armed = false;
+        window.location.reload();
+      }
+    };
+    const onEnd = () => {
+      armed = false;
+    };
+    document.addEventListener("touchstart", onStart, { passive: true });
+    document.addEventListener("touchmove", onMove, { passive: true });
+    document.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      document.removeEventListener("touchstart", onStart);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", onEnd);
+    };
+  }, []);
+
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -182,7 +224,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary/30 md:min-h-screen">
+    <div className="h-[100dvh] overflow-hidden bg-background text-foreground selection:bg-primary/30 md:h-auto md:min-h-screen md:overflow-visible">
       <div className="fixed inset-0 z-0 pointer-events-none bg-background" />
 
       <header className="no-print sticky top-0 z-50 flex h-16 items-center justify-between border-b border-border bg-background/40 px-4 backdrop-blur-xl md:hidden">
@@ -195,7 +237,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="flex">
+      <div className="flex h-[calc(100dvh-4rem)] md:h-auto">
         <aside className="no-print sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
           <div className="p-6">
             <BrandLockup onSidebar />
@@ -257,7 +299,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1 relative z-10">
+        <main id="app-scroll" className="min-w-0 flex-1 relative z-10 h-full overflow-y-auto overflow-x-hidden overscroll-y-none md:h-auto md:overflow-visible md:overscroll-auto">
           <div className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-32 sm:px-6 md:px-8 md:pb-10">
             {blocked ? (
               <div className="mx-auto mt-20 max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-xl">
