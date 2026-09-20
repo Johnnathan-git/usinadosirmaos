@@ -46,12 +46,29 @@ function invoicePaymentStatus(notes: string | null | undefined): "pago" | "pende
   return "pago";
 }
 function stripPaymentTag(notes: string | null | undefined): string {
-  return (notes || "").replace(/\[\[status:(pago|pendente)\]\]/g, "").trim();
+  return (notes || "")
+    .replace(/\[\[status:(pago|pendente)\]\]/g, "")
+    .replace(/\[\[due:\d{4}-\d{2}-\d{2}\]\]/g, "")
+    .trim();
 }
-function withPaymentTag(notes: string | null | undefined, status: "pago" | "pendente"): string | null {
+/** Vencimento da fatura em notes: [[due:yyyy-mm-dd]] */
+function invoiceDueDate(notes: string | null | undefined): string {
+  return (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/)?.[1] ?? "";
+}
+function withPaymentTag(
+  notes: string | null | undefined,
+  status: "pago" | "pendente",
+  due?: string,
+): string | null {
   const cleaned = stripPaymentTag(notes);
-  if (status === "pendente") return cleaned ? `${cleaned} [[status:pendente]]` : "[[status:pendente]]";
-  return cleaned || null;
+  const tags = [
+    status === "pendente" ? "[[status:pendente]]" : "",
+    due && /^\d{4}-\d{2}-\d{2}$/.test(due) ? `[[due:${due}]]` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const out = [cleaned, tags].filter(Boolean).join(" ").trim();
+  return out || null;
 }
 
 async function fetchFaturasPage() {
