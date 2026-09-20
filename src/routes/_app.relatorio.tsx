@@ -20,6 +20,15 @@ function paymentStatus(notes: string | null | undefined): "pago" | "pendente" {
   if (notes?.includes("[[status:pendente]]")) return "pendente";
   return "pago";
 }
+function dueDateFromNotes(notes: string | null | undefined): string {
+  const m = (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/);
+  return m?.[1] ?? "";
+}
+function formatDueBR(iso: string): string {
+  if (!iso || iso.length < 10) return "";
+  const [y, mo, d] = iso.slice(0, 10).split("-");
+  return `${d}/${mo}/${y}`;
+}
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
@@ -78,6 +87,7 @@ type Row = {
   attachment_url?: string | null;
   notes?: string | null;
   payment: "pago" | "pendente";
+  due: string;
 };
 
 const numBR = (n: number, d = 2) =>
@@ -99,6 +109,7 @@ function toRow(inv: Invoice, client?: Client): Row {
     attachment_url: inv.attachment_url,
     notes: inv.notes,
     payment: paymentStatus(inv.notes),
+    due: dueDateFromNotes(inv.notes),
   };
 }
 
@@ -232,25 +243,36 @@ function Relatorio() {
               {rows.map((r) => (
                 <tr key={r.id} className="border-b border-border last:border-0 hover:bg-accent light:hover:bg-blue-50/50 transition-colors">
                   <td className="border border-border p-1 text-center align-middle">
-                    {r.payment === "pago" ? (
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
-                        <CheckCircle2 className="h-3 w-3" /> Pago
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
-                        <Clock className="h-3 w-3" /> Pendente
-                      </span>
-                    )}
+                    <div className="flex flex-col items-center justify-center gap-0.5 py-1">
+                      {r.payment === "pago" ? (
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800">
+                          <CheckCircle2 className="h-3 w-3" /> Pago
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-800">
+                          <Clock className="h-3 w-3" /> Pendente
+                        </span>
+                      )}
+                      {r.due ? (
+                        <span className="text-[9px] font-semibold text-muted-foreground tabular-nums whitespace-nowrap" title="Vencimento">
+                          Venc. {formatDueBR(r.due)}
+                        </span>
+                      ) : null}
+                    </div>
                   </td>
                   {(["mes", "uc", "consumo", "preco", "ilum", "juros", "semUsina", "comDesconto"] as const).map((fld) => (
                     <td key={fld} className="border border-border p-0">
                       <Input
-                        value={r[fld]}
+                        value={fld === "uc" && r[fld].length > 8 ? `${r[fld].slice(0, 6)}...` : r[fld]}
+                        title={fld === "uc" ? r[fld] : undefined}
+                        readOnly={fld === "uc"}
                         onChange={(e) => edit(r.id, fld, e.target.value)}
                         className={`num h-10 rounded-none border-0 bg-transparent text-center shadow-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/30 w-full whitespace-nowrap ${
                           fld === "juros" || fld === "ilum"
                             ? "px-0.5 text-[11px]"
-                            : fld === "uc" || fld === "preco" || fld === "semUsina" || fld === "comDesconto"
+                            : fld === "uc"
+                            ? "px-0.5 text-[11px] max-w-[5.5rem] mx-auto"
+                            : fld === "preco" || fld === "semUsina" || fld === "comDesconto"
                             ? "px-1 text-[12px]"
                             : "px-1.5 text-[12px]"
                         } ${
