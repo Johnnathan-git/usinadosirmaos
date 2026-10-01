@@ -7,25 +7,48 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Plus, TrendingUp, TrendingDown, DollarSign, Pencil, Trash2, Landmark } from "lucide-react";
+import {
+  Plus,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Pencil,
+  Trash2,
+  Landmark,
+} from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 type Invoice = {
-  id: string; client_id: string; reference_date: string;
-  client_pays: number; distributor_invoice: number;
+  id: string;
+  client_id: string;
+  reference_date: string;
+  client_pays: number;
+  distributor_invoice: number;
   notes: string | null;
 };
 
 type Expense = {
-  id: string; reference_date: string; category: string;
-  description: string; amount: number; notes: string | null;
+  id: string;
+  reference_date: string;
+  category: string;
+  description: string;
+  amount: number;
+  notes: string | null;
   installment_group?: string | null;
   installment_no?: number | null;
   installment_total?: number | null;
@@ -177,7 +200,8 @@ function Fluxo() {
   );
   const [newOpen, setNewOpen] = useState(false);
   const [edit, setEdit] = useState<Expense | null>(null);
-  const [invoiceStatusSaving, setInvoiceStatusSaving] = useState<string | null>(null);
+  const [invoiceEdit, setInvoiceEdit] = useState<Invoice | null>(null);
+  const [invoiceStatusSaving, setInvoiceStatusSaving] = useState(false);
   const [bank, setBank] = useState<BankState>(() => readBankState());
   const [bankOpen, setBankOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
@@ -218,16 +242,20 @@ function Fluxo() {
 
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
 
-  async function setInvoicePaymentStatus(inv: Invoice, status: "pago" | "pendente") {
-    const currentStatus = isInvoicePaid(inv.notes) ? "pago" : "pendente";
-    if (currentStatus === status || invoiceStatusSaving === inv.id) return;
+  async function saveInvoicePaymentStatus(status: "pago" | "pendente") {
+    if (!invoiceEdit || invoiceStatusSaving) return;
+    const currentStatus = isInvoicePaid(invoiceEdit.notes) ? "pago" : "pendente";
+    if (currentStatus === status) {
+      setInvoiceEdit(null);
+      return;
+    }
 
-    setInvoiceStatusSaving(inv.id);
+    setInvoiceStatusSaving(true);
     const { error } = await supabase
       .from("invoices")
-      .update({ notes: withInvoicePaymentStatus(inv.notes, status) })
-      .eq("id", inv.id);
-    setInvoiceStatusSaving(null);
+      .update({ notes: withInvoicePaymentStatus(invoiceEdit.notes, status) })
+      .eq("id", invoiceEdit.id);
+    setInvoiceStatusSaving(false);
 
     if (error) {
       toast.error(error.message);
@@ -235,11 +263,12 @@ function Fluxo() {
     }
 
     toast.success(status === "pago" ? "Fatura marcada como paga" : "Fatura marcada como pendente");
+    setInvoiceEdit(null);
     await Promise.all([
       qc.invalidateQueries({ queryKey: ["fluxo-page"] }),
       qc.invalidateQueries({ queryKey: ["faturas-page"] }),
       qc.invalidateQueries({ queryKey: ["relatorio-page"] }),
-      qc.invalidateQueries({ queryKey: ["client-invoices", inv.client_id] }),
+      qc.invalidateQueries({ queryKey: ["client-invoices", invoiceEdit.client_id] }),
     ]);
   }
 
@@ -291,9 +320,7 @@ function Fluxo() {
               {months.map((m) => {
                 const d = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)) - 1, 1);
                 return (
-                  <SelectItem key={m} value={m}>
-                    {monthLabel(d)}
-                  </SelectItem>
+                  <SelectItem key={m} value={m}>{monthLabel(d)}</SelectItem>
                 );
               })}
             </SelectContent>
@@ -342,9 +369,7 @@ function Fluxo() {
                 : "Saldo inicial zerado. Ajuste o saldo para começar a contabilizar a partir de agora."}
             </div>
           </div>
-          <Button variant="outline" onClick={openBankAdjustment}>
-            Ajustar saldo
-          </Button>
+          <Button variant="outline" onClick={openBankAdjustment}>Ajustar saldo</Button>
         </div>
       </Card>
 
@@ -358,7 +383,6 @@ function Fluxo() {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             const client = data.clients.find((c) => c.id === inv.client_id);
             const paid = isInvoicePaid(inv.notes);
-            const savingStatus = invoiceStatusSaving === inv.id;
             return (
               <div
                 key={inv.id}
@@ -376,40 +400,25 @@ function Fluxo() {
                       <span className="text-sm font-semibold text-foreground truncate">
                         {client?.name ?? "—"}
                       </span>
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          disabled={savingStatus}
-                          onClick={() => setInvoicePaymentStatus(inv, "pago")}
-                          className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase transition-colors ${
-                            paid
-                              ? "bg-emerald-100 text-emerald-800"
-                              : "bg-muted text-muted-foreground hover:bg-emerald-50 hover:text-emerald-700"
-                          } ${savingStatus ? "opacity-50" : ""}`}
-                        >
-                          Pago
-                        </button>
-                        <button
-                          type="button"
-                          disabled={savingStatus}
-                          onClick={() => setInvoicePaymentStatus(inv, "pendente")}
-                          className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase transition-colors ${
-                            !paid
-                              ? "bg-amber-100 text-amber-800"
-                              : "bg-muted text-muted-foreground hover:bg-amber-50 hover:text-amber-700"
-                          } ${savingStatus ? "opacity-50" : ""}`}
-                        >
-                          Pendente
-                        </button>
-                      </div>
+                      {paid ? (
+                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">Pago</span>
+                      ) : (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">Pendente</span>
+                      )}
+                      <button
+                        aria-label="Editar fatura"
+                        onClick={() => setInvoiceEdit(inv)}
+                        className="p-1.5 text-muted-foreground hover:text-foreground"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
                     </div>
                     <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
                   </div>
                 </div>
                 <div className="text-left sm:text-right text-sm">
                   <div className="text-muted-foreground">
-                    Lucro bruto:{" "}
-                    <span className="font-semibold text-primary num">{brl(profit)}</span>
+                    Lucro bruto: <span className="font-semibold text-primary num">{brl(profit)}</span>
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Recebido: <span className="num">{brl(Number(inv.client_pays))}</span>
@@ -440,13 +449,9 @@ function Fluxo() {
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="text-sm font-medium text-foreground truncate">{e.description}</div>
                   {expensePaymentStatus(e.notes) === "pago" ? (
-                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">
-                      Pago
-                    </span>
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">Pago</span>
                   ) : (
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">
-                      Pendente
-                    </span>
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">Pendente</span>
                   )}
                 </div>
                 <div className="mt-1 flex flex-wrap gap-1.5">
@@ -461,9 +466,7 @@ function Fluxo() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-red-500 num whitespace-nowrap">
-                  {brl(Number(e.amount))}
-                </span>
+                <span className="text-sm font-semibold text-red-500 num whitespace-nowrap">{brl(Number(e.amount))}</span>
                 <button
                   aria-label="Editar"
                   onClick={() => setEdit(e)}
@@ -473,9 +476,7 @@ function Fluxo() {
                 </button>
                 <button
                   aria-label="Excluir"
-                  onClick={() =>
-                    deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))
-                  }
+                  onClick={() => deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))}
                   className="p-1.5 text-muted-foreground hover:text-red-500"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -496,6 +497,58 @@ function Fluxo() {
         />
       )}
 
+      {invoiceEdit && (
+        <Dialog open onOpenChange={(open) => !open && setInvoiceEdit(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Editar fatura</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm font-semibold text-foreground">
+                  {data.clients.find((c) => c.id === invoiceEdit.client_id)?.name ?? "Cliente"}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {monthLabel(new Date(Number(invoiceEdit.reference_date.slice(0, 4)), Number(invoiceEdit.reference_date.slice(5, 7)) - 1, 1))}
+                </div>
+              </div>
+              <div className="rounded-xl border border-border bg-accent/40 p-4">
+                <Label className="font-semibold text-foreground">Status de pagamento</Label>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={invoiceStatusSaving}
+                    onClick={() => saveInvoicePaymentStatus("pago")}
+                    className={`h-9 rounded-lg border px-4 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                      isInvoicePaid(invoiceEdit.notes)
+                        ? "border-emerald-600 bg-emerald-600 text-white"
+                        : "border-border bg-background text-muted-foreground hover:border-emerald-500"
+                    }`}
+                  >
+                    Pago
+                  </button>
+                  <button
+                    type="button"
+                    disabled={invoiceStatusSaving}
+                    onClick={() => saveInvoicePaymentStatus("pendente")}
+                    className={`h-9 rounded-lg border px-4 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                      !isInvoicePaid(invoiceEdit.notes)
+                        ? "border-amber-500 bg-amber-500 text-white"
+                        : "border-border bg-background text-muted-foreground hover:border-amber-500"
+                    }`}
+                  >
+                    Pendente
+                  </button>
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setInvoiceEdit(null)}>Cancelar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {bankOpen && (
         <Dialog open onOpenChange={(open) => !open && setBankOpen(false)}>
           <DialogContent className="max-w-md">
@@ -504,8 +557,7 @@ function Fluxo() {
             </DialogHeader>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Informe o saldo real da conta agora. Tudo que já está pago antes deste ajuste
-                será usado apenas como referência e não será contado novamente.
+                Informe o saldo real da conta agora. Tudo que já está pago antes deste ajuste será usado apenas como referência e não será contado novamente.
               </p>
               <div>
                 <Label>Saldo atual (R$)</Label>
@@ -520,9 +572,7 @@ function Fluxo() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setBankOpen(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick={() => setBankOpen(false)}>Cancelar</Button>
               <Button onClick={saveBankAdjustment}>Confirmar saldo</Button>
             </DialogFooter>
           </DialogContent>
@@ -638,14 +688,10 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
           <div>
             <Label>Categoria *</Label>
             <Select value={f.category} onValueChange={(v) => setF({ ...f, category: v })}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {EXPENSE_CATEGORIES.map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {c}
-                  </SelectItem>
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -685,9 +731,7 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
                   <div>
                     <Label>O valor informado é</Label>
                     <Select value={mode} onValueChange={(v) => setMode(v as "parcela" | "total")}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="parcela">Valor de cada parcela</SelectItem>
                         <SelectItem value="total">Valor total da compra</SelectItem>
@@ -754,9 +798,7 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
           </div>
         </div>
         <DialogFooter className="flex-col gap-2 sm:flex-row">
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
-          </Button>
+          <Button variant="outline" onClick={onClose}>Cancelar</Button>
           <Button onClick={submit} disabled={saving} className="bg-destructive hover:bg-destructive/90">
             {expense ? "Salvar" : installments ? "Lançar parcelas" : "Lançar"}
           </Button>
