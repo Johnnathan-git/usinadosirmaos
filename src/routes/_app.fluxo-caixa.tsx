@@ -36,6 +36,24 @@ type Expense = {
 };
 type Client = { id: string; name: string; color: string };
 
+function expensePaymentStatus(notes: string | null | undefined): "pago" | "pendente" {
+  return notes?.includes("[[status:pendente]]") ? "pendente" : "pago";
+}
+
+function stripExpensePaymentTag(notes: string | null | undefined): string {
+  return (notes || "").replace(/\[\[status:(pago|pendente)\]\]/g, "").trim();
+}
+
+function withExpensePaymentTag(
+  notes: string | null | undefined,
+  status: "pago" | "pendente",
+): string | null {
+  const cleaned = stripExpensePaymentTag(notes);
+  const tag = status === "pendente" ? "[[status:pendente]]" : "";
+  const out = [cleaned, tag].filter(Boolean).join(" ").trim();
+  return out || null;
+}
+
 const fluxoQ = queryOptions({
   queryKey: ["fluxo-page"],
   staleTime: 30_000,
@@ -236,7 +254,18 @@ function Fluxo() {
               className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 hover:bg-accent/50 transition-colors"
             >
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium text-foreground truncate">{e.description}</div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="text-sm font-medium text-foreground truncate">{e.description}</div>
+                  {expensePaymentStatus(e.notes) === "pago" ? (
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">
+                      Pago
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">
+                      Pendente
+                    </span>
+                  )}
+                </div>
                 <div className="mt-1 flex flex-wrap gap-1.5">
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
                     {e.category}
@@ -316,7 +345,8 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
     category: expense?.category ?? EXPENSE_CATEGORIES[0],
     description: expense?.description ?? "",
     amount: expense ? String(expense.amount) : "",
-    notes: expense?.notes ?? "",
+    notes: stripExpensePaymentTag(expense?.notes),
+    payment_status: expensePaymentStatus(expense?.notes),
   });
   const [installments, setInstallments] = useState(false);
   const [parcels, setParcels] = useState("2");
@@ -334,7 +364,7 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
       category: f.category,
       description: f.description.trim(),
       amount: Number(f.amount),
-      notes: f.notes || null,
+      notes: withExpensePaymentTag(f.notes, f.payment_status),
     };
     let res;
     if (expense) {
@@ -470,6 +500,33 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
               value={f.amount}
               onChange={(e) => setF({ ...f, amount: e.target.value })}
             />
+          </div>
+          <div className="rounded-xl border border-border bg-accent/40 p-4 sm:col-span-2">
+            <Label className="font-semibold text-foreground">Status de pagamento</Label>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setF((prev) => ({ ...prev, payment_status: "pago" }))}
+                className={`h-9 rounded-lg border px-4 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                  f.payment_status === "pago"
+                    ? "border-emerald-600 bg-emerald-600 text-white"
+                    : "border-border bg-background text-muted-foreground hover:border-emerald-500"
+                }`}
+              >
+                Pago
+              </button>
+              <button
+                type="button"
+                onClick={() => setF((prev) => ({ ...prev, payment_status: "pendente" }))}
+                className={`h-9 rounded-lg border px-4 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                  f.payment_status === "pendente"
+                    ? "border-amber-500 bg-amber-500 text-white"
+                    : "border-border bg-background text-muted-foreground hover:border-amber-500"
+                }`}
+              >
+                Pendente
+              </button>
+            </div>
           </div>
           <div className="sm:col-span-2">
             <Label>Observações</Label>
