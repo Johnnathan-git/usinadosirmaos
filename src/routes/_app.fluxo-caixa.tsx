@@ -54,6 +54,19 @@ function isInvoicePaid(notes: string | null | undefined): boolean {
   return !notes?.includes("[[status:pendente]]");
 }
 
+function withInvoicePaymentStatus(
+  notes: string | null | undefined,
+  status: "pago" | "pendente",
+): string | null {
+  const cleaned = (notes || "")
+    .replace(/\[\[status:(pago|pendente)\]\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const tag = status === "pendente" ? "[[status:pendente]]" : "";
+  const out = [cleaned, tag].filter(Boolean).join(" ").trim();
+  return out || null;
+}
+
 function expensePaymentStatus(notes: string | null | undefined): "pago" | "pendente" {
   return notes?.includes("[[status:pendente]]") ? "pendente" : "pago";
 }
@@ -164,6 +177,7 @@ function Fluxo() {
   );
   const [newOpen, setNewOpen] = useState(false);
   const [edit, setEdit] = useState<Expense | null>(null);
+  const [invoiceStatusSaving, setInvoiceStatusSaving] = useState<string | null>(null);
   const [bank, setBank] = useState<BankState>(() => readBankState());
   const [bankOpen, setBankOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
@@ -203,6 +217,31 @@ function Fluxo() {
     : 0;
 
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
+
+  async function setInvoicePaymentStatus(inv: Invoice, status: "pago" | "pendente") {
+    const currentStatus = isInvoicePaid(inv.notes) ? "pago" : "pendente";
+    if (currentStatus === status || invoiceStatusSaving === inv.id) return;
+
+    setInvoiceStatusSaving(inv.id);
+    const { error } = await supabase
+      .from("invoices")
+      .update({ notes: withInvoicePaymentStatus(inv.notes, status) })
+      .eq("id", inv.id);
+    setInvoiceStatusSaving(null);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success(status === "pago" ? "Fatura marcada como paga" : "Fatura marcada como pendente");
+    await Promise.all([
+      qc.invalidateQueries({ queryKey: ["fluxo-page"] }),
+      qc.invalidateQueries({ queryKey: ["faturas-page"] }),
+      qc.invalidateQueries({ queryKey: ["relatorio-page"] }),
+      qc.invalidateQueries({ queryKey: ["client-invoices", inv.client_id] }),
+    ]);
+  }
 
   function openBankAdjustment() {
     setBankValue((bank.initialized ? bankBalance : 0).toFixed(2));
@@ -318,6 +357,8 @@ function Fluxo() {
           {monthInvoices.map((inv) => {
             const profit = Number(inv.client_pays) - Number(inv.distributor_invoice);
             const client = data.clients.find((c) => c.id === inv.client_id);
+            const paid = isInvoicePaid(inv.notes);
+            const savingStatus = invoiceStatusSaving === inv.id;
             return (
               <div
                 key={inv.id}
@@ -335,15 +376,32 @@ function Fluxo() {
                       <span className="text-sm font-semibold text-foreground truncate">
                         {client?.name ?? "—"}
                       </span>
-                      {isInvoicePaid(inv.notes) ? (
-                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          disabled={savingStatus}
+                          onClick={() => setInvoicePaymentStatus(inv, "pago")}
+                          className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase transition-colors ${
+                            paid
+                              ? "bg-emerald-100 text-emerald-800"
+                              : "bg-muted text-muted-foreground hover:bg-emerald-50 hover:text-emerald-700"
+                          } ${savingStatus ? "opacity-50" : ""}`}
+                        >
                           Pago
-                        </span>
-                      ) : (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">
+                        </button>
+                        <button
+                          type="button"
+                          disabled={savingStatus}
+                          onClick={() => setInvoicePaymentStatus(inv, "pendente")}
+                          className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase transition-colors ${
+                            !paid
+                              ? "bg-amber-100 text-amber-800"
+                              : "bg-muted text-muted-foreground hover:bg-amber-50 hover:text-amber-700"
+                          } ${savingStatus ? "opacity-50" : ""}`}
+                        >
                           Pendente
-                        </span>
-                      )}
+                        </button>
+                      </div>
                     </div>
                     <div className="text-xs text-muted-foreground">{monthLabel(monthDate)}</div>
                   </div>
