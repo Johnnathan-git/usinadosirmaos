@@ -12,7 +12,7 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
-import { Plus, TrendingUp, TrendingDown, DollarSign, Pencil, Trash2 } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, Pencil, Trash2, Landmark } from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -23,10 +23,6 @@ type Invoice = {
   notes: string | null;
 };
 
-function isInvoicePaid(notes: string | null | undefined): boolean {
-  return !notes?.includes("[[status:pendente]]");
-}
-
 type Expense = {
   id: string; reference_date: string; category: string;
   description: string; amount: number; notes: string | null;
@@ -34,7 +30,29 @@ type Expense = {
   installment_no?: number | null;
   installment_total?: number | null;
 };
+
 type Client = { id: string; name: string; color: string };
+
+type BankState = {
+  initialized: boolean;
+  balance: number;
+  invoiceSnapshot: Record<string, number>;
+  expenseSnapshot: Record<string, number>;
+  adjustedAt: string | null;
+};
+
+const BANK_STORAGE_KEY = "usinadosirmaos:bank-account:v1";
+const EMPTY_BANK_STATE: BankState = {
+  initialized: false,
+  balance: 0,
+  invoiceSnapshot: {},
+  expenseSnapshot: {},
+  adjustedAt: null,
+};
+
+function isInvoicePaid(notes: string | null | undefined): boolean {
+  return !notes?.includes("[[status:pendente]]");
+}
 
 function expensePaymentStatus(notes: string | null | undefined): "pago" | "pendente" {
   return notes?.includes("[[status:pendente]]") ? "pendente" : "pago";
@@ -52,6 +70,47 @@ function withExpensePaymentTag(
   const tag = status === "pendente" ? "[[status:pendente]]" : "";
   const out = [cleaned, tag].filter(Boolean).join(" ").trim();
   return out || null;
+}
+
+function getPaidInvoiceMap(invoices: Invoice[]): Record<string, number> {
+  return Object.fromEntries(
+    invoices
+      .filter((invoice) => isInvoicePaid(invoice.notes))
+      .map((invoice) => [
+        invoice.id,
+        Number(invoice.client_pays) - Number(invoice.distributor_invoice),
+      ]),
+  );
+}
+
+function getPaidExpenseMap(expenses: Expense[]): Record<string, number> {
+  return Object.fromEntries(
+    expenses
+      .filter((expense) => expensePaymentStatus(expense.notes) === "pago")
+      .map((expense) => [expense.id, Number(expense.amount)]),
+  );
+}
+
+function mapTotal(values: Record<string, number>): number {
+  return Object.values(values).reduce((sum, value) => sum + Number(value || 0), 0);
+}
+
+function readBankState(): BankState {
+  if (typeof window === "undefined") return EMPTY_BANK_STATE;
+  try {
+    const raw = window.localStorage.getItem(BANK_STORAGE_KEY);
+    if (!raw) return EMPTY_BANK_STATE;
+    const parsed = JSON.parse(raw) as Partial<BankState>;
+    return {
+      initialized: Boolean(parsed.initialized),
+      balance: Number(parsed.balance || 0),
+      invoiceSnapshot: parsed.invoiceSnapshot ?? {},
+      expenseSnapshot: parsed.expenseSnapshot ?? {},
+      adjustedAt: parsed.adjustedAt ?? null,
+    };
+  } catch {
+    return EMPTY_BANK_STATE;
+  }
 }
 
 const fluxoQ = queryOptions({
@@ -105,6 +164,9 @@ function Fluxo() {
   );
   const [newOpen, setNewOpen] = useState(false);
   const [edit, setEdit] = useState<Expense | null>(null);
+  const [bank, setBank] = useState<BankState>(() => readBankState());
+  const [bankOpen, setBankOpen] = useState(false);
+  const [bankValue, setBankValue] = useState("0.00");
 
   const months = useMemo(() => {
     const set = new Set<string>();
@@ -128,7 +190,51 @@ function Fluxo() {
   const totalDespesasLancadas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
   const lucro = lucroBruto - totalDespesasLancadas;
 
+  const currentPaidInvoices = getPaidInvoiceMap(data.invoices);
+  const currentPaidExpenses = getPaidExpenseMap(data.expenses);
+  const receivedSinceAdjustment = bank.initialized
+    ? mapTotal(currentPaidInvoices) - mapTotal(bank.invoiceSnapshot)
+    : 0;
+  const paidSinceAdjustment = bank.initialized
+    ? mapTotal(currentPaidExpenses) - mapTotal(bank.expenseSnapshot)
+    : 0;
+  const bankBalance = bank.initialized
+    ? bank.balance + receivedSinceAdjustment - paidSinceAdjustment
+    : 0;
+
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
+
+  function openBankAdjustment() {
+    setBankValue((bank.initialized ? bankBalance : 0).toFixed(2));
+    setBankOpen(true);
+  }
+
+  function saveBankAdjustment() {
+    const normalized = bankValue.trim().replace(/\./g, "").replace(",", ".");
+    const directValue = Number(bankValue.replace(",", "."));
+    const parsed = Number.isFinite(directValue) ? directValue : Number(normalized);
+    if (!Number.isFinite(parsed)) {
+      toast.error("Informe um saldo válido");
+      return;
+    }
+
+    const next: BankState = {
+      initialized: true,
+      balance: parsed,
+      invoiceSnapshot: currentPaidInvoices,
+      expenseSnapshot: currentPaidExpenses,
+      adjustedAt: new Date().toISOString(),
+    };
+
+    try {
+      window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+      setBank(next);
+      setBankOpen(false);
+      toast.success("Saldo da conta bancária ajustado");
+    } catch {
+      toast.error("Não foi possível salvar o saldo neste navegador");
+    }
+  }
 
   return (
     <div className="mx-auto max-w-5xl space-y-5">
@@ -183,6 +289,25 @@ function Fluxo() {
           <div className="mt-1 text-[10px] text-muted-foreground">Lucro bruto − Despesas</div>
         </Card>
       </div>
+
+      <Card className="glass-card p-4" style={{ borderTop: "3px solid #2563EB" }}>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <Landmark className="h-4 w-4 text-blue-600" /> Conta Bancária
+            </div>
+            <div className="text-3xl font-bold text-foreground num">{brl(bankBalance)}</div>
+            <div className="mt-1 text-xs text-muted-foreground">
+              {bank.initialized
+                ? `Saldo ajustado ${brl(bank.balance)} + recebidos ${brl(receivedSinceAdjustment)} − despesas pagas ${brl(paidSinceAdjustment)}`
+                : "Saldo inicial zerado. Ajuste o saldo para começar a contabilizar a partir de agora."}
+            </div>
+          </div>
+          <Button variant="outline" onClick={openBankAdjustment}>
+            Ajustar saldo
+          </Button>
+        </div>
+      </Card>
 
       <Card className="glass-card p-4">
         <h2 className="mb-3 text-base font-semibold text-foreground">Faturas dos clientes</h2>
@@ -311,6 +436,39 @@ function Fluxo() {
             setEdit(null);
           }}
         />
+      )}
+
+      {bankOpen && (
+        <Dialog open onOpenChange={(open) => !open && setBankOpen(false)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Ajustar saldo — Conta Bancária</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Informe o saldo real da conta agora. Tudo que já está pago antes deste ajuste
+                será usado apenas como referência e não será contado novamente.
+              </p>
+              <div>
+                <Label>Saldo atual (R$)</Label>
+                <Input
+                  type="number"
+                  inputMode="decimal"
+                  step="0.01"
+                  value={bankValue}
+                  onChange={(event) => setBankValue(event.target.value)}
+                  className="mt-1"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setBankOpen(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={saveBankAdjustment}>Confirmar saldo</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
