@@ -30,7 +30,7 @@ import {
   Landmark,
 } from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 type Invoice = {
@@ -205,6 +205,52 @@ function Fluxo() {
   const [bank, setBank] = useState<BankState>(() => readBankState());
   const [bankOpen, setBankOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
+  const [bankSaving, setBankSaving] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadBankState() {
+      const local = readBankState();
+      const { data: saved, error } = await supabase
+        .from("bank_account_state")
+        .select("initialized,balance,invoice_snapshot,expense_snapshot,adjusted_at")
+        .eq("id", 1)
+        .maybeSingle();
+
+      if (!active || error) return;
+
+      if (saved) {
+        const next: BankState = {
+          initialized: Boolean(saved.initialized),
+          balance: Number(saved.balance || 0),
+          invoiceSnapshot: (saved.invoice_snapshot as Record<string, number> | null) ?? {},
+          expenseSnapshot: (saved.expense_snapshot as Record<string, number> | null) ?? {},
+          adjustedAt: saved.adjusted_at ?? null,
+        };
+        window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+        setBank(next);
+        return;
+      }
+
+      if (local.initialized) {
+        const { error: syncError } = await supabase.from("bank_account_state").upsert({
+          id: 1,
+          initialized: local.initialized,
+          balance: local.balance,
+          invoice_snapshot: local.invoiceSnapshot,
+          expense_snapshot: local.expenseSnapshot,
+          adjusted_at: local.adjustedAt,
+        });
+        if (!syncError && active) setBank(local);
+      }
+    }
+
+    void loadBankState();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const months = useMemo(() => {
     const set = new Set<string>();
@@ -277,7 +323,7 @@ function Fluxo() {
     setBankOpen(true);
   }
 
-  function saveBankAdjustment() {
+  async function saveBankAdjustment() {
     const normalized = bankValue.trim().replace(/\./g, "").replace(",", ".");
     const directValue = Number(bankValue.replace(",", "."));
     const parsed = Number.isFinite(directValue) ? directValue : Number(normalized);
@@ -294,14 +340,30 @@ function Fluxo() {
       adjustedAt: new Date().toISOString(),
     };
 
+    setBankSaving(true);
+    const { error } = await supabase.from("bank_account_state").upsert({
+      id: 1,
+      initialized: true,
+      balance: next.balance,
+      invoice_snapshot: next.invoiceSnapshot,
+      expense_snapshot: next.expenseSnapshot,
+      adjusted_at: next.adjustedAt,
+    });
+    setBankSaving(false);
+
+    if (error) {
+      toast.error("Não foi possível salvar o saldo no banco. Tente novamente.");
+      return;
+    }
+
     try {
       window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
-      setBank(next);
-      setBankOpen(false);
-      toast.success("Saldo da conta bancária ajustado");
     } catch {
-      toast.error("Não foi possível salvar o saldo neste navegador");
+      // O banco é a fonte principal; falha no cache local não impede o salvamento.
     }
+    setBank(next);
+    setBankOpen(false);
+    toast.success("Saldo da conta bancária ajustado e salvo");
   }
 
   return (
@@ -573,7 +635,9 @@ function Fluxo() {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setBankOpen(false)}>Cancelar</Button>
-              <Button onClick={saveBankAdjustment}>Confirmar saldo</Button>
+              <Button onClick={saveBankAdjustment} disabled={bankSaving}>
+                {bankSaving ? "Salvando..." : "Confirmar saldo"}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
