@@ -161,36 +161,6 @@ export type Database = {
         }
         Relationships: []
       }
-      bank_account_state: {
-        Row: {
-          adjusted_at: string | null
-          balance: number
-          expense_snapshot: Json
-          id: number
-          initialized: boolean
-          invoice_snapshot: Json
-          updated_at: string
-        }
-        Insert: {
-          adjusted_at?: string | null
-          balance?: number
-          expense_snapshot?: Json
-          id?: number
-          initialized?: boolean
-          invoice_snapshot?: Json
-          updated_at?: string
-        }
-        Update: {
-          adjusted_at?: string | null
-          balance?: number
-          expense_snapshot?: Json
-          id?: number
-          initialized?: boolean
-          invoice_snapshot?: Json
-          updated_at?: string
-        }
-        Relationships: []
-      }
       expenses: {
         Row: {
           amount: number
