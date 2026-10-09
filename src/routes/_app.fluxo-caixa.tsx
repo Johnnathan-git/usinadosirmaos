@@ -65,6 +65,8 @@ type BankState = {
 };
 
 const BANK_STORAGE_KEY = "usinadosirmaos:bank-account:v1";
+const BANK_EXPENSE_CATEGORY = "__SISTEMA__";
+const BANK_EXPENSE_DESCRIPTION = "__CONTA_BANCARIA__";
 const EMPTY_BANK_STATE: BankState = {
   initialized: false,
   balance: 0,
@@ -129,6 +131,35 @@ function getPaidExpenseMap(expenses: Expense[]): Record<string, number> {
 
 function mapTotal(values: Record<string, number>): number {
   return Object.values(values).reduce((sum, value) => sum + Number(value || 0), 0);
+}
+
+function isBankStateExpense(expense: Expense): boolean {
+  return expense.category === BANK_EXPENSE_CATEGORY && expense.description === BANK_EXPENSE_DESCRIPTION;
+}
+
+function bankStateFromExpense(expense: Pick<Expense, "amount" | "notes"> | null): BankState | null {
+  if (!expense) return null;
+  try {
+    const meta = JSON.parse(expense.notes || "{}") as Partial<BankState>;
+    return {
+      initialized: Boolean(meta.initialized),
+      balance: Number(expense.amount || 0),
+      invoiceSnapshot: meta.invoiceSnapshot ?? {},
+      expenseSnapshot: meta.expenseSnapshot ?? {},
+      adjustedAt: meta.adjustedAt ?? null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function bankStateNotes(state: BankState): string {
+  return JSON.stringify({
+    initialized: state.initialized,
+    invoiceSnapshot: state.invoiceSnapshot,
+    expenseSnapshot: state.expenseSnapshot,
+    adjustedAt: state.adjustedAt,
+  });
 }
 
 function readBankState(): BankState {
@@ -212,54 +243,38 @@ function Fluxo() {
 
     async function loadBankState() {
       const local = readBankState();
-      const { data: saved, error } = await supabase
-        .from("bank_account_state")
-        .select("initialized,balance,invoice_snapshot,expense_snapshot,adjusted_at")
-        .eq("id", 1)
-        .maybeSingle();
+      const { data: savedRows, error } = await supabase
+        .from("expenses")
+        .select("id,amount,notes")
+        .eq("category", BANK_EXPENSE_CATEGORY)
+        .eq("description", BANK_EXPENSE_DESCRIPTION)
+        .limit(1);
 
       if (!active || error) return;
 
+      const saved = bankStateFromExpense((savedRows?.[0] as Pick<Expense, "amount" | "notes"> | undefined) ?? null);
       if (saved) {
-        if (!saved.initialized && local.initialized) {
-          const { error: syncError } = await supabase.from("bank_account_state").upsert({
-            id: 1,
-            initialized: true,
-            balance: local.balance,
-            invoice_snapshot: local.invoiceSnapshot,
-            expense_snapshot: local.expenseSnapshot,
-            adjusted_at: local.adjustedAt,
-          });
-          if (!syncError && active) setBank(local);
-          return;
-        }
-
-        const next: BankState = {
-          initialized: Boolean(saved.initialized),
-          balance: Number(saved.balance || 0),
-          invoiceSnapshot: (saved.invoice_snapshot as Record<string, number> | null) ?? {},
-          expenseSnapshot: (saved.expense_snapshot as Record<string, number> | null) ?? {},
-          adjustedAt: saved.adjusted_at ?? null,
-        };
         try {
-          window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+          window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(saved));
         } catch {
           // O banco continua sendo a fonte principal.
         }
-        setBank(next);
+        setBank(saved);
         return;
       }
 
       if (local.initialized) {
-        const { error: syncError } = await supabase.from("bank_account_state").upsert({
-          id: 1,
-          initialized: local.initialized,
-          balance: local.balance,
-          invoice_snapshot: local.invoiceSnapshot,
-          expense_snapshot: local.expenseSnapshot,
-          adjusted_at: local.adjustedAt,
+        const { error: syncError } = await supabase.from("expenses").insert({
+          reference_date: new Date().toISOString().slice(0, 10),
+          category: BANK_EXPENSE_CATEGORY,
+          description: BANK_EXPENSE_DESCRIPTION,
+          amount: local.balance,
+          notes: bankStateNotes(local),
         });
-        if (!syncError && active) setBank(local);
+        if (!syncError && active) {
+          setBank(local);
+          void qc.invalidateQueries({ queryKey: ["fluxo-page"] });
+        }
       }
     }
 
@@ -267,7 +282,7 @@ function Fluxo() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [qc]);
 
   const months = useMemo(() => {
     const set = new Set<string>();
@@ -276,12 +291,13 @@ function Fluxo() {
       set.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
     }
     data.invoices.forEach((inv) => set.add(inv.reference_date.slice(0, 7)));
-    data.expenses.forEach((e) => set.add(e.reference_date.slice(0, 7)));
+    data.expenses.filter((e) => !isBankStateExpense(e)).forEach((e) => set.add(e.reference_date.slice(0, 7)));
     return [...set].sort().reverse();
   }, [data]);
 
+  const normalExpenses = data.expenses.filter((e) => !isBankStateExpense(e));
   const monthInvoices = data.invoices.filter((i) => i.reference_date.startsWith(monthKey));
-  const monthExpenses = data.expenses.filter((e) => e.reference_date.startsWith(monthKey));
+  const monthExpenses = normalExpenses.filter((e) => e.reference_date.startsWith(monthKey));
 
   const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
   const lucroBruto = paidInvoices.reduce(
@@ -292,7 +308,7 @@ function Fluxo() {
   const lucro = lucroBruto - totalDespesasLancadas;
 
   const currentPaidInvoices = getPaidInvoiceMap(data.invoices);
-  const currentPaidExpenses = getPaidExpenseMap(data.expenses);
+  const currentPaidExpenses = getPaidExpenseMap(normalExpenses);
   const receivedSinceAdjustment = bank.initialized
     ? mapTotal(currentPaidInvoices) - mapTotal(bank.invoiceSnapshot)
     : 0;
@@ -358,17 +374,31 @@ function Fluxo() {
     };
 
     setBankSaving(true);
-    const { error } = await supabase.from("bank_account_state").upsert({
-      id: 1,
-      initialized: true,
-      balance: next.balance,
-      invoice_snapshot: next.invoiceSnapshot,
-      expense_snapshot: next.expenseSnapshot,
-      adjusted_at: next.adjustedAt,
-    });
+    const { data: existingRows, error: findError } = await supabase
+      .from("expenses")
+      .select("id")
+      .eq("category", BANK_EXPENSE_CATEGORY)
+      .eq("description", BANK_EXPENSE_DESCRIPTION)
+      .limit(1);
+
+    let saveError = findError;
+    if (!saveError) {
+      const existingId = existingRows?.[0]?.id;
+      const payload = {
+        reference_date: new Date().toISOString().slice(0, 10),
+        category: BANK_EXPENSE_CATEGORY,
+        description: BANK_EXPENSE_DESCRIPTION,
+        amount: next.balance,
+        notes: bankStateNotes(next),
+      };
+      const result = existingId
+        ? await supabase.from("expenses").update(payload).eq("id", existingId)
+        : await supabase.from("expenses").insert(payload);
+      saveError = result.error;
+    }
     setBankSaving(false);
 
-    if (error) {
+    if (saveError) {
       toast.error("Não foi possível salvar o saldo no banco. Tente novamente.");
       return;
     }
@@ -380,6 +410,7 @@ function Fluxo() {
     }
     setBank(next);
     setBankOpen(false);
+    void qc.invalidateQueries({ queryKey: ["fluxo-page"] });
     toast.success("Saldo da conta bancária ajustado e salvo");
   }
 
