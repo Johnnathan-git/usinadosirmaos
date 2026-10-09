@@ -221,6 +221,19 @@ function Fluxo() {
       if (!active || error) return;
 
       if (saved) {
+        if (!saved.initialized && local.initialized) {
+          const { error: syncError } = await supabase.from("bank_account_state").upsert({
+            id: 1,
+            initialized: true,
+            balance: local.balance,
+            invoice_snapshot: local.invoiceSnapshot,
+            expense_snapshot: local.expenseSnapshot,
+            adjusted_at: local.adjustedAt,
+          });
+          if (!syncError && active) setBank(local);
+          return;
+        }
+
         const next: BankState = {
           initialized: Boolean(saved.initialized),
           balance: Number(saved.balance || 0),
@@ -228,7 +241,11 @@ function Fluxo() {
           expenseSnapshot: (saved.expense_snapshot as Record<string, number> | null) ?? {},
           adjustedAt: saved.adjusted_at ?? null,
         };
-        window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+        try {
+          window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+        } catch {
+          // O banco continua sendo a fonte principal.
+        }
         setBank(next);
         return;
       }
