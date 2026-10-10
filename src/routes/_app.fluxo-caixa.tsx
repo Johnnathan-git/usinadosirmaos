@@ -664,7 +664,11 @@ function Fluxo() {
                 </button>
                 <button
                   aria-label="Excluir"
-                  onClick={() => deleteExpense(e, () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }))}
+                  onClick={() => deleteExpense(
+                    e,
+                    () => qc.invalidateQueries({ queryKey: ["fluxo-page"] }),
+                    appendBankMovement,
+                  )}
                   className="p-1.5 text-muted-foreground hover:text-red-500"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -818,22 +822,57 @@ function Fluxo() {
   );
 }
 
-async function deleteExpense(e: Expense, onDone: () => void) {
+async function deleteExpense(
+  e: Expense,
+  onDone: () => void,
+  onMovement: (movement: BankMovement) => Promise<void>,
+) {
   const isParcel = Boolean(e.installment_group && (e.installment_total ?? 0) > 1);
+  let refundedAmount = expensePaymentStatus(e.notes) === "pago" ? Number(e.amount) : 0;
+
   if (isParcel) {
     const all = confirm(
       `Esta é a parcela ${e.installment_no}/${e.installment_total}.\n\nOK = excluir TODAS as parcelas desta compra.\nCancelar = excluir somente esta parcela.`,
     );
+
+    if (all) {
+      const { data: groupRows, error: groupError } = await supabase
+        .from("expenses")
+        .select("amount,notes")
+        .eq("installment_group", e.installment_group!);
+      if (groupError) return toast.error(groupError.message);
+      refundedAmount = (groupRows ?? []).reduce(
+        (sum, row) => sum + (expensePaymentStatus(row.notes) === "pago" ? Number(row.amount) : 0),
+        0,
+      );
+    }
+
     const q = all
       ? supabase.from("expenses").delete().eq("installment_group", e.installment_group!)
       : supabase.from("expenses").delete().eq("id", e.id);
     const { error } = await q;
     if (error) return toast.error(error.message);
+    if (refundedAmount > 0) {
+      await onMovement({
+        kind: "entrada",
+        description: all
+          ? `Exclusão de parcelas pagas — ${e.description}`
+          : `Exclusão de despesa paga — ${e.description}`,
+        amount: refundedAmount,
+      });
+    }
     toast.success(all ? "Parcelas excluídas" : "Parcela excluída");
   } else {
     if (!confirm("Excluir esta despesa?")) return;
     const { error } = await supabase.from("expenses").delete().eq("id", e.id);
     if (error) return toast.error(error.message);
+    if (refundedAmount > 0) {
+      await onMovement({
+        kind: "entrada",
+        description: `Exclusão de despesa paga — ${e.description}`,
+        amount: refundedAmount,
+      });
+    }
     toast.success("Despesa excluída");
   }
   onDone();
