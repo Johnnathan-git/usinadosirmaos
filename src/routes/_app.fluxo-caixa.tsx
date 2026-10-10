@@ -28,6 +28,7 @@ import {
   Pencil,
   Trash2,
   Landmark,
+  History,
 } from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -56,12 +57,28 @@ type Expense = {
 
 type Client = { id: string; name: string; color: string };
 
+type BankHistoryEntry = {
+  id: string;
+  at: string;
+  kind: "ajuste" | "entrada" | "saida";
+  description: string;
+  amount: number;
+  balanceAfter: number;
+};
+
 type BankState = {
   initialized: boolean;
   balance: number;
   invoiceSnapshot: Record<string, number>;
   expenseSnapshot: Record<string, number>;
   adjustedAt: string | null;
+  history: BankHistoryEntry[];
+};
+
+type BankMovement = {
+  kind: "entrada" | "saida";
+  description: string;
+  amount: number;
 };
 
 const BANK_STORAGE_KEY = "usinadosirmaos:bank-account:v1";
@@ -73,6 +90,7 @@ const EMPTY_BANK_STATE: BankState = {
   invoiceSnapshot: {},
   expenseSnapshot: {},
   adjustedAt: null,
+  history: [],
 };
 
 function isInvoicePaid(notes: string | null | undefined): boolean {
@@ -147,6 +165,7 @@ function bankStateFromExpense(expense: Pick<Expense, "amount" | "notes"> | null)
       invoiceSnapshot: meta.invoiceSnapshot ?? {},
       expenseSnapshot: meta.expenseSnapshot ?? {},
       adjustedAt: meta.adjustedAt ?? null,
+      history: Array.isArray(meta.history) ? meta.history as BankHistoryEntry[] : [],
     };
   } catch {
     return null;
@@ -159,6 +178,7 @@ function bankStateNotes(state: BankState): string {
     invoiceSnapshot: state.invoiceSnapshot,
     expenseSnapshot: state.expenseSnapshot,
     adjustedAt: state.adjustedAt,
+    history: state.history,
   });
 }
 
@@ -174,6 +194,7 @@ function readBankState(): BankState {
       invoiceSnapshot: parsed.invoiceSnapshot ?? {},
       expenseSnapshot: parsed.expenseSnapshot ?? {},
       adjustedAt: parsed.adjustedAt ?? null,
+      history: Array.isArray(parsed.history) ? parsed.history as BankHistoryEntry[] : [],
     };
   } catch {
     return EMPTY_BANK_STATE;
@@ -235,6 +256,7 @@ function Fluxo() {
   const [invoiceStatusSaving, setInvoiceStatusSaving] = useState(false);
   const [bank, setBank] = useState<BankState>(() => readBankState());
   const [bankOpen, setBankOpen] = useState(false);
+  const [bankHistoryOpen, setBankHistoryOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
   const [bankSaving, setBankSaving] = useState(false);
 
@@ -319,6 +341,63 @@ function Fluxo() {
     ? bank.balance + receivedSinceAdjustment - paidSinceAdjustment
     : 0;
 
+  async function persistBankState(next: BankState): Promise<boolean> {
+    const { data: existingRows, error: findError } = await supabase
+      .from("expenses")
+      .select("id")
+      .eq("category", BANK_EXPENSE_CATEGORY)
+      .eq("description", BANK_EXPENSE_DESCRIPTION)
+      .limit(1);
+
+    if (findError) return false;
+
+    const existingId = existingRows?.[0]?.id;
+    const payload = {
+      reference_date: new Date().toISOString().slice(0, 10),
+      category: BANK_EXPENSE_CATEGORY,
+      description: BANK_EXPENSE_DESCRIPTION,
+      amount: next.balance,
+      notes: bankStateNotes(next),
+    };
+    const result = existingId
+      ? await supabase.from("expenses").update(payload).eq("id", existingId)
+      : await supabase.from("expenses").insert(payload);
+
+    if (result.error) return false;
+
+    try {
+      window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // O banco continua sendo a fonte principal.
+    }
+    setBank(next);
+    return true;
+  }
+
+  async function appendBankMovement(movement: BankMovement) {
+    if (!bank.initialized || !movement.amount) return;
+
+    const signed = movement.kind === "entrada"
+      ? Math.abs(movement.amount)
+      : -Math.abs(movement.amount);
+    const nextBalance = bankBalance + signed;
+    const next: BankState = {
+      ...bank,
+      history: [
+        ...bank.history,
+        {
+          id: crypto.randomUUID(),
+          at: new Date().toISOString(),
+          kind: movement.kind,
+          description: movement.description,
+          amount: signed,
+          balanceAfter: nextBalance,
+        },
+      ],
+    };
+    await persistBankState(next);
+  }
+
   const monthDate = new Date(Number(monthKey.slice(0, 4)), Number(monthKey.slice(5, 7)) - 1, 1);
 
   async function saveInvoicePaymentStatus(status: "pago" | "pendente") {
@@ -339,6 +418,15 @@ function Fluxo() {
     if (error) {
       toast.error(error.message);
       return;
+    }
+
+    if (bank.initialized) {
+      const profit = Number(invoiceEdit.client_pays) - Number(invoiceEdit.distributor_invoice);
+      const clientName = data.clients.find((client) => client.id === invoiceEdit.client_id)?.name ?? "Cliente";
+      const movement: BankMovement = status === "pago"
+        ? { kind: "entrada", description: `Fatura paga — ${clientName}`, amount: profit }
+        : { kind: "saida", description: `Fatura voltou para pendente — ${clientName}`, amount: profit };
+      await appendBankMovement(movement);
     }
 
     toast.success(status === "pago" ? "Fatura marcada como paga" : "Fatura marcada como pendente");
@@ -365,50 +453,35 @@ function Fluxo() {
       return;
     }
 
+    const nowIso = new Date().toISOString();
     const next: BankState = {
       initialized: true,
       balance: parsed,
       invoiceSnapshot: currentPaidInvoices,
       expenseSnapshot: currentPaidExpenses,
-      adjustedAt: new Date().toISOString(),
+      adjustedAt: nowIso,
+      history: [
+        ...bank.history,
+        {
+          id: crypto.randomUUID(),
+          at: nowIso,
+          kind: "ajuste",
+          description: "Ajuste manual de saldo",
+          amount: parsed - bankBalance,
+          balanceAfter: parsed,
+        },
+      ],
     };
 
     setBankSaving(true);
-    const { data: existingRows, error: findError } = await supabase
-      .from("expenses")
-      .select("id")
-      .eq("category", BANK_EXPENSE_CATEGORY)
-      .eq("description", BANK_EXPENSE_DESCRIPTION)
-      .limit(1);
-
-    let saveError = findError;
-    if (!saveError) {
-      const existingId = existingRows?.[0]?.id;
-      const payload = {
-        reference_date: new Date().toISOString().slice(0, 10),
-        category: BANK_EXPENSE_CATEGORY,
-        description: BANK_EXPENSE_DESCRIPTION,
-        amount: next.balance,
-        notes: bankStateNotes(next),
-      };
-      const result = existingId
-        ? await supabase.from("expenses").update(payload).eq("id", existingId)
-        : await supabase.from("expenses").insert(payload);
-      saveError = result.error;
-    }
+    const saved = await persistBankState(next);
     setBankSaving(false);
 
-    if (saveError) {
+    if (!saved) {
       toast.error("Não foi possível salvar o saldo no banco. Tente novamente.");
       return;
     }
 
-    try {
-      window.localStorage.setItem(BANK_STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // O banco é a fonte principal; falha no cache local não impede o salvamento.
-    }
-    setBank(next);
     setBankOpen(false);
     void qc.invalidateQueries({ queryKey: ["fluxo-page"] });
     toast.success("Saldo da conta bancária ajustado e salvo");
@@ -479,7 +552,12 @@ function Fluxo() {
                 : "Saldo inicial zerado. Ajuste o saldo para começar a contabilizar a partir de agora."}
             </div>
           </div>
-          <Button variant="outline" onClick={openBankAdjustment}>Ajustar saldo</Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => setBankHistoryOpen(true)} className="gap-2">
+              <History className="h-4 w-4" /> Histórico
+            </Button>
+            <Button variant="outline" onClick={openBankAdjustment}>Ajustar saldo</Button>
+          </div>
         </div>
       </Card>
 
@@ -600,6 +678,7 @@ function Fluxo() {
       {(newOpen || edit) && (
         <ExpenseDialog
           expense={edit}
+          onMovement={appendBankMovement}
           onClose={() => {
             setNewOpen(false);
             setEdit(null);
@@ -654,6 +733,51 @@ function Fluxo() {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setInvoiceEdit(null)}>Cancelar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {bankHistoryOpen && (
+        <Dialog open onOpenChange={(open) => !open && setBankHistoryOpen(false)}>
+          <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Histórico — Conta Bancária</DialogTitle>
+            </DialogHeader>
+            {bank.history.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Nenhuma movimentação registrada ainda.</p>
+            ) : (
+              <div className="space-y-2">
+                {[...bank.history].reverse().map((entry) => (
+                  <div key={entry.id} className="flex items-start justify-between gap-4 rounded-lg border border-border p-3">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-medium text-foreground">{entry.description}</span>
+                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase ${
+                          entry.kind === "entrada"
+                            ? "bg-emerald-100 text-emerald-800"
+                            : entry.kind === "saida"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-blue-100 text-blue-700"
+                        }`}>
+                          {entry.kind}
+                        </span>
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {new Date(entry.at).toLocaleString("pt-BR")} · Saldo após: {brl(entry.balanceAfter)}
+                      </div>
+                    </div>
+                    <div className={`shrink-0 text-sm font-semibold num ${
+                      entry.amount > 0 ? "text-emerald-600" : entry.amount < 0 ? "text-red-500" : "text-muted-foreground"
+                    }`}>
+                      {entry.amount > 0 ? "+" : ""}{brl(entry.amount)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setBankHistoryOpen(false)}>Fechar</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -715,7 +839,15 @@ async function deleteExpense(e: Expense, onDone: () => void) {
   onDone();
 }
 
-function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose: () => void }) {
+function ExpenseDialog({
+  expense,
+  onClose,
+  onMovement,
+}: {
+  expense: Expense | null;
+  onClose: () => void;
+  onMovement: (movement: BankMovement) => Promise<void>;
+}) {
   const qc = useQueryClient();
   const today = new Date().toISOString().slice(0, 10);
   const [f, setF] = useState({
@@ -737,6 +869,8 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
       return;
     }
     setSaving(true);
+    const previousStatus = expense ? expensePaymentStatus(expense.notes) : null;
+    const previousAmount = expense ? Number(expense.amount) : 0;
     const payload = {
       reference_date: f.reference_date,
       category: f.category,
@@ -771,6 +905,26 @@ function ExpenseDialog({ expense, onClose }: { expense: Expense | null; onClose:
     }
     setSaving(false);
     if (res.error) return toast.error(res.error.message);
+
+    const currentStatus = f.payment_status;
+    let currentAmount = Number(f.amount);
+    if (!expense && installments && Number(parcels) > 1) {
+      const n = Math.min(120, Math.max(2, Math.round(Number(parcels))));
+      currentAmount = mode === "total" ? Number(f.amount) : Number(f.amount) * n;
+    }
+    const previousEffect = previousStatus === "pago" ? -previousAmount : 0;
+    const currentEffect = currentStatus === "pago" ? -currentAmount : 0;
+    const movementDelta = currentEffect - previousEffect;
+    if (movementDelta !== 0) {
+      await onMovement({
+        kind: movementDelta > 0 ? "entrada" : "saida",
+        description: movementDelta > 0
+          ? `Estorno/ajuste de despesa — ${f.description.trim()}`
+          : `Despesa paga — ${f.description.trim()}`,
+        amount: Math.abs(movementDelta),
+      });
+    }
+
     toast.success(
       expense
         ? "Despesa atualizada"
