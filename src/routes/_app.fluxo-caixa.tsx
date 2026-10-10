@@ -326,8 +326,14 @@ function Fluxo() {
     (a, i) => a + (Number(i.client_pays) - Number(i.distributor_invoice)),
     0,
   );
-  const totalDespesasLancadas = monthExpenses.reduce((a, e) => a + Number(e.amount), 0);
-  const lucro = lucroBruto - totalDespesasLancadas;
+  const paidMonthExpenses = monthExpenses.filter(
+    (expense) => expensePaymentStatus(expense.notes) === "pago",
+  );
+  const totalDespesasPagas = paidMonthExpenses.reduce(
+    (a, e) => a + Number(e.amount),
+    0,
+  );
+  const lucro = lucroBruto - totalDespesasPagas;
 
   const currentPaidInvoices = getPaidInvoiceMap(data.invoices);
   const currentPaidExpenses = getPaidExpenseMap(normalExpenses);
@@ -526,16 +532,16 @@ function Fluxo() {
         </Card>
         <Card className="glass-card p-4" style={{ borderTop: "3px solid #D64545" }}>
           <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-            <TrendingDown className="h-3.5 w-3.5 text-[#D64545]" /> Total Despesas Lançadas
+            <TrendingDown className="h-3.5 w-3.5 text-[#D64545]" /> Total Despesas Pagas
           </div>
-          <div className="text-2xl font-bold text-foreground num">{brl(totalDespesasLancadas)}</div>
+          <div className="text-2xl font-bold text-foreground num">{brl(totalDespesasPagas)}</div>
         </Card>
         <Card className="glass-card p-4" style={{ borderTop: "3px solid #2E5C8A" }}>
           <div className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <DollarSign className="h-3.5 w-3.5 text-[#2E5C8A]" /> Lucro líquido do mês
           </div>
           <div className="text-2xl font-bold text-foreground num">{brl(lucro)}</div>
-          <div className="mt-1 text-[10px] text-muted-foreground">Lucro bruto − Despesas</div>
+          <div className="mt-1 text-[10px] text-muted-foreground">Lucro bruto − Despesas pagas</div>
         </Card>
       </div>
 
