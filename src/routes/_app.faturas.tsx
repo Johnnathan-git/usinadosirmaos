@@ -89,7 +89,7 @@ export const Route = createFileRoute("/_app/faturas")({
   component: FaturasPage,
   head: () => ({
     meta: [
-      { title: "Faturas e Clientes — Usina dos Irmãos" },
+      { title: "Faturas — Usina dos Irmãos" },
       { name: "description", content: "Gestão de clientes e lançamento de faturas mensais." },
     ],
   }),
