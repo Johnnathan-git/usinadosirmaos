@@ -1,6 +1,6 @@
 export const MODULES = [
   { key: "dashboard", label: "Dashboard", path: "/" },
-  { key: "faturas", label: "Faturas e Clientes", path: "/faturas" },
+  { key: "faturas", label: "Faturas", path: "/faturas" },
   { key: "fluxo-caixa", label: "Fluxo de Caixa", path: "/fluxo-caixa" },
   { key: "relatorio", label: "Controle Cliente", path: "/relatorio" },
   { key: "controle", label: "Controle", path: "/controle" },
