@@ -29,6 +29,8 @@ import {
   Trash2,
   Landmark,
   History,
+  Search,
+  X,
 } from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -150,6 +152,14 @@ function getPaidExpenseMap(expenses: Expense[]): Record<string, number> {
 
 function mapTotal(values: Record<string, number>): number {
   return Object.values(values).reduce((sum, value) => sum + Number(value || 0), 0);
+}
+
+function normalizeSearch(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("pt-BR")
+    .trim();
 }
 
 function isBankStateExpense(expense: Expense): boolean {
@@ -275,6 +285,7 @@ function Fluxo() {
   const [bankHistoryOpen, setBankHistoryOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
   const [bankSaving, setBankSaving] = useState(false);
+  const [expenseSearch, setExpenseSearch] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -351,6 +362,27 @@ function Fluxo() {
   }, [data.expenses]);
   const monthInvoices = data.invoices.filter((i) => i.reference_date.startsWith(monthKey));
   const monthExpenses = normalExpenses.filter((e) => e.reference_date.startsWith(monthKey));
+  const normalizedExpenseSearch = normalizeSearch(expenseSearch);
+  const visibleExpenses = normalizedExpenseSearch
+    ? normalExpenses.filter((expense) => {
+        const amount = Number(expense.amount);
+        const searchable = normalizeSearch([
+          expense.description,
+          expense.category,
+          amount.toFixed(2),
+          amount.toFixed(2).replace(".", ","),
+          brl(amount),
+        ].join(" "));
+        return searchable.includes(normalizedExpenseSearch);
+      })
+    : monthExpenses;
+  const visibleExpensesTotal = visibleExpenses.reduce(
+    (sum, expense) => sum + Number(expense.amount),
+    0,
+  );
+  const visibleExpensesPaidTotal = visibleExpenses
+    .filter((expense) => expensePaymentStatus(expense.notes) === "pago")
+    .reduce((sum, expense) => sum + Number(expense.amount), 0);
 
   const paidInvoices = monthInvoices.filter((i) => isInvoicePaid(i.notes));
   const lucroBruto = paidInvoices.reduce(
@@ -658,14 +690,48 @@ function Fluxo() {
       </Card>
 
       <Card className="glass-card p-4">
-        <h2 className="mb-3 text-base font-semibold text-foreground">
-          Despesas lançadas — {monthLabel(monthDate)}
-        </h2>
-        {monthExpenses.length === 0 && (
-          <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>
+        <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">
+              {normalizedExpenseSearch
+                ? "Despesas encontradas — todos os meses"
+                : `Despesas lançadas — ${monthLabel(monthDate)}`}
+            </h2>
+            {normalizedExpenseSearch && (
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Busca por nome, categoria ou valor em todo o histórico.
+              </p>
+            )}
+          </div>
+          <div className="relative w-full sm:w-80">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={expenseSearch}
+              onChange={(event) => setExpenseSearch(event.target.value)}
+              placeholder="Buscar despesa, categoria ou valor..."
+              className="pl-9 pr-9"
+            />
+            {expenseSearch && (
+              <button
+                type="button"
+                aria-label="Limpar busca"
+                onClick={() => setExpenseSearch("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {visibleExpenses.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            {normalizedExpenseSearch ? "Nenhuma despesa encontrada." : "Nenhuma despesa neste mês."}
+          </p>
         )}
+
         <div className="space-y-2">
-          {monthExpenses.map((e) => (
+          {visibleExpenses.map((e) => (
             <div
               key={e.id}
               className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 hover:bg-accent/50 transition-colors"
@@ -683,6 +749,15 @@ function Fluxo() {
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
                     {e.category}
                   </span>
+                  {normalizedExpenseSearch && (
+                    <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      {monthLabel(new Date(
+                        Number(e.reference_date.slice(0, 4)),
+                        Number(e.reference_date.slice(5, 7)) - 1,
+                        1,
+                      ))}
+                    </span>
+                  )}
                   {e.installment_total ? (
                     <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium uppercase text-primary">
                       Parcela {e.installment_no}/{e.installment_total}
@@ -714,6 +789,22 @@ function Fluxo() {
             </div>
           ))}
         </div>
+
+        {visibleExpenses.length > 0 && (
+          <div className="mt-4 flex flex-col gap-2 border-t border-border pt-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-muted-foreground">
+              {visibleExpenses.length} {visibleExpenses.length === 1 ? "lançamento" : "lançamentos"}
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
+              <span className="text-muted-foreground">
+                Somatória: <strong className="num text-foreground">{brl(visibleExpensesTotal)}</strong>
+              </span>
+              <span className="text-muted-foreground">
+                Total pago: <strong className="num text-emerald-700">{brl(visibleExpensesPaidTotal)}</strong>
+              </span>
+            </div>
+          </div>
+        )}
       </Card>
 
       {(newOpen || edit) && (
