@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { brl, monthLabelFromISO } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Paperclip, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { Paperclip, CheckCircle2, Clock, AlertCircle, FileSpreadsheet, BarChart3 } from "lucide-react";
+import { EconomiaGerada } from "@/components/EconomiaGerada";
 
 type Invoice = {
   id: string; client_id: string; reference_date: string; uc_number: string;
@@ -120,6 +121,7 @@ function Relatorio() {
   const [clientId, setClientId] = useState<string>(locked ?? clients[0]?.id ?? "");
   const [months, setMonths] = useState<string[]>([]);
   const [rows, setRows] = useState<Row[]>([]);
+  const [section, setSection] = useState<"controle" | "economia">("controle");
 
   const client = clients.find((c) => c.id === clientId);
   const clientInvoices = useMemo(
@@ -157,10 +159,41 @@ function Relatorio() {
       <div className="no-print grid gap-3 sm:flex sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Controle Cliente</h1>
-          <p className="text-sm font-medium text-muted-foreground">Controle Mensal · Status de pagamento</p>
+          <p className="text-sm font-medium text-muted-foreground">
+            Faturas, status de pagamento e economia gerada
+          </p>
         </div>
       </div>
 
+      <div className="no-print flex flex-wrap gap-2 rounded-xl border border-border bg-card p-2">
+        <button
+          type="button"
+          onClick={() => setSection("controle")}
+          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+            section === "controle"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+          }`}
+        >
+          <FileSpreadsheet className="h-4 w-4" />
+          Controle Mensal
+        </button>
+        <button
+          type="button"
+          onClick={() => setSection("economia")}
+          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+            section === "economia"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+          }`}
+        >
+          <BarChart3 className="h-4 w-4" />
+          Economia Gerada
+        </button>
+      </div>
+
+      {section === "controle" ? (
+        <>
       <Card className="no-print glass-card grid gap-4 p-5 sm:grid-cols-2">
         <div>
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Cliente</div>
@@ -337,6 +370,10 @@ function Relatorio() {
           </div>
         )}
       </Card>
+        </>
+      ) : (
+        <EconomiaGerada />
+      )}
     </div>
   );
 }
