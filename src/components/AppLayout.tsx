@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutGrid, Users, Wallet, BarChart3, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound } from "lucide-react";
+import { LayoutGrid, Users, Wallet, Gauge, Package, ShieldCheck, FileSpreadsheet, KeyRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,7 +24,6 @@ const nav: NavItem[] = [
   { to: "/faturas", label: "Faturas e Clientes", shortLabel: "Faturas", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", shortLabel: "Fluxo", icon: Wallet, module: "fluxo-caixa" },
   { to: "/relatorio", label: "Controle Cliente", shortLabel: "Controle", icon: FileSpreadsheet, module: "relatorio" },
-  { to: "/resultado", label: "Resultado", shortLabel: "Resultado", icon: BarChart3, module: "resultado" },
   { to: "/controle", label: "Controle ADM", shortLabel: "ADM", icon: Gauge, module: "controle" },
   { to: "/inventario", label: "Inventário", shortLabel: "Estoque", icon: Package, module: "inventario" },
   { to: "/acessos", label: "Acessos", shortLabel: "Acessos", icon: ShieldCheck, module: "acessos", adminOnly: true },
@@ -200,7 +199,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const acc = access.data ?? undefined;
   const visibleNav = acc
     ? nav.filter(
-        (n) => acc.effective_admin || (!n.adminOnly && acc.permissions.includes(n.module)),
+        (n) =>
+          acc.effective_admin ||
+          (!n.adminOnly &&
+            (acc.permissions.includes(n.module) ||
+              (n.module === "relatorio" && acc.permissions.includes("resultado")))),
       )
     : [];
   const current = nav.find((n) => n.to === "/" ? pathname === "/" : pathname.startsWith(n.to));
