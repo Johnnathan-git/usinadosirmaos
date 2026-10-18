@@ -84,6 +84,7 @@ type BankMovement = {
 const BANK_STORAGE_KEY = "usinadosirmaos:bank-account:v1";
 const BANK_EXPENSE_CATEGORY = "__SISTEMA__";
 const BANK_EXPENSE_DESCRIPTION = "__CONTA_BANCARIA__";
+const EXPENSE_CATEGORY_DESCRIPTION_PREFIX = "__CATEGORIA_DESPESA__:";
 const EMPTY_BANK_STATE: BankState = {
   initialized: false,
   balance: 0,
@@ -153,6 +154,21 @@ function mapTotal(values: Record<string, number>): number {
 
 function isBankStateExpense(expense: Expense): boolean {
   return expense.category === BANK_EXPENSE_CATEGORY && expense.description === BANK_EXPENSE_DESCRIPTION;
+}
+
+function isExpenseCategoryRecord(expense: Expense): boolean {
+  return expense.category === BANK_EXPENSE_CATEGORY &&
+    expense.description.startsWith(EXPENSE_CATEGORY_DESCRIPTION_PREFIX);
+}
+
+function isSystemExpense(expense: Expense): boolean {
+  return expense.category === BANK_EXPENSE_CATEGORY;
+}
+
+function expenseCategoryNameFromRecord(expense: Expense): string | null {
+  if (!isExpenseCategoryRecord(expense)) return null;
+  const name = expense.description.slice(EXPENSE_CATEGORY_DESCRIPTION_PREFIX.length).trim();
+  return name || null;
 }
 
 function bankStateFromExpense(expense: Pick<Expense, "amount" | "notes"> | null): BankState | null {
@@ -313,11 +329,26 @@ function Fluxo() {
       set.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
     }
     data.invoices.forEach((inv) => set.add(inv.reference_date.slice(0, 7)));
-    data.expenses.filter((e) => !isBankStateExpense(e)).forEach((e) => set.add(e.reference_date.slice(0, 7)));
+    data.expenses.filter((e) => !isSystemExpense(e)).forEach((e) => set.add(e.reference_date.slice(0, 7)));
     return [...set].sort().reverse();
   }, [data]);
 
-  const normalExpenses = data.expenses.filter((e) => !isBankStateExpense(e));
+  const normalExpenses = data.expenses.filter((e) => !isSystemExpense(e));
+  const expenseCategories = useMemo(() => {
+    const names = new Map<string, string>();
+    const add = (name: string | null | undefined) => {
+      const trimmed = (name || "").trim();
+      if (!trimmed) return;
+      const key = trimmed.toLocaleLowerCase("pt-BR");
+      if (!names.has(key)) names.set(key, trimmed);
+    };
+
+    EXPENSE_CATEGORIES.forEach(add);
+    normalExpenses.forEach((expense) => add(expense.category));
+    data.expenses.forEach((expense) => add(expenseCategoryNameFromRecord(expense)));
+
+    return [...names.values()].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [data.expenses]);
   const monthInvoices = data.invoices.filter((i) => i.reference_date.startsWith(monthKey));
   const monthExpenses = normalExpenses.filter((e) => e.reference_date.startsWith(monthKey));
 
@@ -688,6 +719,7 @@ function Fluxo() {
       {(newOpen || edit) && (
         <ExpenseDialog
           expense={edit}
+          categories={expenseCategories}
           onMovement={appendBankMovement}
           onClose={() => {
             setNewOpen(false);
@@ -888,16 +920,18 @@ function ExpenseDialog({
   expense,
   onClose,
   onMovement,
+  categories,
 }: {
   expense: Expense | null;
   onClose: () => void;
   onMovement: (movement: BankMovement) => Promise<void>;
+  categories: string[];
 }) {
   const qc = useQueryClient();
   const today = new Date().toISOString().slice(0, 10);
   const [f, setF] = useState({
     reference_date: expense?.reference_date ?? today,
-    category: expense?.category ?? EXPENSE_CATEGORIES[0],
+    category: expense?.category ?? categories[0] ?? EXPENSE_CATEGORIES[0],
     description: expense?.description ?? "",
     amount: expense ? String(expense.amount) : "",
     notes: stripExpensePaymentTag(expense?.notes),
@@ -907,6 +941,51 @@ function ExpenseDialog({
   const [parcels, setParcels] = useState("2");
   const [mode, setMode] = useState<"parcela" | "total">("parcela");
   const [saving, setSaving] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [localCategories, setLocalCategories] = useState(categories);
+
+  useEffect(() => {
+    setLocalCategories(categories);
+  }, [categories]);
+
+  async function addCategory() {
+    const name = newCategory.trim();
+    if (!name) {
+      toast.error("Informe o nome da categoria");
+      return;
+    }
+
+    const existing = localCategories.find(
+      (category) => category.toLocaleLowerCase("pt-BR") === name.toLocaleLowerCase("pt-BR"),
+    );
+    if (existing) {
+      setF((prev) => ({ ...prev, category: existing }));
+      setNewCategory("");
+      setAddingCategory(false);
+      return;
+    }
+
+    const { error } = await supabase.from("expenses").insert({
+      reference_date: today,
+      category: BANK_EXPENSE_CATEGORY,
+      description: `${EXPENSE_CATEGORY_DESCRIPTION_PREFIX}${name}`,
+      amount: 0,
+      notes: "[[status:pendente]]",
+    });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    const nextCategories = [...localCategories, name].sort((a, b) => a.localeCompare(b, "pt-BR"));
+    setLocalCategories(nextCategories);
+    setF((prev) => ({ ...prev, category: name }));
+    setNewCategory("");
+    setAddingCategory(false);
+    void qc.invalidateQueries({ queryKey: ["fluxo-page"] });
+    toast.success("Categoria adicionada");
+  }
 
   async function submit() {
     if (!f.description.trim() || !f.amount) {
@@ -998,14 +1077,47 @@ function ExpenseDialog({
           </div>
           <div>
             <Label>Categoria *</Label>
-            <Select value={f.category} onValueChange={(v) => setF({ ...f, category: v })}>
+            <Select
+              value={f.category}
+              onValueChange={(v) => {
+                if (v === "__ADD_CATEGORY__") {
+                  setAddingCategory(true);
+                  return;
+                }
+                setF({ ...f, category: v });
+              }}
+            >
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {EXPENSE_CATEGORIES.map((c) => (
+                {localCategories.map((c) => (
                   <SelectItem key={c} value={c}>{c}</SelectItem>
                 ))}
+                <SelectItem value="__ADD_CATEGORY__">+ Adicionar categoria</SelectItem>
               </SelectContent>
             </Select>
+            {addingCategory && (
+              <div className="mt-2 flex gap-2">
+                <Input
+                  autoFocus
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      void addCategory();
+                    }
+                    if (e.key === "Escape") {
+                      setAddingCategory(false);
+                      setNewCategory("");
+                    }
+                  }}
+                  placeholder="Nome da nova categoria"
+                />
+                <Button type="button" variant="outline" onClick={() => void addCategory()}>
+                  Adicionar
+                </Button>
+              </div>
+            )}
           </div>
           <div className="sm:col-span-2">
             <Label>Descrição *</Label>
