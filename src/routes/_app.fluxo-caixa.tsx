@@ -30,7 +30,6 @@ import {
   Landmark,
   History,
   Search,
-  X,
 } from "lucide-react";
 import { brl, monthLabel, EXPENSE_CATEGORIES, initial } from "@/lib/format";
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -285,7 +284,11 @@ function Fluxo() {
   const [bankHistoryOpen, setBankHistoryOpen] = useState(false);
   const [bankValue, setBankValue] = useState("0.00");
   const [bankSaving, setBankSaving] = useState(false);
-  const [expenseSearch, setExpenseSearch] = useState("");
+  const [expenseSearchOpen, setExpenseSearchOpen] = useState(false);
+  const [expenseSearchName, setExpenseSearchName] = useState("");
+  const [expenseSearchCategory, setExpenseSearchCategory] = useState("all");
+  const [expenseSearchValue, setExpenseSearchValue] = useState("");
+  const [expenseSearchStatus, setExpenseSearchStatus] = useState<"all" | "pago" | "pendente">("all");
 
   useEffect(() => {
     let active = true;
@@ -362,25 +365,26 @@ function Fluxo() {
   }, [data.expenses]);
   const monthInvoices = data.invoices.filter((i) => i.reference_date.startsWith(monthKey));
   const monthExpenses = normalExpenses.filter((e) => e.reference_date.startsWith(monthKey));
-  const normalizedExpenseSearch = normalizeSearch(expenseSearch);
-  const visibleExpenses = normalizedExpenseSearch
-    ? normalExpenses.filter((expense) => {
-        const amount = Number(expense.amount);
-        const searchable = normalizeSearch([
-          expense.description,
-          expense.category,
-          amount.toFixed(2),
-          amount.toFixed(2).replace(".", ","),
-          brl(amount),
-        ].join(" "));
-        return searchable.includes(normalizedExpenseSearch);
-      })
-    : monthExpenses;
-  const visibleExpensesTotal = visibleExpenses.reduce(
+
+  const normalizedExpenseSearchName = normalizeSearch(expenseSearchName);
+  const parsedExpenseSearchValue = Number(expenseSearchValue.replace(",", "."));
+  const hasExpenseSearchValue = expenseSearchValue.trim() !== "" && Number.isFinite(parsedExpenseSearchValue);
+  const searchedExpenses = normalExpenses.filter((expense) => {
+    const matchesName = !normalizedExpenseSearchName ||
+      normalizeSearch(expense.description).includes(normalizedExpenseSearchName);
+    const matchesCategory = expenseSearchCategory === "all" ||
+      expense.category === expenseSearchCategory;
+    const matchesValue = !hasExpenseSearchValue ||
+      Math.abs(Number(expense.amount) - parsedExpenseSearchValue) < 0.005;
+    const matchesStatus = expenseSearchStatus === "all" ||
+      expensePaymentStatus(expense.notes) === expenseSearchStatus;
+    return matchesName && matchesCategory && matchesValue && matchesStatus;
+  });
+  const searchedExpensesTotal = searchedExpenses.reduce(
     (sum, expense) => sum + Number(expense.amount),
     0,
   );
-  const visibleExpensesPaidTotal = visibleExpenses
+  const searchedExpensesPaidTotal = searchedExpenses
     .filter((expense) => expensePaymentStatus(expense.notes) === "pago")
     .reduce((sum, expense) => sum + Number(expense.amount), 0);
 
@@ -578,6 +582,13 @@ function Fluxo() {
             </SelectContent>
           </Select>
           <Button
+            variant="outline"
+            onClick={() => setExpenseSearchOpen(true)}
+            className="gap-2"
+          >
+            <Search className="h-4 w-4" /> Buscar despesas
+          </Button>
+          <Button
             onClick={() => setNewOpen(true)}
             className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
           >
@@ -690,48 +701,14 @@ function Fluxo() {
       </Card>
 
       <Card className="glass-card p-4">
-        <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-base font-semibold text-foreground">
-              {normalizedExpenseSearch
-                ? "Despesas encontradas — todos os meses"
-                : `Despesas lançadas — ${monthLabel(monthDate)}`}
-            </h2>
-            {normalizedExpenseSearch && (
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Busca por nome, categoria ou valor em todo o histórico.
-              </p>
-            )}
-          </div>
-          <div className="relative w-full sm:w-80">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={expenseSearch}
-              onChange={(event) => setExpenseSearch(event.target.value)}
-              placeholder="Buscar despesa, categoria ou valor..."
-              className="pl-9 pr-9"
-            />
-            {expenseSearch && (
-              <button
-                type="button"
-                aria-label="Limpar busca"
-                onClick={() => setExpenseSearch("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {visibleExpenses.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            {normalizedExpenseSearch ? "Nenhuma despesa encontrada." : "Nenhuma despesa neste mês."}
-          </p>
+        <h2 className="mb-3 text-base font-semibold text-foreground">
+          Despesas lançadas — {monthLabel(monthDate)}
+        </h2>
+        {monthExpenses.length === 0 && (
+          <p className="text-sm text-muted-foreground">Nenhuma despesa neste mês.</p>
         )}
-
         <div className="space-y-2">
-          {visibleExpenses.map((e) => (
+          {monthExpenses.map((e) => (
             <div
               key={e.id}
               className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 hover:bg-accent/50 transition-colors"
@@ -749,15 +726,6 @@ function Fluxo() {
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
                     {e.category}
                   </span>
-                  {normalizedExpenseSearch && (
-                    <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                      {monthLabel(new Date(
-                        Number(e.reference_date.slice(0, 4)),
-                        Number(e.reference_date.slice(5, 7)) - 1,
-                        1,
-                      ))}
-                    </span>
-                  )}
                   {e.installment_total ? (
                     <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium uppercase text-primary">
                       Parcela {e.installment_no}/{e.installment_total}
@@ -789,23 +757,155 @@ function Fluxo() {
             </div>
           ))}
         </div>
-
-        {visibleExpenses.length > 0 && (
-          <div className="mt-4 flex flex-col gap-2 border-t border-border pt-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-            <div className="text-muted-foreground">
-              {visibleExpenses.length} {visibleExpenses.length === 1 ? "lançamento" : "lançamentos"}
-            </div>
-            <div className="flex flex-wrap gap-x-5 gap-y-1">
-              <span className="text-muted-foreground">
-                Somatória: <strong className="num text-foreground">{brl(visibleExpensesTotal)}</strong>
-              </span>
-              <span className="text-muted-foreground">
-                Total pago: <strong className="num text-emerald-700">{brl(visibleExpensesPaidTotal)}</strong>
-              </span>
-            </div>
-          </div>
-        )}
       </Card>
+
+      {expenseSearchOpen && (
+        <Dialog open onOpenChange={(open) => !open && setExpenseSearchOpen(false)}>
+          <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Buscar despesas</DialogTitle>
+            </DialogHeader>
+
+            <Card className="border-border p-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Label>Nome / descrição</Label>
+                  <Input
+                    value={expenseSearchName}
+                    onChange={(event) => setExpenseSearchName(event.target.value)}
+                    placeholder="Ex: Fatura energia, Reembolso John..."
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label>Categoria</Label>
+                  <Select value={expenseSearchCategory} onValueChange={setExpenseSearchCategory}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas as categorias</SelectItem>
+                      {expenseCategories.map((category) => (
+                        <SelectItem key={category} value={category}>{category}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Valor exato (R$)</Label>
+                  <Input
+                    value={expenseSearchValue}
+                    onChange={(event) => setExpenseSearchValue(event.target.value)}
+                    inputMode="decimal"
+                    placeholder="Ex: 350,00"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label>Status</Label>
+                  <Select
+                    value={expenseSearchStatus}
+                    onValueChange={(value) => setExpenseSearchStatus(value as "all" | "pago" | "pendente")}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="pago">Pago</SelectItem>
+                      <SelectItem value="pendente">Pendente</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+                <div className="text-xs text-muted-foreground">
+                  A busca considera todo o histórico de despesas.
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setExpenseSearchName("");
+                    setExpenseSearchCategory("all");
+                    setExpenseSearchValue("");
+                    setExpenseSearchStatus("all");
+                  }}
+                >
+                  Limpar filtros
+                </Button>
+              </div>
+            </Card>
+
+            <div className="space-y-2">
+              {searchedExpenses.length === 0 ? (
+                <p className="py-8 text-center text-sm text-muted-foreground">
+                  Nenhuma despesa encontrada com esses filtros.
+                </p>
+              ) : (
+                searchedExpenses.map((expense) => (
+                  <div
+                    key={expense.id}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="truncate text-sm font-medium text-foreground">
+                          {expense.description}
+                        </div>
+                        {expensePaymentStatus(expense.notes) === "pago" ? (
+                          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-emerald-800">Pago</span>
+                        ) : (
+                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold uppercase text-amber-800">Pendente</span>
+                        )}
+                      </div>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
+                          {expense.category}
+                        </span>
+                        <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          {monthLabel(new Date(
+                            Number(expense.reference_date.slice(0, 4)),
+                            Number(expense.reference_date.slice(5, 7)) - 1,
+                            1,
+                          ))}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-sm font-semibold text-red-500 num">
+                      {brl(Number(expense.amount))}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {searchedExpenses.length > 0 && (
+              <div className="flex flex-col gap-2 rounded-lg border border-border bg-accent/30 p-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-muted-foreground">
+                  {searchedExpenses.length} {searchedExpenses.length === 1 ? "lançamento" : "lançamentos"}
+                </div>
+                <div className="flex flex-wrap gap-x-5 gap-y-1">
+                  <span className="text-muted-foreground">
+                    Somatória: <strong className="num text-foreground">{brl(searchedExpensesTotal)}</strong>
+                  </span>
+                  <span className="text-muted-foreground">
+                    Total pago: <strong className="num text-emerald-700">{brl(searchedExpensesPaidTotal)}</strong>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setExpenseSearchOpen(false)}>Fechar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {(newOpen || edit) && (
         <ExpenseDialog
