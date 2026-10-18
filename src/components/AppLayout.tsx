@@ -21,7 +21,7 @@ import { initial } from "@/lib/format";
 type NavItem = { to: string; label: string; shortLabel: string; icon: typeof LayoutGrid; module: string; adminOnly?: boolean };
 const nav: NavItem[] = [
   { to: "/", label: "Dashboard", shortLabel: "Home", icon: LayoutGrid, module: "dashboard" },
-  { to: "/faturas", label: "Faturas e Clientes", shortLabel: "Faturas", icon: Users, module: "faturas" },
+  { to: "/faturas", label: "Faturas", shortLabel: "Faturas", icon: Users, module: "faturas" },
   { to: "/fluxo-caixa", label: "Fluxo de Caixa", shortLabel: "Fluxo", icon: Wallet, module: "fluxo-caixa" },
   { to: "/relatorio", label: "Controle Cliente", shortLabel: "Controle", icon: FileSpreadsheet, module: "relatorio" },
   { to: "/controle", label: "Controle ADM", shortLabel: "ADM", icon: Gauge, module: "controle" },
