@@ -1,0 +1,26 @@
+{
+  "name": "usinadosirmaos-mobile",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Camada mobile nativa do sistema Usina dos Irmãos",
+  "scripts": {
+    "android:add": "cap add android",
+    "ios:add": "cap add ios",
+    "sync": "cap sync",
+    "sync:android": "cap sync android",
+    "sync:ios": "cap sync ios",
+    "open:android": "cap open android",
+    "open:ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/ios": "8.5.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "typescript": "^5.8.3"
+  }
+}
