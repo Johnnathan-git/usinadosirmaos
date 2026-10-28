@@ -1,0 +1,56 @@
+name: Mobile iOS - validação
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ios-simulator.yml"
+
+jobs:
+  build-ios-simulator:
+    runs-on: macos-26
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Conferir Xcode
+        run: xcodebuild -version
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Criar projeto iOS
+        run: npx cap add ios
+
+      - name: Sincronizar Capacitor
+        run: npx cap sync ios
+
+      - name: Compilar para simulador iPhone
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Publicar build do simulador
+        uses: actions/upload-artifact@v4
+        with:
+          name: usina-dos-irmaos-ios-simulator
+          path: mobile/build/Build/Products/Debug-iphonesimulator/App.app
+          if-no-files-found: error
