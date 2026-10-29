@@ -71,8 +71,15 @@ export function AppLayout({ children }: { children: ReactNode }) {
     localStorage.setItem("theme", "light");
   }, []);
 
-  // Mobile: badge Lovable logo acima do ícone Controle na barra inferior
+  // Mobile: posiciona o badge do Lovable sem observar cada mutação do DOM.
+  // A versão anterior usava MutationObserver no body inteiro + timer permanente,
+  // causando recalculo de layout durante praticamente toda interação da interface.
   useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 768) return;
+
+    let frame = 0;
+    const timers: number[] = [];
+
     const moveBadge = () => {
       if (window.innerWidth >= 768) return;
       const badge = document.querySelector('a[href*="lovable"]') as HTMLElement | null;
@@ -80,32 +87,41 @@ export function AppLayout({ children }: { children: ReactNode }) {
       const controle =
         (document.querySelector('a[href="/relatorio"]') as HTMLElement | null) ||
         (document.querySelector('nav a[href*="relatorio"]') as HTMLElement | null);
+
       badge.style.setProperty("position", "fixed", "important");
       badge.style.setProperty("z-index", "45", "important");
+      badge.style.setProperty("right", "auto", "important");
+      badge.style.setProperty("transform", "translateX(-50%)", "important");
+
       if (controle) {
         const r = controle.getBoundingClientRect();
         badge.style.setProperty("left", `${r.left + r.width / 2}px`, "important");
-        badge.style.setProperty("right", "auto", "important");
         badge.style.setProperty("bottom", `${Math.max(0, window.innerHeight - r.top + 6)}px`, "important");
-        badge.style.setProperty("transform", "translateX(-50%)", "important");
       } else {
         badge.style.setProperty("bottom", "calc(3.5rem + env(safe-area-inset-bottom, 0px))", "important");
         badge.style.setProperty("left", "42%", "important");
-        badge.style.setProperty("right", "auto", "important");
-        badge.style.setProperty("transform", "translateX(-50%)", "important");
       }
     };
-    moveBadge();
-    const obs = new MutationObserver(moveBadge);
-    obs.observe(document.body, { childList: true, subtree: true });
-    window.addEventListener("resize", moveBadge);
-    const t = window.setInterval(moveBadge, 1200);
-    return () => {
-      obs.disconnect();
-      window.removeEventListener("resize", moveBadge);
-      window.clearInterval(t);
+
+    const scheduleMove = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(moveBadge);
     };
-  }, []);
+
+    scheduleMove();
+    // O badge é injetado pelo ambiente; algumas tentativas curtas cobrem carregamento tardio
+    // sem manter um observer/timer rodando para sempre.
+    timers.push(window.setTimeout(scheduleMove, 250));
+    timers.push(window.setTimeout(scheduleMove, 900));
+    timers.push(window.setTimeout(scheduleMove, 2000));
+    window.addEventListener("resize", scheduleMove);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("resize", scheduleMove);
+    };
+  }, [pathname]);
 
   // Mobile: puxar para atualizar no container de scroll (sem tela branca no body)
   useEffect(() => {
@@ -158,14 +174,18 @@ export function AppLayout({ children }: { children: ReactNode }) {
         navigate({ to: "/auth", replace: true });
         return;
       }
+
+      // Libera a consulta de permissões imediatamente. A validação remota do usuário
+      // continua acontecendo em paralelo, em vez de bloquear o carregamento inicial.
+      setReady(true);
+
       const { data: userData, error } = await supabase.auth.getUser();
       if (!mounted) return;
       if (error || !userData.user) {
+        setReady(false);
         await supabase.auth.signOut();
         navigate({ to: "/auth", replace: true });
-        return;
       }
-      setReady(true);
     })();
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || (!session && event !== "INITIAL_SESSION")) {
@@ -181,14 +201,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const accessFn = useServerFn(getMyAccess);
   const access = useQuery({
     queryKey: ["my-access"],
-    queryFn: async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        navigate({ to: "/auth" });
-        return null;
-      }
-      return await accessFn();
-    },
+    queryFn: () => accessFn(),
     enabled: ready,
     retry: false,
     staleTime: 5 * 60_000,
