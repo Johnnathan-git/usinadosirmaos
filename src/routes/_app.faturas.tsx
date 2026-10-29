@@ -502,18 +502,48 @@ function InvoiceDialog({
   };
   const fmtBR = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
-  const computeRaw = (consumption: string, price: string, lighting: string, fine: string) => {
+  const usesPostOctober2026Formula = (referenceMonth: string) =>
+    referenceMonth >= "2026-10";
+
+  const computeRaw = (
+    consumption: string,
+    price: string,
+    lighting: string,
+    fine: string,
+    referenceMonth: string,
+  ) => {
     const c = parseNum(consumption);
     const p = parseNum(price);
     const l = parseNum(lighting);
     const j = parseNum(fine);
-    const sUsina = c * p + l + j;
     const discount = (client.discount_pct ?? 30) / 100;
+    const baseWithoutFine = c * p + l;
+
+    if (usesPostOctober2026Formula(referenceMonth)) {
+      return {
+        sUsina: baseWithoutFine,
+        cPaga: baseWithoutFine * (1 - discount) + j,
+      };
+    }
+
+    const sUsina = baseWithoutFine + j;
     return { sUsina, cPaga: sUsina * (1 - discount) };
   };
 
-  const calculateValues = (consumption: string, price: string, lighting: string, fine: string) => {
-    const { sUsina, cPaga } = computeRaw(consumption, price, lighting, fine);
+  const calculateValues = (
+    consumption: string,
+    price: string,
+    lighting: string,
+    fine: string,
+    referenceMonth: string,
+  ) => {
+    const { sUsina, cPaga } = computeRaw(
+      consumption,
+      price,
+      lighting,
+      fine,
+      referenceMonth,
+    );
     return {
       value_without_plant: fmtBR(sUsina),
       client_pays: fmtBR(cPaga),
@@ -528,10 +558,25 @@ function InvoiceDialog({
         next.price_kw,
         next.public_lighting,
         next.interest_fine,
+        next.reference_month,
       );
       return { ...next, value_without_plant, client_pays };
     });
   };
+  const handleReferenceMonthChange = (referenceMonth: string) => {
+    setF((prev) => {
+      const next = { ...prev, reference_month: referenceMonth };
+      const { value_without_plant, client_pays } = calculateValues(
+        next.consumption_kw,
+        next.price_kw,
+        next.public_lighting,
+        next.interest_fine,
+        referenceMonth,
+      );
+      return { ...next, value_without_plant, client_pays };
+    });
+  };
+
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -545,7 +590,13 @@ function InvoiceDialog({
       return;
     }
     setSaving(true);
-    const { sUsina, cPaga } = computeRaw(f.consumption_kw, f.price_kw, f.public_lighting, f.interest_fine);
+    const { sUsina, cPaga } = computeRaw(
+      f.consumption_kw,
+      f.price_kw,
+      f.public_lighting,
+      f.interest_fine,
+      f.reference_month,
+    );
     const payload = {
       client_id: client.id,
       uc_number: client.uc_number,
@@ -603,7 +654,7 @@ function InvoiceDialog({
             <Input
               type="month"
               value={f.reference_month}
-              onChange={(e) => setF((prev) => ({ ...prev, reference_month: e.target.value }))}
+              onChange={(e) => handleReferenceMonthChange(e.target.value)}
               className="mt-1"
             />
           </div>
