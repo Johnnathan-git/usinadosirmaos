@@ -101,7 +101,7 @@ function FaturasPage() {
     queryKey: ["faturas-page"],
     queryFn: fetchFaturasPage,
     retry: 1,
-    staleTime: 30_000,
+    staleTime: 2 * 60_000,
   });
 
   const [showInactive, setShowInactive] = useState(false);
