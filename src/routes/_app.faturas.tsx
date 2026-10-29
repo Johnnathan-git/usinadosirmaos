@@ -500,7 +500,12 @@ function InvoiceDialog({
     const parsed = Number(decimalValue);
     return Number.isFinite(parsed) ? parsed : 0;
   };
-  const fmtBR = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+  const fmtBR = (n: number) =>
+    n.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 10,
+      useGrouping: false,
+    });
 
   const usesPostOctober2026Formula = (referenceMonth: string) =>
     referenceMonth >= "2026-10";
@@ -605,8 +610,8 @@ function InvoiceDialog({
       price_kw: parseNum(f.price_kw),
       public_lighting: parseNum(f.public_lighting || "0"),
       interest_fine: parseNum(f.interest_fine || "0"),
-      value_without_plant: Number(sUsina.toFixed(4)),
-      client_pays: Number(cPaga.toFixed(4)),
+      value_without_plant: sUsina,
+      client_pays: cPaga,
       distributor_invoice: parseNum(f.distributor_invoice || "0"),
       notes: withPaymentTag(f.notes, f.payment_status, f.due_date),
       attachment_url: f.attachment_url || null,
