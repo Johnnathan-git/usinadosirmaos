@@ -49,8 +49,23 @@ function stripPaymentTag(notes: string | null | undefined): string {
   return (notes || "")
     .replace(/\[\[status:(pago|pendente)\]\]/g, "")
     .replace(/\[\[due:\d{4}-\d{2}-\d{2}\]\]/g, "")
+    .replace(/\[\[price_kw_exact:[^\]]+\]\]/g, "")
     .trim();
 }
+
+function invoiceExactPrice(notes: string | null | undefined, fallback: number): string {
+  const exact = (notes || "").match(/\[\[price_kw_exact:([^\]]+)\]\]/)?.[1]?.trim();
+  return exact || String(fallback);
+}
+
+function normalizeExactDecimal(value: string): string {
+  const normalized = value.trim().replace(/\s/g, "");
+  if (!normalized) return "0";
+  return normalized.includes(",")
+    ? normalized.replace(/\./g, "").replace(",", ".")
+    : normalized;
+}
+
 /** Vencimento da fatura em notes: [[due:yyyy-mm-dd]] */
 function invoiceDueDate(notes: string | null | undefined): string {
   return (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/)?.[1] ?? "";
@@ -59,11 +74,13 @@ function withPaymentTag(
   notes: string | null | undefined,
   status: "pago" | "pendente",
   due?: string,
+  exactPriceKw?: string,
 ): string | null {
   const cleaned = stripPaymentTag(notes);
   const tags = [
     status === "pendente" ? "[[status:pendente]]" : "",
     due && /^\d{4}-\d{2}-\d{2}$/.test(due) ? `[[due:${due}]]` : "",
+    exactPriceKw ? `[[price_kw_exact:${normalizeExactDecimal(exactPriceKw)}]]` : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -456,7 +473,7 @@ function InvoiceDialog({
   const [f, setF] = useState({
     reference_month: invoice?.reference_date?.slice(0, 7) ?? currentMonth,
     consumption_kw: invoice ? String(invoice.consumption_kw) : "",
-    price_kw: invoice ? String(invoice.price_kw) : "",
+    price_kw: invoice ? invoiceExactPrice(invoice.notes, invoice.price_kw) : "",
     public_lighting: String(client.public_lighting_value || 0),
     interest_fine: invoice ? String(invoice.interest_fine) : "0",
     value_without_plant: invoice ? String(invoice.value_without_plant) : "0",
@@ -473,7 +490,7 @@ function InvoiceDialog({
       setF({
         reference_month: invoice.reference_date.slice(0, 7),
         consumption_kw: String(invoice.consumption_kw),
-        price_kw: String(invoice.price_kw),
+        price_kw: invoiceExactPrice(invoice.notes, invoice.price_kw),
         public_lighting: String(client.public_lighting_value || 0),
         interest_fine: String(invoice.interest_fine),
         value_without_plant: String(invoice.value_without_plant),
@@ -613,7 +630,7 @@ function InvoiceDialog({
       value_without_plant: sUsina,
       client_pays: cPaga,
       distributor_invoice: parseNum(f.distributor_invoice || "0"),
-      notes: withPaymentTag(f.notes, f.payment_status, f.due_date),
+      notes: withPaymentTag(f.notes, f.payment_status, f.due_date, f.price_kw),
       attachment_url: f.attachment_url || null,
     };
     const { error } = invoice
