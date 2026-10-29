@@ -25,6 +25,14 @@ function dueDateFromNotes(notes: string | null | undefined): string {
   const m = (notes || "").match(/\[\[due:(\d{4}-\d{2}-\d{2})\]\]/);
   return m?.[1] ?? "";
 }
+
+function exactPriceFromNotes(notes: string | null | undefined, fallback: number): number {
+  const raw = (notes || "").match(/\[\[price_kw_exact:([^\]]+)\]\]/)?.[1]?.trim();
+  if (!raw) return Number(fallback);
+  const parsed = Number(raw.replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : Number(fallback);
+}
+
 function formatDueShortBR(iso: string): string {
   if (!iso || iso.length < 10) return "";
   const [y, mo, d] = iso.slice(0, 10).split("-");
@@ -33,7 +41,7 @@ function formatDueShortBR(iso: string): string {
 
 const q = queryOptions({
   queryKey: ["relatorio-page"],
-  staleTime: 30_000,
+  staleTime: 2 * 60_000,
   queryFn: async () => {
     const [i, c, sess] = await Promise.all([
       supabase
@@ -102,7 +110,10 @@ function toRow(inv: Invoice, client?: Client): Row {
     mes: monthLabelFromISO(inv.reference_date).toLowerCase(),
     uc: inv.uc_number ?? "",
     consumo: numBR(Number(inv.consumption_kw), 0),
-    preco: numBR(Number(inv.price_kw), 6),
+    preco: exactPriceFromNotes(inv.notes, inv.price_kw).toLocaleString("pt-BR", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 10,
+    }),
     ilum: brl(Number(inv.public_lighting)),
     juros: brl(Number(inv.interest_fine)),
     semUsina: brl(Number(inv.value_without_plant)),
