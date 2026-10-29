@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { brl, monthLabel, monthLabelLong, initial } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, DollarSign, Receipt, Users, Trophy, ArrowUpRight, ArrowDownRight, Briefcase } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend, Tooltip, AreaChart, Area } from "recharts";
+
 
 type Invoice = {
   id: string;
@@ -18,6 +18,17 @@ type Invoice = {
 };
 type Expense = { id: string; reference_date: string; amount: number };
 type Client = { id: string; name: string; color: string };
+
+const DashboardPerformanceChart = React.lazy(() =>
+  import("@/components/DashboardCharts").then((module) => ({
+    default: module.DashboardPerformanceChart,
+  })),
+);
+const DashboardSparkline = React.lazy(() =>
+  import("@/components/DashboardCharts").then((module) => ({
+    default: module.DashboardSparkline,
+  })),
+);
 
 const dashboardQ = queryOptions({
   queryKey: ["dashboard"],
@@ -216,31 +227,11 @@ function Dashboard() {
             </div>
             <div className="-mx-2 overflow-x-auto px-2">
               <div className="h-72 min-w-[520px] sm:min-w-0">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} barGap={8} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" opacity={0.5} />
-                    <XAxis 
-                      dataKey="month" 
-                      tickLine={false} 
-                      axisLine={false} 
-                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }} 
-                      dy={10} 
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 10, fill: "var(--muted-foreground)", fontWeight: 500 }}
-                      tickFormatter={(v: number) => (Math.abs(v) >= 1000 ? `${v / 1000}k` : String(v))}
-                    />
-                    <Tooltip 
-                      cursor={{ fill: "var(--accent)", opacity: 0.1 }} 
-                      content={<ChartTooltip />} 
-                    />
-                    <Bar dataKey="Receita" fill="#2F6F62" radius={[3, 3, 0, 0]} maxBarSize={24} />
-                    <Bar dataKey="Despesas" fill="#D64545" radius={[3, 3, 0, 0]} maxBarSize={24} />
-                    <Bar dataKey="Lucro" fill="#2E5C8A" radius={[3, 3, 0, 0]} maxBarSize={24} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <Suspense
+                  fallback={<div className="h-full w-full animate-pulse rounded-xl bg-accent/40" />}
+                >
+                  <DashboardPerformanceChart data={chartData} />
+                </Suspense>
               </div>
             </div>
           </Card>
@@ -338,24 +329,6 @@ function Dashboard() {
   );
 }
 
-function ChartTooltip({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="glass-card rounded-xl px-3 py-2 shadow-2xl">
-      <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
-      {payload.map((p: any) => (
-        <div key={p.dataKey} className="flex items-center justify-between gap-6 text-sm">
-          <span className="inline-flex items-center gap-2 text-muted-foreground">
-            <span className="h-2 w-2 rounded-sm" style={{ background: p.fill }} />
-            {p.dataKey}
-          </span>
-          <span className="num font-semibold text-foreground">{brl(Number(p.value))}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function StatCard({
   icon, label, value, tint, hint, delta, invertDelta, sparkData, delay
 }: {
@@ -392,18 +365,9 @@ function StatCard({
     >
       {sparkData && (
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={sparkData} margin={{ top: 40, right: 0, left: 0, bottom: 0 }}>
-              <Area 
-                type="monotone" 
-                dataKey="value" 
-                stroke={semanticColor} 
-                fill={semanticColor} 
-                strokeWidth={1.5} 
-                isAnimationActive={false}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+          <Suspense fallback={null}>
+            <DashboardSparkline data={sparkData} color={semanticColor} />
+          </Suspense>
         </div>
       )}
 
