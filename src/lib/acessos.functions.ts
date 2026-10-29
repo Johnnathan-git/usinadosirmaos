@@ -181,23 +181,24 @@ export const changeMyPassword = createServerFn({ method: "POST" })
 export const getMyAccess = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const [rolesRes, permsRes, linkRes, profileRes, bootstrapMode] = await Promise.all([
+    const [rolesRes, permsRes, linkRes, profileRes] = await Promise.all([
       context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
       context.supabase.from("user_permissions").select("module").eq("user_id", context.userId),
       context.supabase.from("user_clients").select("client_id").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("user_profiles").select("display_name").eq("user_id", context.userId).maybeSingle(),
-      isBootstrapMode(),
     ]);
+
     const is_admin = (rolesRes.data ?? []).some((r: any) => r.role === "admin");
-    const bootstrap = bootstrapMode;
-    const userEmail = (await context.supabase.auth.getUser()).data.user?.email ?? null;
+    // Bootstrap só precisa ser consultado quando o usuário ainda não é admin.
+    // No uso normal isso elimina uma consulta extra em toda abertura do sistema.
+    const bootstrap = is_admin ? false : await isBootstrapMode();
+
     return {
       is_admin,
       bootstrap,
       effective_admin: is_admin || bootstrap,
       permissions: (permsRes.data ?? []).map((p: any) => p.module as string),
       client_id: (linkRes.data as any)?.client_id ?? null,
-      user_email: userEmail,
       display_name: (profileRes.data as any)?.display_name ?? null,
     };
   });
